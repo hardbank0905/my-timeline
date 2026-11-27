@@ -298,8 +298,20 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .fs-btn:hover{background:rgba(0,0,0,.8)}
 .media img{cursor:zoom-in}
 .embed-yt .fs-btn{bottom:58px}
-.embed-yt.live .fs-btn,.embed-yt.live .snd-btn{top:10px;bottom:auto}
-.embed-yt.live .fs-btn{right:10px}
+.embed-yt.live .fs-btn{bottom:24px}
+.tap-layer{position:absolute;inset:0;z-index:1;cursor:pointer}
+.no-seek .seek,.no-seek .badge{display:none}
+.seek{position:absolute;left:0;right:0;bottom:0;height:20px;z-index:3;cursor:pointer;display:flex;align-items:flex-end;touch-action:none}
+.seek-track{width:100%;height:4px;background:rgba(255,255,255,.28);transition:height .15s}
+.seek:hover .seek-track,.seek.drag .seek-track,.seek:focus-visible .seek-track{height:8px}
+.seek-track i{display:block;height:100%;width:0;background:var(--accent)}
+.media .badge{bottom:24px}
+.media .snd-btn,.media .fs-btn{bottom:24px}
+.media{cursor:pointer}
+.media:has(img){cursor:zoom-in}
+.embed-yt:not(.live) .fs-btn{bottom:58px}
+.tt-item .media .snd-btn{bottom:auto}
+.v-stage .media .snd-btn{bottom:24px}
 /* 全画面ビューア */
 .viewer{position:fixed;inset:0;z-index:90;background:#000;color:#fff;display:flex;flex-direction:column}
 .v-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:calc(10px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));font-size:14px;font-variant-numeric:tabular-nums}
@@ -653,7 +665,7 @@ requestAnimationFrame(loop);
 
 /* ================= 音声・再生時間・ホスト版判定 ================= */
 const HOSTED = !!window.MYTL_HOSTED; // 公開版(PWA)ではビルド時に true。アーティファクト内では外部埋め込みが使えないので代替表示
-const previewLimit = mode => mode === "full" ? Infinity : (S.opts.preview > 0 ? S.opts.preview : Infinity);
+const previewLimit = () => (S.opts.preview > 0 ? S.opts.preview : Infinity); // 全画面表示も同じ長さまで
 const fmtLim = s => s < 60 ? `${s}秒` : s % 60 === 0 ? `${s / 60}分` : `${Math.floor(s / 60)}分${s % 60}秒`;
 const AudioKit = { ctx: null, get() { if (!this.ctx) { try { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch { this.ctx = null; } } if (this.ctx?.state === "suspended") this.ctx.resume().catch(() => {}); return this.ctx; } };
 let soundHintShown = false;
@@ -669,21 +681,46 @@ function setSoundAll(on) {
 document.addEventListener("click", e => { const b = e.target.closest("[data-snd]"); if (!b) return; e.stopPropagation(); e.preventDefault(); AudioKit.get(); setSoundAll(!S.opts.sound); toast(S.opts.sound ? "音声オン" : "音声オフ"); }, true);
 
 /* ================= メディア要素の生成 ================= */
+const chromeHTML = () => `<div class="bigplay"><span><svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg></span></div><span class="play-state">停止中</span><span class="badge">0:00</span><div class="seek" role="slider" tabindex="0" aria-label="再生位置" aria-valuemin="0"><div class="seek-track"><i></i></div></div>${sndBtn()}`;
 function mediaChrome(vertical) {
   const w = document.createElement("div"); w.className = "media" + (vertical ? " vertical" : "");
-  w.innerHTML = `<div class="bigplay"><span><svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg></span></div><span class="play-state">停止中</span><span class="badge">0:00</span><div class="progress"><i></i><b class="lim" hidden></b></div>${sndBtn()}`;
+  w.innerHTML = chromeHTML();
   return w;
 }
+/* 表示する長さ = 「再生する長さ」の設定と動画の長さの短い方。シークバーもこの範囲だけ */
+const spanOf = (d, lim) => isFinite(lim) ? (d > 0 ? Math.min(lim, d) : lim) : (d > 0 ? d : 1);
 function wireBadges(w, getT, getDur, lim) {
-  const badge = w.querySelector(".badge"), bar = w.querySelector(".progress i"), mark = w.querySelector(".progress .lim"), st = w.querySelector(".play-state");
+  const badge = w.querySelector(".badge"), bar = w.querySelector(".seek-track i"), seek = w.querySelector(".seek"), st = w.querySelector(".play-state");
   return () => {
-    const t = getT(), d = getDur() || 1, limited = lim < d;
-    badge.textContent = `${fmt(t)} / ${fmt(d)}${limited ? ` · 冒頭${fmtLim(lim)}` : ""}`;
-    bar.style.width = `${Math.min(100, t / d * 100)}%`;
-    if (mark) { mark.hidden = !limited; if (limited) mark.style.left = `${lim / d * 100}%`; }
+    const span = spanOf(getDur(), lim), t = Math.min(getT(), span);
+    badge.textContent = `${fmt(t)} / ${fmt(span)}`;
+    bar.style.width = `${Math.min(100, t / span * 100)}%`;
+    if (seek) { seek.setAttribute("aria-valuemax", String(Math.round(span))); seek.setAttribute("aria-valuenow", String(Math.round(t))); seek.setAttribute("aria-valuetext", `${fmt(t)} / ${fmt(span)}`); }
     st.textContent = w.classList.contains("is-playing") ? "再生中" : "停止中";
   };
 }
+/* シークバー: ドラッグ・タップ・矢印キーで移動。範囲は 0〜表示する長さ */
+function attachSeek(w, getSpan, getT, seekTo) {
+  const el = w.querySelector(".seek"); if (!el) return;
+  const at = ev => { const r = el.getBoundingClientRect(); return Math.max(0, Math.min(1, (ev.clientX - r.left) / r.width)) * getSpan(); };
+  el.addEventListener("pointerdown", ev => { ev.preventDefault(); ev.stopPropagation(); el.classList.add("drag"); try { el.setPointerCapture(ev.pointerId); } catch {} seekTo(at(ev)); });
+  el.addEventListener("pointermove", ev => { if (el.classList.contains("drag")) seekTo(at(ev)); });
+  const end = () => el.classList.remove("drag");
+  el.addEventListener("pointerup", end); el.addEventListener("pointercancel", end);
+  el.addEventListener("click", ev => ev.stopPropagation());
+  el.addEventListener("keydown", ev => {
+    if (ev.key !== "ArrowLeft" && ev.key !== "ArrowRight") return; ev.preventDefault();
+    seekTo(Math.max(0, Math.min(getSpan() - 0.5, getT() + (ev.key === "ArrowRight" ? 5 : -5))));
+  });
+}
+/* 動画をタップ → 再生/一時停止（埋め込みの画面には触らせないので、別タブも開かない） */
+document.addEventListener("click", e => {
+  const m = e.target.closest && e.target.closest(".media"); if (!m) return;
+  if (e.target.closest("button, a, .seek, [data-snd], [data-act]")) return;
+  const pl = players.get(m); if (!pl) return;
+  if (pl.playing) pl.pause();
+  else { players.forEach(o => { if (o !== pl && o.playing) o.pause(); }); AudioKit.get(); pl.play(); }
+});
 /* サンプル動画の音: 再生中だけ小さく鳴るメロディ（WebAudio） */
 function toneVoice(seed) {
   let osc = null, gain = null;
@@ -706,6 +743,7 @@ function buildMedia(p, mode = "feed") {
   if (m.kind === "sample-video") {
     const v = makeFakeVideo(m.seed, m.vertical, m.title, SAMPLE_DURS[m.seed % SAMPLE_DURS.length]); const w = mediaChrome(m.vertical);
     w.prepend(v.el); const upd = wireBadges(w, () => v.t, () => v.dur, lim); upd();
+    attachSeek(w, () => spanOf(v.dur, lim), () => v.t, sec => { v.seek(sec); upd(); });
     const voice = toneVoice(m.seed);
     players.set(w, {
       playing: false,
@@ -721,6 +759,7 @@ function buildMedia(p, mode = "feed") {
     vid.src = m.kind === "file-video" ? (fileUrls.get(p.id) || "") : m.src;
     vid.muted = true; vid.playsInline = true; vid.preload = "metadata"; vid.setAttribute("playsinline", "");
     w.prepend(vid); const upd = wireBadges(w, () => vid.currentTime || 0, () => vid.duration, lim);
+    attachSeek(w, () => spanOf(vid.duration, lim), () => vid.currentTime || 0, sec => { try { vid.currentTime = sec; } catch {} upd(); });
     vid.addEventListener("loadedmetadata", () => { if (vid.videoHeight > vid.videoWidth) w.classList.add("vertical"); upd(); });
     vid.addEventListener("timeupdate", () => { if (vid.currentTime >= lim) vid.currentTime = 0; upd(); });
     vid.addEventListener("ended", () => { vid.currentTime = 0; if (players.get(w)?.playing) vid.play().catch(() => {}); });
@@ -785,7 +824,7 @@ addEventListener("message", ev => {
   if (d && typeof d === "object") c.onMsg(d);
 });
 let ytSeq = 0;
-function ytController(ifr, lim) {
+function ytController(ifr, lim, onInfo = () => {}) {
   const id = ++ytSeq; let ready = false, wantPlay = false, info = {}, timer = 0;
   const send = (func, args = []) => { try { ifr.contentWindow.postMessage(JSON.stringify({ event: "command", func, args, id, channel: "widget" }), "*"); } catch {} };
   const apply = () => { if (!ready) return; send(S.opts.sound ? "unMute" : "mute"); send(wantPlay ? "playVideo" : "pauseVideo"); };
@@ -799,12 +838,14 @@ function ytController(ifr, lim) {
   const c = {
     onMsg(d) {
       if (!ready && (d.event === "onReady" || d.event === "initialDelivery" || d.event === "infoDelivery")) { ready = true; apply(); }
-      if (d.info && typeof d.info === "object") Object.assign(info, d.info);
+      if (d.info && typeof d.info === "object") { Object.assign(info, d.info); onInfo(info); }
       // 冒頭○分まで来たら頭に戻す（ループ）。終わった動画も再生中なら頭から
       if (wantPlay && ((isFinite(lim) && info.currentTime >= lim) || info.playerState === 0)) { send("seekTo", [0, true]); send("playVideo"); }
     },
     want(play) { wantPlay = play; apply(); },
-    sound() { apply(); }
+    sound() { apply(); },
+    seek(sec) { info.currentTime = sec; onInfo(info); if (ready) send("seekTo", [sec, true]); },
+    get info() { return info; }
   };
   return c;
 }
@@ -828,20 +869,27 @@ function buildEmbed(p, mode = "feed") {
     if (HOSTED) {
       const isTT = e.kind === "tiktok";
       const src = isTT
-        ? `https://www.tiktok.com/player/v1/${encodeURIComponent(e.id)}?autoplay=0&loop=1&music_info=1&description=1&controls=1`
-        : `https://www.youtube-nocookie.com/embed/${encodeURIComponent(e.id)}?enablejsapi=1&playsinline=1&rel=0&mute=1&origin=${encodeURIComponent(location.origin)}`;
+        ? `https://www.tiktok.com/player/v1/${encodeURIComponent(e.id)}?autoplay=0&loop=1&controls=0&progress_bar=0&play_button=0&volume_control=0&fullscreen_button=0&timestamp=0&music_info=0&description=0&rel=0&native_context_menu=0&closed_caption=0`
+        : `https://www.youtube-nocookie.com/embed/${encodeURIComponent(e.id)}?enablejsapi=1&playsinline=1&rel=0&mute=1&controls=0&disablekb=1&fs=0&iv_load_policy=3&origin=${encodeURIComponent(location.origin)}`;
       const thumb = isTT ? "" : `<img class="yt-thumb" alt="" loading="lazy" src="https://i.ytimg.com/vi/${encodeURIComponent(e.id)}/mqdefault.jpg">`;
-      w.innerHTML = `<div class="yt-frame">${thumb}<iframe title="${label}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>${sndBtn()}`;
+      // 埋め込みの上に透明な板（tap-layer）を重ねて、タップはこのアプリが受け取る。YouTube の画面には触れないので別タブは開かない
+      w.innerHTML = `<div class="yt-frame">${thumb}<iframe title="${label}" tabindex="-1" allow="autoplay; encrypted-media; picture-in-picture; fullscreen"></iframe><div class="tap-layer"></div></div>${chromeHTML()}`;
+      if (isTT) w.classList.add("no-seek");
       const ifr = w.querySelector("iframe");
       // 近づいたら読み込み、遠ざかったら外す（全画面表示では最初から読み込む）
       const load = () => { if (ifr.getAttribute("src") !== src) ifr.setAttribute("src", src); w.classList.add("loaded"); };
       const unload = () => { if (ifr.getAttribute("src")) { ifr.removeAttribute("src"); try { ytByWin.delete(ifr.contentWindow); } catch {} w.classList.remove("loaded"); } };
       if (mode === "full") load(); else whenNear(w, load, unload);
-      const ctl = isTT ? ttController(ifr) : ytController(ifr, lim);
+      let upd = () => {};
+      const ctl = isTT ? ttController(ifr) : ytController(ifr, lim, () => upd());
+      if (!isTT) {
+        upd = wireBadges(w, () => ctl.info.currentTime || 0, () => ctl.info.duration || 0, lim); upd();
+        attachSeek(w, () => spanOf(ctl.info.duration || 0, lim), () => ctl.info.currentTime || 0, sec => ctl.seek(sec));
+      }
       players.set(w, {
         playing: false,
-        play() { this.playing = true; w.classList.add("is-playing"); ctl.want(true); },
-        pause() { this.playing = false; w.classList.remove("is-playing"); ctl.want(false); },
+        play() { this.playing = true; w.classList.add("is-playing"); ctl.want(true); upd(); },
+        pause() { this.playing = false; w.classList.remove("is-playing"); ctl.want(false); upd(); },
         setSound(on) { ctl.sound(on); }
       });
       return { el: w, playable: true };

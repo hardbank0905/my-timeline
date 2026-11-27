@@ -454,6 +454,70 @@ body.locked > :not(#lockScreen):not(svg){filter:blur(12px)}
   body.onehand .feed-end{padding-bottom:260px}
   body.onehand #feed{padding-top:env(safe-area-inset-top,0px)}
 }
+/* ---- K25〜K36・シークレット ---- */
+.sec-mark{width:14px;height:14px;margin-left:4px;vertical-align:-2px;opacity:.7}
+.tab-grp{flex:0 0 auto;display:flex;align-items:center;gap:4px;padding:0 6px 0 14px;height:53px;font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.04em;border-left:1px solid var(--line)}
+.tab-grp:first-child{border-left:0}
+.nav-group{display:flex;align-items:center;gap:8px;width:100%;padding:10px 12px 4px;font-size:12px;color:var(--muted);font-weight:800;letter-spacing:.06em}
+.tl-sub{display:flex;gap:6px;align-items:center;padding:0 6px 8px 40px;list-style:none}
+.tl-sub input{flex:1;min-width:0;border:1px solid var(--line);border-radius:8px;padding:4px 8px;background:var(--bg);color:var(--fg);font-size:13px}
+.sub-chip{display:inline-flex;align-items:center;gap:4px;font-size:12px;font-weight:700;padding:4px 10px;border-radius:999px;border:1px solid var(--line-strong);color:var(--muted)}
+.sub-chip .i{width:14px;height:14px}
+.sub-chip.on{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.rp.woke{color:var(--ok)}
+.lbl{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:2px;align-self:center;box-shadow:0 0 0 2px var(--bg)}
+.menu:has(.menu-row){min-width:236px}
+.menu-row.lbls{flex-wrap:nowrap}
+.menu-sub{display:flex;align-items:center;gap:8px;padding:6px 12px 2px;font-size:12px;color:var(--muted);font-weight:700}
+.menu-sub .i{width:16px;height:16px}
+.menu-row{display:flex;gap:4px;padding:4px 10px 8px;flex-wrap:wrap}
+.menu .menu-row button{width:auto;padding:5px 10px;border-radius:999px;border:1px solid var(--line);font-size:13px}
+.menu .menu-row .lbl-pick{width:24px;height:24px;padding:0;border-radius:50%;background:var(--c);border:2px solid transparent}
+.menu .menu-row .lbl-pick.on{border-color:var(--fg);box-shadow:inset 0 0 0 2px var(--bg)}
+.menu .menu-row .lbl-none{font-size:12px;padding:3px 8px}
+.ftools{display:flex;gap:6px;align-items:center;padding:8px 16px;border-bottom:1px solid var(--line);overflow-x:auto;scrollbar-width:none}
+.ftools::-webkit-scrollbar{display:none}
+.ft{flex:0 0 auto;display:inline-flex;align-items:center;gap:6px;padding:6px 12px;border-radius:999px;border:1px solid var(--line-strong);font-size:13px;font-weight:700;color:var(--fg);position:relative;cursor:pointer;background:var(--bg)}
+.ft .i{width:16px;height:16px}
+.ft.on{background:var(--accent);color:var(--accent-fg,#fff);border-color:var(--accent)}
+.ft input[type=date]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%}
+.ft-sep{flex:0 0 1px;height:20px;background:var(--line-strong);margin:0 2px}
+.ft-lbl{flex:0 0 auto;width:24px;height:24px;border-radius:50%;background:var(--c);border:2px solid transparent;opacity:.55}
+.ft-lbl.on{opacity:1;border-color:var(--fg);box-shadow:inset 0 0 0 2px var(--bg)}
+.snooze-note{display:flex;align-items:center;gap:8px;justify-content:center;flex-wrap:wrap;padding:12px 16px 24px;color:var(--muted);font-size:13px}
+.snooze-note .i{width:16px;height:16px}
+.post.flash{animation:flash 1.6s ease-out}
+@keyframes flash{0%,30%{box-shadow:inset 0 0 0 3px var(--accent)}100%{box-shadow:inset 0 0 0 0 transparent}}
+.chip.rule{background:color-mix(in srgb,var(--ok) 16%,transparent);color:var(--ok)}
+.rules{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.rule{display:flex;gap:6px;align-items:center;flex-wrap:wrap;padding:8px;border-radius:12px;background:var(--bg-hover)}
+.rule .sel{font-size:13px;padding:4px 6px;max-width:100%}
+.rule input.sel{flex:1;min-width:90px;border-radius:8px}
+.rule-arrow{color:var(--muted);font-weight:800}
+.split-pane{display:none}
+@media (min-width:1400px){
+  body.split .app{grid-template-columns:240px minmax(0,600px) minmax(0,600px)}
+  body.split .split-pane:not([hidden]){display:flex;flex-direction:column;position:sticky;top:0;height:100vh;border-right:1px solid var(--line);background:var(--bg);background-image:var(--tl-bg,none)}
+  body.split .side{position:fixed;right:0;top:0;bottom:0;width:min(380px,92vw);height:auto;background:var(--bg);z-index:70;transform:translateX(105%);transition:transform .25s;border-left:1px solid var(--line)}
+  body.split .side.open{transform:none}
+  body.split .sheet-backdrop.open{display:block;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:65}
+  body.split .side-close{display:grid!important}
+}
+.split-head{display:flex;align-items:center;gap:8px;padding:10px 16px;border-bottom:1px solid var(--line);background:var(--bg)}
+.split-head .note{font-size:12px;color:var(--muted);margin-right:auto}
+#feed2{flex:1;overflow-y:auto;overscroll-behavior:contain}
+.guide{position:fixed;inset:0;z-index:260;display:grid;place-items:center;background:rgba(0,0,0,.5);padding:16px;backdrop-filter:blur(6px);-webkit-backdrop-filter:blur(6px)}
+.guide-card{width:min(400px,100%);background:var(--bg);color:var(--fg);border-radius:24px;padding:28px 24px 20px;display:flex;flex-direction:column;align-items:center;gap:10px;text-align:center;box-shadow:0 30px 60px -20px rgba(0,0,0,.5)}
+.guide-art{width:88px;height:88px;border-radius:26px;display:grid;place-items:center;font-size:40px;font-weight:900;background:linear-gradient(135deg,var(--accent),color-mix(in srgb,var(--accent) 50%,#fff));color:#fff}
+.guide-card h2{margin:6px 0 0;font-size:20px}
+.guide-card p{margin:0;color:var(--muted);line-height:1.7;font-size:15px}
+.guide-dots{display:flex;gap:6px;margin:6px 0}
+.guide-dots i{width:8px;height:8px;border-radius:50%;background:var(--line-strong)}
+.guide-dots i.on{background:var(--accent);width:22px;border-radius:4px}
+.guide-acts{display:flex;justify-content:space-between;width:100%}
+.lock.secret .lock-logo{background:#222;color:#fff}
+:root[data-calm] *,:root[data-calm] *::before,:root[data-calm] *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
+:root[data-calm] .post.focus{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
 /* ---- 検索・タグ ---- */
 .search-bar{display:flex;align-items:center;gap:8px;margin:8px 16px 4px;padding:6px 12px;border-radius:999px;background:var(--bg-hover);border:1px solid transparent;color:var(--muted)}
 .search-bar:focus-within{border-color:var(--accent);background:var(--bg);color:var(--accent)}
@@ -724,13 +788,18 @@ body.sheet-open{overflow:hidden}
     <div id="feed"></div>
   </main>
 
+  <section class="split-pane" id="splitPane" hidden aria-label="2つ目のタイムライン">
+    <div class="split-head"><svg class="i"><use href="#i-split"/></svg><select id="splitTl" class="sel" aria-label="右に並べるタイムライン"></select><span class="note">右側は押したら再生</span><button type="button" class="mini" id="splitClose" aria-label="並べて表示をやめる"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div id="feed2"></div>
+  </section>
   <div class="sheet-backdrop" id="backdrop"></div>
   <aside class="side" id="side" aria-label="タイムライン管理">
     <div style="display:flex;justify-content:flex-end"><button class="mini side-close" id="sideClose" aria-label="閉じる"><svg class="i"><use href="#i-x"/></svg></button></div>
     <section class="card">
       <h2>タイムライン管理</h2>
       <p>名前はその場で書き換え。左のつまみをドラッグか ↑↓ で並べ替え。</p>
-      <ul class="tl-list" id="tlList"></ul>
+      <ul class="tl-list" id="tlList"></ul><datalist id="grpList"></datalist>
+      <p class="note" style="margin:0">「グループ」に同じ名前を入れたタイムラインはまとまって並ぶよ。グループ名を押すとたためるの</p>
       <form class="add-row" id="addForm">
         <input id="addName" placeholder="新しいタイムライン名" maxlength="20">
         <button class="btn-accent" id="addBtn">追加</button>
@@ -750,6 +819,11 @@ body.sheet-open{overflow:hidden}
       <label class="toggle" for="optFont">文字の大きさ
         <select id="optFont" class="sel"><option value="s">小さめ</option><option value="m">ふつう</option><option value="l">大きめ</option></select></label>
       <label class="toggle">片手モード（スマホ） <span class="switch"><input type="checkbox" id="optOneHand"><span></span></span></label>
+      <label class="toggle">動きを減らす <span class="switch"><input type="checkbox" id="optCalm"><span></span></span></label>
+      <label class="toggle" for="optStart">開いたときのタイムライン
+        <select id="optStart" class="sel"></select></label>
+      <label class="toggle" id="splitRow">2つ並べて表示（PCの広い画面） <span class="switch"><input type="checkbox" id="optSplit"><span></span></span></label>
+      <button type="button" class="btn-ghost" id="guideBtn" style="align-self:flex-start"><svg class="i" style="width:16px;height:16px;vertical-align:-3px"><use href="#i-help"/></svg> 使い方ガイド</button>
       <label class="toggle" for="optPreview">タイムラインで再生する長さ
         <select id="optPreview" class="sel"><option value="30">冒頭30秒</option><option value="60">冒頭1分</option><option value="120">冒頭2分</option><option value="300">冒頭5分</option><option value="0">最後まで</option><option value="custom">自分で決める</option></select></label>
       <div class="toggle" id="previewCustomRow" hidden><span>長さを指定</span>
@@ -772,6 +846,19 @@ body.sheet-open{overflow:hidden}
       <label class="toggle" for="optMode">明るさ
         <select id="optMode" class="sel"><option value="auto">端末に合わせる</option><option value="light">通常モード</option><option value="dark">ナイトモード</option><option value="time">時間で切り替え</option></select></label>
       <div class="toggle" id="nightRow"><span>ナイトモードの時間</span><span style="display:flex;align-items:center;gap:4px"><select id="optNightFrom" class="sel" aria-label="始まり"></select>〜<select id="optNightTo" class="sel" aria-label="終わり"></select></span></div>
+    </section>
+    <section class="card">
+      <h2>自動振り分け</h2>
+      <p style="margin:0">URLの種類やことばで、送り先のタイムラインを自動で選ぶよ。上のルールから順に見るの</p>
+      <ul class="rules" id="ruleList"></ul>
+      <button type="button" class="btn-ghost" id="ruleAdd" style="align-self:flex-start">＋ ルールを追加</button>
+    </section>
+    <section class="card" id="secretCard">
+      <h2>シークレット</h2>
+      <p style="margin:0" id="secretLead"></p>
+      <div style="display:flex;gap:6px;flex-wrap:wrap" id="secretBtns"></div>
+      <label class="toggle" id="stealthRow">設定にこの欄を出さない <span class="switch"><input type="checkbox" id="optStealth"><span></span></span></label>
+      <p class="note" style="margin:0">隠したタイムラインは、タブ・検索・今日の1本・ゴミ箱のどこにも出ないよ。ブラウザの中に保存しているから、詳しい人が調べれば見える「目隠し」だよ。書き出したデータには入るから気をつけてね</p>
     </section>
     <section class="card">
       <h2>貼れるURL</h2>
@@ -887,6 +974,15 @@ body.sheet-open{overflow:hidden}
   <button type="button" class="btn-accent" id="bulkDone">やめる</button>
 </div>
 <div class="offline-bar" id="offlineBar" hidden role="status">オフラインだよ。YouTube や X の埋め込みは、つながったら表示するね</div>
+<div class="guide" id="guide" hidden role="dialog" aria-modal="true" aria-labelledby="gTitle">
+  <div class="guide-card">
+    <div class="guide-art" id="gArt" aria-hidden="true"></div>
+    <h2 id="gTitle"></h2>
+    <p id="gText"></p>
+    <div class="guide-dots" id="gDots"></div>
+    <div class="guide-acts"><button type="button" class="btn-ghost" id="gSkip">とばす</button><button type="button" class="btn-accent" id="gNext">次へ</button></div>
+  </div>
+</div>
 <div class="lock" id="lockScreen" hidden role="dialog" aria-modal="true" aria-labelledby="lockTitle">
   <div class="lock-card">
     <div class="lock-logo" aria-hidden="true">TL</div>
@@ -947,6 +1043,15 @@ body.sheet-open{overflow:hidden}
   <symbol id="i-copy" viewBox="0 0 24 24"><rect x="8" y="8" width="12" height="12" rx="2.5"/><path d="M16 8V6a2 2 0 0 0-2-2H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h2"/></symbol>
   <symbol id="i-select" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M8.5 12l2.5 2.5 4.5-5"/></symbol>
   <symbol id="i-dice" viewBox="0 0 24 24"><rect x="4" y="4" width="16" height="16" rx="4"/><path d="M9 9h0M15 15h0M15 9h0M9 15h0M12 12h0" stroke-width="3"/></symbol>
+  <symbol id="i-playall" viewBox="0 0 24 24"><path d="M4 6h10M4 11h10M4 16h6"/><path d="M16 13l5 3-5 3z"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8 8 0 1 1 9.5 4a6.5 6.5 0 0 0 10.5 10.5z"/></symbol>
+  <symbol id="i-cal" viewBox="0 0 24 24"><rect x="3.5" y="5" width="17" height="15.5" rx="3"/><path d="M3.5 10h17M8 3v4M16 3v4"/></symbol>
+  <symbol id="i-snooze" viewBox="0 0 24 24"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M5 4 3 6M19 4l2 2"/></symbol>
+  <symbol id="i-label" viewBox="0 0 24 24"><path d="M3.5 12.5V5a1.5 1.5 0 0 1 1.5-1.5h7.5l8 8-9 9z"/><circle cx="8" cy="8" r="1.5"/></symbol>
+  <symbol id="i-photo" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></symbol>
+  <symbol id="i-hide" viewBox="0 0 24 24"><path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c5 0 9 4.5 10 7-.4 1-1.3 2.4-2.6 3.7M6.6 6.6C4.6 7.9 3.1 9.8 2 12c1 2.5 5 7 10 7 1.9 0 3.6-.6 5-1.5M9.9 9.9a3 3 0 0 0 4.2 4.2"/></symbol>
+  <symbol id="i-split" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M12 4v16"/></symbol>
+  <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5V14M12 17h0" stroke-width="2.2"/></symbol>
   <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
   <symbol id="i-comment" viewBox="0 0 24 24"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 4v-4h0A2.5 2.5 0 0 1 4 13.5z"/></symbol>
@@ -1071,7 +1176,7 @@ if (!S || !Array.isArray(S.timelines) || !S.timelines.length) S = seed();
 S.opts ||= { center: false, auto: true };
 S.me ||= { id: "me", name: "私", color: "#1d9bf0" }; S.me.id = "me";
 S.presets ||= [];
-S.opts.sound ??= true; S.opts.preview ??= 120; S.opts.auto ??= true; S.opts.wifiOnly ??= true; S.opts.strictNet ??= false; S.opts.lazy ??= true; S.opts.fullEnd ??= "loop"; S.opts.slideAuto ??= true; S.opts.slideSec ??= 10; S.opts.volume ??= 100; S.opts.fontSize ??= "m"; S.opts.oneHand ??= false; S.trash ||= []; S.opts.modeTime ??= false; S.opts.nightFrom ??= 19; S.opts.nightTo ??= 6; S.lastExportAt ??= Date.now(); S.opts.tlMotion ??= "spring"; S.opts.vibe ??= true; S.opts.resume ??= true; S.pos ||= {};
+S.opts.sound ??= true; S.opts.preview ??= 120; S.opts.auto ??= true; S.opts.wifiOnly ??= true; S.opts.strictNet ??= false; S.opts.lazy ??= true; S.opts.fullEnd ??= "loop"; S.opts.slideAuto ??= true; S.opts.slideSec ??= 10; S.rules ||= []; S.opts.collapsed ||= {}; S.opts.calm ??= false; S.opts.startTl ??= ""; S.opts.split ??= false; S.opts.splitTl ??= ""; S.opts.secretStealth ??= false; S.opts.volume ??= 100; S.opts.fontSize ??= "m"; S.opts.oneHand ??= false; S.trash ||= []; S.opts.modeTime ??= false; S.opts.nightFrom ??= 19; S.opts.nightTo ??= 6; S.lastExportAt ??= Date.now(); S.opts.tlMotion ??= "spring"; S.opts.vibe ??= true; S.opts.resume ??= true; S.pos ||= {};
 const fileUrls = new Map(); // 手元から追加したファイル（IndexedDB から復元）
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch { try { toast("保存しきれなかったよ。アイコンの画像を外すか、小さい画像にしてね"); } catch {} return false; } }
 /* 手元ファイルの保存先: IndexedDB（ブラウザ内） */
@@ -1092,9 +1197,20 @@ const fileKeys = p => p.media.kind === "file-gallery" ? Array.from({ length: p.m
 const hasFiles = p => fileUrls.has(fileKeys(p)[0]);
 const forgetFiles = posts => posts.filter(isFilePost).forEach(p => fileKeys(p).forEach(k => { idb.del(k); const u = fileUrls.get(k); if (u) URL.revokeObjectURL(u); fileUrls.delete(k); }));
 const tlById = id => S.timelines.find(t => t.id === id);
+/* シークレット: 印を付けたタイムラインは、番号を入れて開いたときだけ見える */
+let secretOn = false; try { secretOn = sessionStorage.getItem("mytl-secret") === "1"; } catch {}
+const isHiddenTl = t => !!(t && t.secret && !secretOn);
+const visPost = p => !isHiddenTl(tlById(p.tl));
+/* グループ: グループなし → グループ（最初に出てきた順）の順に並べる */
+function orderedTLs() {
+  const vis = S.timelines.filter(t => !isHiddenTl(t)); const groups = [];
+  vis.forEach(t => { const g = (t.group || "").trim(); if (g && !groups.includes(g)) groups.push(g); });
+  return [...vis.filter(t => !(t.group || "").trim()), ...groups.flatMap(g => vis.filter(t => (t.group || "").trim() === g))];
+}
+function ensureVisibleActive() { if (!tlById(S.active) || isHiddenTl(tlById(S.active))) S.active = orderedTLs()[0].id; }
 /* 表示順は sortAt（再投稿・並べ替えで変わる）→ なければ投稿日時 */
 const keyOf = p => p.sortAt ?? p.at;
-const postsOf = id => S.posts.filter(p => p.tl === id).sort((a, b) => (!!b.pinned - !!a.pinned) || keyOf(b) - keyOf(a));
+const postsOf = id => S.posts.filter(p => p.tl === id && !(p.snoozeUntil > Date.now())).sort((a, b) => (!!b.pinned - !!a.pinned) || keyOf(b) - keyOf(a));
 const hasViewable = p => !!(p.media || (p.embed && (["youtube", "tiktok"].includes(p.embed.kind) || (HOSTED && ["image-url", "video-url"].includes(p.embed.kind)))));
 const ago = at => { const s = (Date.now() - at) / 1000; if (s < 60) return "今"; if (s < 3600) return `${Math.floor(s / 60)}分`; if (s < 86400) return `${Math.floor(s / 3600)}時間`; return new Date(at).toLocaleDateString("ja-JP", { month: "short", day: "numeric" }); };
 
@@ -1117,7 +1233,7 @@ function createAutoplay(root) {
   (root || window).addEventListener("scroll", schedule, { passive: true });
   return { observe: el => io.observe(el), reset() { if (current) players.get(current)?.pause(); current = null; candidates.clear(); io.disconnect(); }, refresh: schedule, stop() { this.reset(); } };
 }
-let lastTs = performance.now();
+let lastTs = performance.now(), sleeping = false;
 function loop(ts) { const dt = Math.min(.1, (ts - lastTs) / 1000); lastTs = ts; players.forEach(p => p.playing && p.tick?.(dt)); requestAnimationFrame(loop); }
 requestAnimationFrame(loop);
 
@@ -1336,7 +1452,7 @@ function netInfo() {
   return { known: false, wifi: false, saveData, label: "わからない" };
 }
 function canAutoplay() {
-  if (!S.opts.auto) return false;
+  if (!S.opts.auto || sleeping) return false;
   if (!S.opts.wifiOnly) return true;
   const n = netInfo();
   if (n.saveData) return false;           // データセーバーがオンなら止める
@@ -1516,7 +1632,7 @@ function pressHeart(p) {
 /* 軽い振動（対応している端末だけ。iPhone のブラウザは非対応） */
 function buzz(ms) { if (S.opts.vibe && navigator.vibrate) try { navigator.vibrate(ms); } catch {} }
 /* ハートを押したとき、小さなハートがボタンのまわりに控えめに散る */
-const reduceMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
+const reduceMotion = () => !!S.opts.calm || matchMedia("(prefers-reduced-motion: reduce)").matches;
 function heartBurst(r, reach = 18) {
   if (reduceMotion()) return;
   const cx = r.left + Math.min(r.width, 40) / 2, cy = r.top + r.height / 2;
@@ -1550,9 +1666,17 @@ const feedAP = createAutoplay(null);
 let ttAP = null;
 
 function renderTabs() {
-  $("#tabs").innerHTML = S.timelines.map(t => `<button class="tab ${t.id === S.active ? "on" : ""}" role="tab" aria-selected="${t.id === S.active}" data-tl="${t.id}">${esc(t.name)}</button>`).join("") + `<button class="tab tab-add" id="tabAdd" aria-label="タイムラインを追加">＋</button>`;
-  $("#navList").innerHTML = S.timelines.map(t => `<button class="nav-item ${t.id === S.active ? "on" : ""}" data-tl="${t.id}" title="${esc(t.name)}">${tlAvatar(t, "mini-av")}<span class="label">${esc(t.name)}</span><span class="count">${S.posts.filter(p => p.tl === t.id).length}</span></button>`).join("");
-  $("#compTl").innerHTML = S.timelines.map(t => `<option value="${t.id}" ${t.id === S.active ? "selected" : ""}>送り先: ${esc(t.name)}</option>`).join("");
+  ensureVisibleActive();
+  const TL = orderedTLs(); let lastG = "";
+  const lockMark = t => t.secret ? `<svg class="i sec-mark" aria-label="シークレット"><use href="#i-hide"/></svg>` : "";
+  const grpHead = (t, kind) => { const g = (t.group || "").trim(); if (g === lastG) return ""; lastG = g; if (!g) return "";
+    const c = !!S.opts.collapsed[g]; return kind === "tab" ? `<button class="tab-grp ${c ? "closed" : ""}" data-grp="${esc(g)}" aria-expanded="${!c}">${esc(g)}<span aria-hidden="true">${c ? "▸" : "▾"}</span></button>`
+      : `<button class="nav-group ${c ? "closed" : ""}" data-grp="${esc(g)}" aria-expanded="${!c}"><span aria-hidden="true">${c ? "▸" : "▾"}</span><span class="label">${esc(g)}</span></button>`; };
+  const folded = t => { const g = (t.group || "").trim(); return g && S.opts.collapsed[g] && t.id !== S.active; };
+  $("#tabs").innerHTML = TL.map(t => grpHead(t, "tab") + (folded(t) ? "" : `<button class="tab ${t.id === S.active ? "on" : ""}" role="tab" aria-selected="${t.id === S.active}" data-tl="${t.id}">${esc(t.name)}${lockMark(t)}</button>`)).join("") + `<button class="tab tab-add" id="tabAdd" aria-label="タイムラインを追加">＋</button>`;
+  lastG = "";
+  $("#navList").innerHTML = TL.map(t => grpHead(t, "nav") + (folded(t) ? "" : `<button class="nav-item ${t.id === S.active ? "on" : ""}" data-tl="${t.id}" title="${esc(t.name)}">${tlAvatar(t, "mini-av")}<span class="label">${esc(t.name)}${lockMark(t)}</span><span class="count">${postsOf(t.id).length}</span></button>`)).join("");
+  $("#compTl").innerHTML = TL.map(t => `<option value="${t.id}" ${t.id === S.active ? "selected" : ""}>送り先: ${esc(t.name)}</option>`).join("");
   paintMe(); applyTlTheme(); renderStats();
 }
 
@@ -1619,14 +1743,14 @@ function shrinkImage(file, max, q, square) {
   });
 }
 
-function postCard(p) {
+function postCard(p, ap = feedAP) {
   const t = tlById(p.tl) || S.timelines[0];
   const art = document.createElement("article"); art.className = "post"; art.dataset.id = p.id;
   art.innerHTML = `${tlAvatar(t, "", true)}
     <div class="post-body">
       ${p.pinned ? `<div class="rp pin"><svg class="i"><use href="#i-pin"/></svg>固定されたツイート</div>` : ""}
-      ${p.reposted && !p.pinned ? `<div class="rp"><svg class="i"><use href="#i-repost"/></svg>再投稿 · ${ago(p.sortAt)}</div>` : ""}
-      <div class="post-meta"><b>${esc(t.name)}</b><span>@me</span><span>·</span><span>${ago(p.at)}</span>${p.editedAt ? `<span class="edited" title="${new Date(p.editedAt).toLocaleString("ja-JP")} に編集">· 編集済み</span>` : ""}${seenChip(p)}</div>
+      ${p.woke && !p.pinned && Date.now() - p.sortAt < 3 * 864e5 ? `<div class="rp woke"><svg class="i"><use href="#i-snooze"/></svg>スヌーズから戻ってきたよ</div>` : p.reposted && !p.pinned ? `<div class="rp"><svg class="i"><use href="#i-repost"/></svg>再投稿 · ${ago(p.sortAt)}</div>` : ""}
+      <div class="post-meta">${p.label ? `<i class="lbl" style="background:${LABEL_C[p.label]}" title="${LABEL_N[p.label]}ラベル"></i>` : ""}<b>${esc(t.name)}</b><span>@me</span><span>·</span><span>${ago(p.at)}</span>${p.editedAt ? `<span class="edited" title="${new Date(p.editedAt).toLocaleString("ja-JP")} に編集">· 編集済み</span>` : ""}${seenChip(p)}</div>
       ${p.text ? `<div class="post-text">${textWithTags(p.text)}</div>` : ""}
       <div class="slot"></div>
       <div class="cm-peek" data-act="comment">${cmPeek(p)}</div>
@@ -1635,14 +1759,14 @@ function postCard(p) {
         ${heartBtn(p)}
         <button class="act rt" data-act="top" title="再投稿して一番上へ" aria-label="再投稿して一番上へ"><svg class="i"><use href="#i-repost"/></svg></button>
         <span class="order-wrap"><button class="act" data-act="order" title="表示順を変える" aria-label="表示順を変える" aria-haspopup="true"><svg class="i"><use href="#i-sort"/></svg></button></span>
-        <label class="act" title="別のタイムラインへ移動"><svg class="i"><use href="#i-move"/></svg><select data-act="move" aria-label="移動先">${S.timelines.map(x => `<option value="${x.id}" ${x.id === p.tl ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></label>
+        <label class="act" title="別のタイムラインへ移動"><svg class="i"><use href="#i-move"/></svg><select data-act="move" aria-label="移動先">${orderedTLs().map(x => `<option value="${x.id}" ${x.id === p.tl ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></label>
         ${(p.embed && p.embed.url) ? `<a class="act" href="${esc(p.embed.url)}" target="_blank" rel="noopener" aria-label="元のページ"><svg class="i"><use href="#i-link"/></svg></a>` : `<span class="act" aria-hidden="true"></span>`}
         <button class="act del" data-act="del" aria-label="削除"><svg class="i"><use href="#i-trash"/></svg></button>
       </div>
     </div>`;
   const built = p.media ? buildMedia(p) : p.embed ? buildEmbed(p) : null;
   if (built) {
-    art.querySelector(".slot").append(built.el); if (built.playable) { feedAP.observe(built.playEl || built.el); const pl = players.get(built.playEl || built.el); if (pl) pl.pid = p.id; }
+    art.querySelector(".slot").append(built.el); if (built.playable) { ap.observe(built.playEl || built.el); const pl = players.get(built.playEl || built.el); if (pl) pl.pid = p.id; }
     const box = built.playEl || built.el;
     if (hasViewable(p) && box.classList.contains("media")) box.insertAdjacentHTML("beforeend", `<button class="fs-btn" data-act="full" aria-label="全画面で見る" title="全画面で見る"><svg class="i"><use href="#i-expand"/></svg></button>`);
   }
@@ -1667,21 +1791,27 @@ function renderFeed() {
   feedAP.reset(); players.clear();
   const feed = $("#feed"); feed.innerHTML = "";
   document.body.classList.toggle("searching", !!query);
-  const list = query ? S.posts.filter(p => matchPost(p, query)).sort((a, b) => keyOf(b) - keyOf(a)) : postsOf(S.active);
+  const all = query ? S.posts.filter(p => visPost(p) && matchPost(p, query)).sort((a, b) => keyOf(b) - keyOf(a)) : postsOf(S.active);
+  const list = labelFilter ? all.filter(p => p.label === labelFilter) : all;
+  if (!query && all.length) feed.insertAdjacentHTML("beforeend", feedTools(all));
   if (query) feed.insertAdjacentHTML("beforeend", `<div class="search-head"><span>「${esc(query)}」の結果 <b>${list.length}</b> 件（すべてのタイムラインから）</span><button type="button" class="btn-ghost sm" id="searchClear">検索をやめる</button></div>`);
   if (query && !list.length) { feed.insertAdjacentHTML("beforeend", `<div class="empty"><h3>見つからなかったよ</h3><p>ことばを短くするか、#タグで探してみてね。</p></div>`); feedAP.refresh(); return; }
   if (!list.length) {
-    feed.innerHTML = `<div class="empty"><h3>まだ何もないよ</h3><p>上の欄に YouTube や X、記事の URL を貼ってツイートするか、画像・動画を追加してね。</p></div>`;
+    if (labelFilter) feed.insertAdjacentHTML("beforeend", `<div class="empty"><h3>このラベルのツイートはないよ</h3></div>`); else feed.innerHTML = `<div class="empty"><h3>まだ何もないよ</h3><p>上の欄に YouTube や X、記事の URL を貼ってツイートするか、画像・動画を追加してね。</p></div>`;
   } else {
     list.forEach(p => feed.append(postCard(p)));
     const end = document.createElement("div"); end.className = "feed-end"; end.textContent = query ? `検索の結果は以上 ${list.length} 件` : `「${tlById(S.active).name}」のツイートは以上 ${list.length} 件`; feed.append(end);
   }
+  if (!query) { const sn = S.posts.filter(p => p.tl === S.active && p.snoozeUntil > Date.now()); if (sn.length) feed.insertAdjacentHTML("beforeend", `<div class="snooze-note"><svg class="i"><use href="#i-snooze"/></svg>スヌーズ中 ${sn.length} 件（次は ${new Date(Math.min(...sn.map(p => p.snoozeUntil))).toLocaleDateString("ja-JP", { month: "numeric", day: "numeric", weekday: "short" })}）<button type="button" class="btn-ghost sm" id="snoozeNow">今すぐ戻す</button></div>`); }
+  renderSplit();
   feedAP.refresh(); if (document.body.classList.contains("picking")) paintPicked();
 }
 
 function renderManage() {
   const ul = $("#tlList");
-  ul.innerHTML = S.timelines.map((t, i) => `
+  const groups = [...new Set(S.timelines.map(t => (t.group || "").trim()).filter(Boolean))];
+  $("#grpList").innerHTML = groups.map(g => `<option value="${esc(g)}">`).join("");
+  ul.innerHTML = S.timelines.map((t, i) => isHiddenTl(t) ? "" : `
     <li class="tl-row" draggable="true" data-tl="${t.id}">
       <span class="grip" title="ドラッグで並べ替え"><svg class="i"><use href="#i-grip"/></svg></span>
       <input type="color" value="${t.color}" data-act="color" aria-label="色" id="c-${t.id}">
@@ -1690,6 +1820,10 @@ function renderManage() {
       <button class="mini" data-act="down" ${i === S.timelines.length - 1 ? "disabled" : ""} aria-label="下へ"><svg class="i"><use href="#i-down"/></svg></button>
       <button class="mini" data-act="design" aria-label="「${esc(t.name)}」のアイコンと背景を変える" title="アイコン・縁・背景"><svg class="i"><use href="#i-brush"/></svg></button>
       <button class="mini danger" data-act="askdel" ${S.timelines.length <= 1 ? "disabled" : ""} aria-label="削除"><svg class="i"><use href="#i-trash"/></svg></button>
+    </li>
+    <li class="tl-sub" data-sub="${t.id}">
+      <input type="text" list="grpList" value="${esc(t.group || "")}" maxlength="12" data-act="group" placeholder="グループ" aria-label="「${esc(t.name)}」のグループ">
+      ${S.secretPin && secretOn ? `<button class="sub-chip ${t.secret ? "on" : ""}" data-act="secret" aria-pressed="${!!t.secret}"><svg class="i"><use href="#i-hide"/></svg>シークレット</button>` : ""}
     </li>
     <li class="confirm" data-confirm="${t.id}" hidden>ツイート ${S.posts.filter(p => p.tl === t.id).length} 件ごと消す？
       <button class="yes" data-act="del" data-tl="${t.id}">削除</button><button class="no" data-act="nodel" data-tl="${t.id}">やめる</button></li>`).join("");
@@ -1718,7 +1852,7 @@ function tlMotion(dir) {
 }
 function setActive(id, dir = 0) {
   if (query) { query = ""; $("#searchBox").value = ""; $("#searchX").hidden = true; }
-  rememberPos(); S.active = id; renderTabs(); renderFeed(); save(); restorePos();
+  rememberPos(); S.active = id; labelFilter = ""; renderTabs(); renderFeed(); save(); restorePos();
   document.querySelector(".tab.on")?.scrollIntoView({ inline: "center", block: "nearest" });
   tlMotion(dir); updateFocus();
 }
@@ -1738,9 +1872,9 @@ function updateFocus() {
 })();
 /* 左右スワイプでタイムラインを切り替え（Xのタブと同じ）。左へ = 次、右へ = 前 */
 function stepTimeline(d) {
-  const i = S.timelines.findIndex(t => t.id === S.active), j = i + d;
-  if (j < 0 || j >= S.timelines.length) return false;
-  setActive(S.timelines[j].id, d); return true;
+  const TL = orderedTLs(); const i = TL.findIndex(t => t.id === S.active), j = i + d;
+  if (j < 0 || j >= TL.length) return false;
+  setActive(TL[j].id, d); return true;
 }
 (() => {
   let sx = 0, sy = 0, t0 = 0, ok = false;
@@ -1763,6 +1897,7 @@ function stepTimeline(d) {
   }, { passive: true });
 })();
 document.addEventListener("click", e => {
+  const g = e.target.closest("[data-grp]"); if (g) { const k = g.dataset.grp; S.opts.collapsed[k] = !S.opts.collapsed[k]; save(); renderTabs(); return; }
   const tab = e.target.closest("[data-tl].tab, .nav-item[data-tl]"); if (tab) return setActive(tab.dataset.tl);
 });
 $("#tabs").addEventListener("click", e => { if (e.target.closest("#tabAdd")) { openSide(); setTimeout(() => $("#addName").focus(), 260); } });
@@ -1773,7 +1908,11 @@ function updateDetect() {
   const v = compText.value.trim(); const url = findUrl(v); const r = url && parseUrl(url);
   $("#detect").innerHTML = r ? `<span class="chip">${KIND_LABEL[r.kind]}</span> として表示されます` : pendingFiles.length > 1 ? `<span class="chip">画像 ${pendingFiles.length} 枚</span> 1つのツイートにまとめるよ` : (pendingFile ? `<span class="chip">${pendingFile.type.startsWith("video") ? "動画ファイル" : "画像ファイル"}</span> ${esc(pendingFile.name)}` : "");
   $("#compPost").disabled = !v && !pendingFile;
+  const rt = !compTlTouched && r && ruleFor(r, v);
+  if (rt) { $("#compTl").value = rt.id; $("#detect").insertAdjacentHTML("beforeend", ` <span class="chip rule">自動で「${esc(rt.name)}」へ</span>`); }
 }
+let compTlTouched = false;
+$("#compTl").addEventListener("change", () => { compTlTouched = true; });
 let pendingFile = null, pendingFiles = [];
 compText.addEventListener("input", () => { compText.style.height = "auto"; compText.style.height = compText.scrollHeight + "px"; updateDetect(); saveDraft(); });
 /* K14 下書き: 書きかけの文を覚えておく */
@@ -1800,12 +1939,12 @@ $("#composer").addEventListener("submit", e => {
     p.id = id; p.media = { kind: pendingFile.type.startsWith("video") ? "file-video" : "file-image", title: pendingFile.name };
   } else if (url) p.embed = parseUrl(url);
   if (!p.text && !p.media && !p.embed) return;
-  addPost(p); closeCompose(); compText.value = ""; saveDraft(); $("#draftNote").hidden = true; compText.style.height = ""; pendingFile = null; pendingFiles = []; $("#compFile").value = ""; updateDetect();
+  addPost(p); closeCompose(); compText.value = ""; compTlTouched = false; saveDraft(); $("#draftNote").hidden = true; compText.style.height = ""; pendingFile = null; pendingFiles = []; $("#compFile").value = ""; updateDetect();
 });
 function addPost(p) {
   const tl = $("#compTl").value || S.active;
   S.posts.push({ id: p.id || uid(), tl, at: Date.now(), likes: 0, liked: false, ...p, tl });
-  if (tl !== S.active) { S.active = tl; toast(`「${tlById(tl).name}」にツイートしました`); } else toast("ツイートしました");
+  if (tl !== S.active && !isHiddenTl(tlById(tl))) { S.active = tl; toast(`「${tlById(tl).name}」にツイートしました`); } else toast("ツイートしました");
   renderAll(); window.scrollTo({ top: 0, behavior: "smooth" });
 }
 /* 表示順の変更（本番では order 列を持たせる想定） */
@@ -1819,9 +1958,10 @@ function reorder(p, how) {
 }
 function closeMenus() { document.querySelectorAll(".menu").forEach(m => m.remove()); }
 document.addEventListener("click", e => { if (!e.target.closest(".order-wrap")) closeMenus(); });
-$("#feed").addEventListener("click", e => {
+function feedClick(e) {
+  if (e.target.closest(".ftools")) return;
   if (e.target.matches(".media img")) { openViewer(e.target.closest(".post").dataset.id); return; }
-  const btn = e.target.closest("[data-act]"); if (!btn) return; const id = btn.closest(".post").dataset.id; const p = S.posts.find(x => x.id === id);
+  const btn = e.target.closest("[data-act]"); if (!btn || !btn.closest(".post")) return; const id = btn.closest(".post").dataset.id; const p = S.posts.find(x => x.id === id);
   const act = btn.dataset.act;
   if (act === "full") { openViewer(id); return; }
   if (act === "order") {
@@ -1836,7 +1976,13 @@ $("#feed").addEventListener("click", e => {
       <button data-act="pin" role="menuitem"><svg class="i"><use href="#i-pin"/></svg>${p.pinned ? "固定を外す" : "一番上に固定"}</button>
       <button data-act="edit" role="menuitem"><svg class="i"><use href="#i-edit"/></svg>文を編集</button>
       ${p.embed && p.embed.url ? `<button data-act="copy" role="menuitem"><svg class="i"><use href="#i-copy"/></svg>リンクをコピー</button>` : ""}
-      <button data-act="pick" role="menuitem"><svg class="i"><use href="#i-select"/></svg>まとめて選ぶ</button></div>`);
+      <button data-act="pick" role="menuitem"><svg class="i"><use href="#i-select"/></svg>まとめて選ぶ</button>
+      <button data-act="shot" role="menuitem"><svg class="i"><use href="#i-photo"/></svg>画像で保存</button>
+      <hr>
+      <div class="menu-sub"><svg class="i"><use href="#i-snooze"/></svg>あとでまた見る</div>
+      <div class="menu-row">${[[1, "明日"], [3, "3日後"], [7, "1週間後"]].map(([d, l]) => `<button data-act="snooze" data-d="${d}">${l}</button>`).join("")}</div>
+      <div class="menu-sub"><svg class="i"><use href="#i-label"/></svg>色ラベル</div>
+      <div class="menu-row lbls">${Object.keys(LABEL_C).map(c => `<button data-act="label" data-c="${c}" class="lbl-pick ${p.label === c ? "on" : ""}" style="--c:${LABEL_C[c]}" aria-label="${LABEL_N[c]}"></button>`).join("")}<button data-act="label" data-c="" class="lbl-none" aria-label="ラベルを外す">なし</button></div></div>`);
     return;
   }
   if (["top", "up", "down", "bottom"].includes(act)) {
@@ -1852,37 +1998,47 @@ $("#feed").addEventListener("click", e => {
   if (act === "edit-cancel") { renderFeedKeepScroll(); return; }
   if (act === "copy") { closeMenus(); copyText(p.embed.url); return; }
   if (act === "pick") { closeMenus(); startPick(p.id); return; }
+  if (act === "shot") { closeMenus(); saveShot(p); return; }
+  if (act === "snooze") { closeMenus(); const d = +btn.dataset.d; p.snoozeUntil = Date.now() + d * 864e5; save(); renderFeedKeepScroll(); renderTabs();
+    toast(`${d === 1 ? "明日" : d === 3 ? "3日後" : "1週間後"}にまた一番上に出すね`, () => { delete p.snoozeUntil; save(); renderFeedKeepScroll(); renderTabs(); }); return; }
+  if (act === "label") { closeMenus(); const old = p.label; p.label = btn.dataset.c || undefined; if (!p.label) delete p.label; save(); renderFeedKeepScroll(); toast(p.label ? `${LABEL_N[p.label]}のラベルを付けたよ` : "ラベルを外したよ", () => { p.label = old; if (!old) delete p.label; save(); renderFeedKeepScroll(); }); return; }
   if (act === "comment") { openComments(p.id); return; }
   if (act === "like") { const r = btn.getBoundingClientRect(), res = pressHeart(p); btn.outerHTML = heartBtn(p); if (res === true) heartBurst(r, 18); }
   if (btn.dataset.act === "del") { trashPosts([p]); }
   save();
-});
-$("#feed").addEventListener("change", e => {
+}
+function feedChange(e) {
   if (e.target.dataset.act !== "move") return; const id = e.target.closest(".post").dataset.id; const p = S.posts.find(x => x.id === id);
   const from = p.tl; p.tl = e.target.value; renderTabs(); renderFeedKeepScroll(); save();
   toast(`「${tlById(p.tl).name}」へ移動したよ`, () => { p.tl = from; save(); renderTabs(); renderFeedKeepScroll(); });
-});
+}
+$("#feed").addEventListener("click", feedClick); $("#feed").addEventListener("change", feedChange);
 function renderFeedKeepScroll() { const y = scrollY; renderFeed(); scrollTo(0, y); }
 
 /* タイムライン管理 */
 const ul = $("#tlList");
 ul.addEventListener("input", e => {
+  if (e.target.dataset.act === "group") { const t = tlById(e.target.closest(".tl-sub").dataset.sub); t.group = e.target.value.trim(); if (!t.group) delete t.group; renderTabs(); save(); return; }
   const row = e.target.closest(".tl-row"); if (!row) return; const t = tlById(row.dataset.tl);
   if (e.target.dataset.act === "rename") { t.name = e.target.value || "名前なし"; renderTabs(); save(); }
   if (e.target.dataset.act === "color") { t.color = e.target.value; renderTabs(); save(); }
 });
-ul.addEventListener("change", e => { if (e.target.dataset.act) renderFeedKeepScroll(); });
+ul.addEventListener("change", e => { if (e.target.dataset.act === "group") { renderManage(); return; } if (e.target.dataset.act) renderFeedKeepScroll(); });
 ul.addEventListener("click", e => {
   const b = e.target.closest("button[data-act]"); if (!b) return;
-  const id = b.dataset.tl || b.closest(".tl-row")?.dataset.tl; const i = S.timelines.findIndex(t => t.id === id);
+  const id = b.dataset.tl || b.closest(".tl-row")?.dataset.tl || b.closest(".tl-sub")?.dataset.sub; const i = S.timelines.findIndex(t => t.id === id);
   const a = b.dataset.act;
+  if (a === "secret") { const t = S.timelines[i];
+    if (!t.secret && S.timelines.filter(x => !x.secret).length <= 1) return toast("ふつうのタイムラインを1つは残してね");
+    t.secret = !t.secret; if (!t.secret) delete t.secret; save(); renderManage(); renderTabs(); renderSecretUI();
+    toast(t.secret ? `「${t.name}」をシークレットにしたよ。隠すとどこにも出なくなるよ` : `「${t.name}」をふつうのタイムラインに戻したよ`); return; }
   if (a === "design") { openLook(id); return; }
   if (a === "up" || a === "down") { const j = a === "up" ? i - 1 : i + 1; [S.timelines[i], S.timelines[j]] = [S.timelines[j], S.timelines[i]]; renderTabs(); renderManage(); save(); }
   if (a === "askdel") ul.querySelector(`[data-confirm="${id}"]`).hidden = false;
   if (a === "nodel") ul.querySelector(`[data-confirm="${id}"]`).hidden = true;
   if (a === "del") {
     const name = S.timelines[i].name; S.timelines.splice(i, 1); forgetFiles(S.posts.filter(p => p.tl === id)); S.posts = S.posts.filter(p => p.tl !== id);
-    if (S.active === id) S.active = S.timelines[0].id; toast(`「${name}」を削除しました`); renderAll();
+    if (S.active === id) S.active = orderedTLs()[0].id; toast(`「${name}」を削除しました`); renderAll();
   }
 });
 /* ドラッグで並べ替え */
@@ -1920,12 +2076,15 @@ function applyOpts() {
   $("#optFont").value = S.opts.fontSize; document.documentElement.dataset.fs = S.opts.fontSize;
   $("#optOneHand").checked = !!S.opts.oneHand; document.body.classList.toggle("onehand", !!S.opts.oneHand);
   renderLockUI(); renderStore();
+  $("#optCalm").checked = !!S.opts.calm; document.documentElement.toggleAttribute("data-calm", !!S.opts.calm);
+  $("#optSplit").checked = !!S.opts.split; document.body.classList.toggle("split", !!S.opts.split);
+  renderStartSel(); renderRules(); renderSecretUI();
 }
 $("#optCenter").addEventListener("change", e => { S.opts.center = e.target.checked; applyOpts(); save(); });
 $("#navCenter").addEventListener("click", () => { S.opts.center = !S.opts.center; applyOpts(); save(); toast(S.opts.center ? "中央ラインを表示" : "中央ラインを非表示"); });
 $("#optAuto").addEventListener("change", e => { S.opts.auto = e.target.checked; save(); applyOpts(); feedAP.refresh(); toast(S.opts.auto ? "自動再生オン" : "自動再生オフ"); });
 $("#optWifi").addEventListener("change", e => { S.opts.wifiOnly = e.target.checked; save(); applyOpts(); feedAP.refresh(); toast(S.opts.wifiOnly ? "Wi-Fiのときだけ自動再生" : "回線に関係なく自動再生"); });
-$("#optMotion").addEventListener("change", e => { S.opts.tlMotion = e.target.value; save(); toast(`切り替えは「${e.target.selectedOptions[0].textContent}」`); stepTimeline(S.timelines.findIndex(t => t.id === S.active) < S.timelines.length - 1 ? 1 : -1); });
+$("#optMotion").addEventListener("change", e => { S.opts.tlMotion = e.target.value; save(); toast(`切り替えは「${e.target.selectedOptions[0].textContent}」`); stepTimeline(orderedTLs().findIndex(t => t.id === S.active) < orderedTLs().length - 1 ? 1 : -1); });
 $("#optVibe").addEventListener("change", e => { S.opts.vibe = e.target.checked; save(); if (S.opts.vibe) buzz(20); });
 $("#optResume").addEventListener("change", e => { S.opts.resume = e.target.checked; save(); toast(S.opts.resume ? "タイムラインごとに見ていた位置を覚えるよ" : "いつも一番上から表示するよ"); });
 $("#optFullEnd").addEventListener("change", e => { S.opts.fullEnd = e.target.value; save(); updateVEnd(); toast(S.opts.fullEnd === "next" ? "見終わったら次の動画へ" : "見終わったらもう一度"); });
@@ -2015,7 +2174,7 @@ $("#xferNo").addEventListener("click", () => { $("#xferConfirm").hidden = true; 
 $("#xferYes").addEventListener("click", () => {
   const d = xferPending; if (!d) return;
   const keepFiles = S.posts.filter(isFilePost);
-  S = { timelines: d.timelines, posts: d.posts.concat(keepFiles.filter(p => d.timelines.some(t => t.id === p.tl))), active: d.timelines[0].id, opts: { ...S.opts, ...(d.opts || {}) }, me: d.me || S.me, presets: d.presets || S.presets || [], trash: S.trash || [], lock: S.lock };
+  S = { timelines: d.timelines, posts: d.posts.concat(keepFiles.filter(p => d.timelines.some(t => t.id === p.tl))), active: d.timelines[0].id, opts: { ...S.opts, ...(d.opts || {}) }, me: d.me || S.me, presets: d.presets || S.presets || [], trash: S.trash || [], lock: S.lock, rules: d.rules || S.rules || [], secretPin: d.secretPin || S.secretPin, guideSeen: true };
   xferPending = null; $("#xferBox").hidden = true; applyOpts(); renderAll(); toast(`読み込みました（ツイート ${d.posts.length} 件）`);
 });
 $("#resetNo").addEventListener("click", () => { $("#resetConfirm").hidden = true; });
@@ -2024,7 +2183,7 @@ $("#resetYes").addEventListener("click", () => { forgetFiles(S.posts); idb.clear
 /* 管理パネル（狭い画面ではシート） */
 function openSide() { $("#side").classList.add("open"); $("#backdrop").classList.add("open"); }
 function closeSide() { $("#side").classList.remove("open"); $("#backdrop").classList.remove("open"); }
-["#navManage", "#bManage"].forEach(s => $(s).addEventListener("click", () => { if (innerWidth <= 960) openSide(); else $("#addName").focus(); }));
+["#navManage", "#bManage"].forEach(s => $(s).addEventListener("click", () => { if (innerWidth <= 960 || !$("#splitPane").hidden) openSide(); else $("#addName").focus(); }));
 $("#sideClose").addEventListener("click", closeSide); $("#backdrop").addEventListener("click", closeSide);
 $("#bHome").addEventListener("click", () => scrollTo({ top: 0, behavior: "smooth" }));
 /* スマホ: 右下の＋で投稿シートを開く（X と同じ）。パソコン: 左の「ツイートする」で入力欄へ */
@@ -2048,7 +2207,7 @@ document.addEventListener("keydown", e => { if (e.key === "Escape" && document.b
 /* ================= TikTok風 縦スワイプ ================= */
 function renderTT() {
   ttAP?.stop(); [...players.keys()].forEach(k => { if (k.closest && k.closest("#tt")) players.delete(k); });
-  $("#ttTabs").innerHTML = S.timelines.map(t => `<button class="${t.id === S.active ? "on" : ""}" data-tt="${t.id}">${esc(t.name)}</button>`).join("");
+  $("#ttTabs").innerHTML = orderedTLs().map(t => `<button class="${t.id === S.active ? "on" : ""}" data-tt="${t.id}">${esc(t.name)}</button>`).join("");
   const sc = $("#ttScroll"); sc.innerHTML = ""; sc.scrollTop = 0;
   ttAP = createAutoplay(sc);
   const tl = tlById(S.active); $("#ttOrder").value = tl.ttOrder || "new";
@@ -2228,7 +2387,7 @@ $("#optOneHand").addEventListener("change", e => { S.opts.oneHand = e.target.che
 
 /* K13 編集 */
 function startEdit(p) {
-  const card = document.querySelector(`#feed .post[data-id="${p.id}"]`); if (!card) return;
+  const card = document.querySelector(`#feed .post[data-id="${p.id}"]`) || document.querySelector(`#feed2 .post[data-id="${p.id}"]`); if (!card) return;
   card.querySelector(".post-text")?.remove();
   card.querySelector(".slot").insertAdjacentHTML("beforebegin", `<div class="edit-box"><textarea rows="3" maxlength="2000" aria-label="ツイートの文">${esc(p.text || "")}</textarea>
     <div class="edit-acts"><button type="button" class="btn-ghost sm" data-act="edit-cancel">やめる</button><button type="button" class="btn-accent" data-act="edit-save">保存</button></div></div>`);
@@ -2260,7 +2419,7 @@ function purgeTrash() {
   if (old.length) { forgetFiles(old.map(x => x.p)); S.trash = S.trash.filter(x => x.at >= lim); save(); }
 }
 function renderTrash() {
-  const list = [...S.trash].sort((a, b) => b.at - a.at);
+  const list = S.trash.filter(x => !isHiddenTl(tlById(x.p.tl))).sort((a, b) => b.at - a.at);
   $("#trList").innerHTML = list.length ? list.map(({ p, at }) => { const t = tlById(p.tl); const left = Math.max(0, TRASH_DAYS - Math.floor((Date.now() - at) / 864e5));
     return `<li class="tr-item"><div class="tr-body"><div class="tr-meta">${esc(t ? t.name : "消したタイムライン")} · ${ago(at)}に削除 · あと${left}日</div><div class="tr-text">${esc(p.text || (p.embed ? p.embed.url : p.media ? (p.media.title || "画像・動画") : ""))}</div></div>
       <div class="tr-acts"><button type="button" class="btn-ghost sm" data-restore="${p.id}">元に戻す</button><button type="button" class="tr-del" data-kill="${p.id}">完全に消す</button></div></li>`; }).join("")
@@ -2285,7 +2444,7 @@ $("#trEmpty").addEventListener("click", e => {
 const picked = new Set();
 function startPick(id) {
   picked.clear(); if (id) picked.add(id); document.body.classList.add("picking");
-  $("#bulkMove").innerHTML = `<option value="">移動先を選ぶ…</option>` + S.timelines.map(t => `<option value="${t.id}">${esc(t.name)}へ移動</option>`).join("");
+  $("#bulkMove").innerHTML = `<option value="">移動先を選ぶ…</option>` + orderedTLs().map(t => `<option value="${t.id}">${esc(t.name)}へ移動</option>`).join("");
   $("#bulkBar").hidden = false; paintPicked();
 }
 function endPick() { picked.clear(); document.body.classList.remove("picking"); $("#bulkBar").hidden = true; paintPicked(); }
@@ -2307,7 +2466,7 @@ $("#bulkMove").addEventListener("change", e => {
 
 /* K17 今日の1本: まだ見てないものを優先してランダムに1つ */
 function todayPick() {
-  const all = S.posts.filter(hasViewable); if (!all.length) return toast("画像や動画のツイートがまだないよ");
+  const all = S.posts.filter(p => hasViewable(p) && visPost(p) && !(p.snoozeUntil > Date.now())); if (!all.length) return toast("画像や動画のツイートがまだないよ");
   const unseen = all.filter(p => !p.seenAt); const pool = unseen.length && Math.random() < .75 ? unseen : all;
   const p = pool[Math.floor(Math.random() * pool.length)];
   if (p.tl !== S.active) setActive(p.tl); openViewer(p.id); toast(`今日の1本は「${tlById(p.tl).name}」から！`);
@@ -2347,7 +2506,7 @@ async function renderStore() {
 try { navigator.storage?.persist?.(); } catch {}
 
 /* K23 かんたんロック（4桁の数字。本格的な守りではない） */
-let pinMode = "unlock", pinBuf = "", pinFirst = "";
+let pinMode = "unlock", pinBuf = "", pinFirst = "", pinTarget = "lock";
 async function pinHash(pin, salt) { const d = new TextEncoder().encode(salt + ":" + pin);
   if (!crypto.subtle) { let h1 = 0x811c9dc5, h2 = 0x1234567; for (const b of d) { h1 = Math.imul(h1 ^ b, 16777619) >>> 0; h2 = Math.imul(h2 ^ b, 2246822519) >>> 0; } return "f" + h1.toString(16) + h2.toString(16); }
   const h = await crypto.subtle.digest("SHA-256", d); return [...new Uint8Array(h)].map(b => b.toString(16).padStart(2, "0")).join(""); }
@@ -2361,13 +2520,29 @@ $("#lockBtns")?.addEventListener("click", e => {
 });
 function openPin(mode) {
   pinMode = mode; pinBuf = ""; pinFirst = ""; $("#lockScreen").hidden = false; document.body.classList.add("locked");
-  $("#lockTitle").textContent = { unlock: "番号を入れてね", set: "新しい4桁の番号", "verify-change": "いまの番号を入れてね", "verify-off": "いまの番号を入れてね" }[mode];
-  $("#lockCancel").hidden = mode === "unlock"; $("#lockForgot").hidden = mode !== "unlock"; $("#lockForgotBox").hidden = true; $("#lockMsg").textContent = ""; paintDots();
+  pinTarget = /^secret/.test(mode) ? "secret" : "lock";
+  $("#lockTitle").textContent = { unlock: "番号を入れてね", set: "新しい4桁の番号", "verify-change": "いまの番号を入れてね", "verify-off": "いまの番号を入れてね", "secret-set": "シークレット用の4桁の番号", "secret-open": "シークレットの番号", "secret-change": "いまのシークレットの番号" }[mode];
+  $("#lockScreen").classList.toggle("secret", pinTarget === "secret");
+  $("#lockCancel").hidden = mode === "unlock"; $("#lockForgot").hidden = !(mode === "unlock" || mode === "secret-open");
+  $("#lockForgotBox").firstChild.textContent = pinTarget === "secret" ? "シークレットの番号を忘れたら、シークレットのタイムラインを中身ごと消して番号を外すしかないよ。" : "番号を忘れたら、この端末のデータを全部消して最初からにするしかないよ。書き出した文字があれば、あとで読み込めるよ。";
+  $("#lockReset").textContent = pinTarget === "secret" ? "シークレットを全部消す" : "全部消して最初から"; $("#lockReset").classList.remove("sure"); $("#lockForgotBox").hidden = true; $("#lockMsg").textContent = ""; paintDots();
 }
 function closePin() { $("#lockScreen").hidden = true; document.body.classList.remove("locked"); }
 function paintDots() { $("#lockDots").querySelectorAll("i").forEach((d, i) => d.classList.toggle("on", i < pinBuf.length)); }
 function shakePin(msg) { $("#lockMsg").textContent = msg; const c = $("#lockDots"); c.classList.remove("shake"); void c.offsetWidth; c.classList.add("shake"); buzz([40, 40, 40]); pinBuf = ""; paintDots(); }
 async function pinDone() {
+  if (pinMode === "secret-set") {
+    if (!pinFirst) { pinFirst = pinBuf; pinBuf = ""; paintDots(); $("#lockTitle").textContent = "もう一度入れてね"; return; }
+    if (pinBuf !== pinFirst) { pinFirst = ""; $("#lockTitle").textContent = "シークレット用の4桁の番号"; return shakePin("ちがったよ。最初からもう一度"); }
+    const salt = uid() + uid(); S.secretPin = { salt, hash: await pinHash(pinBuf, salt) }; save(); closePin(); setSecretOn(true);
+    toast("シークレットの番号を決めたよ。管理画面でタイムラインに印を付けてね"); if (innerWidth <= 960) openSide(); return;
+  }
+  if (pinMode === "secret-open" || pinMode === "secret-change") {
+    const okS = S.secretPin && (await pinHash(pinBuf, S.secretPin.salt)) === S.secretPin.hash;
+    if (!okS) return shakePin("番号がちがうよ");
+    if (pinMode === "secret-change") { pinMode = "secret-set"; pinBuf = ""; pinFirst = ""; paintDots(); $("#lockTitle").textContent = "シークレット用の4桁の番号"; $("#lockMsg").textContent = ""; return; }
+    closePin(); setSecretOn(true); toast("シークレットを表示したよ。アプリを閉じると、また隠れるよ"); return;
+  }
   if (pinMode === "set") {
     if (!pinFirst) { pinFirst = pinBuf; pinBuf = ""; paintDots(); $("#lockTitle").textContent = "もう一度入れてね"; return; }
     if (pinBuf !== pinFirst) { pinFirst = ""; $("#lockTitle").textContent = "新しい4桁の番号"; return shakePin("ちがったよ。最初からもう一度"); }
@@ -2392,12 +2567,199 @@ $("#lockCancel").addEventListener("click", closePin);
 $("#lockForgot").addEventListener("click", () => { $("#lockForgotBox").hidden = false; });
 $("#lockReset").addEventListener("click", e => {
   const b = e.target; if (!b.classList.contains("sure")) { b.classList.add("sure"); b.textContent = "本当に全部消す？"; return; }
+  if (pinTarget === "secret") { const ids = new Set(S.timelines.filter(t => t.secret).map(t => t.id)); const gone = S.posts.filter(p => ids.has(p.tl));
+    forgetFiles(gone); S.posts = S.posts.filter(p => !ids.has(p.tl)); S.trash = S.trash.filter(x => !ids.has(x.p.tl)); S.timelines = S.timelines.filter(t => !ids.has(t.id)); delete S.secretPin;
+    save(); closePin(); renderAll(); renderSecretUI(); toast("シークレットを消して、番号を外したよ"); return; }
   try { localStorage.removeItem(KEY); localStorage.removeItem("mytl-draft"); } catch {} try { idb.clear(); } catch {} location.reload();
 });
 // 5分以上ほかのアプリに行っていたら、戻ったときにもう一度ロック
 let hiddenAt = 0;
-document.addEventListener("visibilitychange", () => { if (document.hidden) hiddenAt = Date.now(); else if (S.lock && hiddenAt && Date.now() - hiddenAt > 5 * 60e3) openPin("unlock"); });
+document.addEventListener("visibilitychange", () => {
+  if (document.hidden) { hiddenAt = Date.now(); return; }
+  const long = hiddenAt && Date.now() - hiddenAt > 5 * 60e3;
+  if (long && secretOn) setSecretOn(false, true);
+  if (long && S.lock) openPin("unlock");
+  wakeSnoozed();
+});
 function bootLock() { let ok = false; try { ok = sessionStorage.getItem("mytl-unlocked") === "1"; } catch {} if (S.lock && !ok) openPin("unlock"); }
+
+/* ================= K25〜K36・シークレット ================= */
+const LABEL_C = { red: "#f4212e", orange: "#ff7a00", yellow: "#f5c400", green: "#00ba7c", blue: "#1d9bf0", purple: "#7856ff" };
+const LABEL_N = { red: "赤", orange: "オレンジ", yellow: "黄", green: "緑", blue: "青", purple: "紫" };
+let labelFilter = "";
+/* フィードの上の道具: 連続再生・スリープタイマー・日付ジャンプ・色ラベルでしぼり込み */
+function feedTools(all) {
+  const used = Object.keys(LABEL_C).filter(c => all.some(p => p.label === c));
+  const left = sleepAt ? Math.max(1, Math.ceil((sleepAt - Date.now()) / 60e3)) : 0;
+  return `<div class="ftools" role="toolbar" aria-label="タイムラインの道具">
+    <button type="button" class="ft" id="ftPlay"><svg class="i"><use href="#i-playall"/></svg>連続再生</button>
+    <button type="button" class="ft ${left ? "on" : ""}" id="ftSleep" title="押すたびに 15分→30分→60分→オフ"><svg class="i"><use href="#i-moon"/></svg>${left ? `あと${left}分` : "タイマー"}</button>
+    <label class="ft" title="日付へジャンプ"><svg class="i"><use href="#i-cal"/></svg>日付<input type="date" id="ftDate" aria-label="この日のツイートへ移動"></label>
+    ${used.length ? `<span class="ft-sep"></span>` + used.map(c => `<button type="button" class="ft-lbl ${labelFilter === c ? "on" : ""}" data-lf="${c}" style="--c:${LABEL_C[c]}" aria-pressed="${labelFilter === c}" aria-label="${LABEL_N[c]}ラベルだけ"></button>`).join("") + (labelFilter ? `<button type="button" class="ft" data-lf="">全部</button>` : "") : ""}
+  </div>`;
+}
+document.addEventListener("click", e => {
+  const lf = e.target.closest("[data-lf]"); if (lf) { labelFilter = labelFilter === lf.dataset.lf ? "" : lf.dataset.lf; renderFeed(); return; }
+  if (e.target.closest("#ftPlay")) return marathon();
+  if (e.target.closest("#ftSleep")) return cycleSleep();
+  if (e.target.closest("#snoozeNow")) { const sn = S.posts.filter(p => p.tl === S.active && p.snoozeUntil > Date.now()); sn.forEach(p => p.snoozeUntil = 1); wakeSnoozed(); return; }
+});
+document.addEventListener("change", e => { if (e.target.id === "ftDate") jumpToDate(e.target.value); });
+
+/* K29 連続再生: このタイムラインの動画を上から順に全画面で */
+function marathon() {
+  const vids = postsOf(S.active).filter(isVideoPost); if (!vids.length) return toast("このタイムラインには動画がないよ");
+  vMarathon = true; openViewer(vids[0].id); vList = vids; vIdx = 0; vSub = 0; $("#viewer").classList.add("marathon"); vRender();
+  toast(`${vids.length}本を順番に流すね`);
+}
+/* K30 スリープタイマー */
+let sleepAt = 0, sleepT = 0, sleepTick = 0;
+function cycleSleep() {
+  const steps = [15, 30, 60, 0]; const cur = sleepAt ? Math.round((sleepAt - Date.now()) / 60e3) : 0;
+  const next = !sleepAt ? 15 : cur <= 15 ? 30 : cur <= 30 ? 60 : 0; setSleep(next);
+}
+function setSleep(min) {
+  clearTimeout(sleepT); clearInterval(sleepTick); sleepAt = 0; sleeping = false;
+  if (min) { sleepAt = Date.now() + min * 60e3; sleepT = setTimeout(goSleep, min * 60e3); sleepTick = setInterval(paintSleep, 30e3); toast(`${min}分たったら再生を止めるね`); }
+  else toast("タイマーをやめたよ");
+  paintSleep();
+}
+function paintSleep() { const b = $("#ftSleep"); if (!b) return; const left = sleepAt ? Math.max(1, Math.ceil((sleepAt - Date.now()) / 60e3)) : 0; b.classList.toggle("on", !!left); b.lastChild.textContent = left ? `あと${left}分` : "タイマー"; }
+function goSleep() {
+  clearInterval(sleepTick); sleepAt = 0; sleeping = true;
+  players.forEach(pl => { try { pl.pause(); } catch {} }); feedAP.reset(); ttAP?.reset?.();
+  if (!$("#viewer").hidden) closeViewer(); if ($("#tt").classList.contains("open")) closeTT();
+  paintSleep(); toast("おやすみ☆ 再生を止めたよ");
+  const wake = () => { sleeping = false; feedAP.refresh(); removeEventListener("pointerdown", wake, true); };
+  setTimeout(() => addEventListener("pointerdown", wake, true), 1500);
+}
+/* K31 日付ジャンプ */
+function jumpToDate(v) {
+  if (!v) return; const a = new Date(v + "T00:00:00").getTime(), b = a + 864e5;
+  const els = [...document.querySelectorAll("#feed .post")]; const at = el => S.posts.find(p => p.id === el.dataset.id)?.at || 0;
+  let el = els.find(x => at(x) >= a && at(x) < b), msg = "";
+  if (!el) { el = els.filter(x => at(x) < b).sort((x, y) => at(y) - at(x))[0] || els[els.length - 1]; msg = "その日のツイートはなかったから、近い日へ移動したよ"; }
+  if (!el) return; const y = el.getBoundingClientRect().top + scrollY - (innerWidth <= 640 ? 110 : 60);
+  scrollTo({ top: y, behavior: reduceMotion() ? "auto" : "smooth" }); el.classList.remove("flash"); void el.offsetWidth; el.classList.add("flash");
+  toast(msg || `${new Date(a).toLocaleDateString("ja-JP", { month: "numeric", day: "numeric" })}のツイートへ移動したよ`);
+}
+/* K27 スヌーズ: 時間が来たら一番上に戻す */
+function wakeSnoozed(quiet) {
+  const now = Date.now(); const back = S.posts.filter(p => p.snoozeUntil && p.snoozeUntil <= now);
+  if (!back.length) return; back.forEach(p => { delete p.snoozeUntil; p.sortAt = now; p.woke = true; delete p.pinned; });
+  save(); if (!quiet) { renderTabs(); renderFeed(); scrollTo({ top: 0 }); }
+  const vis = back.filter(visPost).length; if (vis) setTimeout(() => toast(`スヌーズしていた${vis}件が戻ってきたよ`), quiet ? 400 : 0);
+}
+setInterval(wakeSnoozed, 10 * 60e3);
+/* K26 自動振り分け */
+const RULE_KINDS = [["any", "どのURLでも"], ["youtube", "YouTube（ふつう）"], ["shorts", "YouTube Shorts"], ["x", "X"], ["tiktok", "TikTok"], ["image-url", "画像のURL"], ["video-url", "動画のURL"], ["link", "記事・その他"]];
+function ruleFor(r, text) {
+  if (!r) return null; const hay = (text || "").toLowerCase();
+  for (const x of S.rules) {
+    const k = x.kind; const kindOk = k === "any" || (k === "shorts" ? r.kind === "youtube" && r.shorts : k === "youtube" ? r.kind === "youtube" && !r.shorts : r.kind === k);
+    const words = (x.word || "").toLowerCase().split(/\s+/).filter(Boolean);
+    if (kindOk && (!words.length || words.some(w => hay.includes(w)))) { const t = tlById(x.to); if (t && !isHiddenTl(t)) return t; }
+  }
+  return null;
+}
+function renderRules() {
+  const tls = orderedTLs();
+  $("#ruleList").innerHTML = S.rules.filter(x => !isHiddenTl(tlById(x.to))).map(x => `<li class="rule" data-rule="${x.id}">
+    <select class="sel" data-r="kind" aria-label="URLの種類">${RULE_KINDS.map(([v, l]) => `<option value="${v}" ${x.kind === v ? "selected" : ""}>${l}</option>`).join("")}</select>
+    <input class="sel" data-r="word" value="${esc(x.word || "")}" placeholder="ことば（なくてもOK）" aria-label="含むことば（スペースで区切るとどれか1つ）">
+    <span class="rule-arrow">→</span>
+    <select class="sel" data-r="to" aria-label="送り先">${tls.map(t => `<option value="${t.id}" ${x.to === t.id ? "selected" : ""}>${esc(t.name)}</option>`).join("")}</select>
+    <button type="button" class="mini danger" data-r="del" aria-label="このルールを消す"><svg class="i"><use href="#i-x"/></svg></button></li>`).join("") || `<li class="note">まだルールはないよ。例: 「YouTube Shorts → あとで見る」</li>`;
+}
+$("#ruleAdd").addEventListener("click", () => { S.rules.push({ id: uid(), kind: "youtube", word: "", to: S.active }); save(); renderRules(); });
+$("#ruleList").addEventListener("input", e => { const li = e.target.closest("[data-rule]"); if (!li) return; const x = S.rules.find(r => r.id === li.dataset.rule); x[e.target.dataset.r] = e.target.value; save(); });
+$("#ruleList").addEventListener("click", e => { const b = e.target.closest('[data-r="del"]'); if (!b) return; S.rules = S.rules.filter(r => r.id !== b.closest("[data-rule]").dataset.rule); save(); renderRules(); });
+/* K33 動きを減らす / K34 最初に開くタイムライン / K35 並べて表示 */
+$("#optCalm").addEventListener("change", e => { S.opts.calm = e.target.checked; save(); applyOpts(); toast(S.opts.calm ? "動きを控えめにしたよ" : "動きを元に戻したよ"); });
+function renderStartSel() { const v = S.opts.startTl; $("#optStart").innerHTML = `<option value="">前回の続き</option>` + orderedTLs().map(t => `<option value="${t.id}" ${v === t.id ? "selected" : ""}>${esc(t.name)}</option>`).join(""); }
+$("#optStart").addEventListener("change", e => { S.opts.startTl = e.target.value; save(); toast(e.target.value ? `開いたら「${tlById(e.target.value).name}」から始めるよ` : "前回見ていたタイムラインから始めるよ"); });
+const splitAP = { observe() {}, reset() {}, refresh() {} };
+function renderSplit() {
+  const pane = $("#splitPane"); const on = !!S.opts.split && innerWidth >= 1400; pane.hidden = !on; if (!on) { $("#feed2").innerHTML = ""; return; }
+  let t = tlById(S.opts.splitTl); if (!t || isHiddenTl(t) || t.id === S.active) t = orderedTLs().find(x => x.id !== S.active) || orderedTLs()[0];
+  $("#splitTl").innerHTML = orderedTLs().filter(x => x.id !== S.active).map(x => `<option value="${x.id}" ${x.id === t.id ? "selected" : ""}>${esc(x.name)}</option>`).join("");
+  const f2 = $("#feed2"), y = f2.scrollTop; f2.innerHTML = ""; bgVars(t, pane);
+  const list = postsOf(t.id); if (!list.length) f2.innerHTML = `<div class="empty"><h3>まだ何もないよ</h3></div>`;
+  list.forEach(p => f2.append(postCard(p, splitAP))); f2.scrollTop = y;
+}
+$("#splitTl").addEventListener("change", e => { S.opts.splitTl = e.target.value; save(); $("#feed2").scrollTop = 0; renderSplit(); });
+$("#feed2").addEventListener("click", feedClick); $("#feed2").addEventListener("change", feedChange);
+$("#optSplit").addEventListener("change", e => { S.opts.split = e.target.checked; save(); applyOpts(); renderSplit(); toast(!S.opts.split ? "並べて表示をやめたよ" : innerWidth >= 1400 ? "右にもう1つのタイムラインを出したよ。設定は左の「タイムライン管理」から開いてね" : "画面の幅が1400px以上のときに並ぶよ"); });
+$("#splitClose").addEventListener("click", () => { S.opts.split = false; save(); applyOpts(); renderSplit(); });
+addEventListener("resize", () => { clearTimeout(renderSplit.t); renderSplit.t = setTimeout(() => { if (S.opts.split && (innerWidth >= 1400) === $("#splitPane").hidden) renderSplit(); }, 200); });
+/* K32 ツイートを画像で保存（canvasで1枚のカードに描く） */
+async function saveShot(p) {
+  const t = tlById(p.tl), card = document.querySelector(`.post[data-id="${p.id}"]`);
+  const cs = getComputedStyle(document.body), css = n => getComputedStyle(document.documentElement).getPropertyValue(n).trim();
+  const W = 1080, pad = 64, fg = css("--fg") || "#0f1419", muted = css("--muted") || "#536471", bg = cs.backgroundColor && cs.backgroundColor !== "rgba(0, 0, 0, 0)" ? cs.backgroundColor : "#fff";
+  const c = document.createElement("canvas"), x = c.getContext("2d"); const font = s => `${s}px ${cs.fontFamily}`;
+  // 本文を折り返す
+  x.font = font(40); const lines = []; (p.text || "").split("\n").forEach(par => { let cur = ""; [...par].forEach(ch => { if (x.measureText(cur + ch).width > W - pad * 2) { lines.push(cur); cur = ch; } else cur += ch; }); lines.push(cur); });
+  // 画像（同じ場所の画像・動画・描いた絵だけ使える）
+  let pic = null; const src = card?.querySelector(".slot img, .slot video, .slot canvas");
+  if (src && (src.tagName === "CANVAS" || /^(blob:|data:)/.test(src.currentSrc || src.src || ""))) pic = src;
+  const pw = W - pad * 2, ph = pic ? Math.min(900, Math.round(pw * ((pic.videoHeight || pic.naturalHeight || pic.height) / (pic.videoWidth || pic.naturalWidth || pic.width) || .5625))) : p.embed ? 200 : 0;
+  const H = pad + 96 + 30 + lines.length * 58 + (ph ? ph + 36 : 0) + 70 + pad; c.width = W; c.height = H;
+  x.fillStyle = bg; x.fillRect(0, 0, W, H);
+  x.fillStyle = t.color || "#1d9bf0"; x.beginPath(); x.arc(pad + 44, pad + 44, 44, 0, Math.PI * 2); x.fill();
+  x.fillStyle = "#fff"; x.font = font(40); x.textAlign = "center"; x.textBaseline = "middle"; x.fillText([...(t.icon || t.name || "?")][0], pad + 44, pad + 46);
+  if (t.iconImg) { try { const im = new Image(); im.src = t.iconImg; await im.decode(); x.save(); x.beginPath(); x.arc(pad + 44, pad + 44, 44, 0, Math.PI * 2); x.clip(); x.drawImage(im, pad, pad, 88, 88); x.restore(); } catch {} }
+  x.textAlign = "left"; x.textBaseline = "alphabetic"; x.fillStyle = fg; x.font = `bold ${font(38)}`; x.fillText(t.name, pad + 112, pad + 38);
+  x.fillStyle = muted; x.font = font(30); x.fillText("@me · " + new Date(p.at).toLocaleDateString("ja-JP"), pad + 112, pad + 84);
+  let y = pad + 96 + 30; x.fillStyle = fg; x.font = font(40); lines.forEach(l => { y += 58; x.fillText(l, pad, y - 12); });
+  if (ph) { y += 18; x.save(); x.beginPath(); x.roundRect ? x.roundRect(pad, y, pw, ph, 28) : x.rect(pad, y, pw, ph); x.clip();
+    if (pic) { try { x.drawImage(pic, pad, y, pw, ph); } catch { pic = null; } }
+    if (!pic) { x.fillStyle = css("--bg-hover") || "#eee"; x.fillRect(pad, y, pw, ph); x.fillStyle = fg; x.font = `bold ${font(40)}`; x.fillText(KIND_LABEL[p.embed.kind] || "リンク", pad + 40, y + 86); x.fillStyle = muted; x.font = font(28); x.fillText((p.embed.url || "").slice(0, 60), pad + 40, y + 140); }
+    x.restore(); y += ph + 18; }
+  x.fillStyle = muted; x.font = font(28); x.fillText(`♥ ${p.likes || 0}   💬 ${(p.comments || []).length}`, pad, y + 56);
+  x.textAlign = "right"; x.fillText("マイタイムライン", W - pad, y + 56);
+  c.toBlob(b => { if (!b) return toast("画像にできなかったよ"); const u = URL.createObjectURL(b), a = document.createElement("a"); a.href = u; a.download = `tweet-${new Date(p.at).toISOString().slice(0, 10)}.png`; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 4000); toast("画像で保存したよ"); }, "image/png");
+}
+/* シークレット */
+function setSecretOn(on, quiet) {
+  secretOn = on; try { on ? sessionStorage.setItem("mytl-secret", "1") : sessionStorage.removeItem("mytl-secret"); } catch {}
+  if (!on) { query = ""; labelFilter = ""; } renderAll(); renderSecretUI(); renderRules(); renderStartSel(); if (!on && !quiet) { scrollTo({ top: 0 }); toast("シークレットを隠したよ"); }
+}
+function renderSecretUI() {
+  const n = S.timelines.filter(t => t.secret).length, card = $("#secretCard");
+  card.hidden = !!(S.opts.secretStealth && !secretOn && S.secretPin);
+  $("#secretLead").textContent = !S.secretPin ? "番号を決めると、選んだタイムラインを隠せるよ" : secretOn ? `いまは表示中（${n}個）。管理画面の「シークレット」で隠すタイムラインを選んでね` : `${n}個のタイムラインを隠しているよ`;
+  $("#secretBtns").innerHTML = !S.secretPin ? `<button class="btn-ghost sm" data-sc="set">番号を決める</button>`
+    : secretOn ? `<button class="btn-accent" data-sc="hide">隠す</button><button class="btn-ghost sm" data-sc="change">番号を変える</button>` : `<button class="btn-ghost sm" data-sc="open">表示する</button>`;
+  $("#stealthRow").hidden = !S.secretPin; $("#optStealth").checked = !!S.opts.secretStealth;
+}
+$("#secretBtns").addEventListener("click", e => { const k = e.target.closest("[data-sc]")?.dataset.sc; if (!k) return;
+  if (k === "set") openPin("secret-set"); if (k === "open") openPin("secret-open"); if (k === "change") openPin("secret-change"); if (k === "hide") setSecretOn(false); });
+$("#optStealth").addEventListener("change", e => { S.opts.secretStealth = e.target.checked; save(); toast(S.opts.secretStealth ? "設定から消したよ。左上のロゴを長押しすると番号の画面が出るよ" : "設定に出すようにしたよ"); });
+// ロゴ（PCは左上の自分のアイコン、スマホは真ん中のTL）を長押しでシークレットを開く／隠す
+(() => { let t = 0, fired = false;
+  const start = () => { fired = false; clearTimeout(t); t = setTimeout(() => { if (!S.secretPin) return; fired = true; buzz(15); secretOn ? setSecretOn(false) : openPin("secret-open"); }, 900); };
+  const stop = () => clearTimeout(t);
+  [".brand-mark", "#brandMe"].forEach(sel => { const el = $(sel); el.addEventListener("pointerdown", start); ["pointerup", "pointerleave", "pointercancel"].forEach(ev => el.addEventListener(ev, stop));
+    el.addEventListener("click", e => { if (fired) { e.stopImmediatePropagation(); e.preventDefault(); fired = false; } }, true); el.addEventListener("contextmenu", e => e.preventDefault()); });
+})();
+/* K36 使い方ガイド */
+const GUIDE = [
+  ["▶", "真ん中の動画だけ動くよ", "スクロールして画面の真ん中に来た動画だけが自動で再生されるの。タップで一時停止、長押しで2倍速、長押しのまま下にずらすと2倍速のまま固定だよ"],
+  ["⇆", "左右でタイムラインを切り替え", "スマホは左右にスワイプ、PCはトラックパッドの横スクロールか ← → キー。グループでまとめたり、シークレットで隠したりもできるよ"],
+  ["⇅", "ツイートの整理", "⇅ボタンから、固定・編集・あとでまた見る・色ラベル・まとめて選ぶ・画像で保存ができるよ。消したツイートは30日間ゴミ箱に残るの"],
+  ["⛨", "データはこの端末の中", "ツイートはこのブラウザだけに保存されるよ。ときどき「書き出す」でバックアップしてね。かんたんロックで4桁の番号もかけられるよ"],
+];
+let gIdx = 0;
+function openGuide() { gIdx = 0; $("#guide").hidden = false; document.body.classList.add("sheet-open"); paintGuide(); $("#gNext").focus(); }
+function closeGuide() { $("#guide").hidden = true; document.body.classList.remove("sheet-open"); if (!S.guideSeen) { S.guideSeen = true; save(); } }
+function paintGuide() { const [a, h, tx] = GUIDE[gIdx]; $("#gArt").textContent = a; $("#gTitle").textContent = h; $("#gText").textContent = tx;
+  $("#gDots").innerHTML = GUIDE.map((_, i) => `<i class="${i === gIdx ? "on" : ""}"></i>`).join(""); $("#gNext").textContent = gIdx === GUIDE.length - 1 ? "はじめる" : "次へ"; }
+$("#gNext").addEventListener("click", () => { if (gIdx < GUIDE.length - 1) { gIdx++; paintGuide(); } else closeGuide(); });
+$("#gSkip").addEventListener("click", closeGuide); $("#guideBtn").addEventListener("click", () => { closeSide(); openGuide(); });
+$("#guide").addEventListener("keydown", e => { if (e.key === "Escape") closeGuide(); });
+window.__mytl = { goSleep, openSide: () => openSide(), closeSide: () => closeSide(), closeCompose: () => closeCompose(), setQuery: q => setQuery(q), get S() { return S; } }; // 動作チェック用
+function maybeGuide() { if (S.guideSeen || window.__noGuide) return; const go = () => $("#lockScreen").hidden ? openGuide() : setTimeout(go, 800); setTimeout(go, 500); }
 
 /* ================= コメント（ツイートごと・この端末に保存） ================= */
 let cmId = null;
@@ -2441,10 +2803,10 @@ $("#cmList").addEventListener("click", e => {
 });
 
 /* ================= 全画面ビューア ================= */
-let vSub = 0;
+let vSub = 0, vMarathon = false;
 let vList = [], vIdx = 0, vFrom = "feed", vSlideT = 0;
 const isVideoPost = p => !!((p.media && /video/.test(p.media.kind)) || (p.embed && ["youtube", "tiktok"].includes(p.embed.kind)) || (HOSTED && p.embed && p.embed.kind === "video-url"));
-function updateVEnd() { const b = $("#vEnd"); if (b) b.textContent = S.opts.fullEnd === "next" ? "見終わったら: 次へ" : "見終わったら: ループ"; }
+function updateVEnd() { const b = $("#vEnd"); if (b) b.textContent = vMarathon ? "連続再生中" : S.opts.fullEnd === "next" ? "見終わったら: 次へ" : "見終わったら: ループ"; }
 $("#vEnd").addEventListener("click", () => { S.opts.fullEnd = S.opts.fullEnd === "next" ? "loop" : "next"; save(); updateVEnd(); applyOpts(); });
 /* 画像の自動送り: 次へ進むまでの時間を、画像の下のシークバーで見せる */
 let vSlideRaf = 0;
@@ -2473,9 +2835,9 @@ function vRender() {
     if (pl) { pl.pid = p.id;
       // 見終わったら: 「次の動画へ」設定なら、次の動画（画像は飛ばす）へ。なければループ
       pl.onEnd = () => {
-        if (S.opts.fullEnd !== "next") return false;
+        if (S.opts.fullEnd !== "next" && !vMarathon) return false;
         const n = vList.findIndex((q, k) => k > vIdx && isVideoPost(q));
-        if (n < 0) return false;
+        if (n < 0) { if (vMarathon) { setTimeout(() => { closeViewer(); toast("連続再生、全部見終わったよ"); }, 0); return true; } return false; }
         setTimeout(() => { vIdx = n; vRender(); }, 0); return true;
       };
       pl.play();
@@ -2486,7 +2848,7 @@ function vRender() {
   $("#vPrev").disabled = vIdx === 0 && vSub === 0; $("#vNext").disabled = vIdx === vList.length - 1 && vSub >= galN(p) - 1;
 }
 function openViewer(id, from = "feed", sub = 0) {
-  vFrom = from; vList = (query && from === "feed" ? S.posts.filter(p => matchPost(p, query)).sort((a, b) => keyOf(b) - keyOf(a)) : postsOf(S.active)).filter(hasViewable); vIdx = Math.max(0, vList.findIndex(p => p.id === id)); vSub = Math.min(sub, galN(vList[vIdx]) - 1);
+  vFrom = from; vList = (query && from === "feed" ? S.posts.filter(p => visPost(p) && matchPost(p, query)).sort((a, b) => keyOf(b) - keyOf(a)) : postsOf(S.active)).filter(hasViewable); vIdx = Math.max(0, vList.findIndex(p => p.id === id)); vSub = Math.min(sub, galN(vList[vIdx]) - 1);
   if (from === "feed") feedAP.reset(); else ttAP?.reset();
   $("#viewer").hidden = false; document.body.style.overflow = "hidden"; vRender(); $("#vClose").focus();
 }
@@ -2494,7 +2856,7 @@ function closeViewer() {
   const stage = $("#vStage"); [...players.keys()].forEach(k => { if (stage.contains(k)) { players.get(k).pause(); players.delete(k); } }); stage.innerHTML = "";
   stopSlide();
   if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
-  $("#viewer").hidden = true;
+  $("#viewer").hidden = true; vMarathon = false; $("#viewer").classList.remove("marathon");
   if (vFrom === "feed") { document.body.style.overflow = ""; renderFeedKeepScroll(); } else renderTT();
 }
 const galN = p => p && p.media && p.media.kind === "file-gallery" ? p.media.n : 1;
@@ -2537,8 +2899,10 @@ function openShare(d) {
   $("#shUrl").textContent = url;
   $("#shText").value = text;
   const want = d.tl && (S.timelines.find(t => t.id === d.tl || t.name === d.tl));
-  const sel = (want || tlById(S.opts.lastShareTl) || tlById(S.active) || S.timelines[0]).id;
-  $("#shTls").innerHTML = S.timelines.map(t => `<label><input type="radio" name="shTl" value="${t.id}" ${t.id === sel ? "checked" : ""}><span class="dot" style="background:${t.color}"></span>${esc(t.name)}</label>`).join("");
+  const auto = !want && ruleFor(r, [d.title, d.text, url].join(" "));
+  const pick = [want, auto, tlById(S.opts.lastShareTl), tlById(S.active)].find(t => t && !isHiddenTl(t)) || orderedTLs()[0];
+  const sel = pick.id; if (auto && auto === pick) $("#shDetect").insertAdjacentHTML("beforeend", ` <span class="chip rule">自動で「${esc(auto.name)}」へ</span>`);
+  $("#shTls").innerHTML = orderedTLs().map(t => `<label><input type="radio" name="shTl" value="${t.id}" ${t.id === sel ? "checked" : ""}><span class="dot" style="background:${t.color}"></span>${esc(t.name)}</label>`).join("");
   $("#share").hidden = false;
   $("#shSend").focus();
 }
@@ -2570,9 +2934,10 @@ function readShareParams() {
 
 /* ================= 起動 ================= */
 function boot() {
-  applyOpts(); renderAll();
+  if (S.opts.startTl && tlById(S.opts.startTl) && !isHiddenTl(tlById(S.opts.startTl))) S.active = S.opts.startTl;
+  wakeSnoozed(true); applyOpts(); renderAll();
   const d = readShareParams(); if (d) openShare(d); else restorePos();
-  maybeNagBackup(); purgeTrash(); loadDraft(); netState(); bootLock();
+  maybeNagBackup(); purgeTrash(); loadDraft(); netState(); bootLock(); maybeGuide();
   setTimeout(updateFocus, 60);
 }
 Promise.race([idb.all(), new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 1500))])

@@ -275,6 +275,8 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .progress{overflow:visible}
 .progress .lim{position:absolute;top:-3px;bottom:-3px;width:2px;background:#fff;opacity:.9}
 .yt-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.yt-frame .yt-thumb{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;max-height:none}
+.embed-yt.loaded .yt-thumb{display:none}
 .sel{background:var(--bg);border:1px solid var(--line-strong);border-radius:999px;padding:4px 10px;font-size:13px;color:var(--fg)}
 .v-stage .snd-btn{right:max(16px,env(safe-area-inset-right,0px));bottom:16px}
 .tt-item .snd-btn{right:auto;left:max(16px,env(safe-area-inset-left,0px));top:calc(64px + env(safe-area-inset-top,0px));bottom:auto}
@@ -378,10 +380,18 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
     <section class="card">
       <h2>表示設定</h2>
       <label class="toggle">画面中央の自動再生ラインを表示 <span class="switch"><input type="checkbox" id="optCenter"><span></span></span></label>
-      <label class="toggle">動画を自動再生する <span class="switch"><input type="checkbox" id="optAuto" checked><span></span></span></label>
+      <label class="toggle">動画を自動再生する <span class="switch"><input type="checkbox" id="optAuto"><span></span></span></label>
+      <label class="toggle" id="wifiRow">自動再生はWi-Fiのときだけ <span class="switch"><input type="checkbox" id="optWifi"><span></span></span></label>
+      <label class="toggle" id="strictRow">回線がわからない端末でも止める <span class="switch"><input type="checkbox" id="optStrict"><span></span></span></label>
+      <p id="netNote"></p>
+      <label class="toggle">埋め込みは近づいてから読み込む <span class="switch"><input type="checkbox" id="optLazy"><span></span></span></label>
+      <p>オンにすると、YouTube・X・TikTokは画面に近づいたときに読み込んで、遠ざかったら外すよ。通信量が減る代わりに、表示まで少し待つことがあるの。</p>
       <label class="toggle">音声を出す <span class="switch"><input type="checkbox" id="optSound" checked><span></span></span></label>
       <label class="toggle" for="optPreview">タイムラインで再生する長さ
-        <select id="optPreview" class="sel"><option value="30">冒頭30秒</option><option value="60">冒頭1分</option><option value="120">冒頭2分</option><option value="300">冒頭5分</option><option value="0">最後まで</option></select></label>
+        <select id="optPreview" class="sel"><option value="30">冒頭30秒</option><option value="60">冒頭1分</option><option value="120">冒頭2分</option><option value="300">冒頭5分</option><option value="0">最後まで</option><option value="custom">自分で決める</option></select></label>
+      <div class="toggle" id="previewCustomRow" hidden><span>長さを指定</span>
+        <span style="display:flex;align-items:center;gap:4px"><input type="number" id="optPrevMin" class="sel" min="0" max="60" step="1" style="width:64px" aria-label="分">分
+        <input type="number" id="optPrevSec" class="sel" min="0" max="59" step="5" style="width:64px" aria-label="秒">秒</span></div>
       <p>全画面表示では最後まで再生します。ブラウザの決まりで、音声は画面を1回タップしてから出るようになります。</p>
       <label class="toggle">ダークモード <span class="switch"><input type="checkbox" id="optDark"><span></span></span></label>
     </section>
@@ -594,7 +604,7 @@ let S;
 try { S = JSON.parse(localStorage.getItem(KEY)); } catch { S = null; }
 if (!S || !Array.isArray(S.timelines) || !S.timelines.length) S = seed();
 S.opts ||= { center: false, auto: true };
-S.opts.sound ??= true; S.opts.preview ??= 120;
+S.opts.sound ??= true; S.opts.preview ??= 120; S.opts.auto ??= true; S.opts.wifiOnly ??= true; S.opts.strictNet ??= false; S.opts.lazy ??= true;
 const fileUrls = new Map(); // 手元から追加したファイル（IndexedDB から復元）
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} }
 /* 手元ファイルの保存先: IndexedDB（ブラウザ内） */
@@ -631,7 +641,7 @@ function createAutoplay(root) {
   function pick() {
     const box = root ? root.getBoundingClientRect() : { top: 0, height: innerHeight };
     const cy = box.top + box.height / 2; let best = null, bd = Infinity;
-    if (S.opts.auto) candidates.forEach(el => { const r = el.getBoundingClientRect(); const d = Math.abs(r.top + r.height / 2 - cy); if (d < bd) { bd = d; best = el; } });
+    if (canAutoplay()) candidates.forEach(el => { const r = el.getBoundingClientRect(); const d = Math.abs(r.top + r.height / 2 - cy); if (d < bd) { bd = d; best = el; } });
     if (best !== current) { if (current) players.get(current)?.pause(); current = best; if (current) players.get(current)?.play(); }
   }
   (root || window).addEventListener("scroll", schedule, { passive: true });
@@ -644,7 +654,7 @@ requestAnimationFrame(loop);
 /* ================= 音声・再生時間・ホスト版判定 ================= */
 const HOSTED = !!window.MYTL_HOSTED; // 公開版(PWA)ではビルド時に true。アーティファクト内では外部埋め込みが使えないので代替表示
 const previewLimit = mode => mode === "full" ? Infinity : (S.opts.preview > 0 ? S.opts.preview : Infinity);
-const fmtLim = s => s % 60 === 0 ? `${s / 60}分` : `${s}秒`;
+const fmtLim = s => s < 60 ? `${s}秒` : s % 60 === 0 ? `${s / 60}分` : `${Math.floor(s / 60)}分${s % 60}秒`;
 const AudioKit = { ctx: null, get() { if (!this.ctx) { try { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch { this.ctx = null; } } if (this.ctx?.state === "suspended") this.ctx.resume().catch(() => {}); return this.ctx; } };
 let soundHintShown = false;
 function soundHint() { if (soundHintShown) return; soundHintShown = true; toast("音が出ないときはスピーカーボタンを1回押してね"); }
@@ -732,6 +742,42 @@ function buildMedia(p, mode = "feed") {
 /* YouTube 本物の埋め込み（公開版のみ）: postMessage で play/pause/mute を命令する */
 /* YouTube の埋め込みプレイヤーを postMessage で操作する。
    読み込み前に送った命令は捨てられるので、「こうしたい」状態を覚えておき、準備ができたら反映する */
+/* ===== 通信量の節約 =====
+   (1) 埋め込みは画面に近づいてから読み込み、遠ざかったら外す（スクロールで通り過ぎた動画が裏で通信し続けないように）
+   (2) 自動再生は回線を見て決める（設定「自動再生」） */
+const lazyIO = ("IntersectionObserver" in window) ? new IntersectionObserver(es => es.forEach(en => {
+  const h = lazyHooks.get(en.target); if (!h) return;
+  if (en.isIntersecting) h.near(); else h.far();
+}), { rootMargin: "120% 0px 120% 0px" }) : null;
+const lazyHooks = new WeakMap();
+function whenNear(el, near, far = () => {}) {
+  if (!lazyIO || !S.opts.lazy) { near(); return; }
+  lazyHooks.set(el, { near, far }); lazyIO.observe(el);
+}
+function netInfo() {
+  const c = navigator.connection || navigator.mozConnection || navigator.webkitConnection;
+  if (!c) return { known: false, wifi: false, saveData: false, label: "わからない" };
+  const type = c.type; const saveData = !!c.saveData;
+  if (type === "wifi" || type === "ethernet") return { known: true, wifi: true, saveData, label: type === "wifi" ? "Wi-Fi" : "有線" };
+  if (type === "cellular") return { known: true, wifi: false, saveData, label: "モバイル回線" };
+  return { known: false, wifi: false, saveData, label: "わからない" };
+}
+function canAutoplay() {
+  if (!S.opts.auto) return false;
+  if (!S.opts.wifiOnly) return true;
+  const n = netInfo();
+  if (n.saveData) return false;           // データセーバーがオンなら止める
+  if (n.known) return n.wifi;
+  return !S.opts.strictNet;               // 回線がわからない端末（iPhone・PCのSafariなど）
+}
+function updateNetNote() {
+  const el = $("#netNote"); if (!el) return; const n = netInfo();
+  el.textContent = n.known
+    ? `いまの回線: ${n.label}${n.saveData ? "（データセーバー オン）" : ""} → 自動再生は${canAutoplay() ? "オン" : "オフ"}`
+    : `この端末では回線の種類がわからないよ（iPhoneやSafariなど）→ 自動再生は${canAutoplay() ? "オン" : "オフ"}`;
+}
+try { (navigator.connection || {}).addEventListener?.("change", () => { updateNetNote(); feedAP.refresh(); ttAP?.refresh(); }); } catch {}
+
 const ytByWin = new Map();
 addEventListener("message", ev => {
   const c = ytByWin.get(ev.source); if (!c) return;
@@ -745,6 +791,8 @@ function ytController(ifr, lim) {
   const apply = () => { if (!ready) return; send(S.opts.sound ? "unMute" : "mute"); send(wantPlay ? "playVideo" : "pauseVideo"); };
   const listen = () => { try { ifr.contentWindow.postMessage(JSON.stringify({ event: "listening", id, channel: "widget" }), "*"); } catch {} };
   ifr.addEventListener("load", () => {
+    if (!ifr.src || ifr.src === "about:blank") return;
+    ready = false; info = {};
     ytByWin.set(ifr.contentWindow, c);
     clearInterval(timer); let n = 0; timer = setInterval(() => { if (ready || ++n > 40) return clearInterval(timer); listen(); }, 250); listen();
   });
@@ -765,7 +813,7 @@ function ttController(ifr) {
   let wantPlay = false, loaded = false;
   const send = (type, value) => { try { ifr.contentWindow.postMessage({ type, value, "x-tiktok-player": true }, "*"); } catch {} };
   const apply = () => { if (!loaded) return; send(S.opts.sound ? "unMute" : "mute"); send(wantPlay ? "play" : "pause"); };
-  ifr.addEventListener("load", () => { loaded = true; setTimeout(apply, 600); });
+  ifr.addEventListener("load", () => { loaded = !!ifr.src && ifr.src !== "about:blank"; if (loaded) setTimeout(apply, 600); });
   return { want(p) { wantPlay = p; apply(); }, sound() { apply(); } };
 }
 let xScript = null;
@@ -782,8 +830,13 @@ function buildEmbed(p, mode = "feed") {
       const src = isTT
         ? `https://www.tiktok.com/player/v1/${encodeURIComponent(e.id)}?autoplay=0&loop=1&music_info=1&description=1&controls=1`
         : `https://www.youtube-nocookie.com/embed/${encodeURIComponent(e.id)}?enablejsapi=1&playsinline=1&rel=0&mute=1&origin=${encodeURIComponent(location.origin)}`;
-      w.innerHTML = `<div class="yt-frame"><iframe src="${src}" title="${label}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>${sndBtn()}`;
+      const thumb = isTT ? "" : `<img class="yt-thumb" alt="" loading="lazy" src="https://i.ytimg.com/vi/${encodeURIComponent(e.id)}/mqdefault.jpg">`;
+      w.innerHTML = `<div class="yt-frame">${thumb}<iframe title="${label}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>${sndBtn()}`;
       const ifr = w.querySelector("iframe");
+      // 近づいたら読み込み、遠ざかったら外す（全画面表示では最初から読み込む）
+      const load = () => { if (ifr.getAttribute("src") !== src) ifr.setAttribute("src", src); w.classList.add("loaded"); };
+      const unload = () => { if (ifr.getAttribute("src")) { ifr.removeAttribute("src"); try { ytByWin.delete(ifr.contentWindow); } catch {} w.classList.remove("loaded"); } };
+      if (mode === "full") load(); else whenNear(w, load, unload);
       const ctl = isTT ? ttController(ifr) : ytController(ifr, lim);
       players.set(w, {
         playing: false,
@@ -808,12 +861,12 @@ function buildEmbed(p, mode = "feed") {
     w.innerHTML = `<div class="xhead"><div class="avatar" style="background:#333;width:36px;height:36px">${esc(e.user[0].toUpperCase())}</div><div><b>@${esc(e.user)}</b><div style="color:var(--muted);font-size:13px">X のツイート</div></div><span class="xlogo">𝕏</span></div>
       <div class="xbody">${HOSTED ? "読み込み中…" : `ツイート ID ${esc(e.id)} の本文・画像・動画がここに表示されます（公開版では X の埋め込みで表示）。`}</div>
       <div class="xfoot"><span>埋め込み表示</span><a href="${esc(e.url)}" target="_blank" rel="noopener">X で見る</a></div>`;
-    if (HOSTED) loadX().then(tw => {
+    if (HOSTED) whenNear(w, () => { lazyHooks.delete(w); lazyIO?.unobserve(w); loadX().then(tw => {
       if (!tw?.widgets) { w.querySelector(".xbody").textContent = "X の埋め込みを読み込めなかったよ。「X で見る」から開いてね。"; return; }
       const box = document.createElement("div");
       tw.widgets.createTweet(e.id, box, { theme: document.documentElement.dataset.theme === "dark" || (!document.documentElement.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light", dnt: true, lang: "ja" })
         .then(el => { if (el) { w.replaceWith(box); } else w.querySelector(".xbody").textContent = "このツイートは表示できないよ（削除・非公開かも）。"; });
-    });
+    }); });
     return { el: w, playable: false };
   }
   if (HOSTED && e.kind === "image-url") return buildMedia({ ...p, media: { kind: "url-image", src: e.url } }, mode);
@@ -1027,16 +1080,31 @@ $("#addForm").addEventListener("submit", e => {
 /* 設定 */
 function applyOpts() {
   document.body.classList.toggle("show-center", !!S.opts.center);
-  $("#optCenter").checked = !!S.opts.center; $("#optAuto").checked = !!S.opts.auto; $("#optSound").checked = !!S.opts.sound; $("#optPreview").value = String(S.opts.preview);
+  $("#optCenter").checked = !!S.opts.center; $("#optAuto").checked = !!S.opts.auto; $("#optWifi").checked = !!S.opts.wifiOnly; $("#optStrict").checked = !!S.opts.strictNet; $("#optLazy").checked = !!S.opts.lazy; $("#wifiRow").hidden = !S.opts.auto; $("#strictRow").hidden = !(S.opts.auto && S.opts.wifiOnly); $("#netNote").hidden = !(S.opts.auto && S.opts.wifiOnly); updateNetNote(); $("#optSound").checked = !!S.opts.sound; const presets = ["30", "60", "120", "300", "0"]; const pv = String(S.opts.preview);
+  $("#optPreview").value = presets.includes(pv) && !S.opts.previewCustom ? pv : "custom";
+  $("#previewCustomRow").hidden = $("#optPreview").value !== "custom";
+  $("#optPrevMin").value = Math.floor(S.opts.preview / 60); $("#optPrevSec").value = S.opts.preview % 60;
   if (S.opts.dark != null) document.documentElement.dataset.theme = S.opts.dark ? "dark" : "light";
   $("#optDark").checked = S.opts.dark != null ? S.opts.dark : matchMedia("(prefers-color-scheme: dark)").matches;
 }
 $("#optCenter").addEventListener("change", e => { S.opts.center = e.target.checked; applyOpts(); save(); });
 $("#navCenter").addEventListener("click", () => { S.opts.center = !S.opts.center; applyOpts(); save(); toast(S.opts.center ? "中央ラインを表示" : "中央ラインを非表示"); });
-$("#optAuto").addEventListener("change", e => { S.opts.auto = e.target.checked; feedAP.refresh(); save(); });
+$("#optAuto").addEventListener("change", e => { S.opts.auto = e.target.checked; save(); applyOpts(); feedAP.refresh(); toast(S.opts.auto ? "自動再生オン" : "自動再生オフ"); });
+$("#optWifi").addEventListener("change", e => { S.opts.wifiOnly = e.target.checked; save(); applyOpts(); feedAP.refresh(); toast(S.opts.wifiOnly ? "Wi-Fiのときだけ自動再生" : "回線に関係なく自動再生"); });
+$("#optLazy").addEventListener("change", e => { S.opts.lazy = e.target.checked; save(); renderFeedKeepScroll(); toast(S.opts.lazy ? "近づいてから読み込む" : "最初から全部読み込む"); });
+$("#optStrict").addEventListener("change", e => { S.opts.strictNet = e.target.checked; save(); updateNetNote(); feedAP.refresh(); });
 $("#optDark").addEventListener("change", e => { S.opts.dark = e.target.checked; applyOpts(); save(); });
 $("#optSound").addEventListener("change", e => { AudioKit.get(); setSoundAll(e.target.checked); });
-$("#optPreview").addEventListener("change", e => { S.opts.preview = +e.target.value; save(); renderFeedKeepScroll(); toast(S.opts.preview ? `タイムラインでは冒頭${fmtLim(S.opts.preview)}を再生` : "最後まで再生"); });
+function setPreview(sec, custom) {
+  S.opts.preview = Math.max(0, Math.min(3600, Math.round(sec))); S.opts.previewCustom = !!custom; save(); applyOpts(); renderFeedKeepScroll();
+  toast(S.opts.preview ? `タイムラインでは冒頭${fmtLim(S.opts.preview)}を再生` : "最後まで再生");
+}
+$("#optPreview").addEventListener("change", e => {
+  if (e.target.value === "custom") { $("#previewCustomRow").hidden = false; S.opts.previewCustom = true; save(); $("#optPrevMin").focus(); return; }
+  setPreview(+e.target.value, false);
+});
+const onCustom = () => { const m = Math.max(0, +$("#optPrevMin").value || 0), sec = Math.max(0, Math.min(59, +$("#optPrevSec").value || 0)); const total = m * 60 + sec; if (total < 5) { toast("5秒以上にしてね"); return; } setPreview(total, true); };
+$("#optPrevMin").addEventListener("change", onCustom); $("#optPrevSec").addEventListener("change", onCustom);
 $("#resetBtn").addEventListener("click", () => { $("#resetConfirm").hidden = false; });
 /* データの書き出し・読み込み（サーバーなしで端末間を手で移す） */
 function openXfer(mode) {

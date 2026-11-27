@@ -269,23 +269,52 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .side-close{display:none}
 .fab,.compose-backdrop{display:none}
 /* ---- タイムラインの見た目 ---- */
-.tl-av{background:var(--fill);position:relative;overflow:visible}
+.tl-av{background:var(--fillbg);position:relative;overflow:visible;box-shadow:inset 0 1px 1px rgba(255,255,255,.25),inset 0 -2px 4px rgba(0,0,0,.12)}
 .tl-av img{width:100%;height:100%;border-radius:50%;object-fit:cover;display:block}
-.ring-line{box-shadow:0 0 0 2px var(--bg),0 0 0 4px var(--c)}
-.ring-thick{box-shadow:0 0 0 2px var(--bg),0 0 0 6px var(--c)}
-.ring-dash{outline:2px dashed var(--c);outline-offset:3px}
-.ring-grad{border:3px solid transparent;background:linear-gradient(var(--fill),var(--fill)) padding-box,conic-gradient(#f91880,#ffd400,#00ba7c,#1d9bf0,#7856ff,#f91880) border-box}
-.ring-glow{box-shadow:0 0 0 2px var(--c),0 0 14px 3px color-mix(in srgb,var(--c) 70%,transparent)}
+.tl-av[data-edit]{cursor:pointer}
+.tl-av[data-edit]:focus-visible{outline:2px solid var(--accent);outline-offset:3px}
+.ring-solid{box-shadow:0 0 0 2px var(--bg),0 0 0 calc(2px + var(--rw)) var(--rc1)}
+.ring-dash{outline:var(--rw) dashed var(--rc1);outline-offset:3px}
+.ring-grad{border:var(--rw) solid transparent;background:var(--fillbg) padding-box,conic-gradient(from 30deg,var(--rc1),var(--rc2),var(--rc1),var(--rc2),var(--rc1)) border-box}
+.ring-metal{border:var(--rw) solid transparent;background:var(--fillbg) padding-box,conic-gradient(from 20deg,var(--rc1),color-mix(in srgb,var(--rc2) 55%,#fff),var(--rc2),var(--rc1) 45%,color-mix(in srgb,var(--rc2) 55%,#fff) 62%,var(--rc2),var(--rc1)) border-box;
+  box-shadow:0 1px 3px rgba(0,0,0,.25),inset 0 1px 1px rgba(255,255,255,.3)}
+.ring-glow{box-shadow:0 0 0 var(--rw) var(--rc1),0 0 calc(var(--rw) * 4 + 6px) calc(var(--rw) / 2 + 1px) color-mix(in srgb,var(--rc2) 70%,transparent)}
 .mini-av{width:24px;height:24px;font-size:11px;flex:none}
-.mini-av.ring-line,.mini-av.ring-thick{box-shadow:0 0 0 1.5px var(--bg),0 0 0 3px var(--c)}
-.mini-av.ring-grad{border-width:2px}
-.mini-av.ring-dash{outline-width:1.5px;outline-offset:2px}
+.brand-me{width:36px;height:36px;font-size:14px;cursor:pointer}
 .main{min-height:100vh}
-.main[data-bg=tint]{background:color-mix(in srgb,var(--tl) 7%,var(--bg))}
-.main[data-bg=grad]{background:linear-gradient(180deg,color-mix(in srgb,var(--tl) 18%,var(--bg)) 0,var(--bg) 900px)}
-.main[data-bg=dots]{background:radial-gradient(color-mix(in srgb,var(--tl) 28%,transparent) 1.4px,transparent 1.6px) 0 0/18px 18px,var(--bg)}
-.main[data-bg=stripe]{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--tl) 8%,var(--bg)) 0 14px,var(--bg) 14px 28px)}
-.main[data-bg=img]{background:linear-gradient(color-mix(in srgb,var(--bg) 78%,transparent),color-mix(in srgb,var(--bg) 78%,transparent)),var(--tl-img) center/cover fixed,var(--bg)}
+.main[data-bg=color],.lk-stage[data-bg=color]{background:color-mix(in srgb,var(--b1) var(--bap),var(--bg))}
+.main[data-bg=grad],.lk-stage[data-bg=grad]{background:linear-gradient(160deg,color-mix(in srgb,var(--b1) var(--bap),var(--bg)),color-mix(in srgb,var(--b2) var(--bap),var(--bg))) fixed}
+.lk-stage[data-bg=grad]{background-attachment:scroll}
+.main[data-bg=dots],.lk-stage[data-bg=dots]{background:radial-gradient(color-mix(in srgb,var(--b1) var(--bap),transparent) 1.4px,transparent 1.6px) 0 0/18px 18px,var(--bg)}
+.main[data-bg=stripe],.lk-stage[data-bg=stripe]{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--b1) var(--bap),var(--bg)) 0 14px,var(--bg) 14px 28px)}
+.main[data-bg=img]{background:linear-gradient(color-mix(in srgb,var(--bg) var(--bainv),transparent),color-mix(in srgb,var(--bg) var(--bainv),transparent)),var(--tl-img) center/cover fixed,var(--bg)}
+.lk-stage[data-bg=img]{background:linear-gradient(color-mix(in srgb,var(--bg) var(--bainv),transparent),color-mix(in srgb,var(--bg) var(--bainv),transparent)),var(--tl-img) center/cover,var(--bg)}
+/* ---- アイコン設定シート ---- */
+.look-card{gap:14px}
+.lk-head{display:flex;justify-content:space-between;align-items:center}
+.lk-stage{display:flex;align-items:center;gap:16px;padding:18px;border-radius:16px;border:1px solid var(--line);background:var(--bg)}
+.lk-big{width:64px;height:64px;font-size:26px}
+.lk-sub{color:var(--muted);font-size:13px}
+.lk-sec{display:flex;flex-direction:column;gap:10px;padding-top:12px;border-top:1px solid var(--line)}
+.lk-sec h3{margin:0;font-size:15px;font-weight:800}
+.lk-row{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.lk-lab{width:44px;color:var(--muted);font-weight:700;font-size:13px}
+.lk-text{width:110px;border:1px solid var(--line-strong);border-radius:10px;padding:6px 10px;background:var(--bg);color:var(--fg)}
+.lk-color{width:44px;height:32px;border:1px solid var(--line-strong);border-radius:10px;padding:2px;background:var(--bg);cursor:pointer}
+.lk-check{display:flex;align-items:center;gap:6px;font-size:14px}
+.lk-row input[type=range]{flex:1;min-width:140px;accent-color:var(--accent)}
+.lk-row output{width:44px;text-align:right;font-variant-numeric:tabular-nums;color:var(--muted);font-size:13px}
+.lk-chips{display:flex;gap:6px;flex-wrap:wrap}
+.lk-chip{border:1.5px solid var(--line-strong);border-radius:999px;padding:5px 12px;font-size:13px;font-weight:700}
+.lk-chip[aria-checked=true]{border-color:var(--accent);color:var(--accent);background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.lk-presets{display:flex;flex-direction:column;gap:8px}
+.lk-pgroup{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.lk-plab{width:100%;color:var(--muted);font-size:12px;font-weight:700}
+.lk-preset{display:inline-flex;align-items:center;border:1px solid var(--line-strong);border-radius:999px;background:var(--bg)}
+.lk-pbtn{display:inline-flex;align-items:center;gap:6px;padding:4px 10px 4px 5px;font-size:13px;font-weight:700}
+.lk-pdel{padding:0 10px 0 2px;color:var(--muted);font-size:16px}
+.lk-hint{color:var(--muted);font-size:12px}
+body.sheet-open{overflow:hidden}
 .tl-design{list-style:none;margin:0 0 8px 36px;padding:12px;border-radius:14px;background:var(--bg-hover);display:flex;flex-direction:column;gap:10px;font-size:14px}
 .d-row{display:flex;align-items:center;gap:8px;flex-wrap:wrap}
 .d-lab{width:56px;color:var(--muted);font-weight:700;font-size:13px}
@@ -321,7 +350,7 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 /* ---- 全画面のショート動画: ウィンドウの大きさに合わせて伸び縮み ---- */
 .v-stage .embed-yt.shorts{width:auto;height:100%;max-height:100%;aspect-ratio:9/16;max-width:100%}
 .v-stage .embed-yt.shorts .yt-frame{max-height:none;height:100%;width:100%;aspect-ratio:auto}
-.head-avatar{border:0;background:var(--accent);cursor:pointer;width:32px;height:32px;font-size:13px}
+.head-avatar{cursor:pointer;width:32px;height:32px;font-size:13px}
 @keyframes slideL{from{transform:translateX(40px);opacity:.3}to{transform:none;opacity:1}}
 @keyframes slideR{from{transform:translateX(-40px);opacity:.3}to{transform:none;opacity:1}}
 #feed.slide-l{animation:slideL .22s ease-out}
@@ -427,7 +456,7 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 
 <div class="app" id="app">
   <nav class="nav" aria-label="メイン">
-    <div class="brand"><div class="brand-mark">TL</div><span class="label">マイタイムライン</span></div>
+    <div class="brand"><button class="avatar brand-me" id="brandMe" aria-label="自分のアイコンを変える">私</button><span class="label">マイタイムライン</span></div>
     <div class="nav-label">タイムライン</div>
     <div id="navList"></div>
     <div class="nav-spacer"></div>
@@ -440,7 +469,7 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
   <main class="main" id="main">
     <div class="head">
       <div class="head-top">
-        <button class="avatar head-avatar" id="mManage" aria-label="タイムライン管理と設定">私</button>
+        <button class="avatar head-avatar" id="mManage" aria-label="自分のアイコンを変える">私</button>
         <div class="brand-mark" aria-hidden="true">TL</div>
         <button class="icon-btn" id="mTT" aria-label="縦スワイプで見る" style="color:var(--fg)"><svg class="i" style="width:22px;height:22px"><use href="#i-film"/></svg></button>
       </div>
@@ -562,6 +591,32 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
   <div class="v-cap" id="vCap"></div>
 </div>
 
+<div class="share look" id="lookSheet" hidden role="dialog" aria-modal="true" aria-labelledby="lkTitle">
+  <div class="share-card look-card">
+    <div class="lk-head"><h2 id="lkTitle">アイコン設定</h2><button type="button" class="icon-btn" id="lkClose" aria-label="閉じる" style="color:var(--fg)"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div class="lk-preview" id="lkPrev"></div>
+    <div class="lk-sec"><h3>プリセット</h3>
+      <div class="lk-presets" id="lkPresets"></div>
+      <div class="lk-row"><button type="button" class="btn-ghost sm" id="lkSave">いまの見た目を保存</button><span class="lk-hint">アイコンの文字と画像は保存しないよ</span></div></div>
+    <div class="lk-sec"><h3>アイコン</h3>
+      <div class="lk-row"><label class="lk-lab" for="lkIcon">文字</label><input type="text" id="lkIcon" maxlength="4" class="lk-text" placeholder="絵文字もOK">
+        <label class="btn-ghost sm">画像を選ぶ<input type="file" accept="image/*" id="lkIconImg" hidden></label><button type="button" class="btn-ghost sm" id="lkIconClear" hidden>画像を外す</button></div>
+      <div class="lk-row"><label class="lk-lab" for="lkFill">塗り</label><input type="color" id="lkFill" class="lk-color">
+        <label class="lk-check"><input type="checkbox" id="lkFillGrad">グラデにする</label><input type="color" id="lkFill2" class="lk-color" aria-label="グラデの2色目"></div></div>
+    <div class="lk-sec"><h3>縁</h3>
+      <div class="lk-chips" id="lkRing" role="radiogroup" aria-label="縁の種類"></div>
+      <div class="lk-row" id="lkRingCols"><span class="lk-lab">色</span><input type="color" id="lkRc1" class="lk-color" aria-label="縁の色">
+        <input type="color" id="lkRc2" class="lk-color" aria-label="縁の2色目"></div>
+      <div class="lk-row" id="lkRingW"><label class="lk-lab" for="lkRw">太さ</label><input type="range" id="lkRw" min="1" max="10" step="1"><output id="lkRwOut"></output></div></div>
+    <div class="lk-sec" id="lkBgSec"><h3>タイムラインの背景</h3>
+      <div class="lk-chips" id="lkBg" role="radiogroup" aria-label="背景の種類"></div>
+      <div class="lk-row" id="lkBgCols"><span class="lk-lab">色</span><input type="color" id="lkBc1" class="lk-color" aria-label="背景の色">
+        <input type="color" id="lkBc2" class="lk-color" aria-label="背景の2色目"></div>
+      <div class="lk-row" id="lkBgImgRow"><span class="lk-lab">画像</span><label class="btn-ghost sm" id="lkBgImgLab">画像を選ぶ<input type="file" accept="image/*" id="lkBgImg" hidden></label></div>
+      <div class="lk-row" id="lkBaRow"><label class="lk-lab" for="lkBa" id="lkBaLab">濃さ</label><input type="range" id="lkBa" min="0" max="100" step="1"><output id="lkBaOut"></output></div></div>
+    <div class="share-actions"><button type="button" class="btn-accent" id="lkDone">完了</button></div>
+  </div>
+</div>
 <div class="share" id="share" hidden role="dialog" aria-modal="true" aria-labelledby="shTitle">
   <form class="share-card" id="shForm" autocomplete="off">
     <h2 id="shTitle">タイムラインに送る</h2>
@@ -712,6 +767,8 @@ let S;
 try { S = JSON.parse(localStorage.getItem(KEY)); } catch { S = null; }
 if (!S || !Array.isArray(S.timelines) || !S.timelines.length) S = seed();
 S.opts ||= { center: false, auto: true };
+S.me ||= { id: "me", name: "私", color: "#1d9bf0" }; S.me.id = "me";
+S.presets ||= [];
 S.opts.sound ??= true; S.opts.preview ??= 120; S.opts.auto ??= true; S.opts.wifiOnly ??= true; S.opts.strictNet ??= false; S.opts.lazy ??= true; S.opts.fullEnd ??= "loop"; S.opts.slideAuto ??= true; S.opts.slideSec ??= 10;
 const fileUrls = new Map(); // 手元から追加したファイル（IndexedDB から復元）
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch { try { toast("保存しきれなかったよ。背景やアイコンの画像を外すか、小さい画像にしてね"); } catch {} return false; } }
@@ -1173,22 +1230,56 @@ function renderTabs() {
   $("#tabs").innerHTML = S.timelines.map(t => `<button class="tab ${t.id === S.active ? "on" : ""}" role="tab" aria-selected="${t.id === S.active}" data-tl="${t.id}">${esc(t.name)}</button>`).join("") + `<button class="tab tab-add" id="tabAdd" aria-label="タイムラインを追加">＋</button>`;
   $("#navList").innerHTML = S.timelines.map(t => `<button class="nav-item ${t.id === S.active ? "on" : ""}" data-tl="${t.id}" title="${esc(t.name)}">${tlAvatar(t, "mini-av")}<span class="label">${esc(t.name)}</span><span class="count">${S.posts.filter(p => p.tl === t.id).length}</span></button>`).join("");
   $("#compTl").innerHTML = S.timelines.map(t => `<option value="${t.id}" ${t.id === S.active ? "selected" : ""}>送り先: ${esc(t.name)}</option>`).join("");
-  const t = tlById(S.active); $("#compAvatar").style.background = t?.color || "var(--accent)";
-  applyTlTheme();
+  paintMe(); applyTlTheme();
 }
 
 /* タイムラインごとの見た目: アイコン（文字か画像）・アイコンの縁・背景 */
-const RINGS = [["none", "なし"], ["line", "細い線"], ["thick", "太い線"], ["dash", "点線"], ["grad", "虹色"], ["glow", "光る"]];
-const BGS = [["none", "なし"], ["tint", "うすい色"], ["grad", "グラデーション"], ["dots", "ドット"], ["stripe", "ストライプ"], ["img", "画像"]];
-function tlAvatar(t, extra = "") {
-  const inner = t.iconImg ? `<img src="${t.iconImg}" alt="">` : esc(t.icon || t.name[0] || "?");
-  return `<div class="avatar tl-av ring-${t.ring || "none"} ${extra}" style="--c:${t.color};--fill:${t.iconImg ? "transparent" : t.color}" aria-hidden="true">${inner}</div>`;
+/* アイコンの縁と背景の種類 */
+const RINGS = [["none", "なし"], ["solid", "単色"], ["grad", "グラデ"], ["metal", "メタリック"], ["dash", "点線"], ["glow", "光る"]];
+const BGS = [["none", "なし"], ["color", "単色"], ["grad", "グラデ"], ["dots", "ドット"], ["stripe", "ストライプ"], ["img", "画像"]];
+const BG_ALPHA = { none: 0, color: 10, grad: 22, dots: 35, stripe: 10, img: 30 };
+const LOOK_KEYS = ["color", "fill2", "ringType", "ringC1", "ringC2", "ringW", "bgType", "bgC1", "bgC2", "bgAlpha"];
+/* 古い形式（ring / bg の文字）を新しい形式にそろえる */
+function normLook(t) {
+  if (typeof t.ring === "string") { const m = { line: ["solid", 2], thick: ["solid", 4], dash: ["dash", 2], grad: ["grad", 3], glow: ["glow", 2] }[t.ring]; if (m) { t.ringType = m[0]; t.ringW = m[1]; } delete t.ring; }
+  if (typeof t.bg === "string") { t.bgType = t.bg === "tint" ? "color" : t.bg; delete t.bg; }
+  t.ringType ??= "none"; t.ringC1 ??= t.color; t.ringC2 ??= "#ffd400"; t.ringW ??= 3; t.fill2 ??= "";
+  t.bgType ??= "none"; t.bgC1 ??= t.color; t.bgC2 ??= "#1d9bf0"; t.bgAlpha ??= BG_ALPHA[t.bgType] ?? 20;
+  return t;
 }
-function applyTlTheme() {
-  const t = tlById(S.active), m = $("#main"); if (!t) return;
-  m.dataset.bg = t.bg || "none"; m.style.setProperty("--tl", t.color);
-  m.style.setProperty("--tl-img", t.bg === "img" && t.bgImg ? `url("${t.bgImg}")` : "none");
+const lookTarget = id => id === "me" ? (S.me ||= { id: "me", name: "私", color: "#1d9bf0" }) : tlById(id);
+function lookStyle(t, mini) {
+  normLook(t);
+  const fill = t.iconImg ? "linear-gradient(#0000,#0000)" : t.fill2 ? `linear-gradient(135deg,${t.color},${t.fill2})` : `linear-gradient(${t.color},${t.color})`;
+  const w = mini ? Math.max(1, Math.round(t.ringW / 2)) : t.ringW;
+  return `--fillbg:${fill};--rc1:${t.ringC1};--rc2:${t.ringC2};--rw:${w}px`;
 }
+const avInner = t => t.iconImg ? `<img src="${t.iconImg}" alt="">` : esc(t.icon || (t.name || "?")[0]);
+function tlAvatar(t, extra = "", editable = false) {
+  normLook(t);
+  const ed = editable ? ` role="button" tabindex="0" data-edit="${t.id}" title="「${esc(t.name)}」のアイコンを変える" aria-label="「${esc(t.name)}」のアイコンを変える"` : ` aria-hidden="true"`;
+  return `<div class="avatar tl-av ring-${t.ringType} ${extra}" data-av="${t.id}" data-x="${extra}" data-ed="${editable ? 1 : ""}" style="${lookStyle(t, /mini/.test(extra))}"${ed}>${avInner(t)}</div>`;
+}
+/* id などを持つ要素（左上・投稿欄の自分のアイコン）に見た目だけ塗る */
+function paintAvatar(el, t, base) {
+  el.className = `${base} tl-av ring-${normLook(t).ringType}`; el.setAttribute("style", lookStyle(t, false)); el.innerHTML = avInner(t);
+}
+function repaintAvatars(id) {
+  document.querySelectorAll(`.tl-av[data-av="${id}"]`).forEach(el => { const t = lookTarget(id); if (t) el.outerHTML = tlAvatar(t, el.dataset.x || "", !!el.dataset.ed); });
+  if (id === "me") paintMe();
+}
+function paintMe() {
+  S.me ||= { id: "me", name: "私", color: "#1d9bf0" }; S.presets ||= [];
+  paintAvatar($("#mManage"), S.me, "avatar head-avatar"); paintAvatar($("#compAvatar"), S.me, "avatar");
+  paintAvatar($("#brandMe"), S.me, "avatar brand-me");
+}
+function bgVars(t, el) {
+  normLook(t); const a = Math.max(0, Math.min(100, +t.bgAlpha || 0));
+  el.dataset.bg = t.bgType; el.style.setProperty("--b1", t.bgC1); el.style.setProperty("--b2", t.bgC2);
+  el.style.setProperty("--bap", a + "%"); el.style.setProperty("--bainv", (100 - a) + "%");
+  el.style.setProperty("--tl-img", t.bgType === "img" && t.bgImg ? `url("${t.bgImg}")` : "none");
+}
+function applyTlTheme() { const t = tlById(S.active); if (t) bgVars(t, $("#main")); }
 function shrinkImage(file, max, q, square) {
   return new Promise((res, rej) => {
     const img = new Image(), u = URL.createObjectURL(file);
@@ -1206,7 +1297,7 @@ function shrinkImage(file, max, q, square) {
 function postCard(p) {
   const t = tlById(p.tl) || S.timelines[0];
   const art = document.createElement("article"); art.className = "post"; art.dataset.id = p.id;
-  art.innerHTML = `${tlAvatar(t)}
+  art.innerHTML = `${tlAvatar(t, "", true)}
     <div class="post-body">
       ${p.reposted ? `<div class="rp"><svg class="i"><use href="#i-repost"/></svg>再投稿 · ${ago(p.sortAt)}</div>` : ""}
       <div class="post-meta"><b>${esc(t.name)}</b><span>@me</span><span>·</span><span>${ago(p.at)}</span></div>
@@ -1243,7 +1334,6 @@ function renderFeed() {
   feedAP.refresh();
 }
 
-const openDesign = new Set();
 function renderManage() {
   const ul = $("#tlList");
   ul.innerHTML = S.timelines.map((t, i) => `
@@ -1253,18 +1343,8 @@ function renderManage() {
       <input type="text" value="${esc(t.name)}" maxlength="20" data-act="rename" aria-label="名前" id="n-${t.id}">
       <button class="mini" data-act="up" ${i === 0 ? "disabled" : ""} aria-label="上へ"><svg class="i"><use href="#i-up"/></svg></button>
       <button class="mini" data-act="down" ${i === S.timelines.length - 1 ? "disabled" : ""} aria-label="下へ"><svg class="i"><use href="#i-down"/></svg></button>
-      <button class="mini ${openDesign.has(t.id) ? "on" : ""}" data-act="design" aria-label="見た目を変える" title="アイコン・縁・背景" aria-expanded="${openDesign.has(t.id)}"><svg class="i"><use href="#i-brush"/></svg></button>
+      <button class="mini" data-act="design" aria-label="「${esc(t.name)}」のアイコンと背景を変える" title="アイコン・縁・背景"><svg class="i"><use href="#i-brush"/></svg></button>
       <button class="mini danger" data-act="askdel" ${S.timelines.length <= 1 ? "disabled" : ""} aria-label="削除"><svg class="i"><use href="#i-trash"/></svg></button>
-    </li>
-    <li class="tl-design" data-design="${t.id}" ${openDesign.has(t.id) ? "" : "hidden"}>
-      <div class="d-row"><span class="d-lab">アイコン</span>${tlAvatar(t)}
-        <input type="text" maxlength="2" data-act="icon" value="${esc(t.icon || "")}" placeholder="${esc(t.name[0] || "")}" aria-label="アイコンの文字（絵文字もOK）">
-        <label class="btn-ghost sm">画像<input type="file" accept="image/*" data-act="iconimg" hidden></label>
-        ${t.iconImg ? `<button class="btn-ghost sm" data-act="iconclear">外す</button>` : ""}</div>
-      <div class="d-row"><span class="d-lab">縁</span><select data-act="ring" aria-label="アイコンの縁">${RINGS.map(([v, l]) => `<option value="${v}" ${(t.ring || "none") === v ? "selected" : ""}>${l}</option>`).join("")}</select></div>
-      <div class="d-row"><span class="d-lab">背景</span><select data-act="bg" aria-label="タイムラインの背景">${BGS.map(([v, l]) => `<option value="${v}" ${(t.bg || "none") === v ? "selected" : ""}>${l}</option>`).join("")}</select>
-        ${t.bg === "img" ? `<label class="btn-ghost sm">${t.bgImg ? "画像を変える" : "画像を選ぶ"}<input type="file" accept="image/*" data-act="bgimg" hidden></label>` : ""}</div>
-      <p class="d-note">色は左の丸で変えられるよ。縁と背景はこの色を使うね</p>
     </li>
     <li class="confirm" data-confirm="${t.id}" hidden>ツイート ${S.posts.filter(p => p.tl === t.id).length} 件ごと消す？
       <button class="yes" data-act="del" data-tl="${t.id}">削除</button><button class="no" data-act="nodel" data-tl="${t.id}">やめる</button></li>`).join("");
@@ -1391,30 +1471,12 @@ ul.addEventListener("input", e => {
   if (e.target.dataset.act === "rename") { t.name = e.target.value || "名前なし"; renderTabs(); save(); }
   if (e.target.dataset.act === "color") { t.color = e.target.value; renderTabs(); save(); }
 });
-/* 見た目パネル（アイコン・縁・背景） */
-ul.addEventListener("input", e => {
-  const box = e.target.closest("[data-design]"); if (!box || e.target.dataset.act !== "icon") return; const t = tlById(box.dataset.design);
-  t.icon = [...e.target.value.trim()].slice(0, 2).join(""); save(); renderTabs(); box.querySelector(".tl-av").outerHTML = tlAvatar(t);
-});
-ul.addEventListener("change", async e => {
-  const box = e.target.closest("[data-design]"); if (!box) return; const t = tlById(box.dataset.design), a = e.target.dataset.act;
-  if (a === "ring") t.ring = e.target.value;
-  else if (a === "bg") { t.bg = e.target.value; if (t.bg !== "img") delete t.bgImg; }
-  else if (a === "iconimg" || a === "bgimg") {
-    const f = e.target.files[0]; if (!f) return;
-    try { if (a === "iconimg") t.iconImg = await shrinkImage(f, 160, .85, true); else t.bgImg = await shrinkImage(f, 1280, .7); }
-    catch { toast("この画像は読み込めなかったよ"); return; }
-  } else return;
-  if (save()) toast(`「${t.name}」の見た目を変えたよ`);
-  renderTabs(); renderManage(); renderFeedKeepScroll();
-});
 ul.addEventListener("change", e => { if (e.target.dataset.act) renderFeedKeepScroll(); });
 ul.addEventListener("click", e => {
   const b = e.target.closest("button[data-act]"); if (!b) return;
   const id = b.dataset.tl || b.closest(".tl-row")?.dataset.tl; const i = S.timelines.findIndex(t => t.id === id);
   const a = b.dataset.act;
-  if (a === "design") { openDesign.has(id) ? openDesign.delete(id) : openDesign.add(id); renderManage(); return; }
-  if (a === "iconclear") { const t = tlById(b.closest("[data-design]").dataset.design); delete t.iconImg; save(); renderTabs(); renderManage(); renderFeedKeepScroll(); return; }
+  if (a === "design") { openLook(id); return; }
   if (a === "up" || a === "down") { const j = a === "up" ? i - 1 : i + 1; [S.timelines[i], S.timelines[j]] = [S.timelines[j], S.timelines[i]]; renderTabs(); renderManage(); save(); }
   if (a === "askdel") ul.querySelector(`[data-confirm="${id}"]`).hidden = false;
   if (a === "nodel") ul.querySelector(`[data-confirm="${id}"]`).hidden = true;
@@ -1484,7 +1546,7 @@ function openXfer(mode) {
   $("#xferCopy").hidden = mode !== "export"; $("#xferLoad").hidden = mode !== "import";
   const ta = $("#xferText");
   if (mode === "export") {
-    const data = { app: "mytl", version: 1, exportedAt: new Date().toISOString(), timelines: S.timelines, posts: S.posts.filter(p => !isFilePost(p)), opts: S.opts };
+    const data = { app: "mytl", version: 1, exportedAt: new Date().toISOString(), timelines: S.timelines, posts: S.posts.filter(p => !isFilePost(p)), opts: S.opts, me: S.me, presets: S.presets };
     ta.value = JSON.stringify(data); ta.readOnly = true; ta.focus(); ta.select();
   } else { ta.value = ""; ta.readOnly = false; ta.placeholder = "書き出した文字をここに貼り付け"; ta.focus(); }
 }
@@ -1506,7 +1568,7 @@ $("#xferNo").addEventListener("click", () => { $("#xferConfirm").hidden = true; 
 $("#xferYes").addEventListener("click", () => {
   const d = xferPending; if (!d) return;
   const keepFiles = S.posts.filter(isFilePost);
-  S = { timelines: d.timelines, posts: d.posts.concat(keepFiles.filter(p => d.timelines.some(t => t.id === p.tl))), active: d.timelines[0].id, opts: { ...S.opts, ...(d.opts || {}) } };
+  S = { timelines: d.timelines, posts: d.posts.concat(keepFiles.filter(p => d.timelines.some(t => t.id === p.tl))), active: d.timelines[0].id, opts: { ...S.opts, ...(d.opts || {}) }, me: d.me || S.me, presets: d.presets || S.presets || [] };
   xferPending = null; $("#xferBox").hidden = true; applyOpts(); renderAll(); toast(`読み込みました（ツイート ${d.posts.length} 件）`);
 });
 $("#resetNo").addEventListener("click", () => { $("#resetConfirm").hidden = true; });
@@ -1515,7 +1577,7 @@ $("#resetYes").addEventListener("click", () => { forgetFiles(S.posts); idb.clear
 /* 管理パネル（狭い画面ではシート） */
 function openSide() { $("#side").classList.add("open"); $("#backdrop").classList.add("open"); }
 function closeSide() { $("#side").classList.remove("open"); $("#backdrop").classList.remove("open"); }
-["#navManage", "#mManage", "#bManage"].forEach(s => $(s).addEventListener("click", () => { if (innerWidth <= 960) openSide(); else $("#addName").focus(); }));
+["#navManage", "#bManage"].forEach(s => $(s).addEventListener("click", () => { if (innerWidth <= 960) openSide(); else $("#addName").focus(); }));
 $("#sideClose").addEventListener("click", closeSide); $("#backdrop").addEventListener("click", closeSide);
 $("#bHome").addEventListener("click", () => scrollTo({ top: 0, behavior: "smooth" }));
 /* スマホ: 右下の＋で投稿シートを開く（X と同じ）。パソコン: 左の「ツイートする」で入力欄へ */
@@ -1571,6 +1633,109 @@ $("#ttTabs").addEventListener("click", e => { const b = e.target.closest("[data-
 $("#ttScroll").addEventListener("click", e => {
   const b = e.target.closest("[data-like]"); if (!b) return; const p = S.posts.find(x => x.id === b.dataset.like);
   const r = b.querySelector(".circle").getBoundingClientRect(), res = pressHeart(p); b.outerHTML = ttHeart(p); if (res === true) heartBurst(r, 26);
+});
+
+/* ================= アイコン設定（タイムライン・自分） ================= */
+/* 高級感のあるプリセット（色の組み合わせ） */
+const LUX = [
+  { name: "ゴールド", color: "#a8803a", fill2: "#f1d98f", ringType: "metal", ringC1: "#9c7631", ringC2: "#f6e3a3", ringW: 3, bgType: "grad", bgC1: "#c9a45c", bgC2: "#f6ecd2", bgAlpha: 24 },
+  { name: "プラチナ", color: "#7d8696", fill2: "#dfe4ec", ringType: "metal", ringC1: "#8a93a3", ringC2: "#ffffff", ringW: 3, bgType: "grad", bgC1: "#aab3c0", bgC2: "#eef1f5", bgAlpha: 22 },
+  { name: "ローズゴールド", color: "#b76e79", fill2: "#f0c1bd", ringType: "metal", ringC1: "#b76e79", ringC2: "#f7d6d0", ringW: 3, bgType: "grad", bgC1: "#e8b4b8", bgC2: "#fbeee9", bgAlpha: 24 },
+  { name: "ミッドナイト", color: "#0f1b3d", fill2: "#3a4f8f", ringType: "metal", ringC1: "#b9975a", ringC2: "#f0dca6", ringW: 2, bgType: "grad", bgC1: "#0f1b3d", bgC2: "#3a4f8f", bgAlpha: 30 },
+  { name: "エメラルド", color: "#0b6e4f", fill2: "#3fbf7f", ringType: "metal", ringC1: "#0b6e4f", ringC2: "#c7f0d8", ringW: 3, bgType: "dots", bgC1: "#0b6e4f", bgC2: "#3fbf7f", bgAlpha: 30 },
+  { name: "ボルドー", color: "#5a0f1c", fill2: "#a8324a", ringType: "metal", ringC1: "#8a6a2c", ringC2: "#e9cf8f", ringW: 3, bgType: "grad", bgC1: "#5a0f1c", bgC2: "#a8324a", bgAlpha: 20 },
+  { name: "サファイア", color: "#0f52ba", fill2: "#6aa8ff", ringType: "metal", ringC1: "#9aa6bb", ringC2: "#ffffff", ringW: 3, bgType: "grad", bgC1: "#0f52ba", bgC2: "#9cc4ff", bgAlpha: 20 },
+  { name: "オニキス", color: "#151515", fill2: "#4a4a4a", ringType: "glow", ringC1: "#d9c48f", ringC2: "#d9c48f", ringW: 2, bgType: "stripe", bgC1: "#3a3a3a", bgC2: "#151515", bgAlpha: 12 },
+  { name: "オーロラ", color: "#7856ff", fill2: "#00c2c7", ringType: "grad", ringC1: "#f91880", ringC2: "#00c2c7", ringW: 3, bgType: "grad", bgC1: "#7856ff", bgC2: "#00c2c7", bgAlpha: 18 },
+];
+let lkId = null;
+const lk = id => $("#" + id);
+function chipHTML(list, cur) { return list.map(([v, l]) => `<button type="button" class="lk-chip" role="radio" aria-checked="${v === cur}" data-v="${v}">${l}</button>`).join(""); }
+function presetChip(pr, i, mine) {
+  const demo = { ...pr, id: "pv", name: pr.name, icon: pr.name[0] };
+  return `<span class="lk-preset"><button type="button" class="lk-pbtn" data-preset="${mine ? "m" : "l"}${i}" title="${esc(pr.name)}">${tlAvatar(demo, "mini-av pv")}<span>${esc(pr.name)}</span></button>${mine ? `<button type="button" class="lk-pdel" data-pdel="${i}" aria-label="「${esc(pr.name)}」を消す">×</button>` : ""}</span>`;
+}
+function renderLook() {
+  const t = lookTarget(lkId); if (!t) return closeLook(); normLook(t);
+  const isMe = lkId === "me";
+  lk("lkTitle").textContent = isMe ? "自分のアイコン" : `「${t.name}」のアイコンと背景`;
+  lk("lkPrev").innerHTML = `<div class="lk-stage" id="lkStage">${tlAvatar(t, "lk-big")}<div><b>${esc(t.name)}</b><div class="lk-sub">${isMe ? "左上と投稿欄に出るよ" : "ツイートと左のリストに出るよ"}</div></div></div>`;
+  if (!isMe) bgVars(t, lk("lkStage")); else lk("lkStage").dataset.bg = "none";
+  lk("lkPresets").innerHTML = `<div class="lk-pgroup"><span class="lk-plab">高級感</span>${LUX.map((p, i) => presetChip(p, i, false)).join("")}</div>` +
+    (S.presets.length ? `<div class="lk-pgroup"><span class="lk-plab">保存したもの</span>${S.presets.map((p, i) => presetChip(p, i, true)).join("")}</div>` : "");
+  lk("lkIcon").value = t.icon || ""; lk("lkIcon").placeholder = (t.name || "?")[0] + "（絵文字もOK）";
+  lk("lkIconClear").hidden = !t.iconImg;
+  lk("lkFill").value = t.color; lk("lkFillGrad").checked = !!t.fill2; lk("lkFill2").value = t.fill2 || "#ffffff"; lk("lkFill2").hidden = !t.fill2;
+  lk("lkRing").innerHTML = chipHTML(RINGS, t.ringType);
+  lk("lkRingCols").hidden = lk("lkRingW").hidden = t.ringType === "none";
+  lk("lkRc1").value = t.ringC1; lk("lkRc2").value = t.ringC2; lk("lkRc2").hidden = !["grad", "metal", "glow"].includes(t.ringType);
+  lk("lkRw").value = t.ringW; lk("lkRwOut").textContent = t.ringW + "px";
+  lk("lkBgSec").hidden = isMe;
+  lk("lkBg").innerHTML = chipHTML(BGS, t.bgType);
+  lk("lkBgCols").hidden = ["none", "img"].includes(t.bgType);
+  lk("lkBc1").value = t.bgC1; lk("lkBc2").value = t.bgC2; lk("lkBc2").hidden = t.bgType !== "grad";
+  lk("lkBgImgRow").hidden = t.bgType !== "img"; lk("lkBgImgLab").firstChild.textContent = t.bgImg ? "画像を変える" : "画像を選ぶ";
+  lk("lkBaRow").hidden = t.bgType === "none"; lk("lkBa").value = t.bgAlpha;
+  lk("lkBaLab").textContent = t.bgType === "img" ? "見え方" : "濃さ"; lk("lkBaOut").textContent = t.bgAlpha + "%";
+}
+/* 見た目が変わったら、画面のあちこちに反映して保存 */
+function lookChanged(full) {
+  const t = lookTarget(lkId); save();
+  repaintAvatars(lkId); if (lkId !== "me" && lkId === S.active) applyTlTheme();
+  if (full) renderLook(); else { const st = lk("lkStage"); st.querySelector(".tl-av").outerHTML = tlAvatar(t, "lk-big"); if (lkId !== "me") bgVars(t, st); }
+}
+function openLook(id) { lkId = id; renderLook(); lk("lookSheet").hidden = false; document.body.classList.add("sheet-open"); setTimeout(() => lk("lkDone").focus(), 30); }
+function closeLook() { lk("lookSheet").hidden = true; document.body.classList.remove("sheet-open"); if (lkId && lkId !== "me") { renderTabs(); renderManage(); } lkId = null; }
+lk("lkClose").addEventListener("click", closeLook); lk("lkDone").addEventListener("click", closeLook);
+lk("lookSheet").addEventListener("click", e => { if (e.target.id === "lookSheet") closeLook(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && lkId) closeLook(); });
+// ツイートのアイコン・左上のアイコンを押すと開く
+document.addEventListener("click", e => {
+  const av = e.target.closest(".tl-av[data-edit]"); if (av) { e.stopPropagation(); openLook(av.dataset.edit); return; }
+  if (e.target.closest("#mManage, #brandMe, #compAvatar")) openLook("me");
+}, true);
+document.addEventListener("keydown", e => { const av = e.target.closest?.(".tl-av[data-edit]"); if (av && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openLook(av.dataset.edit); } });
+lk("lkIcon").addEventListener("input", e => { const t = lookTarget(lkId); t.icon = [...e.target.value.trim()].slice(0, 2).join(""); lookChanged(false); });
+lk("lkFill").addEventListener("input", e => { const t = lookTarget(lkId); t.color = e.target.value; lookChanged(false); });
+lk("lkFill2").addEventListener("input", e => { lookTarget(lkId).fill2 = e.target.value; lookChanged(false); });
+lk("lkFillGrad").addEventListener("change", e => { const t = lookTarget(lkId); t.fill2 = e.target.checked ? (lk("lkFill2").value !== "#ffffff" ? lk("lkFill2").value : "#ffd400") : ""; lookChanged(true); });
+lk("lkRc1").addEventListener("input", e => { lookTarget(lkId).ringC1 = e.target.value; lookChanged(false); });
+lk("lkRc2").addEventListener("input", e => { lookTarget(lkId).ringC2 = e.target.value; lookChanged(false); });
+lk("lkRw").addEventListener("input", e => { lookTarget(lkId).ringW = +e.target.value; lk("lkRwOut").textContent = e.target.value + "px"; lookChanged(false); });
+lk("lkBc1").addEventListener("input", e => { lookTarget(lkId).bgC1 = e.target.value; lookChanged(false); });
+lk("lkBc2").addEventListener("input", e => { lookTarget(lkId).bgC2 = e.target.value; lookChanged(false); });
+lk("lkBa").addEventListener("input", e => { lookTarget(lkId).bgAlpha = +e.target.value; lk("lkBaOut").textContent = e.target.value + "%"; lookChanged(false); });
+lk("lkRing").addEventListener("click", e => { const b = e.target.closest("[data-v]"); if (!b) return; lookTarget(lkId).ringType = b.dataset.v; lookChanged(true); });
+lk("lkBg").addEventListener("click", e => {
+  const b = e.target.closest("[data-v]"); if (!b) return; const t = lookTarget(lkId);
+  t.bgType = b.dataset.v; t.bgAlpha = BG_ALPHA[t.bgType] ?? 20; lookChanged(true);
+  if (t.bgType === "img" && !t.bgImg) lk("lkBgImg").click();
+});
+lk("lkIconImg").addEventListener("change", async e => {
+  const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+  try { lookTarget(lkId).iconImg = await shrinkImage(f, 160, .85, true); } catch { toast("この画像は読み込めなかったよ"); return; }
+  lookChanged(true);
+});
+lk("lkIconClear").addEventListener("click", () => { delete lookTarget(lkId).iconImg; lookChanged(true); });
+lk("lkBgImg").addEventListener("change", async e => {
+  const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+  try { lookTarget(lkId).bgImg = await shrinkImage(f, 1280, .7); } catch { toast("この画像は読み込めなかったよ"); return; }
+  lookChanged(true);
+});
+lk("lkPresets").addEventListener("click", e => {
+  const del = e.target.closest("[data-pdel]");
+  if (del) { const pr = S.presets[+del.dataset.pdel]; S.presets.splice(+del.dataset.pdel, 1); save(); renderLook(); toast(`「${pr.name}」を消したよ`); return; }
+  const b = e.target.closest("[data-preset]"); if (!b) return;
+  const k = b.dataset.preset, pr = k[0] === "m" ? S.presets[+k.slice(1)] : LUX[+k.slice(1)], t = lookTarget(lkId);
+  LOOK_KEYS.forEach(key => { if (pr[key] !== undefined) t[key] = pr[key]; });
+  if (pr.bgType === "img" && pr.bgImg) t.bgImg = pr.bgImg;
+  lookChanged(true); toast(`「${pr.name}」にしたよ`);
+});
+lk("lkSave").addEventListener("click", () => {
+  const t = lookTarget(lkId), pr = { name: `マイ${S.presets.length + 1}` };
+  LOOK_KEYS.forEach(key => pr[key] = t[key]);
+  if (lkId === "me") { delete pr.bgType; delete pr.bgC1; delete pr.bgC2; delete pr.bgAlpha; }
+  S.presets.push(pr); if (save()) toast(`「${pr.name}」として保存したよ`); renderLook();
 });
 
 /* ================= 全画面ビューア ================= */

@@ -120,6 +120,13 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .bigplay span{width:64px;height:64px;border-radius:50%;background:var(--overlay);display:grid;place-items:center}
 .bigplay svg{width:28px;height:28px;fill:#fff;margin-left:4px}
 .is-playing .bigplay{opacity:0}
+.mark{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;z-index:2;opacity:0;transition:opacity .15s}
+.mark.on{opacity:1}
+.mark span{width:68px;height:68px;border-radius:50%;background:var(--overlay);display:grid;place-items:center}
+.mark svg{width:30px;height:30px;fill:#fff}
+.rate-badge{position:absolute;top:10px;left:50%;transform:translateX(-50%);z-index:3;background:var(--overlay);color:#fff;font-size:12px;font-weight:800;padding:4px 12px;border-radius:999px;white-space:nowrap;pointer-events:none}
+.rate-badge.locked{background:var(--accent)}
+.media{-webkit-touch-callout:none;-webkit-user-select:none;user-select:none}
 .progress{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.2)}
 .progress i{display:block;height:100%;width:0;background:var(--accent)}
 
@@ -235,7 +242,7 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
   .nav .label,.nav .nav-label,.nav .count,.brand .label{display:none}
   .nav-item{justify-content:center}
   .nav .btn-primary{padding:12px;font-size:0}
-  .nav .btn-primary::before{content:"▶";font-size:16px}
+  .nav .btn-primary::before{content:"＋";font-size:20px}
 }
 @media (max-width:960px){
   .app{grid-template-columns:88px minmax(0,1fr)}
@@ -260,6 +267,31 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
   .composer{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
 }
 .side-close{display:none}
+.fab,.compose-backdrop{display:none}
+.head-avatar{border:0;background:var(--accent);cursor:pointer;width:32px;height:32px;font-size:13px}
+@keyframes slideL{from{transform:translateX(40px);opacity:.3}to{transform:none;opacity:1}}
+@keyframes slideR{from{transform:translateX(-40px);opacity:.3}to{transform:none;opacity:1}}
+#feed.slide-l{animation:slideL .22s ease-out}
+#feed.slide-r{animation:slideR .22s ease-out}
+.tabs{scroll-behavior:smooth}
+.tt-order{background:rgba(255,255,255,.14);color:#fff;border:0;border-radius:999px;padding:6px 10px;font-size:13px;font-weight:700;margin-left:auto;margin-right:10px}
+.tt-order option{color:#000}
+@media (max-width:640px){
+  .head{transition:transform .25s}
+  body.chrome-hidden .head{transform:translateY(-100%)}
+  .bottombar{transition:transform .25s}
+  body.chrome-hidden .bottombar{transform:translateY(100%)}
+  body.chrome-hidden .fab{opacity:.55}
+  .composer{display:none}
+  body.composing .composer{display:flex;position:fixed;left:0;right:0;top:0;z-index:86;background:var(--bg);border-bottom:1px solid var(--line);
+    padding-top:calc(16px + env(safe-area-inset-top,0px));box-shadow:0 12px 40px rgba(0,0,0,.25);border-radius:0 0 18px 18px}
+  .compose-backdrop:not([hidden]){display:block;position:fixed;inset:0;z-index:85;background:rgba(0,0,0,.4)}
+  .fab{display:grid;place-items:center;position:fixed;right:max(16px,env(safe-area-inset-right,0px));bottom:calc(72px + env(safe-area-inset-bottom,0px));z-index:26;
+    width:56px;height:56px;border-radius:50%;background:var(--accent);color:#fff;box-shadow:0 6px 18px rgba(0,0,0,.25);transition:opacity .25s}
+  .fab svg.i{width:26px;height:26px;stroke-width:2.4}
+  .bottombar button{font-size:0;padding:8px 18px}
+  .head-top{padding:8px 16px 0}
+}
 /* 再投稿・並べ替え */
 .rp{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:13px;font-weight:700;margin:-2px 0 4px}
 .post-actions{max-width:480px}
@@ -331,6 +363,11 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .v-nav.prev{left:max(12px,env(safe-area-inset-left,0px))}
 .v-nav.next{right:max(12px,env(safe-area-inset-right,0px))}
 .v-nav:disabled{opacity:.25;cursor:default}
+.v-chip{border:1px solid rgba(255,255,255,.35);color:#fff;border-radius:999px;padding:6px 12px;font-size:12px;font-weight:700;white-space:nowrap}
+.v-chip:hover{background:rgba(255,255,255,.14)}
+.v-timer{flex:1;max-width:240px;height:3px;background:rgba(255,255,255,.2);border-radius:2px;overflow:hidden;margin:0 12px}
+.v-timer i{display:block;height:100%;width:0;background:#fff}
+@keyframes vtimer{from{width:0}to{width:100%}}
 .v-cap{padding:10px max(16px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));font-size:14px;opacity:.9;white-space:pre-wrap;text-align:center}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
@@ -342,18 +379,17 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
     <div id="navList"></div>
     <div class="nav-spacer"></div>
     <button class="nav-item" id="navManage"><svg class="i"><use href="#i-sliders"/></svg><span class="label">タイムライン管理</span></button>
+    <button class="nav-item" id="navTT"><svg class="i"><use href="#i-film"/></svg><span class="label">縦スワイプで見る</span></button>
     <button class="nav-item" id="navCenter"><svg class="i"><use href="#i-target"/></svg><span class="label">中央ラインを表示</span></button>
-    <button class="btn-primary" id="navTT">縦スワイプで見る</button>
+    <button class="btn-primary" id="navPost">ツイートする</button>
   </nav>
 
   <main class="main" id="main">
     <div class="head">
       <div class="head-top">
-        <div class="brand" style="padding:0"><div class="brand-mark">TL</div></div>
-        <div style="display:flex;gap:8px">
-          <button class="btn-ghost" id="mManage">管理</button>
-          <button class="btn-ghost" id="mTT">縦スワイプ</button>
-        </div>
+        <button class="avatar head-avatar" id="mManage" aria-label="タイムライン管理と設定">私</button>
+        <div class="brand-mark" aria-hidden="true">TL</div>
+        <button class="icon-btn" id="mTT" aria-label="縦スワイプで見る" style="color:var(--fg)"><svg class="i" style="width:22px;height:22px"><use href="#i-film"/></svg></button>
       </div>
       <div class="tabs" id="tabs" role="tablist"></div>
     </div>
@@ -404,7 +440,11 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
       <div class="toggle" id="previewCustomRow" hidden><span>長さを指定</span>
         <span style="display:flex;align-items:center;gap:4px"><input type="number" id="optPrevMin" class="sel" min="0" max="60" step="1" style="width:64px" aria-label="分">分
         <input type="number" id="optPrevSec" class="sel" min="0" max="59" step="5" style="width:64px" aria-label="秒">秒</span></div>
-      <p>全画面表示では最後まで再生します。ブラウザの決まりで、音声は画面を1回タップしてから出るようになります。</p>
+      <p>全画面表示も同じ長さまで再生します。ブラウザの決まりで、音声は画面を1回タップしてから出るようになります。</p>
+      <label class="toggle" for="optFullEnd">全画面で見終わったら
+        <select id="optFullEnd" class="sel"><option value="loop">もう一度（ループ）</option><option value="next">次の動画へ</option></select></label>
+      <label class="toggle">画像の全画面は自動で次へ <span class="switch"><input type="checkbox" id="optSlide"><span></span></span></label>
+      <div class="toggle" id="slideSecRow"><span>次へ進むまで</span><span style="display:flex;align-items:center;gap:4px"><input type="number" id="optSlideSec" class="sel" min="2" max="600" step="1" style="width:72px" aria-label="秒数">秒</span></div>
       <label class="toggle">ダークモード <span class="switch"><input type="checkbox" id="optDark"><span></span></span></label>
     </section>
     <section class="card">
@@ -446,21 +486,23 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 <div class="tt" id="tt" aria-label="縦スワイプ表示">
   <div class="tt-top">
     <div class="tt-tabs" id="ttTabs"></div>
+    <select id="ttOrder" class="tt-order" aria-label="流れる順番（このタイムラインだけ）"><option value="new">新しい順</option><option value="old">古い順</option><option value="random">ランダム</option><option value="popular">人気順</option></select>
     <button class="tt-close" id="ttClose" aria-label="閉じる"><svg class="i"><use href="#i-x"/></svg></button>
   </div>
   <div class="tt-scroll" id="ttScroll"></div>
 </div>
 
+<button class="fab" id="fab" aria-label="ツイートする"><svg class="i"><use href="#i-plus"/></svg></button>
+<div class="compose-backdrop" id="composeBackdrop" hidden></div>
 <nav class="bottombar" aria-label="下部メニュー">
   <button id="bHome"><svg class="i"><use href="#i-home"/></svg>ホーム</button>
   <button id="bTT"><svg class="i"><use href="#i-film"/></svg>縦スワイプ</button>
-  <button id="bPost"><svg class="i"><use href="#i-plus"/></svg>ツイート</button>
   <button id="bManage"><svg class="i"><use href="#i-sliders"/></svg>管理</button>
 </nav>
 
 <div class="viewer" id="viewer" hidden aria-label="全画面表示">
-  <div class="v-top"><span id="vCount"></span>
-    <div class="grp"><button class="v-btn" id="vFull" aria-label="ブラウザの全画面"><svg class="i"><use href="#i-expand"/></svg></button><button class="v-btn" id="vClose" aria-label="閉じる"><svg class="i"><use href="#i-x"/></svg></button></div></div>
+  <div class="v-top"><span id="vCount"></span><div class="v-timer" id="vTimer" hidden><i></i></div>
+    <div class="grp"><button class="v-chip" id="vEnd" title="見終わったときの動き"></button><button class="v-btn" id="vFull" aria-label="ブラウザの全画面"><svg class="i"><use href="#i-expand"/></svg></button><button class="v-btn" id="vClose" aria-label="閉じる"><svg class="i"><use href="#i-x"/></svg></button></div></div>
   <div class="v-stage" id="vStage"></div>
   <button class="v-btn v-nav prev" id="vPrev" aria-label="前へ"><svg class="i"><use href="#i-left"/></svg></button>
   <button class="v-btn v-nav next" id="vNext" aria-label="次へ"><svg class="i"><use href="#i-right"/></svg></button>
@@ -582,7 +624,7 @@ function makeFakeVideo(seed, vertical, title, dur = 15) {
     g.fillText("サンプル動画（試作用）", w / 2, h / 2 + Math.min(w, h) / 10); g.globalAlpha = 1; g.textAlign = "left";
   }
   draw();
-  return { el: c, dur, draw, get t() { return t; }, step(dt) { t = (t + dt) % dur; draw(); }, seek(x) { t = x; draw(); } };
+  return { el: c, dur, draw, get t() { return t; }, step(dt) { t = Math.min(dur, t + dt); draw(); }, seek(x) { t = x; draw(); } };
 }
 const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
 
@@ -616,7 +658,7 @@ let S;
 try { S = JSON.parse(localStorage.getItem(KEY)); } catch { S = null; }
 if (!S || !Array.isArray(S.timelines) || !S.timelines.length) S = seed();
 S.opts ||= { center: false, auto: true };
-S.opts.sound ??= true; S.opts.preview ??= 120; S.opts.auto ??= true; S.opts.wifiOnly ??= true; S.opts.strictNet ??= false; S.opts.lazy ??= true;
+S.opts.sound ??= true; S.opts.preview ??= 120; S.opts.auto ??= true; S.opts.wifiOnly ??= true; S.opts.strictNet ??= false; S.opts.lazy ??= true; S.opts.fullEnd ??= "loop"; S.opts.slideAuto ??= true; S.opts.slideSec ??= 10;
 const fileUrls = new Map(); // 手元から追加したファイル（IndexedDB から復元）
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} }
 /* 手元ファイルの保存先: IndexedDB（ブラウザ内） */
@@ -681,7 +723,9 @@ function setSoundAll(on) {
 document.addEventListener("click", e => { const b = e.target.closest("[data-snd]"); if (!b) return; e.stopPropagation(); e.preventDefault(); AudioKit.get(); setSoundAll(!S.opts.sound); toast(S.opts.sound ? "音声オン" : "音声オフ"); }, true);
 
 /* ================= メディア要素の生成 ================= */
-const chromeHTML = () => `<div class="bigplay"><span><svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg></span></div><span class="play-state">停止中</span><span class="badge">0:00</span><div class="seek" role="slider" tabindex="0" aria-label="再生位置" aria-valuemin="0"><div class="seek-track"><i></i></div></div>${sndBtn()}`;
+const PLAY_SVG = `<svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>`;
+const PAUSE_SVG = `<svg viewBox="0 0 24 24"><path d="M6 4h4v16H6zM14 4h4v16h-4z"/></svg>`;
+const chromeHTML = () => `<div class="mark" aria-hidden="true"><span></span></div><span class="rate-badge" hidden>2倍速 ▶▶</span><span class="play-state">停止中</span><span class="badge">0:00</span><div class="seek" role="slider" tabindex="0" aria-label="再生位置" aria-valuemin="0"><div class="seek-track"><i></i></div></div>${sndBtn()}`;
 function mediaChrome(vertical) {
   const w = document.createElement("div"); w.className = "media" + (vertical ? " vertical" : "");
   w.innerHTML = chromeHTML();
@@ -713,14 +757,70 @@ function attachSeek(w, getSpan, getT, seekTo) {
     seekTo(Math.max(0, Math.min(getSpan() - 0.5, getT() + (ev.key === "ArrowRight" ? 5 : -5))));
   });
 }
+/* 再生/停止マーク: 再生は0.8秒だけ、停止中のマークは3秒で消える（動画の外をタップしてもすぐ消える） */
+const MARK_MS = 800, PAUSE_MARK_MS = 3000;
+function showMark(w, kind) {
+  const m = w.querySelector(".mark"); if (!m) return;
+  m.querySelector("span").innerHTML = kind === "pause" ? PLAY_SVG : PAUSE_SVG; // 止めたら「再生できるよ」の▶、再生したら一瞬だけ‖
+  m.classList.remove("on"); void m.offsetWidth; m.classList.add("on");
+  clearTimeout(m._t); m._t = setTimeout(() => m.classList.remove("on"), kind === "pause" ? PAUSE_MARK_MS : MARK_MS);
+}
+function hideMarks(except) { document.querySelectorAll(".mark.on").forEach(m => { if (!except || !except.contains(m)) { clearTimeout(m._t); m.classList.remove("on"); } }); }
+/* 倍速: 長押しで2倍、そのまま下へスワイプで固定（もう一度長押しで解除） */
+function setRateUI(w, pl, rate, locked) {
+  pl.rate = rate; pl.rateLocked = !!locked; pl.setRate?.(rate);
+  const b = w.querySelector(".rate-badge"); if (!b) return;
+  b.hidden = rate === 1; b.textContent = locked ? "2倍速で固定中 ・ 長押しで解除" : "2倍速 ▶▶ ・ 下にスワイプで固定";
+  b.classList.toggle("locked", !!locked);
+}
+const LONG_MS = 450, LOCK_DY = 60;
+let press = null;
+document.addEventListener("pointerdown", e => {
+  const w = e.target.closest && e.target.closest(".media"); if (!w) { hideMarks(); return; }
+  if (e.target.closest("button, a, .seek, [data-snd], [data-act]")) return;
+  hideMarks(w);
+  const pl = players.get(w); if (!pl || !pl.setRate) return;
+  press = { w, pl, x: e.clientX, y: e.clientY, long: false, id: e.pointerId };
+  press.t = setTimeout(() => {
+    if (!press) return; press.long = true;
+    if (!pl.playing) { players.forEach(o => { if (o !== pl && o.playing) o.pause(); }); pl.play(); }
+    if (pl.rateLocked) { setRateUI(w, pl, 1, false); press.unlocked = true; toast("等速に戻したよ"); }
+    else setRateUI(w, pl, 2, false);
+    w.classList.add("pressing");
+  }, LONG_MS);
+}, true);
+document.addEventListener("pointermove", e => {
+  if (!press || e.pointerId !== press.id) return;
+  const dx = e.clientX - press.x, dy = e.clientY - press.y;
+  if (!press.long) { if (Math.hypot(dx, dy) > 12) { clearTimeout(press.t); press = null; } return; }
+  if (!press.unlocked && dy > LOCK_DY && !press.pl.rateLocked) { setRateUI(press.w, press.pl, 2, true); toast("2倍速で固定したよ"); }
+}, true);
+function endPress(e) {
+  if (!press || (e && e.pointerId !== press.id)) return;
+  clearTimeout(press.t);
+  if (press.long) {
+    press.w.classList.remove("pressing");
+    if (!press.pl.rateLocked && press.pl.rate !== 1) setRateUI(press.w, press.pl, 1, false);
+    press.w._suppressClick = Date.now();
+  }
+  press = null;
+}
+document.addEventListener("pointerup", endPress, true);
+document.addEventListener("pointercancel", endPress, true);
+// 長押し中はページがスクロールしないように（下スワイプを倍速固定に使うため）
+document.addEventListener("touchmove", e => { if (press && press.long) e.preventDefault(); }, { passive: false });
+document.addEventListener("contextmenu", e => { if (e.target.closest && e.target.closest(".media")) e.preventDefault(); });
 /* 動画をタップ → 再生/一時停止（埋め込みの画面には触らせないので、別タブも開かない） */
 document.addEventListener("click", e => {
   const m = e.target.closest && e.target.closest(".media"); if (!m) return;
   if (e.target.closest("button, a, .seek, [data-snd], [data-act]")) return;
+  if (m._suppressClick && Date.now() - m._suppressClick < 400) return;
   const pl = players.get(m); if (!pl) return;
-  if (pl.playing) pl.pause();
-  else { players.forEach(o => { if (o !== pl && o.playing) o.pause(); }); AudioKit.get(); pl.play(); }
+  if (pl.playing) { pl.pause(); pl.userPaused = true; showMark(m, "pause"); }
+  else { players.forEach(o => { if (o !== pl && o.playing) o.pause(); }); AudioKit.get(); pl.userPaused = false; pl.play(); showMark(m, "play"); }
 });
+/* 再生する長さの終わりに来たとき: onEnd があれば任せる（全画面の「次の動画へ」など）。なければ頭からループ */
+function reachedEnd(pl, restart) { if (pl.onEnd && pl.onEnd()) return; restart(); }
 /* サンプル動画の音: 再生中だけ小さく鳴るメロディ（WebAudio） */
 function toneVoice(seed) {
   let osc = null, gain = null;
@@ -745,13 +845,15 @@ function buildMedia(p, mode = "feed") {
     w.prepend(v.el); const upd = wireBadges(w, () => v.t, () => v.dur, lim); upd();
     attachSeek(w, () => spanOf(v.dur, lim), () => v.t, sec => { v.seek(sec); upd(); });
     const voice = toneVoice(m.seed);
-    players.set(w, {
-      playing: false,
+    const pl = {
+      playing: false, rate: 1,
       play() { this.playing = true; w.classList.add("is-playing"); if (S.opts.sound) voice.start(); upd(); },
       pause() { this.playing = false; w.classList.remove("is-playing"); voice.stop(); upd(); },
       setSound(on) { if (!this.playing) return; on ? voice.start() : voice.stop(); },
-      tick(dt) { v.step(dt); if (v.t >= Math.min(lim, v.dur) - 0.001) v.seek(0); voice.at(v.t); upd(); }
-    });
+      setRate(r) { this.rate = r; },
+      tick(dt) { v.step(dt * this.rate); if (v.t >= Math.min(lim, v.dur) - 0.001) reachedEnd(this, () => v.seek(0)); voice.at(v.t); upd(); }
+    };
+    players.set(w, pl);
     return { el: w, playable: true };
   }
   if (m.kind === "file-video" || m.kind === "url-video") {
@@ -761,8 +863,9 @@ function buildMedia(p, mode = "feed") {
     w.prepend(vid); const upd = wireBadges(w, () => vid.currentTime || 0, () => vid.duration, lim);
     attachSeek(w, () => spanOf(vid.duration, lim), () => vid.currentTime || 0, sec => { try { vid.currentTime = sec; } catch {} upd(); });
     vid.addEventListener("loadedmetadata", () => { if (vid.videoHeight > vid.videoWidth) w.classList.add("vertical"); upd(); });
-    vid.addEventListener("timeupdate", () => { if (vid.currentTime >= lim) vid.currentTime = 0; upd(); });
-    vid.addEventListener("ended", () => { vid.currentTime = 0; if (players.get(w)?.playing) vid.play().catch(() => {}); });
+    const restart = () => { try { vid.currentTime = 0; } catch {} if (players.get(w)?.playing) vid.play().catch(() => {}); };
+    vid.addEventListener("timeupdate", () => { if (vid.currentTime >= lim) reachedEnd(players.get(w), restart); upd(); });
+    vid.addEventListener("ended", () => reachedEnd(players.get(w), restart));
     const tryPlay = () => {
       vid.muted = !S.opts.sound;
       vid.play().catch(() => { if (!vid.muted) { vid.muted = true; soundHint(); vid.play().catch(() => {}); } });
@@ -771,6 +874,7 @@ function buildMedia(p, mode = "feed") {
       playing: false,
       play() { this.playing = true; w.classList.add("is-playing"); tryPlay(); upd(); },
       pause() { this.playing = false; w.classList.remove("is-playing"); vid.pause(); upd(); },
+      rate: 1, setRate(r) { this.rate = r; try { vid.playbackRate = r; } catch {} },
       setSound(on) { vid.muted = !on; if (this.playing && on) vid.play().catch(() => { vid.muted = true; soundHint(); }); }
     });
     return { el: w, playable: true };
@@ -824,26 +928,50 @@ addEventListener("message", ev => {
   if (d && typeof d === "object") c.onMsg(d);
 });
 let ytSeq = 0;
-function ytController(ifr, lim, onInfo = () => {}) {
-  const id = ++ytSeq; let ready = false, wantPlay = false, info = {}, timer = 0;
+function ytController(ifr, lim, onInfo = () => {}, onLimit = () => false) {
+  // 確実に再生するために:
+  //  ・まず「音なし」で再生を始める（ブラウザは音ありの自動再生を止めることがあるため）
+  //  ・再生が始まったのを確かめてから、音声オンの設定なら音を出す
+  //  ・命令してから1.5秒たっても再生が始まらなければ、もう一度送る（最大数回）
+  const id = ++ytSeq; let ready = false, wantPlay = false, info = {}, timer = 0, rate = 1, guard = 0, tries = 0, lastLoop = 0;
   const send = (func, args = []) => { try { ifr.contentWindow.postMessage(JSON.stringify({ event: "command", func, args, id, channel: "widget" }), "*"); } catch {} };
-  const apply = () => { if (!ready) return; send(S.opts.sound ? "unMute" : "mute"); send(wantPlay ? "playVideo" : "pauseVideo"); };
   const listen = () => { try { ifr.contentWindow.postMessage(JSON.stringify({ event: "listening", id, channel: "widget" }), "*"); } catch {} };
+  const canSound = () => S.opts.sound && (!navigator.userActivation || navigator.userActivation.hasBeenActive);
+  const playing = () => info.playerState === 1;
+  function apply() {
+    if (!ready) return;
+    clearTimeout(guard);
+    if (!wantPlay) { send("pauseVideo"); return; }
+    if (!playing()) send("mute");
+    send("setPlaybackRate", [rate]);
+    send("playVideo");
+    if (playing()) send(canSound() ? "unMute" : "mute");
+    guard = setTimeout(() => { if (wantPlay && !playing() && tries++ < 4) apply(); }, 1500);
+  }
+  function loopToStart() {
+    const now = Date.now(); if (now - lastLoop < 1500) return; lastLoop = now;
+    if (onLimit()) return;
+    send("seekTo", [0, true]); send("playVideo"); info.currentTime = 0;
+  }
   ifr.addEventListener("load", () => {
     if (!ifr.src || ifr.src === "about:blank") return;
-    ready = false; info = {};
+    ready = false; info = {}; tries = 0;
     ytByWin.set(ifr.contentWindow, c);
     clearInterval(timer); let n = 0; timer = setInterval(() => { if (ready || ++n > 40) return clearInterval(timer); listen(); }, 250); listen();
   });
   const c = {
     onMsg(d) {
       if (!ready && (d.event === "onReady" || d.event === "initialDelivery" || d.event === "infoDelivery")) { ready = true; apply(); }
+      const prev = info.playerState;
       if (d.info && typeof d.info === "object") { Object.assign(info, d.info); onInfo(info); }
-      // 冒頭○分まで来たら頭に戻す（ループ）。終わった動画も再生中なら頭から
-      if (wantPlay && ((isFinite(lim) && info.currentTime >= lim) || info.playerState === 0)) { send("seekTo", [0, true]); send("playVideo"); }
+      if (d.event === "onStateChange" && typeof d.info === "number") info.playerState = d.info;
+      if (wantPlay && prev !== 1 && info.playerState === 1) { tries = 0; send(canSound() ? "unMute" : "mute"); }
+      // 再生する長さの終わり、または動画の最後まで来たら → ループ（全画面の「次へ」設定ならそちら）
+      if (wantPlay && ((isFinite(lim) && info.currentTime >= lim - 0.25) || info.playerState === 0)) loopToStart();
     },
-    want(play) { wantPlay = play; apply(); },
-    sound() { apply(); },
+    want(play) { wantPlay = play; tries = 0; apply(); },
+    sound() { if (ready && playing()) send(canSound() ? "unMute" : "mute"); },
+    rate(r) { rate = r; if (ready) send("setPlaybackRate", [r]); },
     seek(sec) { info.currentTime = sec; onInfo(info); if (ready) send("seekTo", [sec, true]); },
     get info() { return info; }
   };
@@ -881,17 +1009,20 @@ function buildEmbed(p, mode = "feed") {
       const unload = () => { if (ifr.getAttribute("src")) { ifr.removeAttribute("src"); try { ytByWin.delete(ifr.contentWindow); } catch {} w.classList.remove("loaded"); } };
       if (mode === "full") load(); else whenNear(w, load, unload);
       let upd = () => {};
-      const ctl = isTT ? ttController(ifr) : ytController(ifr, lim, () => upd());
+      let pl = null;
+      const ctl = isTT ? ttController(ifr) : ytController(ifr, lim, () => upd(), () => !!(pl && pl.onEnd && pl.onEnd()));
       if (!isTT) {
         upd = wireBadges(w, () => ctl.info.currentTime || 0, () => ctl.info.duration || 0, lim); upd();
         attachSeek(w, () => spanOf(ctl.info.duration || 0, lim), () => ctl.info.currentTime || 0, sec => ctl.seek(sec));
       }
-      players.set(w, {
-        playing: false,
+      pl = {
+        playing: false, rate: 1,
         play() { this.playing = true; w.classList.add("is-playing"); ctl.want(true); upd(); },
         pause() { this.playing = false; w.classList.remove("is-playing"); ctl.want(false); upd(); },
-        setSound(on) { ctl.sound(on); }
-      });
+        setSound(on) { ctl.sound(on); },
+        ...(isTT ? {} : { setRate(r) { this.rate = r; ctl.rate(r); } })
+      };
+      players.set(w, pl);
       return { el: w, playable: true };
     }
     w.innerHTML = `<div class="yt-frame"><div class="yt-logo"><span style="${e.kind === "tiktok" ? "background:#111;border:2px solid #25f4ee" : ""}"><svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg></span></div>
@@ -932,6 +1063,29 @@ function buildEmbed(p, mode = "feed") {
 }
 const safeDecode = s => { try { return decodeURIComponent(s); } catch { return s; } };
 
+/* ================= ハート（累積式・3日に1回） =================
+   押すたびに数が増える。1回押したら3日たつまで次は押せない。取り消しはしない */
+const HEART_COOLDOWN = 3 * 24 * 3600 * 1000;
+function heartState(p) {
+  const last = p.lastLikedAt || 0, left = last + HEART_COOLDOWN - Date.now();
+  return { cooling: left > 0, left };
+}
+const fmtLeft = ms => { const h = Math.ceil(ms / 3600000); return h >= 24 ? `${Math.floor(h / 24)}日${h % 24 ? `${h % 24}時間` : ""}` : `${h}時間`; };
+function pressHeart(p) {
+  const st = heartState(p);
+  if (st.cooling) { toast(`次のハートはあと${fmtLeft(st.left)}で押せるよ`); return false; }
+  p.likes = (p.likes || 0) + 1; p.lastLikedAt = Date.now(); delete p.liked; save();
+  toast(`ハート ${p.likes} 個目！ 次は3日後に押せるよ`); return true;
+}
+function heartBtn(p) {
+  const st = heartState(p);
+  return `<button class="act like ${st.cooling ? "on" : ""}" data-act="like" aria-label="ハート（${p.likes || 0}）" title="${st.cooling ? `あと${fmtLeft(st.left)}で押せる` : "ハートを押す"}"><svg class="i" style="${st.cooling ? "fill:currentColor" : ""}"><use href="#i-heart"/></svg>${p.likes || ""}</button>`;
+}
+function ttHeart(p) {
+  const st = heartState(p);
+  return `<button data-like="${p.id}" class="${st.cooling ? "on" : ""}" aria-label="ハート（${p.likes || 0}）"><span class="circle"><svg class="i" style="${st.cooling ? "fill:currentColor" : ""}"><use href="#i-heart"/></svg></span>${p.likes || 0}</button>`;
+}
+
 /* ================= 描画 ================= */
 const feedAP = createAutoplay(null);
 let ttAP = null;
@@ -953,7 +1107,7 @@ function postCard(p) {
       ${p.text ? `<div class="post-text">${esc(p.text)}</div>` : ""}
       <div class="slot"></div>
       <div class="post-actions">
-        <button class="act like ${p.liked ? "on" : ""}" data-act="like" aria-label="いいね"><svg class="i" style="${p.liked ? "fill:currentColor" : ""}"><use href="#i-heart"/></svg>${p.likes || ""}</button>
+        ${heartBtn(p)}
         <button class="act rt" data-act="top" title="再投稿して一番上へ" aria-label="再投稿して一番上へ"><svg class="i"><use href="#i-repost"/></svg></button>
         <span class="order-wrap"><button class="act" data-act="order" title="表示順を変える" aria-label="表示順を変える" aria-haspopup="true"><svg class="i"><use href="#i-sort"/></svg></button></span>
         <label class="act" title="別のタイムラインへ移動"><svg class="i"><use href="#i-move"/></svg><select data-act="move" aria-label="移動先">${S.timelines.map(x => `<option value="${x.id}" ${x.id === p.tl ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></label>
@@ -1003,7 +1157,37 @@ function renderAll() { renderTabs(); renderFeed(); renderManage(); save(); }
 /* ================= 操作 ================= */
 let tt = null;
 function toast(msg) { const el = $("#toast"); el.textContent = msg; el.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("show"), 1800); }
-function setActive(id) { S.active = id; renderTabs(); renderFeed(); save(); window.scrollTo({ top: 0 }); }
+function setActive(id, dir = 0) {
+  S.active = id; renderTabs(); renderFeed(); save(); window.scrollTo({ top: 0 });
+  document.querySelector(".tab.on")?.scrollIntoView({ inline: "center", block: "nearest" });
+  if (dir) { const f = $("#feed"); f.classList.remove("slide-l", "slide-r"); void f.offsetWidth; f.classList.add(dir > 0 ? "slide-l" : "slide-r"); }
+}
+/* 左右スワイプでタイムラインを切り替え（Xのタブと同じ）。左へ = 次、右へ = 前 */
+function stepTimeline(d) {
+  const i = S.timelines.findIndex(t => t.id === S.active), j = i + d;
+  if (j < 0 || j >= S.timelines.length) return false;
+  setActive(S.timelines[j].id, d); return true;
+}
+(() => {
+  let sx = 0, sy = 0, t0 = 0, ok = false;
+  const main = $("#main");
+  main.addEventListener("touchstart", e => {
+    const t = e.touches[0]; ok = e.touches.length === 1 && !e.target.closest(".seek, .tabs, .composer, input, textarea, select");
+    sx = t.clientX; sy = t.clientY; t0 = Date.now();
+  }, { passive: true });
+  main.addEventListener("touchend", e => {
+    if (!ok || (press && press.long)) return; ok = false;
+    const t = e.changedTouches[0], dx = t.clientX - sx, dy = t.clientY - sy;
+    if (Math.abs(dx) > 70 && Math.abs(dx) > Math.abs(dy) * 1.8 && Date.now() - t0 < 700) stepTimeline(dx < 0 ? 1 : -1);
+  }, { passive: true });
+  // パソコンのトラックパッドの横スクロールでも切り替え
+  let acc = 0, lock = 0;
+  main.addEventListener("wheel", e => {
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY) || e.target.closest(".tabs")) return;
+    if (Date.now() < lock) return;
+    acc += e.deltaX; if (Math.abs(acc) > 140) { stepTimeline(acc > 0 ? 1 : -1); acc = 0; lock = Date.now() + 700; }
+  }, { passive: true });
+})();
 document.addEventListener("click", e => {
   const tab = e.target.closest("[data-tl].tab, .nav-item[data-tl]"); if (tab) return setActive(tab.dataset.tl);
 });
@@ -1031,7 +1215,7 @@ $("#composer").addEventListener("submit", e => {
     p.id = id; p.media = { kind: pendingFile.type.startsWith("video") ? "file-video" : "file-image", title: pendingFile.name };
   } else if (url) p.embed = parseUrl(url);
   if (!p.text && !p.media && !p.embed) return;
-  addPost(p); compText.value = ""; compText.style.height = ""; pendingFile = null; $("#compFile").value = ""; updateDetect();
+  addPost(p); closeCompose(); compText.value = ""; compText.style.height = ""; pendingFile = null; $("#compFile").value = ""; updateDetect();
 });
 function addPost(p) {
   const tl = $("#compTl").value || S.active;
@@ -1072,7 +1256,7 @@ $("#feed").addEventListener("click", e => {
     else { const before = document.querySelector(`.post[data-id="${id}"]`).getBoundingClientRect().top; renderFeed(); const el = document.querySelector(`.post[data-id="${id}"]`); scrollBy(0, el.getBoundingClientRect().top - before); }
     return;
   }
-  if (act === "like") { p.liked = !p.liked; p.likes = Math.max(0, (p.likes || 0) + (p.liked ? 1 : -1)); renderFeedKeepScroll(); }
+  if (act === "like") { pressHeart(p); btn.outerHTML = heartBtn(p); }
   if (btn.dataset.act === "del") { forgetFiles([p]); S.posts = S.posts.filter(x => x.id !== id); toast("ツイートを削除しました"); renderFeedKeepScroll(); renderTabs(); }
   save();
 });
@@ -1128,7 +1312,7 @@ $("#addForm").addEventListener("submit", e => {
 /* 設定 */
 function applyOpts() {
   document.body.classList.toggle("show-center", !!S.opts.center);
-  $("#optCenter").checked = !!S.opts.center; $("#optAuto").checked = !!S.opts.auto; $("#optWifi").checked = !!S.opts.wifiOnly; $("#optStrict").checked = !!S.opts.strictNet; $("#optLazy").checked = !!S.opts.lazy; $("#wifiRow").hidden = !S.opts.auto; $("#strictRow").hidden = !(S.opts.auto && S.opts.wifiOnly); $("#netNote").hidden = !(S.opts.auto && S.opts.wifiOnly); updateNetNote(); $("#optSound").checked = !!S.opts.sound; const presets = ["30", "60", "120", "300", "0"]; const pv = String(S.opts.preview);
+  $("#optCenter").checked = !!S.opts.center; $("#optAuto").checked = !!S.opts.auto; $("#optWifi").checked = !!S.opts.wifiOnly; $("#optStrict").checked = !!S.opts.strictNet; $("#optLazy").checked = !!S.opts.lazy; $("#optFullEnd").value = S.opts.fullEnd; $("#optSlide").checked = !!S.opts.slideAuto; $("#optSlideSec").value = S.opts.slideSec; $("#slideSecRow").hidden = !S.opts.slideAuto; $("#wifiRow").hidden = !S.opts.auto; $("#strictRow").hidden = !(S.opts.auto && S.opts.wifiOnly); $("#netNote").hidden = !(S.opts.auto && S.opts.wifiOnly); updateNetNote(); $("#optSound").checked = !!S.opts.sound; const presets = ["30", "60", "120", "300", "0"]; const pv = String(S.opts.preview);
   $("#optPreview").value = presets.includes(pv) && !S.opts.previewCustom ? pv : "custom";
   $("#previewCustomRow").hidden = $("#optPreview").value !== "custom";
   $("#optPrevMin").value = Math.floor(S.opts.preview / 60); $("#optPrevSec").value = S.opts.preview % 60;
@@ -1139,6 +1323,9 @@ $("#optCenter").addEventListener("change", e => { S.opts.center = e.target.check
 $("#navCenter").addEventListener("click", () => { S.opts.center = !S.opts.center; applyOpts(); save(); toast(S.opts.center ? "中央ラインを表示" : "中央ラインを非表示"); });
 $("#optAuto").addEventListener("change", e => { S.opts.auto = e.target.checked; save(); applyOpts(); feedAP.refresh(); toast(S.opts.auto ? "自動再生オン" : "自動再生オフ"); });
 $("#optWifi").addEventListener("change", e => { S.opts.wifiOnly = e.target.checked; save(); applyOpts(); feedAP.refresh(); toast(S.opts.wifiOnly ? "Wi-Fiのときだけ自動再生" : "回線に関係なく自動再生"); });
+$("#optFullEnd").addEventListener("change", e => { S.opts.fullEnd = e.target.value; save(); updateVEnd(); toast(S.opts.fullEnd === "next" ? "見終わったら次の動画へ" : "見終わったらもう一度"); });
+$("#optSlide").addEventListener("change", e => { S.opts.slideAuto = e.target.checked; save(); applyOpts(); toast(S.opts.slideAuto ? `画像は${S.opts.slideSec}秒で次へ` : "画像の自動送りオフ"); });
+$("#optSlideSec").addEventListener("change", e => { const v = Math.max(2, Math.min(600, Math.round(+e.target.value || 10))); S.opts.slideSec = v; e.target.value = v; save(); toast(`画像は${v}秒で次へ`); });
 $("#optLazy").addEventListener("change", e => { S.opts.lazy = e.target.checked; save(); renderFeedKeepScroll(); toast(S.opts.lazy ? "近づいてから読み込む" : "最初から全部読み込む"); });
 $("#optStrict").addEventListener("change", e => { S.opts.strictNet = e.target.checked; save(); updateNetNote(); feedAP.refresh(); });
 $("#optDark").addEventListener("change", e => { S.opts.dark = e.target.checked; applyOpts(); save(); });
@@ -1194,7 +1381,23 @@ function closeSide() { $("#side").classList.remove("open"); $("#backdrop").class
 ["#navManage", "#mManage", "#bManage"].forEach(s => $(s).addEventListener("click", () => { if (innerWidth <= 960) openSide(); else $("#addName").focus(); }));
 $("#sideClose").addEventListener("click", closeSide); $("#backdrop").addEventListener("click", closeSide);
 $("#bHome").addEventListener("click", () => scrollTo({ top: 0, behavior: "smooth" }));
-$("#bPost").addEventListener("click", () => { scrollTo({ top: 0 }); compText.focus(); });
+/* スマホ: 右下の＋で投稿シートを開く（X と同じ）。パソコン: 左の「ツイートする」で入力欄へ */
+function openCompose() {
+  if (innerWidth <= 640) { document.body.classList.add("composing"); $("#composeBackdrop").hidden = false; }
+  else scrollTo({ top: 0, behavior: "smooth" });
+  setTimeout(() => compText.focus(), 50);
+}
+function closeCompose() { document.body.classList.remove("composing"); $("#composeBackdrop").hidden = true; }
+$("#fab").addEventListener("click", openCompose); $("#navPost").addEventListener("click", openCompose);
+$("#composeBackdrop").addEventListener("click", closeCompose);
+document.addEventListener("keydown", e => { if (e.key === "Escape" && document.body.classList.contains("composing")) closeCompose(); });
+/* スマホ: 下へスクロールするとヘッダーと下のバーが隠れ、上へ戻すと出てくる（X と同じ） */
+(() => { let last = scrollY, raf = 0;
+  addEventListener("scroll", () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => {
+    const y = scrollY, d = y - last; if (Math.abs(d) < 6) return;
+    document.body.classList.toggle("chrome-hidden", d > 0 && y > 120); last = y;
+  }); }, { passive: true });
+})();
 
 /* ================= TikTok風 縦スワイプ ================= */
 function renderTT() {
@@ -1202,7 +1405,12 @@ function renderTT() {
   $("#ttTabs").innerHTML = S.timelines.map(t => `<button class="${t.id === S.active ? "on" : ""}" data-tt="${t.id}">${esc(t.name)}</button>`).join("");
   const sc = $("#ttScroll"); sc.innerHTML = ""; sc.scrollTop = 0;
   ttAP = createAutoplay(sc);
-  const list = postsOf(S.active).filter(p => p.media || (p.embed && ["youtube", "tiktok"].includes(p.embed.kind)));
+  const tl = tlById(S.active); $("#ttOrder").value = tl.ttOrder || "new";
+  let list = postsOf(S.active).filter(p => p.media || (p.embed && ["youtube", "tiktok"].includes(p.embed.kind)));
+  const order = tl.ttOrder || "new";
+  if (order === "old") list.reverse();
+  else if (order === "random") { for (let i = list.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [list[i], list[j]] = [list[j], list[i]]; } }
+  else if (order === "popular") list = list.map((p, i) => [p, i]).sort((a, b) => (b[0].likes || 0) - (a[0].likes || 0) || a[1] - b[1]).map(x => x[0]);
   if (!list.length) { sc.innerHTML = `<div class="tt-empty">このタイムラインには画像・動画の投稿がまだないよ</div>`; return; }
   list.forEach(p => {
     const t = tlById(p.tl); const item = document.createElement("section"); item.className = "tt-item";
@@ -1210,7 +1418,7 @@ function renderTT() {
     const el = built.playEl || built.el; if (built.playEl) built.el.querySelector(".note")?.remove();
     item.append(built.el);
     item.insertAdjacentHTML("beforeend", `<div class="tt-info"><b>@me · ${esc(t.name)}</b>${p.text ? `<p>${esc(p.text)}</p>` : ""}</div>
-      <div class="tt-rail"><button data-like="${p.id}" class="${p.liked ? "on" : ""}"><span class="circle"><svg class="i" style="${p.liked ? "fill:currentColor" : ""}"><use href="#i-heart"/></svg></span>${p.likes || 0}</button>
+      <div class="tt-rail">${ttHeart(p)}
       <button data-full="${p.id}"><span class="circle"><svg class="i"><use href="#i-expand"/></svg></span>全画面</button>
       ${p.embed ? `<a href="${esc(p.embed.url)}" target="_blank" rel="noopener" style="color:#fff;display:flex;flex-direction:column;align-items:center;gap:4px"><span class="circle"><svg class="i"><use href="#i-link"/></svg></span>開く</a>` : ""}</div>`);
     sc.append(item); if (built.playable) ttAP.observe(el);
@@ -1221,23 +1429,46 @@ function closeTT() { ttAP?.stop(); $("#tt").classList.remove("open"); document.b
 ["#navTT", "#mTT", "#bTT"].forEach(s => $(s).addEventListener("click", openTT));
 $("#ttClose").addEventListener("click", closeTT);
 document.addEventListener("keydown", e => { if (e.key === "Escape" && $("#tt").classList.contains("open")) closeTT(); });
+$("#ttOrder").addEventListener("change", e => { const tl = tlById(S.active); tl.ttOrder = e.target.value; save(); renderTT(); toast(`「${tl.name}」は${e.target.selectedOptions[0].textContent}で流すよ`); });
 $("#ttTabs").addEventListener("click", e => { const b = e.target.closest("[data-tt]"); if (!b) return; S.active = b.dataset.tt; save(); renderTT(); });
 $("#ttScroll").addEventListener("click", e => {
   const b = e.target.closest("[data-like]"); if (!b) return; const p = S.posts.find(x => x.id === b.dataset.like);
-  p.liked = !p.liked; p.likes = Math.max(0, (p.likes || 0) + (p.liked ? 1 : -1)); save();
-  b.classList.toggle("on", p.liked); b.lastChild.textContent = p.likes; b.querySelector("svg").style.fill = p.liked ? "currentColor" : "";
+  pressHeart(p); b.outerHTML = ttHeart(p);
 });
 
 /* ================= 全画面ビューア ================= */
-let vList = [], vIdx = 0, vFrom = "feed";
+let vList = [], vIdx = 0, vFrom = "feed", vSlideT = 0;
+const isVideoPost = p => !!((p.media && /video/.test(p.media.kind)) || (p.embed && ["youtube", "tiktok"].includes(p.embed.kind)) || (HOSTED && p.embed && p.embed.kind === "video-url"));
+function updateVEnd() { const b = $("#vEnd"); if (b) b.textContent = S.opts.fullEnd === "next" ? "見終わったら: 次へ" : "見終わったら: ループ"; }
+$("#vEnd").addEventListener("click", () => { S.opts.fullEnd = S.opts.fullEnd === "next" ? "loop" : "next"; save(); updateVEnd(); applyOpts(); });
+function stopSlide() { clearTimeout(vSlideT); const t = $("#vTimer"); t.hidden = true; t.querySelector("i").style.animation = "none"; }
+function startSlide() {
+  stopSlide(); if (!S.opts.slideAuto || vIdx >= vList.length - 1) return;
+  const t = $("#vTimer"), i = t.querySelector("i"); t.hidden = false;
+  i.style.animation = "none"; void i.offsetWidth; i.style.animation = `vtimer ${S.opts.slideSec}s linear forwards`;
+  vSlideT = setTimeout(() => vGo(1), S.opts.slideSec * 1000);
+}
 function vRender() {
-  const stage = $("#vStage");
+  const stage = $("#vStage"); stopSlide(); updateVEnd();
   [...players.keys()].forEach(k => { if (stage.contains(k)) { players.get(k).pause(); players.delete(k); } });
   stage.innerHTML = "";
   const p = vList[vIdx]; if (!p) return closeViewer();
   const built = p.media ? buildMedia({ ...p, media: { ...p.media } }, "full") : buildEmbed(p, "full");
   const el = built.playEl || built.el;
-  stage.append(el); if (built.playable) players.get(el)?.play();
+  stage.append(el);
+  if (built.playable) {
+    const pl = players.get(el);
+    if (pl) {
+      // 見終わったら: 「次の動画へ」設定なら、次の動画（画像は飛ばす）へ。なければループ
+      pl.onEnd = () => {
+        if (S.opts.fullEnd !== "next") return false;
+        const n = vList.findIndex((q, k) => k > vIdx && isVideoPost(q));
+        if (n < 0) return false;
+        setTimeout(() => { vIdx = n; vRender(); }, 0); return true;
+      };
+      pl.play();
+    }
+  } else if (p.media || (p.embed && p.embed.kind === "image-url")) startSlide();
   $("#vCount").textContent = `${vIdx + 1} / ${vList.length}`;
   $("#vCap").textContent = p.text || "";
   $("#vPrev").disabled = vIdx === 0; $("#vNext").disabled = vIdx === vList.length - 1;
@@ -1249,6 +1480,7 @@ function openViewer(id, from = "feed") {
 }
 function closeViewer() {
   const stage = $("#vStage"); [...players.keys()].forEach(k => { if (stage.contains(k)) { players.get(k).pause(); players.delete(k); } }); stage.innerHTML = "";
+  stopSlide();
   if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
   $("#viewer").hidden = true;
   if (vFrom === "feed") { document.body.style.overflow = ""; renderFeedKeepScroll(); } else renderTT();

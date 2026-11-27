@@ -206,7 +206,7 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 /* ---- TikTokモード ---- */
 .tt{position:fixed;inset:0;z-index:60;background:#000;display:none}
 .tt.open{display:block}
-.tt-scroll{height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none;overscroll-behavior:contain}
+.tt-scroll{height:100%;overflow-y:scroll;overflow-x:hidden;touch-action:pan-y;scroll-snap-type:y mandatory;scrollbar-width:none;overscroll-behavior:contain}
 .tt-scroll::-webkit-scrollbar{display:none}
 .tt-item{height:100%;scroll-snap-align:start;scroll-snap-stop:always;position:relative;display:grid;place-items:center;overflow:hidden}
 .tt-item .media{border:0;border-radius:0;width:100%;height:100%;max-width:min(100%,calc(100vh * 9 / 16 + 120px));background:#000}
@@ -224,7 +224,7 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .tt-rail .on .circle{color:var(--like)}
 .tt-rail svg.i{width:26px;height:26px}
 .tt-top{position:absolute;top:0;left:0;right:0;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:calc(10px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) 10px max(12px,env(safe-area-inset-left,0px));color:#fff;background:linear-gradient(rgba(0,0,0,.55),transparent)}
-.tt-tabs{display:flex;gap:16px;overflow-x:auto;scrollbar-width:none;font-weight:700}
+.tt-tabs{display:flex;gap:16px;overflow-x:auto;overflow-y:hidden;overscroll-behavior:contain;touch-action:pan-x;scrollbar-width:none;font-weight:700;min-width:0;flex:1 1 auto}.tt-tabs::-webkit-scrollbar{display:none}
 .tt-tabs button{color:rgba(255,255,255,.6);white-space:nowrap;padding:4px 0;position:relative}
 .tt-tabs button.on{color:#fff}
 .tt-tabs button.on::after{content:"";position:absolute;left:20%;right:20%;bottom:-2px;height:3px;border-radius:2px;background:#fff}
@@ -675,7 +675,8 @@ body.no-select,body.no-select *{user-select:none!important;-webkit-user-select:n
 .st-mhead{display:flex;justify-content:space-between;align-items:center;margin-top:10px}
 .st-tog{display:inline-flex;border:1px solid var(--line);border-radius:999px;overflow:hidden}
 .st-tog button{font-size:12px;padding:2px 10px;color:var(--muted)}.st-tog button.on{background:var(--accent);color:#fff}
-.sl-wrap{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:3}.sl-sheen{position:absolute;inset:0}
+.sl-wrap{position:absolute;inset:0;overflow:hidden;pointer-events:none;z-index:-1}.sl-sheen{position:absolute;top:-20%;bottom:-20%;left:0;-webkit-mask:linear-gradient(90deg,transparent,#000 35%,#000 65%,transparent);mask:linear-gradient(90deg,transparent,#000 35%,#000 65%,transparent)}
+.head{isolation:isolate}
 .sched-row{display:flex;flex-wrap:wrap;gap:6px 8px;align-items:center;margin-top:6px;padding:10px 12px;border-radius:12px;background:var(--bg-hover);font-size:13px}.sched-row[hidden]{display:none}
 .sched-row input{font:inherit;font-size:13px;border:1px solid var(--line);border-radius:8px;padding:3px 6px;background:var(--bg);color:var(--fg)}
 .sched-ex{flex-basis:100%;display:flex;flex-direction:column;gap:4px}.sched-ex span{font-size:12px;color:var(--muted)}
@@ -683,6 +684,14 @@ body.no-select,body.no-select *{user-select:none!important;-webkit-user-select:n
 .enc-row{display:flex;gap:6px;flex-wrap:wrap}.enc-row[hidden]{display:none}.enc-row input{flex:1;min-width:140px;border-radius:10px}
 .enc-ex{font-size:13px;border:1px solid var(--line);border-radius:12px;padding:8px 12px}.enc-ex summary{cursor:pointer;font-weight:700}
 .enc-ex ol{margin:8px 0;padding-left:20px;display:flex;flex-direction:column;gap:6px}.enc-ex p{margin:0;color:var(--muted)}
+
+/* ぷっくり浮き上がるメディア: 影を2段、ふちに細い光。再生中はもう少し浮く */
+:where(.post) :is(.media,.linkcard,.stcard){border-color:transparent;border-radius:18px;box-shadow:0 0 0 1px var(--pop-rim),0 1px 2px var(--pop-s1),0 10px 26px -10px var(--pop-s2);transition:box-shadow .5s cubic-bezier(.2,.8,.3,1),transform .5s cubic-bezier(.2,.8,.3,1)}
+:where(.post) .media::after{content:"";position:absolute;inset:0;border-radius:inherit;pointer-events:none;z-index:4;box-shadow:inset 0 1px 0 rgba(255,255,255,.28),inset 0 0 0 1px rgba(255,255,255,.1),inset 0 -24px 30px -24px rgba(0,0,0,.25)}
+:where(.post) .media.is-playing{transform:translateY(-2px);box-shadow:0 0 0 1px var(--pop-rim),0 2px 4px var(--pop-s1),0 18px 38px -12px var(--pop-s2),0 0 0 3px color-mix(in srgb,var(--accent) 22%,transparent)}
+:root{--pop-rim:rgba(15,20,25,.07);--pop-s1:rgba(15,20,25,.08);--pop-s2:rgba(15,20,25,.32)}
+:root[data-theme="dark"]{--pop-rim:rgba(255,255,255,.1);--pop-s1:rgba(0,0,0,.5);--pop-s2:rgba(0,0,0,.75)}
+@media (prefers-reduced-motion:reduce){:where(.post) .media.is-playing{transform:none}}
 /* ---- N案 ---- */
 .grid-view{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:3px}
 .grid-tile{position:relative;aspect-ratio:1;overflow:hidden;background:var(--bg-hover);border-radius:4px;padding:0}
@@ -742,7 +751,8 @@ body.no-select,body.no-select *{user-select:none!important;-webkit-user-select:n
 .rings-leg b{margin:0 2px 0 8px;font-variant-numeric:tabular-nums}
 .rings-leg input{width:38px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font:inherit;font-size:12px;padding:1px 3px}
 .head-top{position:relative}
-.av-ring{position:absolute;left:16px;top:50%;width:40px;height:40px;margin-top:-20px;margin-left:-2px;border-radius:50%;pointer-events:none;background:conic-gradient(#f91880 var(--f,0%),transparent 0);-webkit-mask:radial-gradient(circle,transparent 17px,#000 18px);mask:radial-gradient(circle,transparent 17px,#000 18px)}
+.av-ring{display:none}
+#mManage{position:relative;overflow:visible}#mManage::before{content:"";position:absolute;inset:-4px;border-radius:50%;pointer-events:none;background:conic-gradient(#f91880 var(--f,0%),transparent 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2.5px));mask:radial-gradient(farthest-side,transparent calc(100% - 3px),#000 calc(100% - 2.5px));transition:background .6s}
 /* ---- F案 ---- */
 #tabs{position:relative}
 #tabs.has-ink .tab.on::after{display:none}
@@ -2849,8 +2859,12 @@ function renderTT() {
 /* F11 縦スワイプ: マウスでも指に吸いつくようにドラッグ。半分を超えたら次へ、手前で離すとゴムみたいに戻る（指はもともとスクロールの吸いつき） */
 (() => { const sc = $("#ttScroll"); let sy = null, st = 0, dy = 0;
   sc.addEventListener("pointerdown", e => { if (e.pointerType !== "mouse" || e.button !== 0 || e.target.closest("button, a, .seek, .tt-rail")) return; sy = e.clientY; st = sc.scrollTop; dy = 0; });
-  addEventListener("pointermove", e => { if (sy == null) return; dy = e.clientY - sy; if (Math.abs(dy) > 6) { sc.style.scrollSnapType = "none"; sc.scrollTop = st - dy; } });
-  addEventListener("pointerup", () => { if (sy == null) return; sy = null; if (Math.abs(dy) <= 6) return;
+  let sx = 0, dx = 0;
+  sc.addEventListener("pointerdown", e => { if (e.pointerType === "mouse") { sx = e.clientX; dx = 0; } });
+  addEventListener("pointermove", e => { if (sy == null) return; dy = e.clientY - sy; dx = e.clientX - sx; if (Math.abs(dx) > Math.abs(dy)) return; if (Math.abs(dy) > 6) { sc.style.scrollSnapType = "none"; sc.scrollTop = st - dy; } });
+  addEventListener("pointerup", () => { if (sy == null) return; sy = null;
+    if (Math.abs(dx) > 80 && Math.abs(dx) > Math.abs(dy) * 1.6) { sc.scrollTop = st; sc.style.scrollSnapType = ""; sc._noClick = Date.now(); ttSwitch(dx < 0 ? 1 : -1); return; }
+    if (Math.abs(dy) <= 6) return;
     const H = sc.clientHeight, i0 = Math.round(st / H), i = Math.abs(dy) > H / 2 ? i0 + (dy < 0 ? 1 : -1) : i0, n = sc.children.length, to = Math.max(0, Math.min(n - 1, i)) * H;
     sc.scrollTo({ top: to, behavior: reduceMotion() ? "auto" : "smooth" }); setTimeout(() => { sc.style.scrollSnapType = ""; }, 450);
     sc._noClick = Date.now(); });
@@ -2862,7 +2876,22 @@ function closeTT() { ttAP?.stop(); $("#tt").classList.remove("open"); document.b
 $("#ttClose").addEventListener("click", closeTT);
 document.addEventListener("keydown", e => { if (e.key === "Escape" && $("#tt").classList.contains("open")) closeTT(); });
 $("#ttOrder").addEventListener("change", e => { const tl = tlById(S.active); tl.ttOrder = e.target.value; save(); renderTT(); toast(`「${tl.name}」は${e.target.selectedOptions[0].textContent}で流すよ`); });
-$("#ttTabs").addEventListener("click", e => { const b = e.target.closest("[data-tt]"); if (!b) return; S.active = b.dataset.tt; save(); renderTT(); });
+$("#ttTabs").addEventListener("click", e => { const b = e.target.closest("[data-tt]"); if (!b || b.dataset.tt === S.active) return; const L = orderedTLs(), i = L.findIndex(t => t.id === S.active), j = L.findIndex(t => t.id === b.dataset.tt); ttSwitch(j - i); });
+/* 縦スワイプ画面: 横にはじくと隣のタイムラインへ（左へはじくと右隣） */
+function ttSwitch(d) {
+  const L = orderedTLs(), i = L.findIndex(t => t.id === S.active), j = i + d, sc = $("#ttScroll");
+  if (j < 0 || j >= L.length) { if (!reduceMotion()) sc.animate([{ transform: "none" }, { transform: `translateX(${d < 0 ? 26 : -26}px)` }, { transform: "none" }], { duration: 420, easing: "cubic-bezier(.3,1.6,.5,1)" }); buzz?.(8); return; }
+  const dir = Math.sign(d); const go = () => { S.active = L[j].id; save(); renderTT(); $("#ttTabs .on")?.scrollIntoView({ inline: "center", block: "nearest", behavior: "smooth" });
+    if (!reduceMotion()) sc.animate([{ transform: `translateX(${dir * 70}px)`, opacity: 0 }, { transform: `translateX(${-dir * 6}px)`, opacity: 1, offset: .7 }, { transform: "none", opacity: 1 }], { duration: 520, easing: "cubic-bezier(.2,.8,.3,1)" }); };
+  if (reduceMotion()) return go();
+  sc.animate([{ transform: "none", opacity: 1 }, { transform: `translateX(${-dir * 90}px)`, opacity: 0 }], { duration: 170, easing: "cubic-bezier(.5,0,1,1)", fill: "forwards" }).onfinish = go;
+}
+(() => { const sc = $("#ttScroll"); let t0 = null;
+  sc.addEventListener("touchstart", e => { if (e.touches.length !== 1 || e.target.closest(".seek, .tt-rail")) { t0 = null; return; } t0 = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() }; }, { passive: true });
+  sc.addEventListener("touchend", e => { if (!t0) return; const dx = e.changedTouches[0].clientX - t0.x, dy = e.changedTouches[0].clientY - t0.y, dt = Date.now() - t0.t; t0 = null;
+    if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.6 && dt < 700) ttSwitch(dx < 0 ? 1 : -1); }, { passive: true });
+  document.addEventListener("keydown", e => { if (!$("#tt").classList.contains("open") || e.target.closest("input,textarea,select")) return; if (e.key === "ArrowRight") ttSwitch(1); if (e.key === "ArrowLeft") ttSwitch(-1); });
+})();
 $("#ttScroll").addEventListener("click", e => {
   const b = e.target.closest("[data-like]"); if (!b) return; const p = S.posts.find(x => x.id === b.dataset.like);
   const r = b.querySelector(".circle").getBoundingClientRect(), res = pressHeart(p), par = b.parentElement, i = [...par.children].indexOf(b); b.outerHTML = ttHeart(p); rollNum(par.children[i], res === true ? 1 : -1); if (res === true) { heartBurst(r, 26); haptic("like"); sfx("like"); }
@@ -3574,7 +3603,7 @@ function paintRings() {
   if (!$("#acctSheet").hidden) { $("#ringsAcct").innerHTML = ringsSVG(120) + ringsLegend(); $("#weekAcct").innerHTML = weekHTML(); }
   const ws = $("#weekSide"); if (ws) ws.innerHTML = weekHTML();
   const a = $("#mManage"); if (a) { let r = a.parentElement.querySelector(".av-ring"); if (!r) { a.insertAdjacentHTML("afterend", `<span class="av-ring" aria-hidden="true"></span>`); r = a.parentElement.querySelector(".av-ring"); }
-    const d = dayStat(), f = (Math.min(1, d.seen / S.goals.seen) + Math.min(1, d.hearts / S.goals.hearts) + Math.min(1, d.cms / S.goals.cms)) / 3; r.style.setProperty("--f", (f * 100).toFixed(0) + "%"); }
+    const d = dayStat(), f = (Math.min(1, d.seen / S.goals.seen) + Math.min(1, d.hearts / S.goals.hearts) + Math.min(1, d.cms / S.goals.cms)) / 3; r.style.setProperty("--f", (f * 100).toFixed(0) + "%"); a.parentElement.style.setProperty("--f", (f * 100).toFixed(0) + "%"); }
 }
 document.addEventListener("change", e => { const g = e.target.closest("[data-goal]"); if (!g) return; S.goals[g.dataset.goal] = Math.max(1, Math.min(99, Math.round(+g.value || 1))); save(); paintRings(); });
 function openRings() { openAcct(); }
@@ -3938,9 +3967,14 @@ $("#schedRow").addEventListener("click", e => { const b = e.target.closest("[dat
 /* D3a 季節の光: タイムラインを開いたとき、上のバーを季節の色の光が1回だけ通る */
 function seasonLight() {
   if (!S.opts.seasonLight || reduceMotion()) return; const m = new Date().getMonth() + 1;
-  const [a, b] = m >= 3 && m <= 5 ? ["#ffb7c5", "#ffe1e8"] : m >= 6 && m <= 8 ? ["#7fd3ff", "#d2f3ff"] : m >= 9 && m <= 11 ? ["#f0a646", "#ffdca6"] : ["#dfe8f5", "#ffffff"];
-  const h = $(".head"); h.querySelector(".sl-wrap")?.remove(); const wr = document.createElement("i"); wr.className = "sl-wrap"; const sh = document.createElement("i"); sh.className = "sl-sheen"; wr.append(sh); sh.style.background = `linear-gradient(100deg,transparent 20%,${b}d0 45%,${a}b0 55%,transparent 80%)`; h.append(wr);
-  sh.animate([{ transform: "translateX(-100%)" }, { transform: "translateX(100%)" }], { duration: 1600, easing: "cubic-bezier(.4,.1,.3,1)" }).onfinish = () => wr.remove();
+  const C = m >= 3 && m <= 5 ? ["#ff9ec4", "#ffc1d9", "#ffe3a3", "#bdeccb"] : m >= 6 && m <= 8 ? ["#4fc8ff", "#8ef0e0", "#c8f7ff", "#8fb0ff"] : m >= 9 && m <= 11 ? ["#ff9b54", "#ffcf70", "#f0845a", "#f7b2a0"] : ["#a9c8ff", "#e6f0ff", "#cdbdff", "#ffffff"];
+  const h = $(".head"); h.querySelector(".sl-wrap")?.remove(); const wr = document.createElement("i"); wr.className = "sl-wrap";
+  const band = (w, a, blur) => { const b = document.createElement("i"); b.className = "sl-sheen"; b.style.width = w + "%";
+    b.style.background = `linear-gradient(90deg,transparent,${C[0]}${a} 18%,${C[1]}${a} 38%,${C[2]}${a} 58%,${C[3]}${a} 78%,transparent)`; b.style.filter = `blur(${blur}px)`; wr.append(b); return b; };
+  const main = band(75, "b0", 10), tail = band(45, "70", 16); h.append(wr);
+  const kf = w => { const end = 10000 / w; return [{ transform: "translateX(-100%) skewX(-24deg)", opacity: 0 }, { opacity: 1, offset: .22 }, { transform: `translateX(${(end - 100) / 2}%) skewX(-8deg)`, offset: .55 }, { opacity: .85, offset: .8 }, { transform: `translateX(${end}%) skewX(-22deg)`, opacity: 0 }]; };
+  main.animate(kf(70), { duration: 1900, easing: "cubic-bezier(.45,.05,.25,1)", fill: "forwards" });
+  tail.animate(kf(40), { duration: 1900, delay: 220, easing: "cubic-bezier(.45,.05,.25,1)", fill: "both" }).onfinish = () => wr.remove();
 }
 $("#optSeason").addEventListener("change", e => { S.opts.seasonLight = e.target.checked; save(); if (S.opts.seasonLight) seasonLight(); });
 
@@ -4249,23 +4283,48 @@ function vRender() {
         setTimeout(() => { vIdx = n; vRender(); }, 0); return true;
       };
       pl.play();
+      if (vStartAt > 1) { const t0 = vStartAt; vStartAt = 0; const go = () => { if (el.isConnected) (el._seekTo ? el._seekTo(t0) : pl.seek?.(t0)); };
+        setTimeout(go, 80); setTimeout(() => { if (el.isConnected && el._getT && el._getT() < t0 - 1.5) go(); }, 900); }
     }
   } else if (p.media || (p.embed && p.embed.kind === "image-url")) { startSlide(); const id = p.id; vSeenT = setTimeout(() => markSeen(id), 3000); }
   $("#vCount").textContent = `${vIdx + 1} / ${vList.length}` + (galN(p) > 1 ? `（画像 ${vSub + 1}/${galN(p)}）` : "");
   $("#vCap").textContent = p.text || ""; renderVMarks(p); if (vRadio) paintRadio(p);
   $("#vPrev").disabled = vIdx === 0 && vSub === 0; $("#vNext").disabled = vIdx === vList.length - 1 && vSub >= galN(p) - 1;
 }
+let vStartAt = 0;
+const srcMedia = id => document.querySelector(`#feed .media[data-pid="${id}"], #ttScroll .media[data-pid="${id}"], #feed [data-pid="${id}"] .media`);
+/* 全画面の出入り: カードの動画の場所からふわっと広がって、閉じると元の場所へ縮んで戻る */
+function vZoom(rect, open) {
+  const v = $("#viewer"), st = $("#vStage"); if (reduceMotion() || !rect || !rect.width) { if (open) v.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 200 }); return Promise.resolve(); }
+  const sr = st.getBoundingClientRect(), k = rect.width / sr.width || .5, iv = Math.max(0, (sr.height - rect.height / k) / 2), clip = `inset(${iv}px 0px round ${16 / k}px)`;
+  const dx = rect.left + rect.width / 2 - (sr.left + sr.width / 2), dy = rect.top + rect.height / 2 - (sr.top + sr.height / 2);
+  const from = `translate(${dx}px,${dy}px) scale(${k})`;
+  const bg = v.animate(open ? [{ backgroundColor: "rgba(0,0,0,0)" }, { backgroundColor: "rgba(0,0,0,1)" }] : [{ backgroundColor: "rgba(0,0,0,1)" }, { backgroundColor: "rgba(0,0,0,0)" }], { duration: open ? 420 : 340, easing: "ease-out" });
+  const ui = [...v.children].filter(c => c !== st); ui.forEach(c => c.animate(open ? [{ opacity: 0 }, { opacity: 0, offset: .4 }, { opacity: 1 }] : [{ opacity: 1 }, { opacity: 0 }], { duration: open ? 520 : 200, easing: "ease-out" }));
+  const a = st.animate(open ? [{ transform: from, clipPath: clip }, { transform: "translate(0,-6px) scale(1.012)", clipPath: "inset(0px 0px round 0px)", offset: .72 }, { transform: "none", clipPath: "inset(0px 0px round 0px)" }]
+                              : [{ transform: "none", clipPath: "inset(0px 0px round 0px)" }, { transform: "scale(.985)", clipPath: clip, offset: .25 }, { transform: from, clipPath: clip }], { duration: open ? 560 : 380, easing: open ? "cubic-bezier(.2,.85,.25,1)" : "cubic-bezier(.4,0,.2,1)" });
+  return a.finished.catch(() => {});
+}
 function openViewer(id, from = "feed", sub = 0) {
+  const src = srcMedia(id); vStartAt = src && src._getT ? src._getT() : 0; const rect = src && src.getBoundingClientRect();
   vFrom = from; vList = (query && from === "feed" ? S.posts.filter(p => visPost(p) && matchPost(p, query)).sort((a, b) => keyOf(b) - keyOf(a)) : postsOf(S.active)).filter(hasViewable); vIdx = Math.max(0, vList.findIndex(p => p.id === id)); vSub = Math.min(sub, galN(vList[vIdx]) - 1);
   if (from === "feed") feedAP.reset(); else ttAP?.reset();
-  $("#viewer").hidden = false; document.body.style.overflow = "hidden"; vRender(); $("#vClose").focus();
+  $("#viewer").hidden = false; document.body.style.overflow = "hidden"; vRender(); $("#vClose").focus(); vZoom(rect, true);
 }
+let vClosing = false;
 function closeViewer() {
+  if (vClosing) return; const cur = vList[vIdx], st0 = $("#vStage"), pe = st0.firstElementChild, backT = pe && pe._getT ? pe._getT() : 0;
+  const tgt = cur && srcMedia(cur.id), r = tgt && tgt.getBoundingClientRect(), vis = r && r.bottom > 0 && r.top < innerHeight && r.width > 0;
+  if (vis && !$("#viewer").hidden && !reduceMotion()) { vClosing = true; vZoom(r, false).then(() => { vClosing = false; closeViewerNow(cur, backT); }); return; }
+  closeViewerNow(cur, backT);
+}
+function closeViewerNow(cur, backT) {
   const stage = $("#vStage"); [...players.keys()].forEach(k => { if (stage.contains(k)) { players.get(k).pause(); players.delete(k); } }); stage.innerHTML = "";
   stopSlide();
   if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
   $("#viewer").hidden = true; vMarathon = false; $("#viewer").classList.remove("marathon", "radio"); if (vRadio) { vRadio = false; if (radioSoundWas === false) setSoundAll(false); }
   if (vFrom === "feed") { document.body.style.overflow = ""; renderFeedKeepScroll(); } else renderTT();
+  if (cur && backT > 1) setTimeout(() => { const m = srcMedia(cur.id); if (m && m._seekTo) m._seekTo(backT); }, 350);
 }
 const galN = p => p && p.media && p.media.kind === "file-gallery" ? p.media.n : 1;
 const vGo = d => {

@@ -524,6 +524,66 @@ body.locked > :not(#lockScreen):not(svg){filter:blur(12px)}
 .lock.secret .lock-logo{background:#222;color:#fff}
 :root[data-calm] *,:root[data-calm] *::before,:root[data-calm] *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 :root[data-calm] .post.focus{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+/* ---- N案 ---- */
+.grid-view{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:3px}
+.grid-tile{position:relative;aspect-ratio:1;overflow:hidden;background:var(--bg-hover);border-radius:4px;padding:0}
+.grid-tile img,.grid-tile video,.grid-tile canvas{width:100%;height:100%;object-fit:cover;display:block}
+.gt-label{position:absolute;inset:0;display:grid;place-items:center;font-weight:800;color:#fff;background:linear-gradient(135deg,#ff0033,#7a0019)}
+.gt-badge{position:absolute;right:6px;top:6px;font-size:11px;font-weight:800;color:#fff;background:rgba(0,0,0,.55);border-radius:999px;padding:1px 7px}
+.gt-lbl{position:absolute;left:6px;top:6px;width:10px;height:10px;border-radius:50%;box-shadow:0 0 0 2px #fff}
+.mk-btn,.ab-btn{position:absolute;z-index:5;bottom:56px;right:10px;width:34px;height:34px;border-radius:50%;display:grid;place-items:center;background:rgba(0,0,0,.45);color:#fff;opacity:0;transition:opacity .2s}
+.ab-btn{bottom:96px}
+.media:hover .mk-btn,.media:hover .ab-btn,.media.is-playing .mk-btn,.v-stage .mk-btn,.v-stage .ab-btn{opacity:1}
+.mk-btn .i,.ab-btn .i{width:17px;height:17px}
+.seek-track{position:relative}
+.mk{position:absolute;top:-2px;width:12px;height:16px;padding:0;transform:translate(-50%,-100%);background:#ff9f1a;clip-path:polygon(0 0,100% 0,100% 100%,50% 72%,0 100%);z-index:3;cursor:pointer}
+.ab-range{position:absolute;top:0;bottom:0;background:rgba(249,24,128,.45);border-radius:3px;pointer-events:none}
+.ab-h{position:absolute;top:50%;width:22px;height:22px;border-radius:50%;background:#f91880;color:#fff;font-size:11px;display:grid;place-items:center;transform:translate(-50%,-50%);cursor:ew-resize;touch-action:none;z-index:4}
+.clip-badge{position:absolute;left:10px;top:10px;z-index:5;font-size:12px;font-weight:800;color:#fff;background:rgba(249,24,128,.85);border-radius:999px;padding:2px 10px}
+.v-marks{display:flex;gap:6px;flex-wrap:wrap;justify-content:center;padding:0 16px;font-size:12px;color:#fff}
+.v-marks:empty{display:none}
+.vm-lab{opacity:.7;align-self:center}
+.vm-chip{display:inline-flex;border:1px solid rgba(255,255,255,.35);border-radius:999px;overflow:hidden}
+.vm-chip button{color:#fff;padding:3px 9px;font-size:12px}
+.vm-chip button+button{border-left:1px solid rgba(255,255,255,.25);opacity:.8}
+.vm-ab{display:inline-flex;gap:8px;align-items:center;background:rgba(249,24,128,.3);border-radius:999px;padding:3px 6px 3px 12px}
+.vm-ab button{white-space:nowrap;color:#fff;font-weight:800;padding:3px 9px;border-radius:999px;background:rgba(255,255,255,.18)}
+.mem-card{position:relative;margin:10px 16px;height:118px;perspective:900px;cursor:pointer}
+.mem-in{position:absolute;inset:0}
+.mem-front,.mem-back{position:absolute;inset:0;border-radius:18px;padding:14px 18px;display:flex;flex-direction:column;justify-content:center;gap:4px;backface-visibility:hidden;-webkit-backface-visibility:hidden;transition:transform .5s cubic-bezier(.3,.8,.3,1)}
+.mem-front{background:linear-gradient(135deg,#ffd400,#ff7a00);color:#3a2200}
+.mem-front small{opacity:.7}
+.mem-back{background:var(--bg);border:1px solid var(--line-strong);transform:rotateY(180deg);align-items:flex-start;overflow:auto}
+.mem-back button{text-align:left;font-size:13px;color:var(--accent);padding:2px 0}
+.mem-card.flip .mem-front{transform:rotateY(-180deg)}
+.mem-card.flip .mem-back{transform:rotateY(0)}
+.mem-x{position:absolute;right:8px;top:6px;z-index:2;width:28px;height:28px;border-radius:50%;color:#3a2200;font-size:18px}
+.mem-card.flip .mem-x{color:var(--muted)}
+.tl-radial{position:fixed;inset:0;z-index:150;background:rgba(0,0,0,.25);pointer-events:none}
+.rad-item{position:absolute;transform-origin:center;display:flex;flex-direction:column;align-items:center;gap:2px;margin:-24px 0 0 -24px;width:48px}
+.rad-item .mini-av{width:44px;height:44px;font-size:17px;box-shadow:0 6px 16px rgba(0,0,0,.3);transition:scale .12s}
+.rad-item em{font-style:normal;font-size:11px;font-weight:800;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.7);white-space:nowrap}
+.rad-item.on .mini-av{scale:1.3}
+.rad-center{position:absolute;width:14px;height:14px;margin:-7px 0 0 -7px;border-radius:50%;background:#fff;box-shadow:0 0 0 6px rgba(255,255,255,.3)}
+.pip-ph{border-radius:16px;background:var(--bg-hover);display:grid;place-items:center}
+.pip-ph::after{content:"小窓で再生中";color:var(--muted);font-size:13px}
+.media.pip{position:fixed!important;z-index:60;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(76px + env(safe-area-inset-bottom,0px));width:min(240px,46vw)!important;max-width:none!important;margin:0!important;border-radius:14px;box-shadow:0 16px 36px -10px rgba(0,0,0,.5);touch-action:none}
+.media.pip.vertical{width:min(150px,32vw)!important}
+.media.pip .seek,.media.pip .badge,.media.pip .fs-btn,.media.pip .mk-btn,.media.pip .ab-btn,.media.pip .play-state{display:none}
+.pip-x{position:absolute;top:6px;right:6px;z-index:8;width:26px;height:26px;border-radius:50%;background:rgba(0,0,0,.6);color:#fff;font-size:16px;line-height:1}
+@media (min-width:641px){.media.pip{bottom:24px;width:320px!important}.media.pip.vertical{width:190px!important}}
+.rings-box{display:flex;align-items:center;gap:14px}
+.rings-box.big{flex-direction:column}
+.rings-svg{width:110px;height:110px;flex:none}
+.rings-box.big .rings-svg{width:200px;height:200px}
+.ring-arc{transition:stroke-dashoffset .7s cubic-bezier(.3,.8,.3,1)}
+.ring-arc.full{filter:drop-shadow(0 0 4px currentColor)}
+.rings-leg{display:flex;flex-direction:column;gap:4px;font-size:13px}
+.rings-leg i{display:inline-block;width:10px;height:10px;border-radius:50%;margin-right:6px}
+.rings-leg b{margin:0 2px 0 8px;font-variant-numeric:tabular-nums}
+.rings-leg input{width:38px;border:1px solid var(--line);border-radius:6px;background:var(--bg);color:var(--fg);font:inherit;font-size:12px;padding:1px 3px}
+.head-top{position:relative}
+.av-ring{position:absolute;left:16px;top:50%;width:40px;height:40px;margin-top:-20px;margin-left:-2px;border-radius:50%;pointer-events:none;background:conic-gradient(#f91880 var(--f,0%),transparent 0);-webkit-mask:radial-gradient(circle,transparent 17px,#000 18px);mask:radial-gradient(circle,transparent 17px,#000 18px)}
 /* ---- F案 ---- */
 #tabs{position:relative}
 #tabs.has-ink .tab.on::after{display:none}
@@ -871,6 +931,10 @@ body.sheet-open{overflow:hidden}
       <label class="toggle" for="optFont">文字の大きさ
         <select id="optFont" class="sel"><option value="s">小さめ</option><option value="m">ふつう</option><option value="l">大きめ</option></select></label>
       <label class="toggle">片手モード（スマホ） <span class="switch"><input type="checkbox" id="optOneHand"><span></span></span></label>
+      <label class="toggle">小窓で再生を続ける <span class="switch"><input type="checkbox" id="optPip"><span></span></span></label>
+      <label class="toggle">振ってシャッフル <span class="switch"><input type="checkbox" id="optShake"><span></span></span></label>
+      <label class="toggle" for="optAutoColor">アイコン画像から色を自動で
+        <select id="optAutoColor" class="sel"><option value="raw">画像の色そのまま</option><option value="theme">テーマの色に寄せる</option><option value="off">しない</option></select></label>
       <label class="toggle">動きを減らす <span class="switch"><input type="checkbox" id="optCalm"><span></span></span></label>
       <label class="toggle" for="optStart">開いたときのタイムライン
         <select id="optStart" class="sel"></select></label>
@@ -926,6 +990,7 @@ body.sheet-open{overflow:hidden}
     </section>
     <section class="card" id="statsCard">
       <h2>記録</h2>
+      <div class="rings-box" id="ringsSide"></div>
       <div id="stats"></div>
     </section>
     <section class="card">
@@ -985,6 +1050,7 @@ body.sheet-open{overflow:hidden}
   <div class="v-stage" id="vStage"></div>
   <button class="v-btn v-nav prev" id="vPrev" aria-label="前へ"><svg class="i"><use href="#i-left"/></svg></button>
   <button class="v-btn v-nav next" id="vNext" aria-label="次へ"><svg class="i"><use href="#i-right"/></svg></button>
+  <div class="v-marks" id="vMarks"></div>
   <div class="v-cap" id="vCap"></div>
 </div>
 
@@ -1060,6 +1126,14 @@ body.sheet-open{overflow:hidden}
     <div class="guide-acts"><button type="button" class="btn-ghost" id="gSkip">とばす</button><button type="button" class="btn-accent" id="gNext">次へ</button></div>
   </div>
 </div>
+<div class="share" id="ringSheet" hidden role="dialog" aria-modal="true" aria-labelledby="rgTitle">
+  <div class="share-card">
+    <div class="lk-head"><h2 id="rgTitle">今日の記録</h2><button type="button" class="icon-btn" id="rgClose" aria-label="閉じる" style="color:var(--fg)"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div class="rings-box big" id="ringsBig"></div>
+    <div class="share-actions"><button type="button" class="btn-ghost" id="rgIcon">自分のアイコンを変える</button></div>
+  </div>
+</div>
+<div class="tl-radial" id="tlRadial" hidden aria-hidden="true"></div>
 <div class="lock" id="lockScreen" hidden role="dialog" aria-modal="true" aria-labelledby="lockTitle">
   <div class="lock-card">
     <div class="lock-logo" aria-hidden="true">TL</div>
@@ -1129,6 +1203,9 @@ body.sheet-open{overflow:hidden}
   <symbol id="i-hide" viewBox="0 0 24 24"><path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c5 0 9 4.5 10 7-.4 1-1.3 2.4-2.6 3.7M6.6 6.6C4.6 7.9 3.1 9.8 2 12c1 2.5 5 7 10 7 1.9 0 3.6-.6 5-1.5M9.9 9.9a3 3 0 0 0 4.2 4.2"/></symbol>
   <symbol id="i-split" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M12 4v16"/></symbol>
   <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5V14M12 17h0" stroke-width="2.2"/></symbol>
+  <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></symbol>
+  <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6 3.5h12v17l-6-4.5-6 4.5z"/></symbol>
+  <symbol id="i-scissors" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M8 7.5 20 18M8 16.5 20 6"/></symbol>
   <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
   <symbol id="i-comment" viewBox="0 0 24 24"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 4v-4h0A2.5 2.5 0 0 1 4 13.5z"/></symbol>
@@ -1253,7 +1330,7 @@ if (!S || !Array.isArray(S.timelines) || !S.timelines.length) S = seed();
 S.opts ||= { center: false, auto: true };
 S.me ||= { id: "me", name: "私", color: "#1d9bf0" }; S.me.id = "me";
 S.presets ||= [];
-S.opts.sound ??= true; S.opts.preview ??= 120; S.opts.auto ??= true; S.opts.wifiOnly ??= true; S.opts.strictNet ??= false; S.opts.lazy ??= true; S.opts.fullEnd ??= "loop"; S.opts.slideAuto ??= true; S.opts.slideSec ??= 10; S.rules ||= []; S.opts.sfx ??= false; S.cheer ||= {}; S.opts.collapsed ||= {}; S.opts.calm ??= false; S.opts.startTl ??= ""; S.opts.split ??= false; S.opts.splitTl ??= ""; S.opts.secretStealth ??= false; S.opts.volume ??= 100; S.opts.fontSize ??= "m"; S.opts.oneHand ??= false; S.trash ||= []; S.opts.modeTime ??= false; S.opts.nightFrom ??= 19; S.opts.nightTo ??= 6; S.lastExportAt ??= Date.now(); S.opts.tlMotion ??= "spring"; S.opts.vibe ??= true; S.opts.resume ??= true; S.pos ||= {};
+S.opts.sound ??= true; S.opts.preview ??= 120; S.opts.auto ??= true; S.opts.wifiOnly ??= true; S.opts.strictNet ??= false; S.opts.lazy ??= true; S.opts.fullEnd ??= "loop"; S.opts.slideAuto ??= true; S.opts.slideSec ??= 10; S.rules ||= []; S.opts.grid ??= false; S.opts.autoColor ??= "raw"; S.opts.pip ??= true; S.opts.shake ??= !(/iP(hone|ad|od)/.test(navigator.userAgent)); S.goals ||= { seen: 10, hearts: 5, cms: 2 }; S.opts.sfx ??= false; S.cheer ||= {}; S.opts.collapsed ||= {}; S.opts.calm ??= false; S.opts.startTl ??= ""; S.opts.split ??= false; S.opts.splitTl ??= ""; S.opts.secretStealth ??= false; S.opts.volume ??= 100; S.opts.fontSize ??= "m"; S.opts.oneHand ??= false; S.trash ||= []; S.opts.modeTime ??= false; S.opts.nightFrom ??= 19; S.opts.nightTo ??= 6; S.lastExportAt ??= Date.now(); S.opts.tlMotion ??= "spring"; S.opts.vibe ??= true; S.opts.resume ??= true; S.pos ||= {};
 const fileUrls = new Map(); // 手元から追加したファイル（IndexedDB から復元）
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch { try { toast("保存しきれなかったよ。アイコンの画像を外すか、小さい画像にしてね"); } catch {} return false; } }
 /* 手元ファイルの保存先: IndexedDB（ブラウザ内） */
@@ -1270,9 +1347,11 @@ const idb = (() => {
 })();
 const isFilePost = p => p.media && p.media.kind.startsWith("file-");
 /* 画像まとめ投稿（file-gallery）は1枚ずつ「ツイートのid~番号」で保存する */
-const fileKeys = p => p.media.kind === "file-gallery" ? Array.from({ length: p.media.n }, (_, i) => `${p.id}~${i}`) : [p.id];
+const fileBase = p => p.fileId || p.id; // 切り抜きツイート（N3）は元のツイートのファイルを使う
+const fileKeys = p => p.media.kind === "file-gallery" ? Array.from({ length: p.media.n }, (_, i) => `${fileBase(p)}~${i}`) : [fileBase(p)];
 const hasFiles = p => fileUrls.has(fileKeys(p)[0]);
-const forgetFiles = posts => posts.filter(isFilePost).forEach(p => fileKeys(p).forEach(k => { idb.del(k); const u = fileUrls.get(k); if (u) URL.revokeObjectURL(u); fileUrls.delete(k); }));
+const forgetFiles = posts => { const gone = new Set(posts.map(p => p.id)), keep = new Set([...S.posts, ...(S.trash || []).map(x => x.p)].filter(q => !gone.has(q.id) && isFilePost(q)).flatMap(fileKeys));
+  posts.filter(isFilePost).forEach(p => fileKeys(p).filter(k => !keep.has(k)).forEach(k => { idb.del(k); const u = fileUrls.get(k); if (u) URL.revokeObjectURL(u); fileUrls.delete(k); })); };
 const tlById = id => S.timelines.find(t => t.id === id);
 /* シークレット: 印を付けたタイムラインは、番号を入れて開いたときだけ見える */
 let secretOn = false; try { secretOn = sessionStorage.getItem("mytl-secret") === "1"; } catch {}
@@ -1304,6 +1383,7 @@ function createAutoplay(root) {
   function pick() {
     const box = root ? root.getBoundingClientRect() : { top: 0, height: innerHeight };
     const cy = box.top + box.height / 2; let best = null, bd = Infinity;
+    const sticky = !root && pipHold(); if (sticky) return;
     if (canAutoplay()) candidates.forEach(el => { const r = el.getBoundingClientRect(); const d = Math.abs(r.top + r.height / 2 - cy); if (d < bd) { bd = d; best = el; } });
     if (best !== current) { if (current) players.get(current)?.pause(); current = best; if (current) players.get(current)?.play(); }
   }
@@ -1330,7 +1410,7 @@ function setSoundAll(on) {
   players.forEach(p => p.setSound?.(on));
   const o = $("#optSound"); if (o) o.checked = on;
 }
-document.addEventListener("click", e => { const b = e.target.closest("[data-snd]"); if (!b) return; e.stopPropagation(); e.preventDefault(); AudioKit.get(); setSoundAll(!S.opts.sound); toast(S.opts.sound ? "音声オン" : "音声オフ"); }, true);
+document.addEventListener("click", e => { const b = e.target.closest("[data-snd]"); if (!b) return; e.stopPropagation(); e.preventDefault(); AudioKit.get(); setSoundAll(!S.opts.sound); toast(S.opts.sound ? "音声オン" : "音声オフ"); const w = b.closest("#feed .media"), pl = w && players.get(w); if (pl && pl.playing && S.opts.sound) stickTo(w, pl); }, true);
 
 /* ================= メディア要素の生成 ================= */
 const PLAY_SVG = `<svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg>`;
@@ -1355,6 +1435,7 @@ function wireBadges(w, getT, getDur, lim) {
 }
 /* シークバー: ドラッグ・タップ・矢印キーで移動。範囲は 0〜表示する長さ */
 function attachSeek(w, getSpan, getT, seekTo) {
+  w._span = getSpan; w._getT = getT; w._seekTo = seekTo;
   const el = w.querySelector(".seek"); if (!el) return;
   const at = ev => { const r = el.getBoundingClientRect(); return Math.max(0, Math.min(1, (ev.clientX - r.left) / r.width)) * getSpan(); };
   el.addEventListener("pointerdown", ev => { ev.preventDefault(); ev.stopPropagation(); el.classList.add("drag"); try { el.setPointerCapture(ev.pointerId); } catch {} seekTo(at(ev)); });
@@ -1444,17 +1525,17 @@ document.addEventListener("click", e => {
   if (e.target.closest("button, a, .seek, [data-snd], [data-act]")) return;
   if (m._suppressClick && Date.now() - m._suppressClick < 400) return;
   const pl = players.get(m); if (!pl) return;
-  if (pl.playing) { pl.pause(); pl.userPaused = true; showMark(m, "pause"); }
-  else { players.forEach(o => { if (o !== pl && o.playing) o.pause(); }); AudioKit.get(); pl.userPaused = false; pl.play(); showMark(m, "play"); }
+  if (pl.playing) { pl.pause(); pl.userPaused = true; showMark(m, "pause"); if (stick && stick.w === m) { if (pip) closePip(true); stick = null; } }
+  else { if (pip && pip.w !== m) closePip(true); players.forEach(o => { if (o !== pl && o.playing) o.pause(); }); AudioKit.get(); pl.userPaused = false; pl.play(); showMark(m, "play"); if (m.closest("#feed")) stickTo(m, pl); }
 });
 /* 再生する長さの終わりに来たとき: onEnd があれば任せる（全画面の「次の動画へ」など）。なければ頭からループ */
-function reachedEnd(pl, restart) { if (pl.pid) markSeen(pl.pid); if (pl.onEnd && pl.onEnd()) return; restart(); }
+function reachedEnd(pl, restart) { if (pl.pid) markSeen(pl.pid); if (pip && pip.pl === pl) { pl.pause(); closePip(true); toast("小窓の動画が最後まで行ったよ"); return; } if (pl.onEnd && pl.onEnd()) return; restart(); }
 /* K4 見たよチェック: 最後まで見た（画像は全画面で3秒）ツイートに印をつける */
 const seenChip = p => p.seenAt ? `<span class="seen" title="${new Date(p.seenAt).toLocaleString("ja-JP")} に見たよ"><svg class="i"><use href="#i-check"/></svg>見た</span>` : "";
 const unseenOf = id => postsOf(id).filter(p => hasViewable(p) && !p.seenAt).length;
 function paintUnseen(id) { const n = unseenOf(id); document.querySelectorAll(`[data-un="${id}"]`).forEach(el => { el.hidden = !n; el.textContent = n > 99 ? "99+" : n; }); }
 function markSeen(id) {
-  const p = S.posts.find(x => x.id === id); if (!p) return; const first = !p.seenAt; p.seenAt = Date.now(); save(); if (first) paintUnseen(p.tl);
+  const p = S.posts.find(x => x.id === id); if (!p) return; const first = !p.seenAt; p.seenAt = Date.now(); if (first) dayAdd("seen"); save(); if (first) paintUnseen(p.tl);
   if (first) document.querySelectorAll(`#feed .post[data-id="${id}"] .post-meta`).forEach(m => { if (!m.querySelector(".seen")) m.insertAdjacentHTML("beforeend", seenChip(p)); });
 }
 /* サンプル動画の音: 再生中だけ小さく鳴るメロディ（WebAudio） */
@@ -1474,13 +1555,13 @@ function buildMedia(p, mode = "feed") {
     // 全画面では1枚ずつ（vSub 番目）、タイムラインではXと同じ並べ方
     if (mode === "full") { const w = document.createElement("div"); w.className = "media"; const img = new Image(); img.alt = p.text || "画像"; img.src = fileUrls.get(`${p.id}~${vSub}`) || ""; w.append(img); return { el: w, playable: false }; }
     const w = document.createElement("div"); w.className = `media gallery g${Math.min(4, m.n)}`;
-    for (let i = 0; i < Math.min(4, m.n); i++) { const img = new Image(); img.alt = `${i + 1}枚目`; img.loading = "lazy"; img.src = fileUrls.get(`${p.id}~${i}`) || ""; img.dataset.gi = i; w.append(img); }
+    for (let i = 0; i < Math.min(4, m.n); i++) { const img = new Image(); img.alt = `${i + 1}枚目`; img.loading = "lazy"; img.src = fileUrls.get(`${fileBase(p)}~${i}`) || ""; img.dataset.gi = i; w.append(img); }
     return { el: w, playable: false };
   }
   if (m.kind === "sample-image" || m.kind === "file-image" || m.kind === "url-image") {
     const w = document.createElement("div"); w.className = "media" + (m.vertical ? " vertical" : "");
     const img = new Image(); img.alt = p.text || m.title || "画像"; img.loading = "lazy";
-    img.src = m.kind === "file-image" ? (fileUrls.get(p.id) || "") : m.kind === "url-image" ? m.src : getImg(m.seed, m.title, m.vertical);
+    img.src = m.kind === "file-image" ? (fileUrls.get(fileBase(p)) || "") : m.kind === "url-image" ? m.src : getImg(m.seed, m.title, m.vertical);
     w.append(img); return { el: w, playable: false };
   }
   if (m.kind === "sample-video") {
@@ -1501,7 +1582,7 @@ function buildMedia(p, mode = "feed") {
   }
   if (m.kind === "file-video" || m.kind === "url-video") {
     const w = mediaChrome(!!m.vertical); const vid = document.createElement("video");
-    vid.src = m.kind === "file-video" ? (fileUrls.get(p.id) || "") : m.src;
+    vid.src = m.kind === "file-video" ? (fileUrls.get(fileBase(p)) || "") : m.src;
     vid.muted = true; vid.playsInline = true; vid.preload = "metadata"; vid.setAttribute("playsinline", "");
     w.prepend(vid); const upd = wireBadges(w, () => vid.currentTime || 0, () => vid.duration, lim);
     attachSeek(w, () => spanOf(vid.duration, lim), () => vid.currentTime || 0, sec => { try { vid.currentTime = sec; } catch {} upd(); });
@@ -1736,7 +1817,7 @@ function pressHeart(p) {
     p.likes = Math.max(0, (p.likes || 0) - 1); p.lastLikedAt = p.prevLikedAt || 0; delete p.prevLikedAt; save();
     toast("ハートを1つ取り消したよ"); return "undo";
   }
-  buzz(15); p.prevLikedAt = p.lastLikedAt || 0; p.likes = (p.likes || 0) + 1; p.lastLikedAt = Date.now(); delete p.liked; save();
+  buzz(15); dayAdd("hearts"); p.prevLikedAt = p.lastLikedAt || 0; p.likes = (p.likes || 0) + 1; p.lastLikedAt = Date.now(); delete p.liked; save();
   toast(`ハート ${p.likes} 個目！ 次は3日後に押せるよ`); return true;
 }
 /* 軽い振動（対応している端末だけ。iPhone のブラウザは非対応） */
@@ -1927,7 +2008,7 @@ function postCard(p, ap = feedAP) {
     </div>`;
   const built = p.media ? buildMedia(p) : p.embed ? buildEmbed(p) : null;
   if (built) {
-    art.querySelector(".slot").append(built.el); if (built.playable) { ap.observe(built.playEl || built.el); const pl = players.get(built.playEl || built.el); if (pl) pl.pid = p.id; }
+    art.querySelector(".slot").append(built.el); if (built.playable) { ap.observe(built.playEl || built.el); const pl = players.get(built.playEl || built.el); if (pl) { pl.pid = p.id; mediaExtras(built.playEl || built.el, pl, p); } }
     const box = built.playEl || built.el;
     if (hasViewable(p) && box.classList.contains("media")) box.insertAdjacentHTML("beforeend", `<button class="fs-btn" data-act="full" aria-label="全画面で見る" title="全画面で見る"><svg class="i"><use href="#i-expand"/></svg></button>`);
   }
@@ -1949,12 +2030,15 @@ function setQuery(q) {
   renderFeed(); scrollTo({ top: 0 }); updateFocus();
 }
 function renderFeed() {
+  if (pip) { pip.w.classList.remove("pip"); pip.ph.remove(); pip = null; } stick = null;
   feedAP.reset(); players.clear();
   const feed = $("#feed"); feed.innerHTML = "";
   document.body.classList.toggle("searching", !!query);
   const all = query ? S.posts.filter(p => visPost(p) && matchPost(p, query)).sort((a, b) => keyOf(b) - keyOf(a)) : postsOf(S.active);
   const list = labelFilter ? all.filter(p => p.label === labelFilter) : all;
   if (!query && all.length) feed.insertAdjacentHTML("beforeend", feedTools(all));
+  if (!query && !labelFilter) memoryCard(feed);
+  if (S.opts.grid && !query && list.length) { renderGrid(feed, list); feedAP.refresh(); return; }
   if (query) feed.insertAdjacentHTML("beforeend", `<div class="search-head"><span>「${esc(query)}」の結果 <b>${list.length}</b> 件（すべてのタイムラインから）</span><button type="button" class="btn-ghost sm" id="searchClear">検索をやめる</button></div>`);
   if (query && !list.length) { feed.insertAdjacentHTML("beforeend", `<div class="empty"><h3>見つからなかったよ</h3><p>ことばを短くするか、#タグで探してみてね。</p></div>`); feedAP.refresh(); return; }
   if (!list.length) {
@@ -2088,7 +2172,7 @@ function updateDetect() {
 let compTlTouched = false;
 $("#compTl").addEventListener("change", () => { compTlTouched = true; });
 let pendingFile = null, pendingFiles = [];
-compText.addEventListener("input", () => { compText.style.height = "auto"; compText.style.height = compText.scrollHeight + "px"; updateDetect(); saveDraft(); });
+compText.addEventListener("input", () => { compText.style.height = "auto"; compText.style.height = compText.scrollHeight + "px"; updateDetect(); saveDraft(); maybeTitle(); });
 /* K14 下書き: 書きかけの文を覚えておく */
 function saveDraft() { try { compText.value.trim() ? localStorage.setItem("mytl-draft", compText.value) : localStorage.removeItem("mytl-draft"); } catch {} }
 function loadDraft() { try { const d = localStorage.getItem("mytl-draft"); if (d && !compText.value) { compText.value = d; updateDetect(); $("#draftNote").hidden = false; } } catch {} }
@@ -2258,7 +2342,7 @@ function applyOpts() {
   $("#optFont").value = S.opts.fontSize; document.documentElement.dataset.fs = S.opts.fontSize;
   $("#optOneHand").checked = !!S.opts.oneHand; document.body.classList.toggle("onehand", !!S.opts.oneHand);
   renderLockUI(); renderStore();
-  $("#optSfx").checked = !!S.opts.sfx; $("#optCalm").checked = !!S.opts.calm; document.documentElement.toggleAttribute("data-calm", !!S.opts.calm);
+  $("#optPip").checked = !!S.opts.pip; $("#optShake").checked = !!S.opts.shake; $("#optAutoColor").value = S.opts.autoColor; $("#optSfx").checked = !!S.opts.sfx; $("#optCalm").checked = !!S.opts.calm; document.documentElement.toggleAttribute("data-calm", !!S.opts.calm);
   $("#optSplit").checked = !!S.opts.split; document.body.classList.toggle("split", !!S.opts.split);
   renderStartSel(); renderRules(); renderSecretUI();
 }
@@ -2522,7 +2606,8 @@ document.addEventListener("keydown", e => { if (e.key === "Escape" && lkId) clos
 // ツイートのアイコン・左上のアイコンを押すと開く
 document.addEventListener("click", e => {
   const av = e.target.closest(".tl-av[data-edit]"); if (av) { e.stopPropagation(); openLook(av.dataset.edit); return; }
-  if (e.target.closest("#mManage, #brandMe, #compAvatar")) openLook("me");
+  if (e.target.closest("#mManage")) { openRings(); return; }
+  if (e.target.closest("#brandMe, #compAvatar")) openLook("me");
 }, true);
 document.addEventListener("keydown", e => { const av = e.target.closest?.(".tl-av[data-edit]"); if (av && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); openLook(av.dataset.edit); } });
 lk("lkIcon").addEventListener("input", e => { const t = lookTarget(lkId); t.icon = [...e.target.value.trim()].slice(0, 2).join(""); lookChanged(false); });
@@ -2570,7 +2655,9 @@ $("#cropCancel").addEventListener("click", closeCrop);
 $("#cropOk").addEventListener("click", () => {
   const { img, z, x, y } = crop, base = CROP_V / Math.min(img.width, img.height) * z, c = document.createElement("canvas"); c.width = c.height = 160;
   c.getContext("2d").drawImage(img, -x / base, -y / base, CROP_V / base, CROP_V / base, 0, 0, 160, 160);
-  lookTarget(lkId).iconImg = c.toDataURL("image/jpeg", .85); closeCrop(); lookChanged(true); toast("アイコンにしたよ");
+  const tg = lookTarget(lkId); tg.iconImg = c.toDataURL("image/jpeg", .85); const col = S.opts.autoColor !== "off" && pickColor(c);
+  if (col) { tg.color = col; tg.ringC1 = col; if (tg.ringType === "none") tg.ringType = "solid"; }
+  closeCrop(); lookChanged(true); toast(col ? `アイコンにしたよ。色も ${col} にそろえたよ` : "アイコンにしたよ"); if (col && lkId !== "me") { renderTabs(); renderManage(); }
 });
 lk("lkSkin").addEventListener("change", e => { const t = lookTarget(lkId); t.skin = e.target.value; if (!t.skin) delete t.skin; save(); if (lkId === S.active) applySkin(); toast(t.skin ? `「${t.name}」は「${SKIN_NAMES[t.skin === "std" ? "" : t.skin]}」で表示するよ` : `「${t.name}」はアプリと同じテーマにしたよ`); });
 lk("lkIconClear").addEventListener("click", () => { delete lookTarget(lkId).iconImg; lookChanged(true); });
@@ -2886,6 +2973,244 @@ document.addEventListener("visibilitychange", () => {
 });
 function bootLock() { let ok = false; try { ok = sessionStorage.getItem("mytl-unlocked") === "1"; } catch {} if (S.lock && !ok) openPin("unlock"); }
 
+/* ================= N1〜N10 ================= */
+/* N1 グリッド表示: 画像・動画だけを3列で。2本指でつまむ/広げる、PCはトラックパッドのピンチかボタン */
+function setGrid(on) { if (!!S.opts.grid === on) return; S.opts.grid = on; save(); const y = scrollY; renderFeed(); if (!reduceMotion()) $("#feed").animate([{ opacity: .3, transform: `scale(${on ? 1.06 : .94})` }, { opacity: 1, transform: "none" }], { duration: 300, easing: "cubic-bezier(.2,.8,.2,1)" }); scrollTo(0, on ? 0 : y); toast(on ? "グリッド表示にしたよ（広げると戻るよ）" : "いつもの表示に戻したよ"); }
+function thumbOf(p) {
+  const m = p.media, e = p.embed;
+  if (m) { if (m.kind === "sample-image") return { src: getImg(m.seed, m.title, m.vertical) }; if (m.kind === "file-image") return { src: fileUrls.get(fileBase(p)) };
+    if (m.kind === "file-gallery") return { src: fileUrls.get(`${fileBase(p)}~0`), n: m.n }; if (m.kind === "url-image") return { src: m.src };
+    if (m.kind === "sample-video") { const v = makeFakeVideo(m.seed, m.vertical, m.title, 10); return { canvas: v.el, video: true }; }
+    if (m.kind === "file-video" || m.kind === "url-video") return { vsrc: m.kind === "file-video" ? fileUrls.get(fileBase(p)) : m.src, video: true }; }
+  if (e && e.kind === "youtube") return HOSTED ? { src: `https://i.ytimg.com/vi/${encodeURIComponent(e.id)}/mqdefault.jpg`, video: true } : { label: e.shorts ? "Shorts" : "YouTube", video: true };
+  if (e && e.kind === "tiktok") return { label: "TikTok", video: true };
+  if (e && HOSTED && e.kind === "image-url") return { src: e.url }; if (e && HOSTED && e.kind === "video-url") return { vsrc: e.url, video: true };
+  return null;
+}
+function renderGrid(feed, list) {
+  const items = list.filter(hasViewable); const g = document.createElement("div"); g.className = "grid-view";
+  if (!items.length) { feed.insertAdjacentHTML("beforeend", `<div class="empty"><h3>画像や動画のツイートがないよ</h3></div>`); return; }
+  items.forEach(p => { const th = thumbOf(p) || { label: "?" }, b = document.createElement("button"); b.type = "button"; b.className = "grid-tile"; b.dataset.gopen = p.id; b.setAttribute("aria-label", (p.text || "画像・動画").slice(0, 30));
+    if (th.src) { const im = new Image(); im.loading = "lazy"; im.alt = ""; im.src = th.src; b.append(im); }
+    else if (th.canvas) b.append(th.canvas);
+    else if (th.vsrc) { const v = document.createElement("video"); v.muted = true; v.preload = "metadata"; v.playsInline = true; v.src = th.vsrc + "#t=0.1"; b.append(v); }
+    else b.insertAdjacentHTML("beforeend", `<span class="gt-label">${esc(th.label)}</span>`);
+    if (th.video) b.insertAdjacentHTML("beforeend", `<span class="gt-badge" aria-hidden="true">▶</span>`); if (th.n > 1) b.insertAdjacentHTML("beforeend", `<span class="gt-badge" aria-hidden="true">${th.n}枚</span>`);
+    if (p.label) b.insertAdjacentHTML("beforeend", `<i class="gt-lbl" style="background:${LABEL_C[p.label]}"></i>`);
+    g.append(b); });
+  feed.append(g);
+  const end = document.createElement("div"); end.className = "feed-end"; end.textContent = `画像・動画 ${items.length} 件（2本指で広げるといつもの表示）`; feed.append(end);
+}
+document.addEventListener("click", e => { const t = e.target.closest("[data-gopen]"); if (t) openViewer(t.dataset.gopen); });
+(() => { const pts = new Map(); let d0 = 0;
+  const main = $("#main");
+  main.addEventListener("touchstart", e => { if (e.touches.length === 2) { const [a, b] = e.touches; d0 = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY); } }, { passive: true });
+  main.addEventListener("touchmove", e => { if (e.touches.length !== 2 || !d0 || query) return; const [a, b] = e.touches, d1 = Math.hypot(a.clientX - b.clientX, a.clientY - b.clientY);
+    if (!S.opts.grid && d1 < d0 * .7) { d0 = 0; setGrid(true); } else if (S.opts.grid && d1 > d0 * 1.35) { d0 = 0; setGrid(false); } }, { passive: true });
+  main.addEventListener("touchend", () => { d0 = 0; }, { passive: true });
+  let acc = 0, lock = 0; main.addEventListener("wheel", e => { if (!e.ctrlKey || query) return; e.preventDefault(); if (Date.now() < lock) return; acc += e.deltaY;
+    if (acc > 40 && !S.opts.grid) { setGrid(true); acc = 0; lock = Date.now() + 600; } else if (acc < -40 && S.opts.grid) { setGrid(false); acc = 0; lock = Date.now() + 600; } }, { passive: false });
+})();
+
+/* N2 しおり / N3 区間リピート・切り抜きツイート: 動画ごとの追加の道具 */
+const MARK_MAX = 10;
+function mediaExtras(w, pl, p, full) {
+  if (!pl.seek || !w._span || w.classList.contains("no-seek")) return;
+  w.dataset.pid = p.id; pl.post = p;
+  if (p.clip) pl.ab = { a: p.clip.a, b: p.clip.b, clip: true };
+  w.insertAdjacentHTML("beforeend", `<button type="button" class="mk-btn" data-mark aria-label="しおりを付ける" title="しおり（長押しで消せる）"><svg class="i"><use href="#i-bookmark"/></svg></button>` + (full && !p.clip ? `<button type="button" class="ab-btn" data-ab aria-label="区間リピート" title="区間リピート"><svg class="i"><use href="#i-scissors"/></svg></button>` : ""));
+  if (p.clip) w.insertAdjacentHTML("beforeend", `<span class="clip-badge">✂ ${fmt(p.clip.a)}〜${fmt(p.clip.b)}</span>`);
+  paintMarks(w);
+}
+function paintMarks(w) {
+  const p = S.posts.find(x => x.id === w.dataset.pid), tr = w.querySelector(".seek-track"); if (!p || !tr || !w._span) return;
+  const span = w._span(); tr.querySelectorAll(".mk, .ab-range, .ab-h").forEach(x => x.remove());
+  (p.marks || []).forEach((m, i) => { if (m.t > span) return; tr.insertAdjacentHTML("beforeend", `<button type="button" class="mk" data-mk="${i}" style="left:${m.t / span * 100}%" aria-label="${fmt(m.t)} のしおり（長押しで消す）" title="${fmt(m.t)}"></button>`); });
+  const pl = players.get(w); const ab = pl && pl.ab;
+  if (ab && !ab.clip) tr.insertAdjacentHTML("beforeend", `<i class="ab-range" style="left:${ab.a / span * 100}%;width:${(ab.b - ab.a) / span * 100}%"></i><b class="ab-h" data-abh="a" style="left:${ab.a / span * 100}%">A</b><b class="ab-h" data-abh="b" style="left:${ab.b / span * 100}%">B</b>`);
+}
+setInterval(() => {
+  document.querySelectorAll(".media[data-pid]").forEach(w => { const span = w._span && w._span(); if (span && span !== w._lastSpan) { w._lastSpan = span; paintMarks(w); } });
+}, 1000);
+// 区間リピートの見張り: Bまで来たらAへ戻る（切り抜きツイートも同じ）
+setInterval(() => { players.forEach((pl, w) => { const ab = pl.ab; if (!ab || !pl.playing || !w._getT) return; const t = w._getT(); if (t >= ab.b - .05 || t < ab.a - .6) { pl.seek(ab.a); if (t >= ab.b - .05 && pl.pid) markSeen(pl.pid); } }); }, 100);
+(() => { let lt = 0, fired = false;
+  document.addEventListener("pointerdown", e => { const mk = e.target.closest?.(".mk"); if (!mk) return; e.stopPropagation(); fired = false; clearTimeout(lt);
+    lt = setTimeout(() => { fired = true; const w = mk.closest(".media"), p = S.posts.find(x => x.id === w.dataset.pid), i = +mk.dataset.mk, old = p.marks[i];
+      p.marks.splice(i, 1); save(); paintMarks(w); renderVMarks(p); haptic("trash"); toast("しおりを消したよ", () => { p.marks.splice(i, 0, old); save(); paintMarks(w); renderVMarks(p); }); }, 550); }, true);
+  ["pointerup", "pointercancel"].forEach(ev => document.addEventListener(ev, () => clearTimeout(lt), true));
+  document.addEventListener("click", e => {
+    const mk = e.target.closest(".mk"); if (mk) { e.stopPropagation(); e.preventDefault(); if (fired) { fired = false; return; } const w = mk.closest(".media"), p = S.posts.find(x => x.id === w.dataset.pid), pl = players.get(w); pl.seek(p.marks[+mk.dataset.mk].t); if (!pl.playing) { players.forEach(o => { if (o !== pl && o.playing) o.pause(); }); pl.play(); } toast(`${fmt(p.marks[+mk.dataset.mk].t)} へ飛んだよ`); return; }
+    const b = e.target.closest("[data-mark]"); if (b) { e.stopPropagation(); const w = b.closest(".media"), p = S.posts.find(x => x.id === w.dataset.pid); const t = Math.floor(w._getT());
+      p.marks ||= []; if (p.marks.length >= MARK_MAX) return toast(`しおりは1本に${MARK_MAX}個までだよ。長押しで消してね`);
+      if (p.marks.some(m => Math.abs(m.t - t) < 2)) return toast("その場面にはもうしおりがあるよ");
+      p.marks.push({ t }); p.marks.sort((x, y) => x.t - y.t); save(); paintMarks(w); renderVMarks(p); haptic("tick"); sfx("pop"); toast(`${fmt(t)} にしおりを付けたよ`);
+      const nm = [...w.querySelectorAll(".mk")].find(x => +x.title.split(":")[0] * 60 + +x.title.split(":")[1] === t); nm?.animate([{ transform: "translate(-50%,-160%) scale(.4)", opacity: 0 }, { transform: "translate(-50%,-100%) scale(1)", opacity: 1 }], { duration: 300, easing: "cubic-bezier(.3,1.5,.5,1)" }); return; }
+    const ab = e.target.closest("[data-ab]"); if (ab) { e.stopPropagation(); toggleAB(ab.closest(".media")); return; }
+  }, true);
+})();
+function renderVMarks(p) {
+  const box = $("#vMarks"); if (!box) return; const list = (p && p.marks) || [];
+  box.innerHTML = list.length ? `<span class="vm-lab">しおり</span>` + list.map((m, i) => `<span class="vm-chip"><button type="button" data-vmgo="${i}">${fmt(m.t)}</button><button type="button" data-vmdel="${i}" aria-label="${fmt(m.t)} のしおりを消す">×</button></span>`).join("") : "";
+  const k = [...players.keys()].find(k => $("#vStage").contains(k)), pl = k && players.get(k);
+  if (pl && pl.ab && !pl.ab.clip) box.insertAdjacentHTML("beforeend", `<span class="vm-ab">区間 ${fmt(pl.ab.a)}〜${fmt(pl.ab.b)}をくり返し中 <button type="button" data-clipsave>✂ この部分だけツイート</button><button type="button" data-abend>やめる</button></span>`);
+}
+$("#vMarks").addEventListener("click", e => {
+  const p = vList[vIdx], k = [...players.keys()].find(k => $("#vStage").contains(k)), pl = k && players.get(k); if (!p) return;
+  const go = e.target.closest("[data-vmgo]"); if (go && pl) { pl.seek(p.marks[+go.dataset.vmgo].t); if (!pl.playing) pl.play(); return; }
+  const del = e.target.closest("[data-vmdel]"); if (del) { const i = +del.dataset.vmdel, old = p.marks[i]; p.marks.splice(i, 1); save(); renderVMarks(p); if (k) paintMarks(k); toast("しおりを消したよ", () => { p.marks.splice(i, 0, old); save(); renderVMarks(p); if (k) paintMarks(k); }); return; }
+  if (e.target.closest("[data-abend]") && k) { toggleAB(k); return; }
+  if (e.target.closest("[data-clipsave]") && pl && pl.ab) {
+    const { a, b } = pl.ab, c = { ...JSON.parse(JSON.stringify(p)), id: uid(), at: Date.now(), likes: 0, comments: [], marks: [], clip: { a: Math.floor(a), b: Math.ceil(b) } }; c.text = `✂ ${fmt(c.clip.a)}〜${fmt(c.clip.b)}${p.text ? " " + p.text : ""}`;
+    delete c.seenAt; delete c.lastLikedAt; delete c.prevLikedAt; delete c.sortAt; delete c.reposted; delete c.pinned; delete c.woke; delete c.snoozeUntil; if (isFilePost(p)) c.fileId = fileBase(p);
+    S.posts.push(c); save(); renderTabs(); toast(`${fmt(c.clip.a)}〜${fmt(c.clip.b)} だけ流れるツイートを作ったよ`); sfx("post");
+  }
+});
+function toggleAB(w) {
+  const pl = players.get(w); if (!pl) return;
+  if (pl.ab) { delete pl.ab; paintMarks(w); renderVMarks(vList[vIdx]); toast("区間リピートをやめたよ"); return; }
+  const t = w._getT(), span = w._span(); const a = Math.max(0, Math.min(t, span - 6)), b = Math.min(span, a + Math.min(15, span / 3));
+  pl.ab = { a, b }; paintMarks(w); renderVMarks(vList[vIdx]); toast("AとBをドラッグして、くり返す場所を決めてね");
+}
+(() => { let drag = null;
+  document.addEventListener("pointerdown", e => { const h = e.target.closest?.(".ab-h"); if (!h) return; e.stopPropagation(); e.preventDefault(); const w = h.closest(".media"); drag = { h, w, pl: players.get(w), which: h.dataset.abh }; try { h.setPointerCapture(e.pointerId); } catch {} }, true);
+  document.addEventListener("pointermove", e => { if (!drag) return; const tr = drag.w.querySelector(".seek-track").getBoundingClientRect(), span = drag.w._span(), v = Math.max(0, Math.min(span, (e.clientX - tr.left) / tr.width * span)), ab = drag.pl.ab;
+    if (drag.which === "a") ab.a = Math.min(v, ab.b - 2); else ab.b = Math.max(v, ab.a + 2); paintMarks(drag.w); }, true);
+  document.addEventListener("pointerup", () => { if (!drag) return; const { pl } = drag; drag = null; pl.seek(pl.ab.a); renderVMarks(vList[vIdx]); }, true);
+})();
+
+/* N4 アイコン画像の色を読み取る（あざやかな色を優先）。設定で「テーマの色に寄せる」も */
+function pickColor(canvas) {
+  try { const d = canvas.getContext("2d").getImageData(0, 0, canvas.width, canvas.height).data; const bins = new Map();
+    for (let i = 0; i < d.length; i += 16) { const r = d[i], g = d[i + 1], b = d[i + 2], mx = Math.max(r, g, b), mn = Math.min(r, g, b), sat = mx ? (mx - mn) / mx : 0; if (mx < 40 || mx > 250 && sat < .1) continue;
+      const k = (r >> 5) * 64 + (g >> 5) * 8 + (b >> 5), w = .3 + sat * 2, o = bins.get(k) || { w: 0, r: 0, g: 0, b: 0 }; o.w += w; o.r += r * w; o.g += g * w; o.b += b * w; bins.set(k, o); }
+    let best = null; bins.forEach(o => { if (!best || o.w > best.w) best = o; }); if (!best) return null;
+    let rgb = [best.r / best.w, best.g / best.w, best.b / best.w].map(Math.round);
+    if (S.opts.autoColor === "theme") { const pal = themePalette(); if (pal.length) rgb = pal.sort((x, y) => dist(x, rgb) - dist(y, rgb))[0]; }
+    return "#" + rgb.map(v => v.toString(16).padStart(2, "0")).join("");
+  } catch { return null; }
+}
+window.pickColorTest = pickColor;
+const dist = (a, b) => (a[0] - b[0]) ** 2 * 2 + (a[1] - b[1]) ** 2 * 4 + (a[2] - b[2]) ** 2 * 3;
+function themePalette() {
+  const cs = getComputedStyle(document.documentElement), out = [];
+  ["--accent", "--g1", "--g2", "--g3"].forEach(n => { const v = cs.getPropertyValue(n).trim(); const m = v.match(/^#([0-9a-f]{6})$/i); if (m) out.push([0, 2, 4].map(i => parseInt(m[1].slice(i, i + 2), 16))); });
+  LUX.forEach(x => { const m = (x.color || "").match(/^#([0-9a-f]{6})$/i); if (m) out.push([0, 2, 4].map(i => parseInt(m[1].slice(i, i + 2), 16))); });
+  return out;
+}
+$("#optAutoColor").addEventListener("change", e => { S.opts.autoColor = e.target.value; save(); toast({ raw: "アイコン画像の色をそのまま使うよ", theme: "アイコン画像の色を、テーマの色に寄せるよ", off: "色は自動で変えないよ" }[S.opts.autoColor]); });
+
+/* N5 1年前の今日（と1か月前の今日） */
+function memoryCard(feed) {
+  const now = new Date(), day = now.toDateString(); if ((S.memDone ||= {})[S.active] === day) return;
+  const same = (t, y, m) => { const d = new Date(t); return d.getDate() === now.getDate() && d.getMonth() === (now.getMonth() - m + 12) % 12 && d.getFullYear() === now.getFullYear() - y - (now.getMonth() - m < 0 ? 1 : 0); };
+  const list = S.posts.filter(p => p.tl === S.active), year = list.filter(p => same(p.at, 1, 0)), month = list.filter(p => same(p.at, 0, 1));
+  const hit = year.length ? ["1年前の今日", year] : month.length ? ["1か月前の今日", month] : null; if (!hit) return;
+  const [title, ps] = hit, d0 = new Date(ps[0].at);
+  feed.insertAdjacentHTML("beforeend", `<div class="mem-card" id="memCard"><div class="mem-in"><div class="mem-front"><b>📅 ${title}</b><span>${d0.getFullYear()}年${d0.getMonth() + 1}月${d0.getDate()}日に追加したツイートが ${ps.length} 件あるよ</span><small>押して見る</small></div>
+    <div class="mem-back">${ps.slice(0, 4).map(p => `<button type="button" data-memgo="${p.id}">${esc((p.text || (p.embed ? p.embed.url : "画像・動画")).slice(0, 40))}</button>`).join("")}</div></div><button type="button" class="mem-x" aria-label="今日はもう出さない">×</button></div>`);
+}
+document.addEventListener("click", e => {
+  const c = e.target.closest("#memCard"); if (!c) return;
+  if (e.target.closest(".mem-x")) { S.memDone[S.active] = new Date().toDateString(); save(); c.remove(); return; }
+  const go = e.target.closest("[data-memgo]"); if (go) { const p = S.posts.find(x => x.id === go.dataset.memgo); if (p && hasViewable(p)) openViewer(p.id); else { const el = document.querySelector(`#feed .post[data-id="${go.dataset.memgo}"]`); el?.scrollIntoView({ block: "center", behavior: "smooth" }); el?.classList.add("flash"); } return; }
+  c.classList.toggle("flip");
+});
+
+/* N6 タブを長押しすると、タイムラインのアイコンが丸く並ぶ。指をすべらせて離したところへ */
+(() => { const tabs = $("#tabs"), ring = $("#tlRadial"); let t = 0, open = false, sx = 0, sy = 0, sel = null, block = 0;
+  tabs.addEventListener("pointerdown", e => { if (e.target.closest(".tab-add, .tab-grp")) return; sx = e.clientX; sy = e.clientY; clearTimeout(t);
+    t = setTimeout(() => { const TL = orderedTLs(); if (TL.length < 2) return; open = true; block = Date.now(); haptic("tick");
+      const n = TL.length, R = Math.max(80, Math.min(130, 24 + n * 14)), up = sy > innerHeight * .55;
+      const span = Math.min(Math.PI * 1.6, n * .62), base = up ? -Math.PI / 2 : Math.PI / 2;
+      const cx = Math.max(R + 30, Math.min(innerWidth - R - 30, sx)), cy = sy;
+      ring.innerHTML = TL.map((tl, i) => { const a = base + (n === 1 ? 0 : (i / (n - 1) - .5) * span), x = cx + Math.cos(a) * R, y = cy + Math.sin(a) * R;
+        return `<span class="rad-item" data-rad="${tl.id}" style="left:${x}px;top:${y}px">${tlAvatar(tl, "mini-av")}<em>${esc(tl.name)}</em></span>`; }).join("") + `<span class="rad-center" style="left:${cx}px;top:${cy}px"></span>`;
+      ring.hidden = false; if (!reduceMotion()) [...ring.querySelectorAll(".rad-item")].forEach((el, i) => el.animate([{ transform: `translate(${cx - parseFloat(el.style.left)}px,${cy - parseFloat(el.style.top)}px) scale(.2)`, opacity: 0 }, { transform: "translate(0,0) scale(1)", opacity: 1 }], { duration: 260, delay: i * 18, easing: "cubic-bezier(.3,1.4,.5,1)", fill: "backwards" }));
+    }, 450); });
+  addEventListener("pointermove", e => { if (!open) { if (t && Math.hypot(e.clientX - sx, e.clientY - sy) > 10) { clearTimeout(t); t = 0; } return; }
+    sel = null; ring.querySelectorAll(".rad-item").forEach(el => { const r = el.getBoundingClientRect(), on = Math.hypot(r.left + r.width / 2 - e.clientX, r.top + r.height / 2 - e.clientY) < 34; el.classList.toggle("on", on); if (on) sel = el.dataset.rad; }); }, true);
+  const end = () => { clearTimeout(t); t = 0; if (!open) return; open = false; ring.hidden = true; if (sel && sel !== S.active) { const TL = orderedTLs(); setActive(sel, TL.findIndex(x => x.id === sel) > TL.findIndex(x => x.id === S.active) ? 1 : -1); } sel = null; };
+  addEventListener("pointerup", end, true); addEventListener("pointercancel", end, true);
+  tabs.addEventListener("click", e => { if (Date.now() - block < 900) { e.stopPropagation(); e.preventDefault(); block = 0; } }, true);
+  tabs.addEventListener("contextmenu", e => e.preventDefault());
+  document.addEventListener("touchmove", e => { if (open) e.preventDefault(); }, { passive: false });
+})();
+
+/* N7 小窓: 自分で再生した動画は、画面の外に出ても右下の小窓で続く。小窓があるあいだは真ん中の動画は自動再生しない */
+let stick = null, pip = null;
+const pipHold = () => !!(stick && stick.pl.playing && document.contains(stick.w));
+function stickTo(w, pl) { stick = { w, pl }; }
+function openPip() {
+  if (pip || !stick || !S.opts.pip) return; const { w, pl } = stick; const r = w.getBoundingClientRect();
+  const ph = document.createElement("div"); ph.className = "pip-ph"; ph.style.height = r.height + "px"; w.before(ph);
+  w.classList.add("pip"); w.insertAdjacentHTML("beforeend", `<button type="button" class="pip-x" data-pipx aria-label="小窓を閉じる">×</button>`);
+  pip = { w, pl, ph }; if (!reduceMotion()) w.animate([{ transform: "scale(.6)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 260, easing: "cubic-bezier(.3,1.4,.5,1)" });
+}
+function closePip(keepPlaying) {
+  if (!pip) return; const { w, pl, ph } = pip; pip = null; w.classList.remove("pip"); w.querySelector(".pip-x")?.remove(); ph.remove();
+  if (!keepPlaying) { pl.pause(); stick = null; } else if (stick && stick.w === w) { stick = null; }
+  const r = w.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) { pl.pause(); }
+  feedAP.refresh();
+}
+(() => { let raf = 0; addEventListener("scroll", () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(() => {
+  if (!stick || !document.contains(stick.w)) { if (pip && !document.contains(pip.w)) pip = null; stick = stick && document.contains(stick.w) ? stick : null; return; }
+  const ref = pip ? pip.ph : stick.w, r = ref.getBoundingClientRect(), out = r.bottom < 60 || r.top > innerHeight - 60;
+  if (out && !pip && stick.pl.playing) openPip(); else if (!out && pip) { closePip(true); stickTo(pip ? pip.w : stick?.w || ref, stick?.pl); }
+}); }, { passive: true }); })();
+document.addEventListener("click", e => {
+  if (e.target.closest("[data-pipx]")) { e.stopPropagation(); e.preventDefault(); closePip(false); toast("小窓を閉じたよ"); return; }
+  const w = e.target.closest(".media.pip"); if (w && !e.target.closest(".seek, [data-snd], [data-mark], .mk")) { e.stopPropagation(); e.preventDefault(); const ph = pip.ph; scrollTo({ top: ph.getBoundingClientRect().top + scrollY - innerHeight / 2 + ph.offsetHeight / 2, behavior: reduceMotion() ? "auto" : "smooth" }); }
+}, true);
+(() => { let sy = null, dy = 0; document.addEventListener("pointerdown", e => { const w = e.target.closest?.(".media.pip"); if (!w || e.target.closest(".seek")) return; sy = e.clientY; dy = 0; }, true);
+  document.addEventListener("pointermove", e => { if (sy == null || !pip) return; dy = e.clientY - sy; if (dy > 0) pip.w.style.translate = `0 ${dy}px`; }, true);
+  document.addEventListener("pointerup", () => { if (sy == null || !pip) { sy = null; return; } sy = null; pip.w.style.translate = ""; if (dy > 60) { closePip(false); toast("小窓を閉じたよ"); } }, true); })();
+$("#optPip").addEventListener("change", e => { S.opts.pip = e.target.checked; save(); if (!S.opts.pip) closePip(false); toast(S.opts.pip ? "自分で再生した動画は、小窓で続くよ" : "小窓をやめたよ"); });
+
+/* N8 振ってシャッフル */
+$("#optShake").addEventListener("change", async e => {
+  if (e.target.checked && typeof DeviceMotionEvent !== "undefined" && DeviceMotionEvent.requestPermission) {
+    try { const r = await DeviceMotionEvent.requestPermission(); if (r !== "granted") { e.target.checked = false; return toast("動きのセンサーを使う許可が出なかったよ"); } } catch { e.target.checked = false; return toast("この端末では使えないみたい"); } }
+  S.opts.shake = e.target.checked; save(); toast(S.opts.shake ? "スマホを軽く振ると、ランダムな1本が始まるよ" : "振ってシャッフルをやめたよ");
+});
+(() => { let last = 0, hits = 0, ht = 0;
+  addEventListener("devicemotion", e => { if (!S.opts.shake) return; const a = e.accelerationIncludingGravity; if (!a) return;
+    const g = Math.hypot(a.x || 0, a.y || 0, a.z || 0); if (g < 24) return; const now = Date.now(); if (now - ht > 700) hits = 0; ht = now; hits++;
+    if (hits >= 2 && now - last > 2500 && $("#viewer").hidden && $("#lockScreen").hidden && !document.body.classList.contains("sheet-open")) { last = now; hits = 0; haptic("repost"); todayPick(); } });
+})();
+
+/* N9 今日の記録リング */
+function dayStat() { const d = new Date().toDateString(); if (!S.day || S.day.date !== d) S.day = { date: d, seen: 0, hearts: 0, cms: 0 }; return S.day; }
+function dayAdd(k) { const d = dayStat(); const g = S.goals[k]; d[k]++; if (d[k] === g) setTimeout(() => toast(`今日の「${{ seen: "見た", hearts: "ハート", cms: "コメント" }[k]}」の目標に届いたよ！`), 900); paintRings(); }
+function ringsSVG(size) {
+  const d = dayStat(), RG = [["seen", "見た", "#1d9bf0"], ["hearts", "ハート", "#f91880"], ["cms", "コメント", "#00ba7c"]], c = size / 2, sw = size * .085;
+  return `<svg viewBox="0 0 ${size} ${size}" class="rings-svg" role="img" aria-label="${RG.map(([k, n]) => `${n} ${d[k]}/${S.goals[k]}`).join("、")}">${RG.map(([k, n, col], i) => { const R = c - sw / 2 - i * (sw + size * .025), C = 2 * Math.PI * R, f = Math.min(1, d[k] / S.goals[k]);
+    return `<circle cx="${c}" cy="${c}" r="${R}" stroke="${col}" stroke-width="${sw}" opacity=".18" fill="none"/><circle cx="${c}" cy="${c}" r="${R}" stroke="${col}" stroke-width="${sw}" fill="none" stroke-linecap="round" stroke-dasharray="${C}" stroke-dashoffset="${C * (1 - f)}" transform="rotate(-90 ${c} ${c})" class="ring-arc${f >= 1 ? " full" : ""}"/>`; }).join("")}</svg>`;
+}
+function ringsLegend() { const d = dayStat(); return `<div class="rings-leg">${[["seen", "見た", "#1d9bf0"], ["hearts", "ハート", "#f91880"], ["cms", "コメント", "#00ba7c"]].map(([k, n, c]) => `<div><i style="background:${c}"></i>${n}<b>${d[k]}</b>/<label><input type="number" min="1" max="99" value="${S.goals[k]}" data-goal="${k}" aria-label="${n}の目標"></label></div>`).join("")}</div>`; }
+function paintRings() {
+  const side = $("#ringsSide"); if (side) side.innerHTML = ringsSVG(110) + ringsLegend();
+  if (!$("#ringSheet").hidden) $("#ringsBig").innerHTML = ringsSVG(200) + ringsLegend();
+  const a = $("#mManage"); if (a) { let r = a.parentElement.querySelector(".av-ring"); if (!r) { a.insertAdjacentHTML("afterend", `<span class="av-ring" aria-hidden="true"></span>`); r = a.parentElement.querySelector(".av-ring"); }
+    const d = dayStat(), f = (Math.min(1, d.seen / S.goals.seen) + Math.min(1, d.hearts / S.goals.hearts) + Math.min(1, d.cms / S.goals.cms)) / 3; r.style.setProperty("--f", (f * 100).toFixed(0) + "%"); }
+}
+document.addEventListener("change", e => { const g = e.target.closest("[data-goal]"); if (!g) return; S.goals[g.dataset.goal] = Math.max(1, Math.min(99, Math.round(+g.value || 1))); save(); paintRings(); });
+function openRings() { $("#ringSheet").hidden = false; document.body.classList.add("sheet-open"); paintRings(); }
+const closeRings = () => { $("#ringSheet").hidden = true; document.body.classList.remove("sheet-open"); };
+$("#rgClose").addEventListener("click", closeRings); $("#ringSheet").addEventListener("click", e => { if (e.target.id === "ringSheet") closeRings(); });
+$("#rgIcon").addEventListener("click", () => { closeRings(); openLook("me"); });
+
+/* N10 YouTubeのURLを貼ると、タイトルを取ってきて本文の下書きに入れる（公開版だけ。noembed.com を使う） */
+const titleDone = new Set();
+function maybeTitle() {
+  if (!HOSTED) return; const v = compText.value.trim(), url = findUrl(v); if (!url || v !== url || titleDone.has(url)) return; const r = parseUrl(url); if (!r || r.kind !== "youtube") return;
+  titleDone.add(url); $("#detect").insertAdjacentHTML("beforeend", ` <span class="chip" id="titleChip">タイトルを取ってきてるよ…</span>`);
+  fetchTitle(url).then(t => { $("#titleChip")?.remove(); if (!t || compText.value.trim() !== url) return; compText.value = `${t}\n${url}`; compText.dispatchEvent(new Event("input")); toast("動画のタイトルを入れたよ（直してOK）"); });
+}
+async function fetchTitle(url) {
+  try { const c = new AbortController(); setTimeout(() => c.abort(), 5000); const r = await fetch(`https://noembed.com/embed?url=${encodeURIComponent(url)}`, { signal: c.signal }); const j = await r.json(); return (j && j.title) ? String(j.title).slice(0, 120) : ""; } catch { return ""; }
+}
+
 /* ================= K25〜K36・シークレット ================= */
 const LABEL_C = { red: "#f4212e", orange: "#ff7a00", yellow: "#f5c400", green: "#00ba7c", blue: "#1d9bf0", purple: "#7856ff" };
 const LABEL_N = { red: "赤", orange: "オレンジ", yellow: "黄", green: "緑", blue: "青", purple: "紫" };
@@ -2895,6 +3220,7 @@ function feedTools(all) {
   const used = Object.keys(LABEL_C).filter(c => all.some(p => p.label === c));
   const left = sleepAt ? Math.max(1, Math.ceil((sleepAt - Date.now()) / 60e3)) : 0;
   return `<div class="ftools" role="toolbar" aria-label="タイムラインの道具">
+    <button type="button" class="ft ${S.opts.grid ? "on" : ""}" id="ftGrid" aria-pressed="${!!S.opts.grid}"><svg class="i"><use href="#i-grid"/></svg>グリッド</button>
     <button type="button" class="ft" id="ftPick"><svg class="i"><use href="#i-select"/></svg>選ぶ</button>
     <button type="button" class="ft" id="ftPlay"><svg class="i"><use href="#i-playall"/></svg>連続再生</button>
     <button type="button" class="ft ${left ? "on" : ""}" id="ftSleep" title="押すたびに 15分→30分→60分→オフ"><svg class="i"><use href="#i-moon"/></svg>${left ? `あと${left}分` : "タイマー"}</button>
@@ -2906,6 +3232,7 @@ document.addEventListener("click", e => {
   const lf = e.target.closest("[data-lf]"); if (lf) { labelFilter = labelFilter === lf.dataset.lf ? "" : lf.dataset.lf; renderFeed(); return; }
   if (e.target.closest("#ftPlay")) return marathon();
   if (e.target.closest("#ftPick")) return startPick();
+  if (e.target.closest("#ftGrid")) return setGrid(!S.opts.grid);
   if (e.target.closest("#ftSleep")) return cycleSleep();
   if (e.target.closest("#snoozeNow")) { const sn = S.posts.filter(p => p.tl === S.active && p.snoozeUntil > Date.now()); sn.forEach(p => p.snoozeUntil = 1); wakeSnoozed(); return; }
 });
@@ -3113,7 +3440,7 @@ $("#cmText").addEventListener("input", e => { $("#cmSend").disabled = !e.target.
 $("#cmText").addEventListener("keydown", e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); $("#cmForm").requestSubmit(); } });
 $("#cmForm").addEventListener("submit", e => {
   e.preventDefault(); const text = $("#cmText").value.trim(); const p = S.posts.find(x => x.id === cmId); if (!text || !p) return;
-  (p.comments ||= []).push({ id: uid(), text, at: Date.now() }); save();
+  (p.comments ||= []).push({ id: uid(), text, at: Date.now() }); dayAdd("cms"); save();
   $("#cmText").value = ""; $("#cmSend").disabled = true; renderComments(); refreshPostComments(p); rollNum(document.querySelector(`#feed .post[data-id="${p.id}"] .act.cm`), 1); sfx("pop");
   $("#cmList").lastElementChild?.scrollIntoView({ block: "nearest" });
 });
@@ -3153,7 +3480,7 @@ function vRender() {
   stage.append(el);
   if (built.playable) {
     const pl = players.get(el);
-    if (pl) { pl.pid = p.id;
+    if (pl) { pl.pid = p.id; mediaExtras(el, pl, p, true);
       // 見終わったら: 「次の動画へ」設定なら、次の動画（画像は飛ばす）へ。なければループ
       pl.onEnd = () => {
         if (S.opts.fullEnd !== "next" && !vMarathon) return false;
@@ -3165,7 +3492,7 @@ function vRender() {
     }
   } else if (p.media || (p.embed && p.embed.kind === "image-url")) { startSlide(); const id = p.id; vSeenT = setTimeout(() => markSeen(id), 3000); }
   $("#vCount").textContent = `${vIdx + 1} / ${vList.length}` + (galN(p) > 1 ? `（画像 ${vSub + 1}/${galN(p)}）` : "");
-  $("#vCap").textContent = p.text || "";
+  $("#vCap").textContent = p.text || ""; renderVMarks(p);
   $("#vPrev").disabled = vIdx === 0 && vSub === 0; $("#vNext").disabled = vIdx === vList.length - 1 && vSub >= galN(p) - 1;
 }
 function openViewer(id, from = "feed", sub = 0) {
@@ -3219,6 +3546,7 @@ function openShare(d) {
   $("#shDetect").innerHTML = r ? `<span class="chip">${KIND_LABEL[r.kind]}</span> として表示されます` : "";
   $("#shUrl").textContent = url;
   $("#shText").value = text;
+  if (HOSTED && !text && r && r.kind === "youtube") fetchTitle(url).then(t => { if (t && !$("#shText").value && shareData && shareData.url === url) $("#shText").value = t; });
   const want = d.tl && (S.timelines.find(t => t.id === d.tl || t.name === d.tl));
   const auto = !want && ruleFor(r, [d.title, d.text, url].join(" "));
   const pick = [want, auto, tlById(S.opts.lastShareTl), tlById(S.active)].find(t => t && !isHiddenTl(t)) || orderedTLs()[0];
@@ -3258,7 +3586,7 @@ function boot() {
   if (S.opts.startTl && tlById(S.opts.startTl) && !isHiddenTl(tlById(S.opts.startTl))) S.active = S.opts.startTl;
   wakeSnoozed(true); applyOpts(); renderAll();
   const d = readShareParams(); if (d) openShare(d); else restorePos();
-  maybeNagBackup(); purgeTrash(); loadDraft(); netState(); bootLock(); maybeGuide();
+  maybeNagBackup(); purgeTrash(); loadDraft(); netState(); bootLock(); maybeGuide(); paintRings();
   setTimeout(updateFocus, 60);
 }
 Promise.race([idb.all(), new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 1500))])

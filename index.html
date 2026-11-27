@@ -289,6 +289,36 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .main[data-bg=stripe],.lk-stage[data-bg=stripe]{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--b1) var(--bap),var(--bg)) 0 14px,var(--bg) 14px 28px)}
 .main[data-bg=img]{background:linear-gradient(color-mix(in srgb,var(--bg) var(--bainv),transparent),color-mix(in srgb,var(--bg) var(--bainv),transparent)),var(--tl-img) center/cover fixed,var(--bg)}
 .lk-stage[data-bg=img]{background:linear-gradient(color-mix(in srgb,var(--bg) var(--bainv),transparent),color-mix(in srgb,var(--bg) var(--bainv),transparent)),var(--tl-img) center/cover,var(--bg)}
+/* ---- 選んでるツイート: すりガラス ---- */
+.post{border:1px solid transparent;border-bottom-color:var(--line);border-radius:0;transition:background .35s,border-color .35s,border-radius .35s,box-shadow .35s}
+.post:hover{background:transparent}
+.post.focus{position:relative;z-index:2;border-radius:20px;border-color:color-mix(in srgb,var(--fg) 13%,transparent);
+  background:linear-gradient(160deg,color-mix(in srgb,var(--bg) 66%,transparent),color-mix(in srgb,var(--bg) 34%,transparent));
+  backdrop-filter:blur(16px) saturate(1.4);-webkit-backdrop-filter:blur(16px) saturate(1.4);
+  box-shadow:inset 0 1px 0 color-mix(in srgb,#fff 50%,transparent),0 12px 30px -10px rgba(0,0,0,.22)}
+/* ---- コメント ---- */
+.cm-peek:empty{display:none}
+.cm-peek{margin-top:8px;padding:8px 12px;border-radius:12px;background:color-mix(in srgb,var(--fg) 5%,transparent);display:flex;flex-direction:column;gap:2px;font-size:14px;cursor:pointer}
+.cm-peek-row{display:flex;gap:6px;min-width:0}
+.cm-peek-row span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap;min-width:0}
+.cm-more{color:var(--muted);font-size:13px}
+.post-actions .act.cm:hover{color:var(--accent)}
+.cm-sheet{z-index:130}
+.cm-target{display:flex;gap:10px;padding:10px 12px;border-radius:14px;background:var(--bg-hover);font-size:14px}
+.cm-tt{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;overflow-wrap:anywhere}
+.cm-time{color:var(--muted);font-size:12px;margin-left:4px}
+.cm-list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px;max-height:44vh;overflow-y:auto}
+.cm-item{display:flex;gap:10px;align-items:flex-start}
+.cm-body{flex:1;min-width:0}
+.cm-text{white-space:pre-wrap;overflow-wrap:anywhere}
+.cm-del{color:var(--muted);font-size:12px;padding:4px 8px;border-radius:999px;flex:none}
+.cm-del:hover{background:var(--bg-hover)}
+.cm-del.sure{color:#fff;background:var(--danger)}
+.cm-empty{color:var(--muted);font-size:14px;text-align:center;padding:12px}
+.cm-form{display:flex;gap:10px;align-items:flex-end;border-top:1px solid var(--line);padding-top:12px}
+.cm-form .avatar{width:32px;height:32px;font-size:13px}
+.cm-form textarea{flex:1;min-width:0;border:1px solid var(--line-strong);border-radius:14px;padding:8px 12px;background:var(--bg);color:var(--fg);resize:none;font:inherit}
+.cm-form .btn-accent:disabled{opacity:.5}
 /* ---- アイコン設定シート ---- */
 .look-card{gap:14px}
 .lk-head{display:flex;justify-content:space-between;align-items:center}
@@ -326,7 +356,7 @@ body.sheet-open{overflow:hidden}
 .mini.on{background:var(--bg-hover);color:var(--accent)}
 .tl-row{gap:4px}
 .tl-row .mini{width:26px;height:26px}
-@media (max-width:640px){.post-actions .act{padding:6px 7px}}
+@media (max-width:640px){.post-actions .act{padding:6px 7px}.post-actions label.act{position:relative}.post-actions label.act select{position:absolute;inset:0;width:100%;opacity:0;cursor:pointer}}
 /* ---- ぷにぷにボタン ---- */
 @keyframes pop{0%{transform:scale(1)}35%{transform:scale(.86)}70%{transform:scale(1.07)}100%{transform:scale(1)}}
 .pop{animation:pop .32s cubic-bezier(.3,1.5,.5,1)}
@@ -525,6 +555,11 @@ body.sheet-open{overflow:hidden}
       <p>全画面表示も同じ長さまで再生します。ブラウザの決まりで、音声は画面を1回タップしてから出るようになります。</p>
       <label class="toggle" for="optFullEnd">全画面で見終わったら
         <select id="optFullEnd" class="sel"><option value="loop">もう一度（ループ）</option><option value="next">次の動画へ</option></select></label>
+      <label class="toggle" for="optMotion">タイムライン切り替えの動き
+        <select id="optMotion" class="sel"><option value="spring">ばねスライド</option><option value="depth">奥行き</option><option value="flip">カードめくり</option></select></label>
+      <label class="toggle">ハートや2倍速で軽く振動 <span class="switch"><input type="checkbox" id="optVibe"><span></span></span></label>
+      <p class="note" style="margin:-4px 0 0">Android は対応、iPhone のブラウザは振動しないよ</p>
+      <label class="toggle">開き直したら続きから <span class="switch"><input type="checkbox" id="optResume"><span></span></span></label>
       <label class="toggle">画像の全画面は自動で次へ <span class="switch"><input type="checkbox" id="optSlide"><span></span></span></label>
       <div class="toggle" id="slideSecRow"><span>次へ進むまで</span><span style="display:flex;align-items:center;gap:4px"><input type="number" id="optSlideSec" class="sel" min="2" max="600" step="1" style="width:72px" aria-label="秒数">秒</span></div>
       <label class="toggle">ダークモード <span class="switch"><input type="checkbox" id="optDark"><span></span></span></label>
@@ -617,6 +652,18 @@ body.sheet-open{overflow:hidden}
     <div class="share-actions"><button type="button" class="btn-accent" id="lkDone">完了</button></div>
   </div>
 </div>
+<div class="share cm-sheet" id="cmSheet" hidden role="dialog" aria-modal="true" aria-labelledby="cmTitle">
+  <div class="share-card">
+    <div class="lk-head"><h2 id="cmTitle">コメント</h2><button type="button" class="icon-btn" id="cmClose" aria-label="閉じる" style="color:var(--fg)"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <div class="cm-target" id="cmTarget"></div>
+    <ul class="cm-list" id="cmList"></ul>
+    <form class="cm-form" id="cmForm" autocomplete="off">
+      <div class="avatar" id="cmMe">私</div>
+      <textarea id="cmText" rows="2" maxlength="1000" placeholder="コメントを書く（この端末に保存されるよ）" aria-label="コメント"></textarea>
+      <button class="btn-accent" id="cmSend" disabled>送る</button>
+    </form>
+  </div>
+</div>
 <div class="share" id="share" hidden role="dialog" aria-modal="true" aria-labelledby="shTitle">
   <form class="share-card" id="shForm" autocomplete="off">
     <h2 id="shTitle">タイムラインに送る</h2>
@@ -648,6 +695,7 @@ body.sheet-open{overflow:hidden}
   <symbol id="i-up" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></symbol>
   <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
   <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" stroke="none"/></symbol>
+  <symbol id="i-comment" viewBox="0 0 24 24"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 4v-4h0A2.5 2.5 0 0 1 4 13.5z"/></symbol>
   <symbol id="i-repost" viewBox="0 0 24 24"><path d="M7 7h11v5M17 17H6v-5M15 4l3 3-3 3M9 20l-3-3 3-3"/></symbol>
   <symbol id="i-sort" viewBox="0 0 24 24"><path d="M8 4v16M4 8l4-4 4 4M16 20V4M12 16l4 4 4-4"/></symbol>
   <symbol id="i-top" viewBox="0 0 24 24"><path d="M5 4h14M12 20V9M7 13l5-5 5 5"/></symbol>
@@ -769,7 +817,7 @@ if (!S || !Array.isArray(S.timelines) || !S.timelines.length) S = seed();
 S.opts ||= { center: false, auto: true };
 S.me ||= { id: "me", name: "私", color: "#1d9bf0" }; S.me.id = "me";
 S.presets ||= [];
-S.opts.sound ??= true; S.opts.preview ??= 120; S.opts.auto ??= true; S.opts.wifiOnly ??= true; S.opts.strictNet ??= false; S.opts.lazy ??= true; S.opts.fullEnd ??= "loop"; S.opts.slideAuto ??= true; S.opts.slideSec ??= 10;
+S.opts.sound ??= true; S.opts.preview ??= 120; S.opts.auto ??= true; S.opts.wifiOnly ??= true; S.opts.strictNet ??= false; S.opts.lazy ??= true; S.opts.fullEnd ??= "loop"; S.opts.slideAuto ??= true; S.opts.slideSec ??= 10; S.opts.tlMotion ??= "spring"; S.opts.vibe ??= true; S.opts.resume ??= true; S.pos ||= {};
 const fileUrls = new Map(); // 手元から追加したファイル（IndexedDB から復元）
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch { try { toast("保存しきれなかったよ。背景やアイコンの画像を外すか、小さい画像にしてね"); } catch {} return false; } }
 /* 手元ファイルの保存先: IndexedDB（ブラウザ内） */
@@ -897,14 +945,14 @@ document.addEventListener("pointerdown", e => {
     if (!pl.playing) { players.forEach(o => { if (o !== pl && o.playing) o.pause(); }); pl.play(); }
     if (pl.rateLocked) { setRateUI(w, pl, 1, false); press.unlocked = true; toast("等速に戻したよ"); }
     else setRateUI(w, pl, 2, false);
-    w.classList.add("pressing");
+    buzz(20); w.classList.add("pressing");
   }, LONG_MS);
 }, true);
 document.addEventListener("pointermove", e => {
   if (!press || e.pointerId !== press.id) return;
   const dx = e.clientX - press.x, dy = e.clientY - press.y;
   if (!press.long) { if (Math.hypot(dx, dy) > 12) { clearTimeout(press.t); press = null; } return; }
-  if (!press.unlocked && dy > LOCK_DY && !press.pl.rateLocked) { setRateUI(press.w, press.pl, 2, true); toast("2倍速で固定したよ"); }
+  if (!press.unlocked && dy > LOCK_DY && !press.pl.rateLocked) { setRateUI(press.w, press.pl, 2, true); buzz([15, 60, 15]); toast("2倍速で固定したよ"); }
 }, true);
 function endPress(e) {
   if (!press || (e && e.pointerId !== press.id)) return;
@@ -1189,9 +1237,11 @@ function pressHeart(p) {
     p.likes = Math.max(0, (p.likes || 0) - 1); p.lastLikedAt = p.prevLikedAt || 0; delete p.prevLikedAt; save();
     toast("ハートを1つ取り消したよ"); return "undo";
   }
-  p.prevLikedAt = p.lastLikedAt || 0; p.likes = (p.likes || 0) + 1; p.lastLikedAt = Date.now(); delete p.liked; save();
+  buzz(15); p.prevLikedAt = p.lastLikedAt || 0; p.likes = (p.likes || 0) + 1; p.lastLikedAt = Date.now(); delete p.liked; save();
   toast(`ハート ${p.likes} 個目！ 次は3日後に押せるよ`); return true;
 }
+/* 軽い振動（対応している端末だけ。iPhone のブラウザは非対応） */
+function buzz(ms) { if (S.opts.vibe && navigator.vibrate) try { navigator.vibrate(ms); } catch {} }
 /* ハートを押したとき、小さなハートがボタンのまわりに控えめに散る */
 const reduceMotion = () => matchMedia("(prefers-reduced-motion: reduce)").matches;
 function heartBurst(r, reach = 18) {
@@ -1303,7 +1353,9 @@ function postCard(p) {
       <div class="post-meta"><b>${esc(t.name)}</b><span>@me</span><span>·</span><span>${ago(p.at)}</span></div>
       ${p.text ? `<div class="post-text">${esc(p.text)}</div>` : ""}
       <div class="slot"></div>
+      <div class="cm-peek" data-act="comment">${cmPeek(p)}</div>
       <div class="post-actions">
+        ${cmBtn(p)}
         ${heartBtn(p)}
         <button class="act rt" data-act="top" title="再投稿して一番上へ" aria-label="再投稿して一番上へ"><svg class="i"><use href="#i-repost"/></svg></button>
         <span class="order-wrap"><button class="act" data-act="order" title="表示順を変える" aria-label="表示順を変える" aria-haspopup="true"><svg class="i"><use href="#i-sort"/></svg></button></span>
@@ -1355,11 +1407,37 @@ function renderAll() { renderTabs(); renderFeed(); renderManage(); save(); }
 /* ================= 操作 ================= */
 let tt = null;
 function toast(msg) { const el = $("#toast"); el.textContent = msg; el.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("show"), 1800); }
-function setActive(id, dir = 0) {
-  S.active = id; renderTabs(); renderFeed(); save(); window.scrollTo({ top: 0 });
-  document.querySelector(".tab.on")?.scrollIntoView({ inline: "center", block: "nearest" });
-  if (dir) { const f = $("#feed"); f.classList.remove("slide-l", "slide-r"); void f.offsetWidth; f.classList.add(dir > 0 ? "slide-l" : "slide-r"); }
+/* 続きから: タイムラインごとにスクロール位置を覚える */
+function rememberPos() { if (S.active) { S.pos[S.active] = Math.round(scrollY); } }
+function restorePos() { const y = S.opts.resume ? (S.pos[S.active] || 0) : 0; window.scrollTo({ top: y }); requestAnimationFrame(() => window.scrollTo({ top: y })); }
+(() => { let t = 0; addEventListener("scroll", () => { clearTimeout(t); t = setTimeout(() => { if (!$("#tt").classList.contains("open") && $("#viewer").hidden) { rememberPos(); save(); } }, 400); }, { passive: true }); })();
+/* タイムライン切り替えの動き（設定で3種類から選べる） */
+function tlMotion(dir) {
+  const f = $("#feed"); if (!dir || reduceMotion() || !f.animate) return;
+  const s = dir > 0 ? 1 : -1, m = S.opts.tlMotion;
+  if (m === "depth") f.animate([{ transform: `translateX(${18 * s}%) scale(1.05)`, opacity: 0, filter: "blur(8px)" }, { transform: "none", opacity: 1, filter: "blur(0)" }], { duration: 560, easing: "cubic-bezier(.2,.8,.2,1)" });
+  else if (m === "flip") f.animate([{ transform: `perspective(1400px) rotateY(${40 * s}deg)`, opacity: 0, transformOrigin: s > 0 ? "right center" : "left center" }, { transform: "perspective(1400px) rotateY(0)", opacity: 1, transformOrigin: s > 0 ? "right center" : "left center" }], { duration: 640, easing: "cubic-bezier(.3,.7,.2,1)" });
+  else f.animate([{ transform: `translateX(${70 * s}%)`, opacity: .3 }, { transform: "translateX(0)", opacity: 1 }], { duration: 560, easing: "cubic-bezier(.2,1.25,.4,1)" });
 }
+function setActive(id, dir = 0) {
+  rememberPos(); S.active = id; renderTabs(); renderFeed(); save(); restorePos();
+  document.querySelector(".tab.on")?.scrollIntoView({ inline: "center", block: "nearest" });
+  tlMotion(dir); updateFocus();
+}
+/* 選んでるツイート: スマホは画面の真ん中に一番近いツイート、パソコンはマウスを乗せたツイート。すりガラスで見せる */
+let hoverPost = null;
+function updateFocus() {
+  let best = hoverPost && document.contains(hoverPost) ? hoverPost : null;
+  if (!best) { const mid = innerHeight / 2; let bd = Infinity;
+    document.querySelectorAll("#feed .post").forEach(el => { const r = el.getBoundingClientRect(); if (r.bottom < 0 || r.top > innerHeight) return; const d = r.top <= mid && r.bottom >= mid ? 0 : Math.min(Math.abs(r.top - mid), Math.abs(r.bottom - mid)); if (d < bd) { bd = d; best = el; } }); }
+  document.querySelectorAll("#feed .post.focus").forEach(el => { if (el !== best) el.classList.remove("focus"); });
+  best?.classList.add("focus");
+}
+(() => { let raf = 0; const q = () => { cancelAnimationFrame(raf); raf = requestAnimationFrame(updateFocus); };
+  addEventListener("scroll", q, { passive: true }); addEventListener("resize", q);
+  $("#feed").addEventListener("pointerover", e => { if (e.pointerType !== "mouse") return; const p = e.target.closest(".post"); if (p && p !== hoverPost) { hoverPost = p; q(); } });
+  $("#feed").addEventListener("pointerleave", e => { if (e.pointerType === "mouse") { hoverPost = null; q(); } });
+})();
 /* 左右スワイプでタイムラインを切り替え（Xのタブと同じ）。左へ = 次、右へ = 前 */
 function stepTimeline(d) {
   const i = S.timelines.findIndex(t => t.id === S.active), j = i + d;
@@ -1454,6 +1532,7 @@ $("#feed").addEventListener("click", e => {
     else { const before = document.querySelector(`.post[data-id="${id}"]`).getBoundingClientRect().top; renderFeed(); const el = document.querySelector(`.post[data-id="${id}"]`); scrollBy(0, el.getBoundingClientRect().top - before); }
     return;
   }
+  if (act === "comment") { openComments(p.id); return; }
   if (act === "like") { const r = btn.getBoundingClientRect(), res = pressHeart(p); btn.outerHTML = heartBtn(p); if (res === true) heartBurst(r, 18); }
   if (btn.dataset.act === "del") { forgetFiles([p]); S.posts = S.posts.filter(x => x.id !== id); toast("ツイートを削除しました"); renderFeedKeepScroll(); renderTabs(); }
   save();
@@ -1511,7 +1590,7 @@ $("#addForm").addEventListener("submit", e => {
 /* 設定 */
 function applyOpts() {
   document.body.classList.toggle("show-center", !!S.opts.center);
-  $("#optCenter").checked = !!S.opts.center; $("#optAuto").checked = !!S.opts.auto; $("#optWifi").checked = !!S.opts.wifiOnly; $("#optStrict").checked = !!S.opts.strictNet; $("#optLazy").checked = !!S.opts.lazy; $("#optFullEnd").value = S.opts.fullEnd; $("#optSlide").checked = !!S.opts.slideAuto; $("#optSlideSec").value = S.opts.slideSec; $("#slideSecRow").hidden = !S.opts.slideAuto; $("#wifiRow").hidden = !S.opts.auto; $("#strictRow").hidden = !(S.opts.auto && S.opts.wifiOnly); $("#netNote").hidden = !(S.opts.auto && S.opts.wifiOnly); updateNetNote(); $("#optSound").checked = !!S.opts.sound; const presets = ["30", "60", "120", "300", "0"]; const pv = String(S.opts.preview);
+  $("#optCenter").checked = !!S.opts.center; $("#optAuto").checked = !!S.opts.auto; $("#optWifi").checked = !!S.opts.wifiOnly; $("#optStrict").checked = !!S.opts.strictNet; $("#optLazy").checked = !!S.opts.lazy; $("#optFullEnd").value = S.opts.fullEnd; $("#optMotion").value = S.opts.tlMotion; $("#optVibe").checked = !!S.opts.vibe; $("#optResume").checked = !!S.opts.resume; $("#optSlide").checked = !!S.opts.slideAuto; $("#optSlideSec").value = S.opts.slideSec; $("#slideSecRow").hidden = !S.opts.slideAuto; $("#wifiRow").hidden = !S.opts.auto; $("#strictRow").hidden = !(S.opts.auto && S.opts.wifiOnly); $("#netNote").hidden = !(S.opts.auto && S.opts.wifiOnly); updateNetNote(); $("#optSound").checked = !!S.opts.sound; const presets = ["30", "60", "120", "300", "0"]; const pv = String(S.opts.preview);
   $("#optPreview").value = presets.includes(pv) && !S.opts.previewCustom ? pv : "custom";
   $("#previewCustomRow").hidden = $("#optPreview").value !== "custom";
   $("#optPrevMin").value = Math.floor(S.opts.preview / 60); $("#optPrevSec").value = S.opts.preview % 60;
@@ -1522,6 +1601,9 @@ $("#optCenter").addEventListener("change", e => { S.opts.center = e.target.check
 $("#navCenter").addEventListener("click", () => { S.opts.center = !S.opts.center; applyOpts(); save(); toast(S.opts.center ? "中央ラインを表示" : "中央ラインを非表示"); });
 $("#optAuto").addEventListener("change", e => { S.opts.auto = e.target.checked; save(); applyOpts(); feedAP.refresh(); toast(S.opts.auto ? "自動再生オン" : "自動再生オフ"); });
 $("#optWifi").addEventListener("change", e => { S.opts.wifiOnly = e.target.checked; save(); applyOpts(); feedAP.refresh(); toast(S.opts.wifiOnly ? "Wi-Fiのときだけ自動再生" : "回線に関係なく自動再生"); });
+$("#optMotion").addEventListener("change", e => { S.opts.tlMotion = e.target.value; save(); toast(`切り替えは「${e.target.selectedOptions[0].textContent}」`); stepTimeline(S.timelines.findIndex(t => t.id === S.active) < S.timelines.length - 1 ? 1 : -1); });
+$("#optVibe").addEventListener("change", e => { S.opts.vibe = e.target.checked; save(); if (S.opts.vibe) buzz(20); });
+$("#optResume").addEventListener("change", e => { S.opts.resume = e.target.checked; save(); toast(S.opts.resume ? "タイムラインごとに見ていた位置を覚えるよ" : "いつも一番上から表示するよ"); });
 $("#optFullEnd").addEventListener("change", e => { S.opts.fullEnd = e.target.value; save(); updateVEnd(); toast(S.opts.fullEnd === "next" ? "見終わったら次の動画へ" : "見終わったらもう一度"); });
 $("#optSlide").addEventListener("change", e => { S.opts.slideAuto = e.target.checked; save(); applyOpts(); toast(S.opts.slideAuto ? `画像は${S.opts.slideSec}秒で次へ` : "画像の自動送りオフ"); });
 $("#optSlideSec").addEventListener("change", e => { const v = Math.max(2, Math.min(600, Math.round(+e.target.value || 10))); S.opts.slideSec = v; e.target.value = v; save(); toast(`画像は${v}秒で次へ`); });
@@ -1618,6 +1700,7 @@ function renderTT() {
     item.append(built.el);
     item.insertAdjacentHTML("beforeend", `<div class="tt-info"><b>@me · ${esc(t.name)}</b>${p.text ? `<p>${esc(p.text)}</p>` : ""}</div>
       <div class="tt-rail">${ttHeart(p)}
+      <button data-cm="${p.id}"><span class="circle"><svg class="i"><use href="#i-comment"/></svg></span><span class="cm-n">${(p.comments || []).length}</span></button>
       <button data-full="${p.id}"><span class="circle"><svg class="i"><use href="#i-expand"/></svg></span>全画面</button>
       ${p.embed ? `<a href="${esc(p.embed.url)}" target="_blank" rel="noopener" style="color:#fff;display:flex;flex-direction:column;align-items:center;gap:4px"><span class="circle"><svg class="i"><use href="#i-link"/></svg></span>開く</a>` : ""}</div>`);
     sc.append(item); if (built.playable) ttAP.observe(el);
@@ -1738,6 +1821,47 @@ lk("lkSave").addEventListener("click", () => {
   S.presets.push(pr); if (save()) toast(`「${pr.name}」として保存したよ`); renderLook();
 });
 
+/* ================= コメント（ツイートごと・この端末に保存） ================= */
+let cmId = null;
+function cmBtn(p) { const n = (p.comments || []).length; return `<button class="act cm" data-act="comment" aria-label="コメント（${n}）" title="コメント"><svg class="i"><use href="#i-comment"/></svg>${n || ""}</button>`; }
+function cmPeek(p) {
+  const list = p.comments || []; if (!list.length) return "";
+  const last = list.slice(-2);
+  return last.map(c => `<div class="cm-peek-row"><b>私</b><span>${esc(c.text)}</span></div>`).join("") + (list.length > 2 ? `<div class="cm-more">コメントをすべて見る（${list.length}件）</div>` : "");
+}
+function refreshPostComments(p) {
+  const card = document.querySelector(`#feed .post[data-id="${p.id}"]`);
+  if (card) { card.querySelector(".act.cm").outerHTML = cmBtn(p); card.querySelector(".cm-peek").innerHTML = cmPeek(p); }
+  document.querySelectorAll(`[data-cm="${p.id}"] .cm-n`).forEach(el => el.textContent = (p.comments || []).length);
+}
+function renderComments() {
+  const p = S.posts.find(x => x.id === cmId); if (!p) return closeComments();
+  const t = tlById(p.tl) || S.timelines[0];
+  $("#cmTarget").innerHTML = `${tlAvatar(t, "mini-av")}<div><b>${esc(t.name)}</b> <span class="cm-time">${ago(p.at)}</span><div class="cm-tt">${esc(p.text || (p.embed ? p.embed.url : "（画像・動画）"))}</div></div>`;
+  const list = p.comments || [];
+  $("#cmList").innerHTML = list.length ? list.map(c => `<li class="cm-item" data-c="${c.id}">${tlAvatar(S.me, "mini-av")}<div class="cm-body"><div class="cm-meta"><b>${esc(S.me.name)}</b><span class="cm-time">${ago(c.at)}</span></div><div class="cm-text">${esc(c.text)}</div></div><button type="button" class="cm-del" data-del="${c.id}" aria-label="このコメントを消す">消す</button></li>`).join("")
+    : `<li class="cm-empty">まだコメントはないよ。思ったことをメモしておけるよ</li>`;
+  paintAvatar($("#cmMe"), S.me, "avatar");
+}
+function openComments(id) { cmId = id; renderComments(); $("#cmSheet").hidden = false; document.body.classList.add("sheet-open"); setTimeout(() => $("#cmText").focus(), 40); }
+function closeComments() { $("#cmSheet").hidden = true; cmId = null; if ($("#lookSheet").hidden) document.body.classList.remove("sheet-open"); }
+$("#cmClose").addEventListener("click", closeComments);
+$("#cmSheet").addEventListener("click", e => { if (e.target.id === "cmSheet") closeComments(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && cmId) closeComments(); });
+$("#cmText").addEventListener("input", e => { $("#cmSend").disabled = !e.target.value.trim(); });
+$("#cmText").addEventListener("keydown", e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); $("#cmForm").requestSubmit(); } });
+$("#cmForm").addEventListener("submit", e => {
+  e.preventDefault(); const text = $("#cmText").value.trim(); const p = S.posts.find(x => x.id === cmId); if (!text || !p) return;
+  (p.comments ||= []).push({ id: uid(), text, at: Date.now() }); save();
+  $("#cmText").value = ""; $("#cmSend").disabled = true; renderComments(); refreshPostComments(p);
+  $("#cmList").lastElementChild?.scrollIntoView({ block: "nearest" });
+});
+$("#cmList").addEventListener("click", e => {
+  const b = e.target.closest("[data-del]"); if (!b) return; const p = S.posts.find(x => x.id === cmId);
+  if (!b.classList.contains("sure")) { b.classList.add("sure"); b.textContent = "本当に消す？"; setTimeout(() => { if (b.isConnected) { b.classList.remove("sure"); b.textContent = "消す"; } }, 2500); return; }
+  p.comments = p.comments.filter(c => c.id !== b.dataset.del); save(); renderComments(); refreshPostComments(p); toast("コメントを消したよ");
+});
+
 /* ================= 全画面ビューア ================= */
 let vList = [], vIdx = 0, vFrom = "feed", vSlideT = 0;
 const isVideoPost = p => !!((p.media && /video/.test(p.media.kind)) || (p.embed && ["youtube", "tiktok"].includes(p.embed.kind)) || (HOSTED && p.embed && p.embed.kind === "video-url"));
@@ -1811,7 +1935,7 @@ let tx = null;
 $("#vStage").addEventListener("touchstart", e => { tx = e.touches[0].clientX; }, { passive: true });
 $("#vStage").addEventListener("touchend", e => { if (tx == null) return; const dx = e.changedTouches[0].clientX - tx; tx = null; if (Math.abs(dx) > 50) vGo(dx < 0 ? 1 : -1); });
 /* 縦スワイプ表示からも全画面ビューアへ */
-$("#ttScroll").addEventListener("click", e => { const b = e.target.closest("[data-full]"); if (b) openViewer(b.dataset.full, "tt"); });
+$("#ttScroll").addEventListener("click", e => { const b = e.target.closest("[data-full]"); if (b) openViewer(b.dataset.full, "tt"); const c = e.target.closest("[data-cm]"); if (c) openComments(c.dataset.cm); });
 
 /* ================= 共有で受け取る（クイック送信） =================
    公開版: スマホの共有メニュー（Android の共有ターゲット / iPhone のショートカット）や
@@ -1862,7 +1986,8 @@ function readShareParams() {
 /* ================= 起動 ================= */
 function boot() {
   applyOpts(); renderAll();
-  const d = readShareParams(); if (d) openShare(d);
+  const d = readShareParams(); if (d) openShare(d); else restorePos();
+  setTimeout(updateFocus, 60);
 }
 Promise.race([idb.all(), new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 1500))])
   .then(m => m.forEach((blob, k) => fileUrls.set(k, URL.createObjectURL(blob))))

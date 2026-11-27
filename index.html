@@ -289,6 +289,40 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .main[data-bg=stripe],.lk-stage[data-bg=stripe]{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--b1) var(--bap),var(--bg)) 0 14px,var(--bg) 14px 28px)}
 .main[data-bg=img]{background:linear-gradient(color-mix(in srgb,var(--bg) var(--bainv),transparent),color-mix(in srgb,var(--bg) var(--bainv),transparent)),var(--tl-img) center/cover fixed,var(--bg)}
 .lk-stage[data-bg=img]{background:linear-gradient(color-mix(in srgb,var(--bg) var(--bainv),transparent),color-mix(in srgb,var(--bg) var(--bainv),transparent)),var(--tl-img) center/cover,var(--bg)}
+/* ---- 高級感テーマ（B1 ミッドナイト・ゴールド / B2 ミッドナイト・プラチナ / C1 パール・ローズ / C2 パール・ラベンダー） ---- */
+:root[data-skin="b1"]{--bg:#eef1f7;--bg-soft:#e4e9f4;--bg-hover:#e6eaf3;--fg:#141b33;--muted:#5b6480;--line:#d9dfec;--line-strong:#c3cbdd;--accent:#8f6d2e;--accent-fg:#1b1405;--metal:linear-gradient(135deg,#9c7a3c,#e9d49c 48%,#b38d4a);--onmetal:#1b1405;--page:linear-gradient(170deg,#e4e9f4,#f4f6fb) fixed;--media:#0b0f1c;--glass-line:rgba(185,151,90,.45);color-scheme:light;}
+@media (prefers-color-scheme: dark){:root[data-skin="b1"]:not([data-theme="light"]){--bg:#0b0f1c;--bg-soft:#121830;--bg-hover:#141b33;--fg:#e9ecf3;--muted:#8d96ad;--line:#1d2540;--line-strong:#2a3456;--accent:#d9c48f;--accent-fg:#1a1405;--metal:linear-gradient(135deg,#b9975a,#f3e2b0 48%,#c7a565);--onmetal:#1a1405;--page:radial-gradient(900px 500px at 85% -10%,#24325a,transparent) fixed,#0b0f1c;--media:#05070d;--glass-line:rgba(217,196,143,.32);color-scheme:dark;}}
+:root[data-skin="b1"][data-theme="dark"]{--bg:#0b0f1c;--bg-soft:#121830;--bg-hover:#141b33;--fg:#e9ecf3;--muted:#8d96ad;--line:#1d2540;--line-strong:#2a3456;--accent:#d9c48f;--accent-fg:#1a1405;--metal:linear-gradient(135deg,#b9975a,#f3e2b0 48%,#c7a565);--onmetal:#1a1405;--page:radial-gradient(900px 500px at 85% -10%,#24325a,transparent) fixed,#0b0f1c;--media:#05070d;--glass-line:rgba(217,196,143,.32);color-scheme:dark;}
+:root[data-skin="b2"]{--bg:#f1f2f4;--bg-soft:#e8eaee;--bg-hover:#e9ebef;--fg:#1a1d22;--muted:#5f6670;--line:#dcdfe4;--line-strong:#c5cad2;--accent:#4f6a8f;--accent-fg:#ffffff;--metal:linear-gradient(135deg,#8d95a2,#f4f6f9 48%,#a3abb8);--onmetal:#1a1d22;--page:linear-gradient(170deg,#e8eaee,#f7f8f9) fixed;--media:#0c0d10;--glass-line:rgba(140,150,165,.45);color-scheme:light;}
+@media (prefers-color-scheme: dark){:root[data-skin="b2"]:not([data-theme="light"]){--bg:#0c0d10;--bg-soft:#15171c;--bg-hover:#16181d;--fg:#eef0f3;--muted:#8b919b;--line:#22252b;--line-strong:#33373f;--accent:#bcd2f0;--accent-fg:#121418;--metal:linear-gradient(135deg,#9aa3b0,#ffffff 48%,#b3bcc9);--onmetal:#121418;--page:radial-gradient(900px 500px at 85% -10%,#1f2a38,transparent) fixed,#0c0d10;--media:#050608;--glass-line:rgba(200,208,220,.25);color-scheme:dark;}}
+:root[data-skin="b2"][data-theme="dark"]{--bg:#0c0d10;--bg-soft:#15171c;--bg-hover:#16181d;--fg:#eef0f3;--muted:#8b919b;--line:#22252b;--line-strong:#33373f;--accent:#bcd2f0;--accent-fg:#121418;--metal:linear-gradient(135deg,#9aa3b0,#ffffff 48%,#b3bcc9);--onmetal:#121418;--page:radial-gradient(900px 500px at 85% -10%,#1f2a38,transparent) fixed,#0c0d10;--media:#050608;--glass-line:rgba(200,208,220,.25);color-scheme:dark;}
+:root[data-skin="c1"]{--bg:#eceef3;--bg-soft:#e4e6ec;--bg-hover:#e2e4ea;--fg:#3a3540;--muted:#7b7482;--line:#dcdee5;--line-strong:#c9ccd5;--accent:#a0606b;--accent-fg:#ffffff;--metal:linear-gradient(135deg,#c98990,#f2cdc8 50%,#c98990);--onmetal:#ffffff;--page:#eceef3;--media:#1a171c;--shd:#c8cbd4;--shl:#ffffff;color-scheme:light;}
+@media (prefers-color-scheme: dark){:root[data-skin="c1"]:not([data-theme="light"]){--bg:#221e25;--bg-soft:#2a252e;--bg-hover:#2a252e;--fg:#efe6ea;--muted:#a1949b;--line:#2f2a33;--line-strong:#3d3742;--accent:#e2a9b0;--accent-fg:#2a1418;--metal:linear-gradient(135deg,#b97a83,#efc3bd 50%,#b97a83);--onmetal:#2a1418;--page:#221e25;--media:#120f14;--shd:#151217;--shl:#2f2a33;color-scheme:dark;}}
+:root[data-skin="c1"][data-theme="dark"]{--bg:#221e25;--bg-soft:#2a252e;--bg-hover:#2a252e;--fg:#efe6ea;--muted:#a1949b;--line:#2f2a33;--line-strong:#3d3742;--accent:#e2a9b0;--accent-fg:#2a1418;--metal:linear-gradient(135deg,#b97a83,#efc3bd 50%,#b97a83);--onmetal:#2a1418;--page:#221e25;--media:#120f14;--shd:#151217;--shl:#2f2a33;color-scheme:dark;}
+:root[data-skin="c2"]{--bg:#e9eaf1;--bg-soft:#e1e2ea;--bg-hover:#e0e1ea;--fg:#2f3040;--muted:#6f7184;--line:#d8d9e3;--line-strong:#c4c6d3;--accent:#6c64ad;--accent-fg:#ffffff;--metal:linear-gradient(135deg,#8a83c4,#d9d5f4 50%,#8a83c4);--onmetal:#ffffff;--page:#e9eaf1;--media:#17171f;--shd:#c5c6d2;--shl:#ffffff;color-scheme:light;}
+@media (prefers-color-scheme: dark){:root[data-skin="c2"]:not([data-theme="light"]){--bg:#1c1d25;--bg-soft:#23242e;--bg-hover:#23242e;--fg:#e8e8f2;--muted:#9798ab;--line:#292a35;--line-strong:#383a47;--accent:#b7b0ef;--accent-fg:#191630;--metal:linear-gradient(135deg,#8d86cc,#dcd8f7 50%,#8d86cc);--onmetal:#191630;--page:#1c1d25;--media:#0f1015;--shd:#121218;--shl:#262832;color-scheme:dark;}}
+:root[data-skin="c2"][data-theme="dark"]{--bg:#1c1d25;--bg-soft:#23242e;--bg-hover:#23242e;--fg:#e8e8f2;--muted:#9798ab;--line:#292a35;--line-strong:#383a47;--accent:#b7b0ef;--accent-fg:#191630;--metal:linear-gradient(135deg,#8d86cc,#dcd8f7 50%,#8d86cc);--onmetal:#191630;--page:#1c1d25;--media:#0f1015;--shd:#121218;--shl:#262832;color-scheme:dark;}
+
+:root[data-skin] body{background:var(--page)}
+:root[data-skin] .head,:root[data-skin] .bottombar{background:color-mix(in srgb,var(--bg) 82%,transparent);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px)}
+:root[data-skin] .main{background:transparent}
+:root[data-skin] .btn-primary,:root[data-skin] .btn-accent,:root[data-skin] .fab{background:var(--metal);color:var(--onmetal);box-shadow:inset 0 1px 0 rgba(255,255,255,.45),0 8px 20px -8px color-mix(in srgb,var(--accent) 70%,transparent)}
+:root[data-skin] .tab.on::after{background:var(--metal)}
+:root[data-skin] .tl-av{box-shadow:inset 0 1px 1px rgba(255,255,255,.3),0 2px 6px rgba(0,0,0,.18)}
+/* ミッドナイト: 金/プラチナの細い縁のすりガラス */
+:root[data-skin^="b"] .post.focus{border-color:var(--glass-line);background:linear-gradient(160deg,color-mix(in srgb,var(--fg) 7%,transparent),color-mix(in srgb,var(--fg) 2%,transparent));box-shadow:inset 0 1px 0 color-mix(in srgb,#fff 14%,transparent),0 18px 40px -16px rgba(0,0,0,.55)}
+:root[data-skin^="b"] .post-actions .act{background:color-mix(in srgb,var(--fg) 5%,transparent);border:1px solid color-mix(in srgb,var(--glass-line) 70%,transparent)}
+:root[data-skin^="b"] .card{background:color-mix(in srgb,var(--fg) 4%,transparent);border:1px solid var(--line);box-shadow:0 14px 30px -18px rgba(0,0,0,.5)}
+/* パール: 表面から盛り上がる立体感 */
+:root[data-skin^="c"] .post{border-bottom-color:transparent}
+:root[data-skin^="c"] .post.focus{border-color:transparent;background:var(--bg);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:8px 8px 18px var(--shd),-8px -8px 18px var(--shl)}
+:root[data-skin^="c"] .post-actions .act{background:var(--bg);box-shadow:3px 3px 6px var(--shd),-3px -3px 6px var(--shl)}
+:root[data-skin] .post-actions span.act[aria-hidden]{box-shadow:none;border:0;background:none}
+:root[data-skin^="c"] .card{background:var(--bg);box-shadow:7px 7px 16px var(--shd),-7px -7px 16px var(--shl)}
+:root[data-skin^="c"] .btn-ghost,:root[data-skin^="c"] .icon-btn{box-shadow:3px 3px 6px var(--shd),-3px -3px 6px var(--shl)}
+:root[data-skin^="c"] .media{border-color:transparent;box-shadow:5px 5px 12px var(--shd),-5px -5px 12px var(--shl)}
+:root[data-skin^="c"] .composer,:root[data-skin^="c"] .head{border-bottom-color:transparent}
+
 /* ---- 選んでるツイート: すりガラス ---- */
 .post{border:1px solid transparent;border-bottom-color:var(--line);border-radius:0;transition:background .35s,border-color .35s,border-radius .35s,box-shadow .35s}
 .post:hover{background:transparent}
@@ -562,7 +596,10 @@ body.sheet-open{overflow:hidden}
       <label class="toggle">開き直したら続きから <span class="switch"><input type="checkbox" id="optResume"><span></span></span></label>
       <label class="toggle">画像の全画面は自動で次へ <span class="switch"><input type="checkbox" id="optSlide"><span></span></span></label>
       <div class="toggle" id="slideSecRow"><span>次へ進むまで</span><span style="display:flex;align-items:center;gap:4px"><input type="number" id="optSlideSec" class="sel" min="2" max="600" step="1" style="width:72px" aria-label="秒数">秒</span></div>
-      <label class="toggle">ダークモード <span class="switch"><input type="checkbox" id="optDark"><span></span></span></label>
+      <label class="toggle" for="optSkin">テーマ
+        <select id="optSkin" class="sel"><option value="">標準</option><option value="b1">ミッドナイト・ゴールド</option><option value="b2">ミッドナイト・プラチナ</option><option value="c1">パール・ローズ</option><option value="c2">パール・ラベンダー</option></select></label>
+      <label class="toggle" for="optMode">明るさ
+        <select id="optMode" class="sel"><option value="auto">端末に合わせる</option><option value="light">通常モード</option><option value="dark">ナイトモード</option></select></label>
     </section>
     <section class="card">
       <h2>貼れるURL</h2>
@@ -632,7 +669,8 @@ body.sheet-open{overflow:hidden}
     <div class="lk-preview" id="lkPrev"></div>
     <div class="lk-sec"><h3>プリセット</h3>
       <div class="lk-presets" id="lkPresets"></div>
-      <div class="lk-row"><button type="button" class="btn-ghost sm" id="lkSave">いまの見た目を保存</button><span class="lk-hint">アイコンの文字と画像は保存しないよ</span></div></div>
+      <div class="lk-row"><button type="button" class="btn-ghost sm" id="lkSave">いまの見た目を保存</button><label class="lk-check"><input type="checkbox" id="lkWithSkin" checked>アプリのテーマも一緒に</label></div>
+      <p class="lk-hint" style="margin:0">アイコンの文字と画像は保存しないよ。テーマ入りのプリセットを選ぶと、アプリ全体のテーマも切り替わるよ</p></div>
     <div class="lk-sec"><h3>アイコン</h3>
       <div class="lk-row"><label class="lk-lab" for="lkIcon">文字</label><input type="text" id="lkIcon" maxlength="4" class="lk-text" placeholder="絵文字もOK">
         <label class="btn-ghost sm">画像を選ぶ<input type="file" accept="image/*" id="lkIconImg" hidden></label><button type="button" class="btn-ghost sm" id="lkIconClear" hidden>画像を外す</button></div>
@@ -1594,8 +1632,7 @@ function applyOpts() {
   $("#optPreview").value = presets.includes(pv) && !S.opts.previewCustom ? pv : "custom";
   $("#previewCustomRow").hidden = $("#optPreview").value !== "custom";
   $("#optPrevMin").value = Math.floor(S.opts.preview / 60); $("#optPrevSec").value = S.opts.preview % 60;
-  if (S.opts.dark != null) document.documentElement.dataset.theme = S.opts.dark ? "dark" : "light";
-  $("#optDark").checked = S.opts.dark != null ? S.opts.dark : matchMedia("(prefers-color-scheme: dark)").matches;
+  applySkin();
 }
 $("#optCenter").addEventListener("change", e => { S.opts.center = e.target.checked; applyOpts(); save(); });
 $("#navCenter").addEventListener("click", () => { S.opts.center = !S.opts.center; applyOpts(); save(); toast(S.opts.center ? "中央ラインを表示" : "中央ラインを非表示"); });
@@ -1609,7 +1646,17 @@ $("#optSlide").addEventListener("change", e => { S.opts.slideAuto = e.target.che
 $("#optSlideSec").addEventListener("change", e => { const v = Math.max(2, Math.min(600, Math.round(+e.target.value || 10))); S.opts.slideSec = v; e.target.value = v; save(); toast(`画像は${v}秒で次へ`); });
 $("#optLazy").addEventListener("change", e => { S.opts.lazy = e.target.checked; save(); renderFeedKeepScroll(); toast(S.opts.lazy ? "近づいてから読み込む" : "最初から全部読み込む"); });
 $("#optStrict").addEventListener("change", e => { S.opts.strictNet = e.target.checked; save(); updateNetNote(); feedAP.refresh(); });
-$("#optDark").addEventListener("change", e => { S.opts.dark = e.target.checked; applyOpts(); save(); });
+/* テーマと明るさ */
+const SKIN_NAMES = { "": "標準", b1: "ミッドナイト・ゴールド", b2: "ミッドナイト・プラチナ", c1: "パール・ローズ", c2: "パール・ラベンダー" };
+function applySkin() {
+  const r = document.documentElement;
+  if (S.opts.skin) r.dataset.skin = S.opts.skin; else delete r.dataset.skin;
+  if (S.opts.dark == null) delete r.dataset.theme; else r.dataset.theme = S.opts.dark ? "dark" : "light";
+  $("#optSkin").value = S.opts.skin || ""; $("#optMode").value = S.opts.dark == null ? "auto" : S.opts.dark ? "dark" : "light";
+  const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = getComputedStyle(r).getPropertyValue("--bg").trim() || m.content;
+}
+$("#optSkin").addEventListener("change", e => { S.opts.skin = e.target.value; applySkin(); save(); toast(`テーマを「${SKIN_NAMES[S.opts.skin]}」にしたよ`); });
+$("#optMode").addEventListener("change", e => { S.opts.dark = e.target.value === "auto" ? null : e.target.value === "dark"; applySkin(); save(); });
 $("#optSound").addEventListener("change", e => { AudioKit.get(); setSoundAll(e.target.checked); });
 function setPreview(sec, custom) {
   S.opts.preview = Math.max(0, Math.min(3600, Math.round(sec))); S.opts.previewCustom = !!custom; save(); applyOpts(); renderFeedKeepScroll();
@@ -1812,12 +1859,14 @@ lk("lkPresets").addEventListener("click", e => {
   const k = b.dataset.preset, pr = k[0] === "m" ? S.presets[+k.slice(1)] : LUX[+k.slice(1)], t = lookTarget(lkId);
   LOOK_KEYS.forEach(key => { if (pr[key] !== undefined) t[key] = pr[key]; });
   if (pr.bgType === "img" && pr.bgImg) t.bgImg = pr.bgImg;
+  if (pr.skin !== undefined) { S.opts.skin = pr.skin; S.opts.dark = pr.dark ?? null; applySkin(); }
   lookChanged(true); toast(`「${pr.name}」にしたよ`);
 });
 lk("lkSave").addEventListener("click", () => {
   const t = lookTarget(lkId), pr = { name: `マイ${S.presets.length + 1}` };
   LOOK_KEYS.forEach(key => pr[key] = t[key]);
   if (lkId === "me") { delete pr.bgType; delete pr.bgC1; delete pr.bgC2; delete pr.bgAlpha; }
+  if (lk("lkWithSkin").checked) { pr.skin = S.opts.skin || ""; pr.dark = S.opts.dark ?? null; pr.name += `（${SKIN_NAMES[pr.skin]}）`; }
   S.presets.push(pr); if (save()) toast(`「${pr.name}」として保存したよ`); renderLook();
 });
 

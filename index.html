@@ -287,8 +287,6 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .lk-stage[data-bg=grad]{background-attachment:scroll}
 .main[data-bg=dots],.lk-stage[data-bg=dots]{background:radial-gradient(color-mix(in srgb,var(--b1) var(--bap),transparent) 1.4px,transparent 1.6px) 0 0/18px 18px,var(--bg)}
 .main[data-bg=stripe],.lk-stage[data-bg=stripe]{background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--b1) var(--bap),var(--bg)) 0 14px,var(--bg) 14px 28px)}
-.main[data-bg=img]{background:linear-gradient(color-mix(in srgb,var(--bg) var(--bainv),transparent),color-mix(in srgb,var(--bg) var(--bainv),transparent)),var(--tl-img) center/cover fixed,var(--bg)}
-.lk-stage[data-bg=img]{background:linear-gradient(color-mix(in srgb,var(--bg) var(--bainv),transparent),color-mix(in srgb,var(--bg) var(--bainv),transparent)),var(--tl-img) center/cover,var(--bg)}
 /* ---- 高級感テーマ（B1 ミッドナイト・ゴールド / B2 ミッドナイト・プラチナ / C1 パール・ローズ / C2 パール・ラベンダー） ---- */
 :root[data-skin="b1"]{--bg:#eef1f7;--bg-soft:#e4e9f4;--bg-hover:#e6eaf3;--fg:#141b33;--muted:#5b6480;--line:#d9dfec;--line-strong:#c3cbdd;--accent:#8f6d2e;--accent-fg:#1b1405;--metal:linear-gradient(135deg,#9c7a3c,#e9d49c 48%,#b38d4a);--onmetal:#1b1405;--page:linear-gradient(170deg,#e4e9f4,#f4f6fb) fixed;--media:#0b0f1c;--glass-line:rgba(185,151,90,.45);color-scheme:light;}
 @media (prefers-color-scheme: dark){:root[data-skin="b1"]:not([data-theme="light"]){--bg:#0b0f1c;--bg-soft:#121830;--bg-hover:#141b33;--fg:#e9ecf3;--muted:#8d96ad;--line:#1d2540;--line-strong:#2a3456;--accent:#d9c48f;--accent-fg:#1a1405;--metal:linear-gradient(135deg,#b9975a,#f3e2b0 48%,#c7a565);--onmetal:#1a1405;--page:radial-gradient(900px 500px at 85% -10%,#24325a,transparent) fixed,#0b0f1c;--media:#05070d;--glass-line:rgba(217,196,143,.32);color-scheme:dark;}}
@@ -685,7 +683,6 @@ body.sheet-open{overflow:hidden}
       <div class="lk-chips" id="lkBg" role="radiogroup" aria-label="背景の種類"></div>
       <div class="lk-row" id="lkBgCols"><span class="lk-lab">色</span><input type="color" id="lkBc1" class="lk-color" aria-label="背景の色">
         <input type="color" id="lkBc2" class="lk-color" aria-label="背景の2色目"></div>
-      <div class="lk-row" id="lkBgImgRow"><span class="lk-lab">画像</span><label class="btn-ghost sm" id="lkBgImgLab">画像を選ぶ<input type="file" accept="image/*" id="lkBgImg" hidden></label></div>
       <div class="lk-row" id="lkBaRow"><label class="lk-lab" for="lkBa" id="lkBaLab">濃さ</label><input type="range" id="lkBa" min="0" max="100" step="1"><output id="lkBaOut"></output></div></div>
     <div class="share-actions"><button type="button" class="btn-accent" id="lkDone">完了</button></div>
   </div>
@@ -857,7 +854,7 @@ S.me ||= { id: "me", name: "私", color: "#1d9bf0" }; S.me.id = "me";
 S.presets ||= [];
 S.opts.sound ??= true; S.opts.preview ??= 120; S.opts.auto ??= true; S.opts.wifiOnly ??= true; S.opts.strictNet ??= false; S.opts.lazy ??= true; S.opts.fullEnd ??= "loop"; S.opts.slideAuto ??= true; S.opts.slideSec ??= 10; S.opts.tlMotion ??= "spring"; S.opts.vibe ??= true; S.opts.resume ??= true; S.pos ||= {};
 const fileUrls = new Map(); // 手元から追加したファイル（IndexedDB から復元）
-function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch { try { toast("保存しきれなかったよ。背景やアイコンの画像を外すか、小さい画像にしてね"); } catch {} return false; } }
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch { try { toast("保存しきれなかったよ。アイコンの画像を外すか、小さい画像にしてね"); } catch {} return false; } }
 /* 手元ファイルの保存先: IndexedDB（ブラウザ内） */
 const idb = (() => {
   let dbp = null;
@@ -1324,13 +1321,16 @@ function renderTabs() {
 /* タイムラインごとの見た目: アイコン（文字か画像）・アイコンの縁・背景 */
 /* アイコンの縁と背景の種類 */
 const RINGS = [["none", "なし"], ["solid", "単色"], ["grad", "グラデ"], ["metal", "メタリック"], ["dash", "点線"], ["glow", "光る"]];
-const BGS = [["none", "なし"], ["color", "単色"], ["grad", "グラデ"], ["dots", "ドット"], ["stripe", "ストライプ"], ["img", "画像"]];
-const BG_ALPHA = { none: 0, color: 10, grad: 22, dots: 35, stripe: 10, img: 30 };
+const BGS = [["none", "なし"], ["color", "単色"], ["grad", "グラデ"], ["dots", "ドット"], ["stripe", "ストライプ"]];
+const BG_ALPHA = { none: 0, color: 10, grad: 22, dots: 35, stripe: 10 };
 const LOOK_KEYS = ["color", "fill2", "ringType", "ringC1", "ringC2", "ringW", "bgType", "bgC1", "bgC2", "bgAlpha"];
 /* 古い形式（ring / bg の文字）を新しい形式にそろえる */
 function normLook(t) {
   if (typeof t.ring === "string") { const m = { line: ["solid", 2], thick: ["solid", 4], dash: ["dash", 2], grad: ["grad", 3], glow: ["glow", 2] }[t.ring]; if (m) { t.ringType = m[0]; t.ringW = m[1]; } delete t.ring; }
   if (typeof t.bg === "string") { t.bgType = t.bg === "tint" ? "color" : t.bg; delete t.bg; }
+  // 背景画像の機能はなくした: 画像だったタイムラインは、その色のグラデーションにする
+  if (t.bgType === "img") { t.bgType = "grad"; t.bgC1 = t.color; t.bgC2 ??= "#1d9bf0"; t.bgAlpha = BG_ALPHA.grad; }
+  delete t.bgImg;
   t.ringType ??= "none"; t.ringC1 ??= t.color; t.ringC2 ??= "#ffd400"; t.ringW ??= 3; t.fill2 ??= "";
   t.bgType ??= "none"; t.bgC1 ??= t.color; t.bgC2 ??= "#1d9bf0"; t.bgAlpha ??= BG_ALPHA[t.bgType] ?? 20;
   return t;
@@ -1365,7 +1365,6 @@ function bgVars(t, el) {
   normLook(t); const a = Math.max(0, Math.min(100, +t.bgAlpha || 0));
   el.dataset.bg = t.bgType; el.style.setProperty("--b1", t.bgC1); el.style.setProperty("--b2", t.bgC2);
   el.style.setProperty("--bap", a + "%"); el.style.setProperty("--bainv", (100 - a) + "%");
-  el.style.setProperty("--tl-img", t.bgType === "img" && t.bgImg ? `url("${t.bgImg}")` : "none");
 }
 function applyTlTheme() { const t = tlById(S.active); if (t) bgVars(t, $("#main")); }
 function shrinkImage(file, max, q, square) {
@@ -1802,11 +1801,10 @@ function renderLook() {
   lk("lkRw").value = t.ringW; lk("lkRwOut").textContent = t.ringW + "px";
   lk("lkBgSec").hidden = isMe;
   lk("lkBg").innerHTML = chipHTML(BGS, t.bgType);
-  lk("lkBgCols").hidden = ["none", "img"].includes(t.bgType);
+  lk("lkBgCols").hidden = t.bgType === "none";
   lk("lkBc1").value = t.bgC1; lk("lkBc2").value = t.bgC2; lk("lkBc2").hidden = t.bgType !== "grad";
-  lk("lkBgImgRow").hidden = t.bgType !== "img"; lk("lkBgImgLab").firstChild.textContent = t.bgImg ? "画像を変える" : "画像を選ぶ";
   lk("lkBaRow").hidden = t.bgType === "none"; lk("lkBa").value = t.bgAlpha;
-  lk("lkBaLab").textContent = t.bgType === "img" ? "見え方" : "濃さ"; lk("lkBaOut").textContent = t.bgAlpha + "%";
+  lk("lkBaOut").textContent = t.bgAlpha + "%";
 }
 /* 見た目が変わったら、画面のあちこちに反映して保存 */
 function lookChanged(full) {
@@ -1839,7 +1837,6 @@ lk("lkRing").addEventListener("click", e => { const b = e.target.closest("[data-
 lk("lkBg").addEventListener("click", e => {
   const b = e.target.closest("[data-v]"); if (!b) return; const t = lookTarget(lkId);
   t.bgType = b.dataset.v; t.bgAlpha = BG_ALPHA[t.bgType] ?? 20; lookChanged(true);
-  if (t.bgType === "img" && !t.bgImg) lk("lkBgImg").click();
 });
 lk("lkIconImg").addEventListener("change", async e => {
   const f = e.target.files[0]; e.target.value = ""; if (!f) return;
@@ -1847,18 +1844,12 @@ lk("lkIconImg").addEventListener("change", async e => {
   lookChanged(true);
 });
 lk("lkIconClear").addEventListener("click", () => { delete lookTarget(lkId).iconImg; lookChanged(true); });
-lk("lkBgImg").addEventListener("change", async e => {
-  const f = e.target.files[0]; e.target.value = ""; if (!f) return;
-  try { lookTarget(lkId).bgImg = await shrinkImage(f, 1280, .7); } catch { toast("この画像は読み込めなかったよ"); return; }
-  lookChanged(true);
-});
 lk("lkPresets").addEventListener("click", e => {
   const del = e.target.closest("[data-pdel]");
   if (del) { const pr = S.presets[+del.dataset.pdel]; S.presets.splice(+del.dataset.pdel, 1); save(); renderLook(); toast(`「${pr.name}」を消したよ`); return; }
   const b = e.target.closest("[data-preset]"); if (!b) return;
   const k = b.dataset.preset, pr = k[0] === "m" ? S.presets[+k.slice(1)] : LUX[+k.slice(1)], t = lookTarget(lkId);
   LOOK_KEYS.forEach(key => { if (pr[key] !== undefined) t[key] = pr[key]; });
-  if (pr.bgType === "img" && pr.bgImg) t.bgImg = pr.bgImg;
   if (pr.skin !== undefined) { S.opts.skin = pr.skin; S.opts.dark = pr.dark ?? null; applySkin(); }
   lookChanged(true); toast(`「${pr.name}」にしたよ`);
 });

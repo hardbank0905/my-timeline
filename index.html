@@ -1,0 +1,1222 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#000000">
+<meta name="description" content="自分専用のX風タイムライン">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" href="icons/icon-192.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="タイムライン">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<style>:root{padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}body{margin:0;font:14px/1.4 system-ui,sans-serif}img{max-width:100%}[hidden]{display:none!important}</style>
+<script>window.MYTL_HOSTED = true;</script>
+<title>マイタイムライン</title>
+</head>
+<body>
+
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Noto+Sans+JP:wght@400;500;700;800&display=swap">
+<style>
+/* Layout: X風3カラム（左ナビ / 中央フィード600px / 右の管理パネル）。狭い画面では1カラム＋下部バー */
+:root{
+  --bg:#ffffff; --bg-soft:#f7f9f9; --bg-hover:#f2f4f5; --fg:#0f1419; --muted:#536471;
+  --line:#eff3f4; --line-strong:#cfd9de; --accent:#1d9bf0; --accent-fg:#ffffff;
+  --like:#f91880; --danger:#f4212e; --ok:#00ba7c; --media:#0b0d10; --overlay:rgba(0,0,0,.55);
+  --center:#f91880;
+  --font:"Inter","Noto Sans JP","Hiragino Sans","Yu Gothic UI",system-ui,sans-serif;
+  --r:16px;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#000000; --bg-soft:#16181c; --bg-hover:#0d0f12; --fg:#e7e9ea; --muted:#71767b;
+  --line:#2f3336; --line-strong:#3e4144; --accent:#1d9bf0; --accent-fg:#ffffff;
+  --like:#f91880; --danger:#f4212e; --ok:#00ba7c; --media:#0b0d10; --overlay:rgba(0,0,0,.65); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#000000; --bg-soft:#16181c; --bg-hover:#0d0f12; --fg:#e7e9ea; --muted:#71767b;
+  --line:#2f3336; --line-strong:#3e4144; --accent:#1d9bf0; --accent-fg:#ffffff;
+  --like:#f91880; --danger:#f4212e; --ok:#00ba7c; --media:#0b0d10; --overlay:rgba(0,0,0,.65); color-scheme:dark}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{height:100%}
+body{background:var(--bg);color:var(--fg);font-family:var(--font);font-size:15px;line-height:1.45;
+  padding-left:max(0px,env(safe-area-inset-left,0px));padding-right:max(0px,env(safe-area-inset-right,0px))}
+body::before{content:"";position:fixed;inset:0 0 auto;height:env(safe-area-inset-top,0px);z-index:40;background:var(--bg)}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer;background:none;border:0}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px;border-radius:6px}
+a{color:var(--accent);text-decoration:none}
+
+.app{display:grid;grid-template-columns:240px minmax(0,600px) 340px;justify-content:center;min-height:100%}
+/* ---- 左ナビ ---- */
+.nav{position:sticky;top:0;height:100vh;display:flex;flex-direction:column;gap:4px;padding:12px 12px 20px;border-right:1px solid var(--line)}
+.brand{display:flex;align-items:center;gap:10px;font-weight:800;font-size:18px;padding:8px 12px 14px}
+.brand-mark{width:32px;height:32px;border-radius:9px;background:var(--fg);color:var(--bg);display:grid;place-items:center;font-size:15px}
+.nav-label{font-size:12px;color:var(--muted);letter-spacing:.06em;padding:12px 12px 4px}
+.nav-item{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:999px;font-size:16px;text-align:left;width:100%}
+.nav-item:hover{background:var(--bg-hover)}
+.nav-item.on{font-weight:700}
+.dot{width:10px;height:10px;border-radius:50%;flex:none}
+.nav-item .count{margin-left:auto;color:var(--muted);font-size:13px;font-variant-numeric:tabular-nums}
+.nav-spacer{flex:1}
+.btn-primary{background:var(--fg);color:var(--bg);font-weight:700;border-radius:999px;padding:12px 18px;font-size:15px;width:100%}
+.btn-primary:hover{opacity:.88}
+.btn-accent{white-space:nowrap;flex:none;background:var(--accent);color:var(--accent-fg);font-weight:700;border-radius:999px;padding:8px 18px}
+.btn-accent:disabled{opacity:.5;cursor:default}
+.btn-ghost{border:1px solid var(--line-strong);border-radius:999px;padding:6px 14px;font-weight:600;font-size:14px}
+.btn-ghost:hover{background:var(--bg-hover)}
+
+/* ---- 中央 ---- */
+.main{border-right:1px solid var(--line);min-width:0}
+.head{position:sticky;top:env(safe-area-inset-top,0px);z-index:20;background:color-mix(in srgb,var(--bg) 85%,transparent);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid var(--line)}
+.head-top{display:none;align-items:center;justify-content:space-between;padding:10px 16px 0}
+.tabs{display:flex;overflow-x:auto;scrollbar-width:none}
+.tabs::-webkit-scrollbar{display:none}
+.tab{flex:1 0 auto;min-width:96px;padding:0 16px;height:53px;position:relative;color:var(--muted);font-weight:500;white-space:nowrap}
+.tab:hover{background:var(--bg-hover)}
+.tab.on{color:var(--fg);font-weight:700}
+.tab.on::after{content:"";position:absolute;left:50%;bottom:0;transform:translateX(-50%);width:56px;height:4px;border-radius:4px;background:var(--accent)}
+.tab-add{flex:0 0 53px;min-width:53px;font-size:22px;color:var(--muted)}
+
+.composer{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line)}
+.avatar{width:40px;height:40px;border-radius:50%;flex:none;display:grid;place-items:center;font-weight:800;color:#fff;font-size:15px}
+.composer-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:8px}
+.composer textarea{width:100%;border:0;resize:none;background:transparent;font-size:19px;padding:8px 0;min-height:52px;outline:none}
+.composer textarea::placeholder{color:var(--muted)}
+.detect{font-size:13px;color:var(--muted);display:flex;align-items:center;gap:6px;min-height:20px}
+.chip{display:inline-flex;align-items:center;gap:4px;border-radius:999px;padding:2px 10px;font-size:12px;font-weight:700;background:var(--bg-soft);border:1px solid var(--line)}
+.composer-bar{display:flex;align-items:center;gap:8px;border-top:1px solid var(--line);padding-top:10px}
+.icon-btn{width:36px;height:36px;border-radius:50%;display:grid;place-items:center;color:var(--accent)}
+.icon-btn:hover{background:color-mix(in srgb,var(--accent) 12%,transparent)}
+.composer-bar select{min-width:0;max-width:60%;background:transparent;border:1px solid var(--line-strong);border-radius:999px;padding:5px 10px;font-size:13px;color:var(--accent);font-weight:600}
+.composer-bar .grow{flex:1}
+
+.post{display:flex;gap:12px;padding:12px 16px;border-bottom:1px solid var(--line);transition:background .15s}
+.post:hover{background:var(--bg-hover)}
+.post-body{flex:1;min-width:0}
+.post-meta{display:flex;gap:4px;align-items:baseline;flex-wrap:wrap;color:var(--muted);font-size:15px}
+.post-meta b{color:var(--fg)}
+.post-text{margin:2px 0 10px;white-space:pre-wrap;overflow-wrap:anywhere}
+.post-actions{display:flex;justify-content:space-between;max-width:420px;margin-top:10px;color:var(--muted);font-size:13px}
+.act{display:inline-flex;align-items:center;gap:6px;padding:6px;border-radius:999px;font-variant-numeric:tabular-nums}
+.act:hover{color:var(--accent)}
+.act.like.on,.act.like:hover{color:var(--like)}
+.act.del:hover{color:var(--danger)}
+.act select{background:transparent;border:0;color:inherit;font-size:13px;max-width:110px;cursor:pointer}
+svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+
+/* メディア */
+.media{position:relative;border-radius:var(--r);overflow:hidden;border:1px solid var(--line);background:var(--media);max-width:100%}
+.media canvas,.media video,.media img{display:block;width:100%;height:auto;max-height:560px;object-fit:cover}
+.media.vertical{max-width:340px}
+.badge{position:absolute;left:10px;bottom:10px;background:var(--overlay);color:#fff;font-size:12px;font-weight:700;border-radius:6px;padding:3px 8px;display:flex;gap:6px;align-items:center;font-variant-numeric:tabular-nums}
+.badge.top{top:10px;bottom:auto}
+.play-state{position:absolute;right:10px;top:10px;font-size:11px;font-weight:800;border-radius:999px;padding:3px 9px;background:var(--overlay);color:#fff;letter-spacing:.04em}
+.is-playing .play-state{background:var(--like)}
+.bigplay{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;transition:opacity .25s}
+.bigplay span{width:64px;height:64px;border-radius:50%;background:var(--overlay);display:grid;place-items:center}
+.bigplay svg{width:28px;height:28px;fill:#fff;margin-left:4px}
+.is-playing .bigplay{opacity:0}
+.progress{position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(255,255,255,.2)}
+.progress i{display:block;height:100%;width:0;background:var(--accent)}
+
+/* 埋め込みの代替表示 */
+.embed-yt .yt-frame{aspect-ratio:16/9;width:100%;position:relative;background:linear-gradient(135deg,#1a1a1a,#2b1010)}
+.embed-yt.shorts .yt-frame{aspect-ratio:9/16;max-height:520px}
+.yt-logo{position:absolute;inset:0;display:grid;place-items:center}
+.yt-logo span{width:68px;height:48px;border-radius:14px;background:#ff0033;display:grid;place-items:center}
+.yt-logo svg{width:22px;height:22px;fill:#fff;margin-left:3px}
+.yt-eq{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);display:none;gap:5px;align-items:flex-end;height:40px}
+.yt-eq b{width:7px;background:#fff;border-radius:2px;animation:eq 0.9s ease-in-out infinite}
+.yt-eq b:nth-child(2){animation-delay:.15s}.yt-eq b:nth-child(3){animation-delay:.3s}.yt-eq b:nth-child(4){animation-delay:.45s}
+@keyframes eq{0%,100%{height:8px}50%{height:40px}}
+.is-playing .yt-eq{display:flex}
+.is-playing .yt-logo{opacity:0}
+.embed-cap{display:flex;justify-content:space-between;gap:8px;align-items:center;padding:10px 12px;background:var(--bg-soft);border-top:1px solid var(--line);font-size:13px;color:var(--muted)}
+.embed-cap b{color:var(--fg)}
+.embed-x{background:var(--bg);border:1px solid var(--line-strong);border-radius:var(--r);padding:12px 14px;display:flex;flex-direction:column;gap:8px}
+.embed-x .xhead{display:flex;align-items:center;gap:10px}
+.embed-x .xlogo{margin-left:auto;font-weight:900;font-size:18px}
+.embed-x .xbody{color:var(--muted);font-size:14px}
+.embed-x .xfoot{display:flex;justify-content:space-between;font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:8px}
+.linkcard{display:flex;border:1px solid var(--line-strong);border-radius:var(--r);overflow:hidden;color:var(--fg)}
+.linkcard:hover{background:var(--bg-hover)}
+.linkcard .lc-thumb{width:120px;flex:none;display:grid;place-items:center;font-weight:800;font-size:26px;color:#fff}
+.linkcard .lc-body{padding:10px 12px;min-width:0;display:flex;flex-direction:column;gap:2px;justify-content:center}
+.linkcard .lc-domain{color:var(--muted);font-size:13px}
+.linkcard .lc-title{font-weight:600;overflow-wrap:anywhere}
+.linkcard .lc-url{color:var(--muted);font-size:12px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.note{font-size:12px;color:var(--muted);margin-top:6px}
+
+.empty{padding:48px 24px;text-align:center;color:var(--muted)}
+.empty h3{color:var(--fg);font-size:22px;margin:0 0 6px}
+.feed-end{padding:28px 16px 120px;text-align:center;color:var(--muted);font-size:13px}
+
+/* ---- 右パネル ---- */
+.side{padding:12px 20px;display:flex;flex-direction:column;gap:16px;position:sticky;top:0;height:100vh;overflow-y:auto}
+.card{background:var(--bg-soft);border-radius:var(--r);padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.card h2{font-size:19px;font-weight:800;margin:0}
+.card p{margin:0;color:var(--muted);font-size:13px}
+.tl-list{display:flex;flex-direction:column;gap:2px;list-style:none;margin:0;padding:0}
+.tl-row{display:flex;align-items:center;gap:8px;padding:6px 6px;border-radius:10px;background:transparent}
+.tl-row:hover{background:var(--bg-hover)}
+.tl-row.dragging{opacity:.4}
+.tl-row.drop-before{box-shadow:inset 0 2px 0 var(--accent)}
+.tl-row.drop-after{box-shadow:inset 0 -2px 0 var(--accent)}
+.grip{cursor:grab;color:var(--muted);padding:2px;display:grid;place-items:center}
+.tl-row input[type=text]{flex:1;min-width:0;border:1px solid transparent;background:transparent;border-radius:8px;padding:4px 6px;font-weight:600}
+.tl-row input[type=text]:hover{border-color:var(--line-strong)}
+.tl-row input[type=text]:focus{border-color:var(--accent);outline:none;background:var(--bg)}
+.tl-row input[type=color]{width:22px;height:22px;border:0;padding:0;background:none;border-radius:50%;cursor:pointer}
+.mini{width:28px;height:28px;border-radius:50%;display:grid;place-items:center;color:var(--muted)}
+.mini:hover{background:var(--bg-hover);color:var(--fg)}
+.mini.danger:hover{color:var(--danger)}
+.mini:disabled{opacity:.3;cursor:default}
+.confirm{display:flex;gap:6px;align-items:center;font-size:12px;color:var(--danger);padding:4px 6px 8px 34px}
+.confirm button{border-radius:999px;padding:3px 10px;font-weight:700;font-size:12px}
+.confirm .yes{background:var(--danger);color:#fff}
+.confirm .no{border:1px solid var(--line-strong)}
+.add-row{display:flex;gap:8px}
+.add-row input{flex:1;min-width:0;border:1px solid var(--line-strong);border-radius:999px;padding:7px 14px;background:var(--bg)}
+.toggle{display:flex;align-items:center;justify-content:space-between;gap:10px;font-size:14px}
+.switch{position:relative;width:42px;height:24px;flex:none}
+.switch input{opacity:0;width:100%;height:100%;margin:0;position:absolute;cursor:pointer}
+.switch span{position:absolute;inset:0;border-radius:999px;background:var(--line-strong);transition:.2s;pointer-events:none}
+.switch span::after{content:"";position:absolute;width:18px;height:18px;left:3px;top:3px;border-radius:50%;background:#fff;transition:.2s}
+.switch input:checked+span{background:var(--accent)}
+.switch input:checked+span::after{left:21px}
+.legend{display:grid;grid-template-columns:auto 1fr;gap:4px 10px;font-size:13px;color:var(--muted)}
+.legend b{color:var(--fg)}
+
+/* 中央ライン可視化 */
+.center-line{position:fixed;left:0;right:0;top:50%;height:0;border-top:2px dashed var(--center);z-index:30;pointer-events:none;display:none}
+.center-line::after{content:"自動再生ライン";position:absolute;right:12px;top:-22px;font-size:11px;font-weight:800;color:var(--center);background:var(--bg);padding:1px 6px;border-radius:4px}
+.show-center .center-line{display:block}
+
+/* ---- TikTokモード ---- */
+.tt{position:fixed;inset:0;z-index:60;background:#000;display:none}
+.tt.open{display:block}
+.tt-scroll{height:100%;overflow-y:scroll;scroll-snap-type:y mandatory;scrollbar-width:none;overscroll-behavior:contain}
+.tt-scroll::-webkit-scrollbar{display:none}
+.tt-item{height:100%;scroll-snap-align:start;scroll-snap-stop:always;position:relative;display:grid;place-items:center;overflow:hidden}
+.tt-item .media{border:0;border-radius:0;width:100%;height:100%;max-width:min(100%,calc(100vh * 9 / 16 + 120px));background:#000}
+.tt-item .media canvas,.tt-item .media video,.tt-item .media img{width:100%;height:100%;max-height:none;object-fit:contain}
+.tt-item .embed-yt .yt-frame{height:100%;aspect-ratio:auto}
+.tt-item .embed-cap{display:none}
+.tt-item .badge{display:none}
+.tt-item .play-state{top:calc(64px + env(safe-area-inset-top,0px))}
+.tt-info{position:absolute;left:0;right:76px;bottom:0;padding:16px max(16px,env(safe-area-inset-left,0px)) calc(20px + env(safe-area-inset-bottom,0px));color:#fff;background:linear-gradient(transparent,rgba(0,0,0,.7));pointer-events:none}
+.tt-info b{font-size:16px}
+.tt-info p{margin:4px 0 0;font-size:14px;opacity:.92;white-space:pre-wrap}
+.tt-rail{position:absolute;right:max(10px,env(safe-area-inset-right,0px));bottom:calc(90px + env(safe-area-inset-bottom,0px));display:flex;flex-direction:column;gap:18px;align-items:center;color:#fff;font-size:12px;font-weight:700}
+.tt-rail button{display:flex;flex-direction:column;align-items:center;gap:4px;color:#fff}
+.tt-rail .circle{width:48px;height:48px;border-radius:50%;background:rgba(255,255,255,.14);display:grid;place-items:center}
+.tt-rail .on .circle{color:var(--like)}
+.tt-rail svg.i{width:26px;height:26px}
+.tt-top{position:absolute;top:0;left:0;right:0;z-index:2;display:flex;justify-content:space-between;align-items:center;padding:calc(10px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) 10px max(12px,env(safe-area-inset-left,0px));color:#fff;background:linear-gradient(rgba(0,0,0,.55),transparent)}
+.tt-tabs{display:flex;gap:16px;overflow-x:auto;scrollbar-width:none;font-weight:700}
+.tt-tabs button{color:rgba(255,255,255,.6);white-space:nowrap;padding:4px 0;position:relative}
+.tt-tabs button.on{color:#fff}
+.tt-tabs button.on::after{content:"";position:absolute;left:20%;right:20%;bottom:-2px;height:3px;border-radius:2px;background:#fff}
+.tt-close{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;display:grid;place-items:center;flex:none}
+.tt-empty{height:100%;display:grid;place-items:center;color:#aaa;text-align:center;padding:24px}
+
+/* ---- 下部バー（モバイル） ---- */
+.bottombar{display:none}
+.toast{position:fixed;left:50%;bottom:calc(24px + env(safe-area-inset-bottom,0px));transform:translateX(-50%) translateY(20px);background:var(--accent);color:#fff;padding:10px 18px;border-radius:8px;font-weight:600;font-size:14px;opacity:0;transition:.25s;z-index:80;pointer-events:none;max-width:calc(100% - 32px)}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0)}
+.sheet-backdrop{display:none}
+
+@media (max-width:1100px){
+  .app{grid-template-columns:88px minmax(0,600px) 320px}
+  .nav .label,.nav .nav-label,.nav .count,.brand .label{display:none}
+  .nav-item{justify-content:center}
+  .nav .btn-primary{padding:12px;font-size:0}
+  .nav .btn-primary::before{content:"▶";font-size:16px}
+}
+@media (max-width:960px){
+  .app{grid-template-columns:88px minmax(0,1fr)}
+  .side{position:fixed;right:0;top:0;bottom:0;width:min(360px,92vw);height:auto;background:var(--bg);z-index:70;transform:translateX(105%);transition:transform .25s;border-left:1px solid var(--line);
+    padding-top:calc(12px + env(safe-area-inset-top,0px));padding-right:max(20px,env(safe-area-inset-right,0px));padding-bottom:calc(16px + env(safe-area-inset-bottom,0px))}
+  .side.open{transform:none}
+  .sheet-backdrop.open{display:block;position:fixed;inset:0;background:rgba(0,0,0,.4);z-index:65}
+  .side-close{display:grid!important}
+}
+@media (max-width:640px){
+  .app{grid-template-columns:minmax(0,1fr)}
+  .nav{display:none}
+  .main{border-right:0}
+  .head-top{display:flex}
+  .composer textarea{font-size:17px}
+  .bottombar{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:25;background:var(--bg);border-top:1px solid var(--line);justify-content:space-around;
+    padding:6px max(16px,env(safe-area-inset-right,0px)) calc(6px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+  .bottombar button{display:flex;flex-direction:column;align-items:center;font-size:11px;gap:2px;padding:4px 10px;color:var(--muted)}
+  .bottombar button svg.i{width:24px;height:24px}
+  .linkcard .lc-thumb{width:84px}
+  .post{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+  .composer{padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px))}
+}
+.side-close{display:none}
+/* 再投稿・並べ替え */
+.rp{display:flex;align-items:center;gap:6px;color:var(--muted);font-size:13px;font-weight:700;margin:-2px 0 4px}
+.post-actions{max-width:480px}
+.act.rt:hover{color:var(--ok)}
+.order-wrap{position:relative}
+.menu{position:absolute;right:0;bottom:calc(100% + 4px);z-index:15;background:var(--bg);border:1px solid var(--line-strong);border-radius:12px;box-shadow:0 8px 28px rgba(0,0,0,.18);padding:4px;min-width:190px;display:flex;flex-direction:column}
+.menu button{display:flex;align-items:center;gap:10px;padding:9px 12px;border-radius:8px;text-align:left;font-size:14px;color:var(--fg);white-space:nowrap}
+.menu button:hover{background:var(--bg-hover)}
+.menu button:disabled{opacity:.35;cursor:default;background:none}
+/* 音声ボタン・再生範囲 */
+.snd-btn{position:absolute;right:52px;bottom:12px;z-index:3;width:34px;height:34px;border-radius:8px;background:var(--overlay);color:#fff;display:grid;place-items:center}
+.snd-btn:hover{background:rgba(0,0,0,.8)}
+.progress{overflow:visible}
+.progress .lim{position:absolute;top:-3px;bottom:-3px;width:2px;background:#fff;opacity:.9}
+.yt-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.sel{background:var(--bg);border:1px solid var(--line-strong);border-radius:999px;padding:4px 10px;font-size:13px;color:var(--fg)}
+.v-stage .snd-btn{right:max(16px,env(safe-area-inset-right,0px));bottom:16px}
+.tt-item .snd-btn{right:auto;left:max(16px,env(safe-area-inset-left,0px));top:calc(64px + env(safe-area-inset-top,0px));bottom:auto}
+/* 共有で受け取ったときの送り先シート */
+.share{position:fixed;inset:0;z-index:95;background:rgba(0,0,0,.45);display:grid;place-items:end center}
+.share-card{background:var(--bg);color:var(--fg);width:min(560px,100%);border-radius:20px 20px 0 0;padding:18px max(18px,env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:12px;max-height:90vh;overflow-y:auto}
+@media (min-width:641px){.share{place-items:center}.share-card{border-radius:20px}}
+.share-card h2{margin:0;font-size:20px;font-weight:800}
+.share-card textarea{width:100%;border:1px solid var(--line-strong);border-radius:12px;padding:10px 12px;background:var(--bg);resize:vertical;min-height:72px}
+.share-url{font-size:13px;color:var(--muted);overflow-wrap:anywhere}
+.tl-chips{display:flex;flex-wrap:wrap;gap:8px}
+.tl-chips label{display:inline-flex;align-items:center;gap:6px;border:1px solid var(--line-strong);border-radius:999px;padding:7px 14px;font-weight:700;font-size:14px;cursor:pointer}
+.tl-chips input{position:absolute;opacity:0;pointer-events:none}
+.tl-chips label:has(input:checked){background:var(--fg);color:var(--bg);border-color:var(--fg)}
+.tl-chips label:has(input:focus-visible){outline:2px solid var(--accent);outline-offset:2px}
+.share-actions{display:flex;justify-content:flex-end;gap:8px}
+/* 全画面ボタン */
+.fs-btn{position:absolute;right:10px;bottom:12px;z-index:3;width:34px;height:34px;border-radius:8px;background:var(--overlay);color:#fff;display:grid;place-items:center}
+.fs-btn:hover{background:rgba(0,0,0,.8)}
+.media img{cursor:zoom-in}
+.embed-yt .fs-btn{bottom:58px}
+.embed-yt.live .fs-btn,.embed-yt.live .snd-btn{top:10px;bottom:auto}
+.embed-yt.live .fs-btn{right:10px}
+/* 全画面ビューア */
+.viewer{position:fixed;inset:0;z-index:90;background:#000;color:#fff;display:flex;flex-direction:column}
+.v-top{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:calc(10px + env(safe-area-inset-top,0px)) max(12px,env(safe-area-inset-right,0px)) 10px max(16px,env(safe-area-inset-left,0px));font-size:14px;font-variant-numeric:tabular-nums}
+.v-top .grp{display:flex;gap:8px}
+.v-btn{width:40px;height:40px;border-radius:50%;background:rgba(255,255,255,.14);color:#fff;display:grid;place-items:center}
+.v-btn:hover{background:rgba(255,255,255,.24)}
+.v-stage{flex:1;min-height:0;position:relative;display:grid;place-items:center;padding:0 max(8px,env(safe-area-inset-right,0px)) 0 max(8px,env(safe-area-inset-left,0px))}
+.v-stage>*{max-width:100%;max-height:100%}
+.v-stage .media{border:0;border-radius:0;background:#000;width:100%;height:100%;max-width:100%}
+.v-stage .media canvas,.v-stage .media video,.v-stage .media img{width:100%;height:100%;max-height:none;object-fit:contain;cursor:default}
+.v-stage .embed-yt{width:100%;height:100%}
+.v-stage .embed-yt .yt-frame{height:100%;aspect-ratio:auto}
+.v-stage .embed-cap{display:none}
+.v-stage .media.vertical{max-width:100%}
+.v-stage .fs-btn{display:none}
+.v-nav{position:absolute;top:50%;transform:translateY(-50%);z-index:4}
+.v-nav.prev{left:max(12px,env(safe-area-inset-left,0px))}
+.v-nav.next{right:max(12px,env(safe-area-inset-right,0px))}
+.v-nav:disabled{opacity:.25;cursor:default}
+.v-cap{padding:10px max(16px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));font-size:14px;opacity:.9;white-space:pre-wrap;text-align:center}
+@media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
+</style>
+
+<div class="app" id="app">
+  <nav class="nav" aria-label="メイン">
+    <div class="brand"><div class="brand-mark">TL</div><span class="label">マイタイムライン</span></div>
+    <div class="nav-label">タイムライン</div>
+    <div id="navList"></div>
+    <div class="nav-spacer"></div>
+    <button class="nav-item" id="navManage"><svg class="i"><use href="#i-sliders"/></svg><span class="label">タイムライン管理</span></button>
+    <button class="nav-item" id="navCenter"><svg class="i"><use href="#i-target"/></svg><span class="label">中央ラインを表示</span></button>
+    <button class="btn-primary" id="navTT">縦スワイプで見る</button>
+  </nav>
+
+  <main class="main" id="main">
+    <div class="head">
+      <div class="head-top">
+        <div class="brand" style="padding:0"><div class="brand-mark">TL</div></div>
+        <div style="display:flex;gap:8px">
+          <button class="btn-ghost" id="mManage">管理</button>
+          <button class="btn-ghost" id="mTT">縦スワイプ</button>
+        </div>
+      </div>
+      <div class="tabs" id="tabs" role="tablist"></div>
+    </div>
+
+    <form class="composer" id="composer" autocomplete="off">
+      <div class="avatar" id="compAvatar">私</div>
+      <div class="composer-body">
+        <textarea id="compText" rows="2" placeholder="URLを貼る、またはひとこと（例: https://youtu.be/...）"></textarea>
+        <div class="detect" id="detect"></div>
+        <div class="composer-bar">
+          <label class="icon-btn" title="画像・動画ファイルを追加" for="compFile"><svg class="i"><use href="#i-image"/></svg></label>
+          <input type="file" id="compFile" accept="image/*,video/*" hidden>
+          <button type="button" class="icon-btn" id="compSample" title="サンプル動画を追加"><svg class="i"><use href="#i-film"/></svg></button>
+          <select id="compTl" aria-label="送り先のタイムライン"></select>
+          <span class="grow"></span>
+          <button class="btn-accent" id="compPost" disabled>ツイート</button>
+        </div>
+      </div>
+    </form>
+
+    <div id="feed"></div>
+  </main>
+
+  <div class="sheet-backdrop" id="backdrop"></div>
+  <aside class="side" id="side" aria-label="タイムライン管理">
+    <div style="display:flex;justify-content:flex-end"><button class="mini side-close" id="sideClose" aria-label="閉じる"><svg class="i"><use href="#i-x"/></svg></button></div>
+    <section class="card">
+      <h2>タイムライン管理</h2>
+      <p>名前はその場で書き換え。左のつまみをドラッグか ↑↓ で並べ替え。</p>
+      <ul class="tl-list" id="tlList"></ul>
+      <form class="add-row" id="addForm">
+        <input id="addName" placeholder="新しいタイムライン名" maxlength="20">
+        <button class="btn-accent" id="addBtn">追加</button>
+      </form>
+    </section>
+    <section class="card">
+      <h2>表示設定</h2>
+      <label class="toggle">画面中央の自動再生ラインを表示 <span class="switch"><input type="checkbox" id="optCenter"><span></span></span></label>
+      <label class="toggle">動画を自動再生する <span class="switch"><input type="checkbox" id="optAuto" checked><span></span></span></label>
+      <label class="toggle">音声を出す <span class="switch"><input type="checkbox" id="optSound" checked><span></span></span></label>
+      <label class="toggle" for="optPreview">タイムラインで再生する長さ
+        <select id="optPreview" class="sel"><option value="30">冒頭30秒</option><option value="60">冒頭1分</option><option value="120">冒頭2分</option><option value="300">冒頭5分</option><option value="0">最後まで</option></select></label>
+      <p>全画面表示では最後まで再生します。ブラウザの決まりで、音声は画面を1回タップしてから出るようになります。</p>
+      <label class="toggle">ダークモード <span class="switch"><input type="checkbox" id="optDark"><span></span></span></label>
+    </section>
+    <section class="card">
+      <h2>貼れるURL</h2>
+      <div class="legend">
+        <b>YouTube</b><span>watch / youtu.be / Shorts → 埋め込み</span>
+        <b>X</b><span>x.com / twitter.com の投稿 → 埋め込み</span>
+        <b>画像・動画</b><span>.jpg .png .mp4 など直リンク → メディア</span>
+        <b>その他</b><span>記事・ブログなど → リンクカード</span>
+      </div>
+      <p>URLをコピーして、入力欄の外で貼り付けると「タイムラインに送る」シートが開くよ。</p>
+      <p>この試作のプレビュー環境では外部の埋め込みや画像を読み込めないため、埋め込みは同じ大きさの代わりの表示にしています。本番ではここに本物のプレイヤーが入ります。</p>
+    </section>
+    <section class="card">
+      <h2>データ</h2>
+      <p>ツイートとタイムライン、手元から追加した画像・動画は、このブラウザの中に保存されます（ほかの端末とは共有されません）。</p>
+      <p>別の端末にデータを移すときは、ここで書き出した文字をコピーして、移したい端末の「読み込む」に貼ってね（手元から追加した画像・動画は移らないよ）。</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap">
+        <button class="btn-ghost" id="exportBtn">書き出す</button>
+        <button class="btn-ghost" id="importBtn">読み込む</button>
+      </div>
+      <div id="xferBox" hidden style="display:flex;flex-direction:column;gap:8px">
+        <textarea id="xferText" rows="5" class="sel" style="border-radius:10px;width:100%;font-family:ui-monospace,monospace;font-size:12px" aria-label="データの文字"></textarea>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <button class="btn-accent" id="xferCopy" hidden>コピー</button>
+          <button class="btn-accent" id="xferLoad" hidden>この内容で置き換える</button>
+          <button class="btn-ghost" id="xferClose">閉じる</button>
+        </div>
+        <div class="confirm" id="xferConfirm" hidden style="padding-left:0">いまのデータは消えて、貼った内容に置き換わるよ。いい？ <button class="yes" id="xferYes">置き換える</button><button class="no" id="xferNo">やめる</button></div>
+      </div>
+      <button class="btn-ghost" id="resetBtn" style="align-self:flex-start">サンプルに戻す</button>
+      <div class="confirm" id="resetConfirm" hidden style="padding-left:0">全部消してサンプルに戻す？ <button class="yes" id="resetYes">戻す</button><button class="no" id="resetNo">やめる</button></div>
+    </section>
+  </aside>
+</div>
+
+<div class="center-line" aria-hidden="true"></div>
+
+<div class="tt" id="tt" aria-label="縦スワイプ表示">
+  <div class="tt-top">
+    <div class="tt-tabs" id="ttTabs"></div>
+    <button class="tt-close" id="ttClose" aria-label="閉じる"><svg class="i"><use href="#i-x"/></svg></button>
+  </div>
+  <div class="tt-scroll" id="ttScroll"></div>
+</div>
+
+<nav class="bottombar" aria-label="下部メニュー">
+  <button id="bHome"><svg class="i"><use href="#i-home"/></svg>ホーム</button>
+  <button id="bTT"><svg class="i"><use href="#i-film"/></svg>縦スワイプ</button>
+  <button id="bPost"><svg class="i"><use href="#i-plus"/></svg>ツイート</button>
+  <button id="bManage"><svg class="i"><use href="#i-sliders"/></svg>管理</button>
+</nav>
+
+<div class="viewer" id="viewer" hidden aria-label="全画面表示">
+  <div class="v-top"><span id="vCount"></span>
+    <div class="grp"><button class="v-btn" id="vFull" aria-label="ブラウザの全画面"><svg class="i"><use href="#i-expand"/></svg></button><button class="v-btn" id="vClose" aria-label="閉じる"><svg class="i"><use href="#i-x"/></svg></button></div></div>
+  <div class="v-stage" id="vStage"></div>
+  <button class="v-btn v-nav prev" id="vPrev" aria-label="前へ"><svg class="i"><use href="#i-left"/></svg></button>
+  <button class="v-btn v-nav next" id="vNext" aria-label="次へ"><svg class="i"><use href="#i-right"/></svg></button>
+  <div class="v-cap" id="vCap"></div>
+</div>
+
+<div class="share" id="share" hidden role="dialog" aria-modal="true" aria-labelledby="shTitle">
+  <form class="share-card" id="shForm" autocomplete="off">
+    <h2 id="shTitle">タイムラインに送る</h2>
+    <div class="detect" id="shDetect"></div>
+    <div class="share-url" id="shUrl"></div>
+    <textarea id="shText" rows="3" placeholder="ひとこと（なくてもOK）"></textarea>
+    <div class="nav-label" style="padding:0">送り先</div>
+    <div class="tl-chips" id="shTls" role="radiogroup" aria-label="送り先のタイムライン"></div>
+    <div class="share-actions"><button type="button" class="btn-ghost" id="shCancel">やめる</button><button class="btn-accent" id="shSend">ツイート</button></div>
+  </form>
+</div>
+
+<div class="toast" id="toast" role="status"></div>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <symbol id="i-heart" viewBox="0 0 24 24"><path d="M12 20s-7-4.4-9.2-8.6C1.3 8.4 3 4.8 6.5 4.8c2 0 3.3 1.2 4 2.4h3c.7-1.2 2-2.4 4-2.4 3.5 0 5.2 3.6 3.7 6.6C19 15.6 12 20 12 20z" transform="translate(0 0)"/></symbol>
+  <symbol id="i-trash" viewBox="0 0 24 24"><path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+  <symbol id="i-move" viewBox="0 0 24 24"><path d="M4 7h11l-3-3M20 17H9l3 3"/></symbol>
+  <symbol id="i-image" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></symbol>
+  <symbol id="i-film" viewBox="0 0 24 24"><rect x="4" y="3" width="16" height="18" rx="3"/><path d="M10 9l5 3-5 3z"/></symbol>
+  <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 6h10M18 6h2M4 12h4M12 12h8M4 18h12M20 18h0"/><circle cx="16" cy="6" r="2"/><circle cx="10" cy="12" r="2"/><circle cx="18" cy="18" r="2"/></symbol>
+  <symbol id="i-target" viewBox="0 0 24 24"><path d="M3 12h18"/><circle cx="12" cy="12" r="4"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+  <symbol id="i-home" viewBox="0 0 24 24"><path d="M4 11l8-7 8 7v9h-5v-6H9v6H4z"/></symbol>
+  <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 5v14M5 12h14"/></symbol>
+  <symbol id="i-grip" viewBox="0 0 24 24"><path d="M9 6h0M15 6h0M9 12h0M15 12h0M9 18h0M15 18h0" stroke-width="3.2"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+  <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" stroke="none"/></symbol>
+  <symbol id="i-repost" viewBox="0 0 24 24"><path d="M7 7h11v5M17 17H6v-5M15 4l3 3-3 3M9 20l-3-3 3-3"/></symbol>
+  <symbol id="i-sort" viewBox="0 0 24 24"><path d="M8 4v16M4 8l4-4 4 4M16 20V4M12 16l4 4 4-4"/></symbol>
+  <symbol id="i-top" viewBox="0 0 24 24"><path d="M5 4h14M12 20V9M7 13l5-5 5 5"/></symbol>
+  <symbol id="i-bottom" viewBox="0 0 24 24"><path d="M5 20h14M12 4v11M7 11l5 5 5-5"/></symbol>
+  <symbol id="i-expand" viewBox="0 0 24 24"><path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5"/></symbol>
+  <symbol id="i-vol" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9zM16 9a4 4 0 0 1 0 6M18.5 6.5a8 8 0 0 1 0 11"/></symbol>
+  <symbol id="i-mute" viewBox="0 0 24 24"><path d="M4 9v6h4l5 4V5L8 9zM17 9l5 6M22 9l-5 6"/></symbol>
+  <symbol id="i-send" viewBox="0 0 24 24"><path d="M4 12l16-8-6 16-3-7z"/></symbol>
+  <symbol id="i-left" viewBox="0 0 24 24"><path d="M15 5l-7 7 7 7"/></symbol>
+  <symbol id="i-right" viewBox="0 0 24 24"><path d="M9 5l7 7-7 7"/></symbol>
+</svg>
+
+<script>
+(() => {
+"use strict";
+const $ = (s, r = document) => r.querySelector(s);
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const uid = () => Math.random().toString(36).slice(2, 10);
+const KEY = "mytl-proto-v1";
+
+/* ================= URL判定（本番の parseUrl() の原型） ================= */
+function parseUrl(raw) {
+  let u; try { u = new URL(raw.trim()); } catch { return null; }
+  if (!/^https?:$/.test(u.protocol)) return null;
+  const host = u.hostname.replace(/^www\.|^m\./, "");
+  const path = u.pathname;
+  if (host === "youtu.be") return { kind: "youtube", id: path.slice(1).split("/")[0], url: raw };
+  if (host.endsWith("youtube.com")) {
+    let m = path.match(/^\/shorts\/([\w-]+)/); if (m) return { kind: "youtube", id: m[1], shorts: true, url: raw };
+    if (u.searchParams.get("v")) return { kind: "youtube", id: u.searchParams.get("v"), url: raw };
+    m = path.match(/^\/(?:embed|live)\/([\w-]+)/); if (m) return { kind: "youtube", id: m[1], url: raw };
+  }
+  if (host === "x.com" || host === "twitter.com") {
+    const m = path.match(/^\/([\w]+)\/status\/(\d+)/);
+    if (m) return { kind: "x", user: m[1], id: m[2], url: raw };
+  }
+  if (host.endsWith("tiktok.com")) {
+    const m = path.match(/^\/@([\w.]+)\/video\/(\d+)/);
+    if (m) return { kind: "tiktok", user: m[1], id: m[2], url: raw };
+  }
+  if (/\.(jpe?g|png|gif|webp|avif)$/i.test(path)) return { kind: "image-url", url: raw, host };
+  if (/\.(mp4|webm|mov|m4v)$/i.test(path)) return { kind: "video-url", url: raw, host };
+  return { kind: "link", url: raw, host, path };
+}
+const KIND_LABEL = { youtube: "YouTube 埋め込み", x: "X 投稿 埋め込み", tiktok: "TikTok 埋め込み", "image-url": "画像", "video-url": "動画", link: "リンクカード" };
+const findUrl = t => (t.match(/https?:\/\/[^\s]+/) || [null])[0];
+
+/* ================= サンプル画像・動画（canvasで生成） ================= */
+const PALETTES = [["#1d9bf0","#7856ff"],["#f91880","#ff7a00"],["#00ba7c","#1d9bf0"],["#ffd400","#f91880"],["#7856ff","#00ba7c"],["#ff7a00","#ffd400"]];
+function sampleImage(seed, w = 1200, h = 750, caption = "") {
+  const c = document.createElement("canvas"); c.width = w; c.height = h;
+  const g = c.getContext("2d"); const [a, b] = PALETTES[seed % PALETTES.length];
+  const grd = g.createLinearGradient(0, 0, w, h); grd.addColorStop(0, a); grd.addColorStop(1, b);
+  g.fillStyle = grd; g.fillRect(0, 0, w, h);
+  let r = seed * 9301 + 49297; const rnd = () => (r = (r * 9301 + 49297) % 233280) / 233280;
+  for (let i = 0; i < 14; i++) { g.globalAlpha = .12 + rnd() * .2; g.fillStyle = "#fff"; g.beginPath(); g.arc(rnd() * w, rnd() * h, 20 + rnd() * 160, 0, 7); g.fill(); }
+  g.globalAlpha = 1; g.fillStyle = "rgba(0,0,0,.28)"; g.fillRect(0, h - 120, w, 120);
+  g.fillStyle = "#fff"; g.font = `800 ${Math.round(h / 12)}px Inter, sans-serif`; g.fillText(caption || "サンプル画像", 48, h - 48);
+  return c.toDataURL("image/jpeg", .85);
+}
+const imgCache = {};
+const getImg = (seed, cap, vertical) => imgCache[seed + cap + vertical] ||= sampleImage(seed, vertical ? 720 : 1200, vertical ? 1280 : 750, cap);
+
+/* 疑似動画プレイヤー: 再生中だけアニメーションが進む */
+const players = new Map(); // element -> {play,pause,playing}
+function makeFakeVideo(seed, vertical, title, dur = 15) {
+  const c = document.createElement("canvas");
+  c.width = vertical ? 540 : 960; c.height = vertical ? 960 : 540;
+  const g = c.getContext("2d"); const [a, b] = PALETTES[seed % PALETTES.length];
+  let t = 0;
+  function draw() {
+    const w = c.width, h = c.height;
+    const grd = g.createLinearGradient(0, 0, w, h); grd.addColorStop(0, a); grd.addColorStop(1, b);
+    g.fillStyle = grd; g.fillRect(0, 0, w, h);
+    for (let i = 0; i < 7; i++) {
+      const p = t / dur * Math.PI * 2 + i;
+      g.globalAlpha = .22; g.fillStyle = "#fff";
+      g.beginPath(); g.arc(w / 2 + Math.cos(p * (1 + i * .3)) * w * .32, h / 2 + Math.sin(p * (1.3 + i * .2)) * h * .3, 18 + i * 12, 0, 7); g.fill();
+    }
+    g.globalAlpha = 1; g.fillStyle = "#fff"; g.textAlign = "center";
+    g.font = `800 ${Math.round(Math.min(w, h) / 9)}px Inter, sans-serif`; g.fillText(title, w / 2, h / 2);
+    g.font = `600 ${Math.round(Math.min(w, h) / 22)}px Inter, sans-serif`; g.globalAlpha = .85;
+    g.fillText("サンプル動画（試作用）", w / 2, h / 2 + Math.min(w, h) / 10); g.globalAlpha = 1; g.textAlign = "left";
+  }
+  draw();
+  return { el: c, dur, draw, get t() { return t; }, step(dt) { t = (t + dt) % dur; draw(); }, seek(x) { t = x; draw(); } };
+}
+const fmt = s => `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, "0")}`;
+
+/* ================= 状態 ================= */
+function seed() {
+  const T = [
+    { id: "tl-rec", name: "おすすめ", color: "#1d9bf0" },
+    { id: "tl-game", name: "ゲーム", color: "#7856ff" },
+    { id: "tl-music", name: "音楽", color: "#f91880" },
+    { id: "tl-later", name: "あとで見る", color: "#00ba7c" },
+  ];
+  const now = Date.now(), m = 60000;
+  const P = [
+    { tl: "tl-rec", text: "画面の真ん中に来た動画だけが動くよ。ゆっくりスクロールして試してみて。", media: { kind: "sample-video", seed: 0, title: "Clip 01" }, at: now - 3 * m },
+    { tl: "tl-rec", text: "画像の投稿はこんな見た目。", media: { kind: "sample-image", seed: 2, title: "夕方の駅前" }, at: now - 12 * m },
+    { tl: "tl-rec", text: "YouTubeのURLを貼ると埋め込みになる想定。これも中央で自動再生の対象。", embed: parseUrl("https://www.youtube.com/watch?v=aqz-KE-bpKQ"), at: now - 40 * m },
+    { tl: "tl-rec", text: "縦動画（ショート/TikTok風）", media: { kind: "sample-video", seed: 1, title: "Short", vertical: true }, at: now - 70 * m },
+    { tl: "tl-rec", text: "記事のリンクはリンクカードで表示。", embed: parseUrl("https://developer.mozilla.org/ja/docs/Web/API/Intersection_Observer_API"), at: now - 2 * 60 * m },
+    { tl: "tl-rec", text: "Xの投稿URLは埋め込み表示。", embed: parseUrl("https://x.com/example/status/1850000000000000000"), at: now - 3 * 60 * m },
+    { tl: "tl-rec", text: "もう一本。前の動画は止まって、こっちが再生されるはず。", media: { kind: "sample-video", seed: 3, title: "Clip 02" }, at: now - 5 * 60 * m },
+    { tl: "tl-game", text: "神プレイ集めるタイムライン。", media: { kind: "sample-video", seed: 4, title: "Game Play" }, at: now - 20 * m },
+    { tl: "tl-game", text: "スクショ置き場にも。", media: { kind: "sample-image", seed: 4, title: "リザルト画面" }, at: now - 90 * m },
+    { tl: "tl-game", text: "", embed: parseUrl("https://www.youtube.com/shorts/abcdEFGhijk"), at: now - 4 * 60 * m },
+    { tl: "tl-music", text: "お気に入りのMVまとめ。", embed: parseUrl("https://youtu.be/dQw4w9WgXcQ"), at: now - 30 * m },
+    { tl: "tl-music", text: "ライブの縦動画。", media: { kind: "sample-video", seed: 5, title: "LIVE", vertical: true }, at: now - 6 * 60 * m },
+    { tl: "tl-later", text: "あとで読む記事", embed: parseUrl("https://zenn.dev/example/articles/timeline-ui"), at: now - 50 * m },
+  ];
+  return { timelines: T, active: "tl-rec", posts: P.map(p => ({ id: uid(), likes: 0, liked: false, ...p })), opts: { center: false, auto: true } };
+}
+let S;
+try { S = JSON.parse(localStorage.getItem(KEY)); } catch { S = null; }
+if (!S || !Array.isArray(S.timelines) || !S.timelines.length) S = seed();
+S.opts ||= { center: false, auto: true };
+S.opts.sound ??= true; S.opts.preview ??= 120;
+const fileUrls = new Map(); // 手元から追加したファイル（IndexedDB から復元）
+function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); } catch {} }
+/* 手元ファイルの保存先: IndexedDB（ブラウザ内） */
+const idb = (() => {
+  let dbp = null;
+  const open = () => dbp ||= new Promise((res, rej) => { try { const r = indexedDB.open("mytl-files", 1); r.onupgradeneeded = () => r.result.createObjectStore("files"); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); } catch (e) { rej(e); } });
+  const run = (mode, fn) => open().then(db => new Promise((res, rej) => { const t = db.transaction("files", mode); fn(t.objectStore("files")); t.oncomplete = () => res(); t.onerror = () => rej(t.error); }));
+  return {
+    put: (k, v) => run("readwrite", st => st.put(v, k)),
+    del: k => run("readwrite", st => st.delete(k)).catch(() => {}),
+    clear: () => run("readwrite", st => st.clear()).catch(() => {}),
+    all: () => open().then(db => new Promise((res, rej) => { const out = new Map(); const t = db.transaction("files"); const c = t.objectStore("files").openCursor(); c.onsuccess = () => { const cur = c.result; if (cur) { out.set(cur.key, cur.value); cur.continue(); } }; t.oncomplete = () => res(out); t.onerror = () => rej(t.error); }))
+  };
+})();
+const isFilePost = p => p.media && p.media.kind.startsWith("file-");
+const forgetFiles = posts => posts.filter(isFilePost).forEach(p => { idb.del(p.id); const u = fileUrls.get(p.id); if (u) URL.revokeObjectURL(u); fileUrls.delete(p.id); });
+const tlById = id => S.timelines.find(t => t.id === id);
+/* 表示順は sortAt（再投稿・並べ替えで変わる）→ なければ投稿日時 */
+const keyOf = p => p.sortAt ?? p.at;
+const postsOf = id => S.posts.filter(p => p.tl === id).sort((a, b) => keyOf(b) - keyOf(a));
+const hasViewable = p => !!(p.media || (p.embed && (["youtube", "tiktok"].includes(p.embed.kind) || (HOSTED && ["image-url", "video-url"].includes(p.embed.kind)))));
+const ago = at => { const s = (Date.now() - at) / 1000; if (s < 60) return "今"; if (s < 3600) return `${Math.floor(s / 60)}分`; if (s < 86400) return `${Math.floor(s / 3600)}時間`; return new Date(at).toLocaleDateString("ja-JP", { month: "short", day: "numeric" }); };
+
+/* ================= 自動再生エンジン =================
+   IntersectionObserver で「画面中央の帯」に入った候補を集め、
+   中心に最も近い1つだけ再生する（本番の useCenterAutoplay の原型） */
+function createAutoplay(root) {
+  const candidates = new Set(); let current = null; let raf = 0;
+  const io = new IntersectionObserver(es => {
+    es.forEach(e => e.isIntersecting ? candidates.add(e.target) : candidates.delete(e.target));
+    schedule();
+  }, { root, rootMargin: "-35% 0px -35% 0px", threshold: 0 });
+  function schedule() { cancelAnimationFrame(raf); raf = requestAnimationFrame(pick); }
+  function pick() {
+    const box = root ? root.getBoundingClientRect() : { top: 0, height: innerHeight };
+    const cy = box.top + box.height / 2; let best = null, bd = Infinity;
+    if (S.opts.auto) candidates.forEach(el => { const r = el.getBoundingClientRect(); const d = Math.abs(r.top + r.height / 2 - cy); if (d < bd) { bd = d; best = el; } });
+    if (best !== current) { if (current) players.get(current)?.pause(); current = best; if (current) players.get(current)?.play(); }
+  }
+  (root || window).addEventListener("scroll", schedule, { passive: true });
+  return { observe: el => io.observe(el), reset() { if (current) players.get(current)?.pause(); current = null; candidates.clear(); io.disconnect(); }, refresh: schedule, stop() { this.reset(); } };
+}
+let lastTs = performance.now();
+function loop(ts) { const dt = Math.min(.1, (ts - lastTs) / 1000); lastTs = ts; players.forEach(p => p.playing && p.tick?.(dt)); requestAnimationFrame(loop); }
+requestAnimationFrame(loop);
+
+/* ================= 音声・再生時間・ホスト版判定 ================= */
+const HOSTED = !!window.MYTL_HOSTED; // 公開版(PWA)ではビルド時に true。アーティファクト内では外部埋め込みが使えないので代替表示
+const previewLimit = mode => mode === "full" ? Infinity : (S.opts.preview > 0 ? S.opts.preview : Infinity);
+const fmtLim = s => s % 60 === 0 ? `${s / 60}分` : `${s}秒`;
+const AudioKit = { ctx: null, get() { if (!this.ctx) { try { this.ctx = new (window.AudioContext || window.webkitAudioContext)(); } catch { this.ctx = null; } } if (this.ctx?.state === "suspended") this.ctx.resume().catch(() => {}); return this.ctx; } };
+let soundHintShown = false;
+function soundHint() { if (soundHintShown) return; soundHintShown = true; toast("音が出ないときはスピーカーボタンを1回押してね"); }
+const sndIcon = () => S.opts.sound ? "#i-vol" : "#i-mute";
+function sndBtn() { return `<button class="snd-btn" data-snd aria-label="${S.opts.sound ? "音声をオフ" : "音声をオン"}" title="${S.opts.sound ? "音声をオフ" : "音声をオン"}"><svg class="i"><use href="${sndIcon()}"/></svg></button>`; }
+function setSoundAll(on) {
+  S.opts.sound = on; save();
+  document.querySelectorAll(".snd-btn").forEach(b => { b.querySelector("use").setAttribute("href", sndIcon()); b.setAttribute("aria-label", on ? "音声をオフ" : "音声をオン"); b.title = b.getAttribute("aria-label"); });
+  players.forEach(p => p.setSound?.(on));
+  const o = $("#optSound"); if (o) o.checked = on;
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-snd]"); if (!b) return; e.stopPropagation(); e.preventDefault(); AudioKit.get(); setSoundAll(!S.opts.sound); toast(S.opts.sound ? "音声オン" : "音声オフ"); }, true);
+
+/* ================= メディア要素の生成 ================= */
+function mediaChrome(vertical) {
+  const w = document.createElement("div"); w.className = "media" + (vertical ? " vertical" : "");
+  w.innerHTML = `<div class="bigplay"><span><svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg></span></div><span class="play-state">停止中</span><span class="badge">0:00</span><div class="progress"><i></i><b class="lim" hidden></b></div>${sndBtn()}`;
+  return w;
+}
+function wireBadges(w, getT, getDur, lim) {
+  const badge = w.querySelector(".badge"), bar = w.querySelector(".progress i"), mark = w.querySelector(".progress .lim"), st = w.querySelector(".play-state");
+  return () => {
+    const t = getT(), d = getDur() || 1, limited = lim < d;
+    badge.textContent = `${fmt(t)} / ${fmt(d)}${limited ? ` · 冒頭${fmtLim(lim)}` : ""}`;
+    bar.style.width = `${Math.min(100, t / d * 100)}%`;
+    if (mark) { mark.hidden = !limited; if (limited) mark.style.left = `${lim / d * 100}%`; }
+    st.textContent = w.classList.contains("is-playing") ? "再生中" : "停止中";
+  };
+}
+/* サンプル動画の音: 再生中だけ小さく鳴るメロディ（WebAudio） */
+function toneVoice(seed) {
+  let osc = null, gain = null;
+  const scale = [0, 2, 4, 7, 9, 12, 9, 7];
+  return {
+    start() { const ctx = AudioKit.get(); if (!ctx || osc) return; osc = ctx.createOscillator(); gain = ctx.createGain(); osc.type = "triangle"; gain.gain.value = 0.035; osc.connect(gain).connect(ctx.destination); osc.start(); },
+    stop() { try { osc?.stop(); } catch {} osc = null; gain = null; },
+    at(t) { if (!osc) return; const n = scale[(Math.floor(t * 3) + seed) % scale.length]; osc.frequency.setTargetAtTime(220 * Math.pow(2, (n + seed) / 12), osc.context.currentTime, 0.02); }
+  };
+}
+const SAMPLE_DURS = [95, 150, 45, 200, 30, 135];
+function buildMedia(p, mode = "feed") {
+  const m = p.media, lim = previewLimit(mode);
+  if (m.kind === "sample-image" || m.kind === "file-image" || m.kind === "url-image") {
+    const w = document.createElement("div"); w.className = "media" + (m.vertical ? " vertical" : "");
+    const img = new Image(); img.alt = p.text || m.title || "画像"; img.loading = "lazy";
+    img.src = m.kind === "file-image" ? (fileUrls.get(p.id) || "") : m.kind === "url-image" ? m.src : getImg(m.seed, m.title, m.vertical);
+    w.append(img); return { el: w, playable: false };
+  }
+  if (m.kind === "sample-video") {
+    const v = makeFakeVideo(m.seed, m.vertical, m.title, SAMPLE_DURS[m.seed % SAMPLE_DURS.length]); const w = mediaChrome(m.vertical);
+    w.prepend(v.el); const upd = wireBadges(w, () => v.t, () => v.dur, lim); upd();
+    const voice = toneVoice(m.seed);
+    players.set(w, {
+      playing: false,
+      play() { this.playing = true; w.classList.add("is-playing"); if (S.opts.sound) voice.start(); upd(); },
+      pause() { this.playing = false; w.classList.remove("is-playing"); voice.stop(); upd(); },
+      setSound(on) { if (!this.playing) return; on ? voice.start() : voice.stop(); },
+      tick(dt) { v.step(dt); if (v.t >= Math.min(lim, v.dur) - 0.001) v.seek(0); voice.at(v.t); upd(); }
+    });
+    return { el: w, playable: true };
+  }
+  if (m.kind === "file-video" || m.kind === "url-video") {
+    const w = mediaChrome(!!m.vertical); const vid = document.createElement("video");
+    vid.src = m.kind === "file-video" ? (fileUrls.get(p.id) || "") : m.src;
+    vid.muted = true; vid.playsInline = true; vid.preload = "metadata"; vid.setAttribute("playsinline", "");
+    w.prepend(vid); const upd = wireBadges(w, () => vid.currentTime || 0, () => vid.duration, lim);
+    vid.addEventListener("loadedmetadata", () => { if (vid.videoHeight > vid.videoWidth) w.classList.add("vertical"); upd(); });
+    vid.addEventListener("timeupdate", () => { if (vid.currentTime >= lim) vid.currentTime = 0; upd(); });
+    vid.addEventListener("ended", () => { vid.currentTime = 0; if (players.get(w)?.playing) vid.play().catch(() => {}); });
+    const tryPlay = () => {
+      vid.muted = !S.opts.sound;
+      vid.play().catch(() => { if (!vid.muted) { vid.muted = true; soundHint(); vid.play().catch(() => {}); } });
+    };
+    players.set(w, {
+      playing: false,
+      play() { this.playing = true; w.classList.add("is-playing"); tryPlay(); upd(); },
+      pause() { this.playing = false; w.classList.remove("is-playing"); vid.pause(); upd(); },
+      setSound(on) { vid.muted = !on; if (this.playing && on) vid.play().catch(() => { vid.muted = true; soundHint(); }); }
+    });
+    return { el: w, playable: true };
+  }
+  return { el: document.createElement("div"), playable: false };
+}
+
+/* YouTube 本物の埋め込み（公開版のみ）: postMessage で play/pause/mute を命令する */
+/* YouTube の埋め込みプレイヤーを postMessage で操作する。
+   読み込み前に送った命令は捨てられるので、「こうしたい」状態を覚えておき、準備ができたら反映する */
+const ytByWin = new Map();
+addEventListener("message", ev => {
+  const c = ytByWin.get(ev.source); if (!c) return;
+  let d; try { d = typeof ev.data === "string" ? JSON.parse(ev.data) : ev.data; } catch { return; }
+  if (d && typeof d === "object") c.onMsg(d);
+});
+let ytSeq = 0;
+function ytController(ifr, lim) {
+  const id = ++ytSeq; let ready = false, wantPlay = false, info = {}, timer = 0;
+  const send = (func, args = []) => { try { ifr.contentWindow.postMessage(JSON.stringify({ event: "command", func, args, id, channel: "widget" }), "*"); } catch {} };
+  const apply = () => { if (!ready) return; send(S.opts.sound ? "unMute" : "mute"); send(wantPlay ? "playVideo" : "pauseVideo"); };
+  const listen = () => { try { ifr.contentWindow.postMessage(JSON.stringify({ event: "listening", id, channel: "widget" }), "*"); } catch {} };
+  ifr.addEventListener("load", () => {
+    ytByWin.set(ifr.contentWindow, c);
+    clearInterval(timer); let n = 0; timer = setInterval(() => { if (ready || ++n > 40) return clearInterval(timer); listen(); }, 250); listen();
+  });
+  const c = {
+    onMsg(d) {
+      if (!ready && (d.event === "onReady" || d.event === "initialDelivery" || d.event === "infoDelivery")) { ready = true; apply(); }
+      if (d.info && typeof d.info === "object") Object.assign(info, d.info);
+      // 冒頭○分まで来たら頭に戻す（ループ）。終わった動画も再生中なら頭から
+      if (wantPlay && ((isFinite(lim) && info.currentTime >= lim) || info.playerState === 0)) { send("seekTo", [0, true]); send("playVideo"); }
+    },
+    want(play) { wantPlay = play; apply(); },
+    sound() { apply(); }
+  };
+  return c;
+}
+/* TikTok の埋め込みプレイヤー（公式の postMessage 形式。手元では未確認） */
+function ttController(ifr) {
+  let wantPlay = false, loaded = false;
+  const send = (type, value) => { try { ifr.contentWindow.postMessage({ type, value, "x-tiktok-player": true }, "*"); } catch {} };
+  const apply = () => { if (!loaded) return; send(S.opts.sound ? "unMute" : "mute"); send(wantPlay ? "play" : "pause"); };
+  ifr.addEventListener("load", () => { loaded = true; setTimeout(apply, 600); });
+  return { want(p) { wantPlay = p; apply(); }, sound() { apply(); } };
+}
+let xScript = null;
+function loadX() { return xScript ||= new Promise(res => { const s = document.createElement("script"); s.src = "https://platform.twitter.com/widgets.js"; s.async = true; s.onload = () => res(window.twttr); s.onerror = () => res(null); document.head.append(s); }); }
+
+function buildEmbed(p, mode = "feed") {
+  const e = p.embed, lim = previewLimit(mode);
+  if (e.kind === "youtube" || e.kind === "tiktok") {
+    const vertical = e.shorts || e.kind === "tiktok";
+    const w = document.createElement("div"); w.className = "media embed-yt" + (vertical ? " shorts vertical" : "") + (HOSTED ? " live" : "");
+    const label = e.kind === "tiktok" ? `TikTok @${esc(e.user)}` : (e.shorts ? "YouTube Shorts" : "YouTube");
+    if (HOSTED) {
+      const isTT = e.kind === "tiktok";
+      const src = isTT
+        ? `https://www.tiktok.com/player/v1/${encodeURIComponent(e.id)}?autoplay=0&loop=1&music_info=1&description=1&controls=1`
+        : `https://www.youtube-nocookie.com/embed/${encodeURIComponent(e.id)}?enablejsapi=1&playsinline=1&rel=0&mute=1&origin=${encodeURIComponent(location.origin)}`;
+      w.innerHTML = `<div class="yt-frame"><iframe src="${src}" title="${label}" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe></div>${sndBtn()}`;
+      const ifr = w.querySelector("iframe");
+      const ctl = isTT ? ttController(ifr) : ytController(ifr, lim);
+      players.set(w, {
+        playing: false,
+        play() { this.playing = true; w.classList.add("is-playing"); ctl.want(true); },
+        pause() { this.playing = false; w.classList.remove("is-playing"); ctl.want(false); },
+        setSound(on) { ctl.sound(on); }
+      });
+      return { el: w, playable: true };
+    }
+    w.innerHTML = `<div class="yt-frame"><div class="yt-logo"><span style="${e.kind === "tiktok" ? "background:#111;border:2px solid #25f4ee" : ""}"><svg viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z"/></svg></span></div>
+      <div class="yt-eq"><b></b><b></b><b></b><b></b></div><span class="play-state">停止中</span><span class="badge top">${label}</span><div class="progress"><i></i></div></div>
+      <div class="embed-cap"><span><b>${label}</b>・ID ${esc(e.id)}</span><a href="${esc(e.url)}" target="_blank" rel="noopener">開く</a></div>`;
+    let t = 0; const dur = 30, bar = w.querySelector(".progress i"), st = w.querySelector(".play-state");
+    players.set(w, { playing: false, play() { this.playing = true; w.classList.add("is-playing"); st.textContent = "再生中"; }, pause() { this.playing = false; w.classList.remove("is-playing"); st.textContent = "停止中"; }, tick(dt) { t = (t + dt) % dur; bar.style.width = `${t / dur * 100}%`; } });
+    const wrap = document.createElement("div"); wrap.append(w);
+    const n = document.createElement("div"); n.className = "note"; n.textContent = "この画面では代わりの表示。公開版では本物のプレイヤーが入るよ";
+    wrap.append(n);
+    return { el: wrap, playEl: w, playable: true };
+  }
+  if (e.kind === "x") {
+    const w = document.createElement("div"); w.className = "embed-x";
+    w.innerHTML = `<div class="xhead"><div class="avatar" style="background:#333;width:36px;height:36px">${esc(e.user[0].toUpperCase())}</div><div><b>@${esc(e.user)}</b><div style="color:var(--muted);font-size:13px">X のツイート</div></div><span class="xlogo">𝕏</span></div>
+      <div class="xbody">${HOSTED ? "読み込み中…" : `ツイート ID ${esc(e.id)} の本文・画像・動画がここに表示されます（公開版では X の埋め込みで表示）。`}</div>
+      <div class="xfoot"><span>埋め込み表示</span><a href="${esc(e.url)}" target="_blank" rel="noopener">X で見る</a></div>`;
+    if (HOSTED) loadX().then(tw => {
+      if (!tw?.widgets) { w.querySelector(".xbody").textContent = "X の埋め込みを読み込めなかったよ。「X で見る」から開いてね。"; return; }
+      const box = document.createElement("div");
+      tw.widgets.createTweet(e.id, box, { theme: document.documentElement.dataset.theme === "dark" || (!document.documentElement.dataset.theme && matchMedia("(prefers-color-scheme: dark)").matches) ? "dark" : "light", dnt: true, lang: "ja" })
+        .then(el => { if (el) { w.replaceWith(box); } else w.querySelector(".xbody").textContent = "このツイートは表示できないよ（削除・非公開かも）。"; });
+    });
+    return { el: w, playable: false };
+  }
+  if (HOSTED && e.kind === "image-url") return buildMedia({ ...p, media: { kind: "url-image", src: e.url } }, mode);
+  if (HOSTED && e.kind === "video-url") return buildMedia({ ...p, media: { kind: "url-video", src: e.url } }, mode);
+  if (e.kind === "image-url" || e.kind === "video-url" || e.kind === "link") {
+    const a = document.createElement("a"); a.className = "linkcard"; a.href = e.url; a.target = "_blank"; a.rel = "noopener";
+    const h = [...(e.host || "")].reduce((s, c) => s + c.charCodeAt(0), 0);
+    const [c1, c2] = PALETTES[h % PALETTES.length];
+    const title = e.kind === "link" ? (safeDecode((e.path || "").split("/").filter(Boolean).pop() || e.host).replace(/[-_]/g, " ")) : (e.kind === "image-url" ? "画像の直リンク" : "動画の直リンク");
+    a.innerHTML = `<div class="lc-thumb" style="background:linear-gradient(135deg,${c1},${c2})">${esc((e.host || "?")[0].toUpperCase())}</div>
+      <div class="lc-body"><span class="lc-domain">${esc(e.host)}</span><span class="lc-title">${esc(p.title || title)}</span><span class="lc-url">${esc(e.url)}</span></div>`;
+    return { el: a, playable: false };
+  }
+  return { el: document.createElement("div"), playable: false };
+}
+const safeDecode = s => { try { return decodeURIComponent(s); } catch { return s; } };
+
+/* ================= 描画 ================= */
+const feedAP = createAutoplay(null);
+let ttAP = null;
+
+function renderTabs() {
+  $("#tabs").innerHTML = S.timelines.map(t => `<button class="tab ${t.id === S.active ? "on" : ""}" role="tab" aria-selected="${t.id === S.active}" data-tl="${t.id}">${esc(t.name)}</button>`).join("") + `<button class="tab tab-add" id="tabAdd" aria-label="タイムラインを追加">＋</button>`;
+  $("#navList").innerHTML = S.timelines.map(t => `<button class="nav-item ${t.id === S.active ? "on" : ""}" data-tl="${t.id}" title="${esc(t.name)}"><span class="dot" style="background:${t.color}"></span><span class="label">${esc(t.name)}</span><span class="count">${S.posts.filter(p => p.tl === t.id).length}</span></button>`).join("");
+  $("#compTl").innerHTML = S.timelines.map(t => `<option value="${t.id}" ${t.id === S.active ? "selected" : ""}>送り先: ${esc(t.name)}</option>`).join("");
+  const t = tlById(S.active); $("#compAvatar").style.background = t?.color || "var(--accent)";
+}
+
+function postCard(p) {
+  const t = tlById(p.tl) || S.timelines[0];
+  const art = document.createElement("article"); art.className = "post"; art.dataset.id = p.id;
+  art.innerHTML = `<div class="avatar" style="background:${t.color}">${esc(t.name[0])}</div>
+    <div class="post-body">
+      ${p.reposted ? `<div class="rp"><svg class="i"><use href="#i-repost"/></svg>再投稿 · ${ago(p.sortAt)}</div>` : ""}
+      <div class="post-meta"><b>${esc(t.name)}</b><span>@me</span><span>·</span><span>${ago(p.at)}</span></div>
+      ${p.text ? `<div class="post-text">${esc(p.text)}</div>` : ""}
+      <div class="slot"></div>
+      <div class="post-actions">
+        <button class="act like ${p.liked ? "on" : ""}" data-act="like" aria-label="いいね"><svg class="i" style="${p.liked ? "fill:currentColor" : ""}"><use href="#i-heart"/></svg>${p.likes || ""}</button>
+        <button class="act rt" data-act="top" title="再投稿して一番上へ" aria-label="再投稿して一番上へ"><svg class="i"><use href="#i-repost"/></svg></button>
+        <span class="order-wrap"><button class="act" data-act="order" title="表示順を変える" aria-label="表示順を変える" aria-haspopup="true"><svg class="i"><use href="#i-sort"/></svg></button></span>
+        <label class="act" title="別のタイムラインへ移動"><svg class="i"><use href="#i-move"/></svg><select data-act="move" aria-label="移動先">${S.timelines.map(x => `<option value="${x.id}" ${x.id === p.tl ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></label>
+        ${(p.embed && p.embed.url) ? `<a class="act" href="${esc(p.embed.url)}" target="_blank" rel="noopener" aria-label="元のページ"><svg class="i"><use href="#i-link"/></svg></a>` : `<span class="act" aria-hidden="true"></span>`}
+        <button class="act del" data-act="del" aria-label="削除"><svg class="i"><use href="#i-trash"/></svg></button>
+      </div>
+    </div>`;
+  const built = p.media ? buildMedia(p) : p.embed ? buildEmbed(p) : null;
+  if (built) {
+    art.querySelector(".slot").append(built.el); if (built.playable) feedAP.observe(built.playEl || built.el);
+    const box = built.playEl || built.el;
+    if (hasViewable(p) && box.classList.contains("media")) box.insertAdjacentHTML("beforeend", `<button class="fs-btn" data-act="full" aria-label="全画面で見る" title="全画面で見る"><svg class="i"><use href="#i-expand"/></svg></button>`);
+  }
+  return art;
+}
+
+function renderFeed() {
+  feedAP.reset(); players.clear();
+  const feed = $("#feed"); feed.innerHTML = "";
+  const list = postsOf(S.active);
+  if (!list.length) {
+    feed.innerHTML = `<div class="empty"><h3>まだ何もないよ</h3><p>上の欄に YouTube や X、記事の URL を貼ってツイートするか、画像・動画を追加してね。</p></div>`;
+  } else {
+    list.forEach(p => feed.append(postCard(p)));
+    const end = document.createElement("div"); end.className = "feed-end"; end.textContent = `「${tlById(S.active).name}」のツイートは以上 ${list.length} 件`; feed.append(end);
+  }
+  feedAP.refresh();
+}
+
+function renderManage() {
+  const ul = $("#tlList");
+  ul.innerHTML = S.timelines.map((t, i) => `
+    <li class="tl-row" draggable="true" data-tl="${t.id}">
+      <span class="grip" title="ドラッグで並べ替え"><svg class="i"><use href="#i-grip"/></svg></span>
+      <input type="color" value="${t.color}" data-act="color" aria-label="色" id="c-${t.id}">
+      <input type="text" value="${esc(t.name)}" maxlength="20" data-act="rename" aria-label="名前" id="n-${t.id}">
+      <button class="mini" data-act="up" ${i === 0 ? "disabled" : ""} aria-label="上へ"><svg class="i"><use href="#i-up"/></svg></button>
+      <button class="mini" data-act="down" ${i === S.timelines.length - 1 ? "disabled" : ""} aria-label="下へ"><svg class="i"><use href="#i-down"/></svg></button>
+      <button class="mini danger" data-act="askdel" ${S.timelines.length <= 1 ? "disabled" : ""} aria-label="削除"><svg class="i"><use href="#i-trash"/></svg></button>
+    </li>
+    <li class="confirm" data-confirm="${t.id}" hidden>ツイート ${S.posts.filter(p => p.tl === t.id).length} 件ごと消す？
+      <button class="yes" data-act="del" data-tl="${t.id}">削除</button><button class="no" data-act="nodel" data-tl="${t.id}">やめる</button></li>`).join("");
+}
+
+function renderAll() { renderTabs(); renderFeed(); renderManage(); save(); }
+
+/* ================= 操作 ================= */
+let tt = null;
+function toast(msg) { const el = $("#toast"); el.textContent = msg; el.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("show"), 1800); }
+function setActive(id) { S.active = id; renderTabs(); renderFeed(); save(); window.scrollTo({ top: 0 }); }
+document.addEventListener("click", e => {
+  const tab = e.target.closest("[data-tl].tab, .nav-item[data-tl]"); if (tab) return setActive(tab.dataset.tl);
+});
+$("#tabs").addEventListener("click", e => { if (e.target.closest("#tabAdd")) { openSide(); setTimeout(() => $("#addName").focus(), 260); } });
+
+/* 投稿 */
+const compText = $("#compText");
+function updateDetect() {
+  const v = compText.value.trim(); const url = findUrl(v); const r = url && parseUrl(url);
+  $("#detect").innerHTML = r ? `<span class="chip">${KIND_LABEL[r.kind]}</span> として表示されます` : (pendingFile ? `<span class="chip">${pendingFile.type.startsWith("video") ? "動画ファイル" : "画像ファイル"}</span> ${esc(pendingFile.name)}` : "");
+  $("#compPost").disabled = !v && !pendingFile;
+}
+let pendingFile = null;
+compText.addEventListener("input", () => { compText.style.height = "auto"; compText.style.height = compText.scrollHeight + "px"; updateDetect(); });
+$("#compFile").addEventListener("change", e => { pendingFile = e.target.files[0] || null; updateDetect(); });
+$("#compSample").addEventListener("click", () => {
+  const n = S.posts.length; addPost({ text: compText.value.trim() || "サンプル動画を追加したよ", media: { kind: "sample-video", seed: n % 6, title: `Clip ${String(n + 1).padStart(2, "0")}`, vertical: n % 3 === 0 } });
+  compText.value = ""; updateDetect();
+});
+$("#composer").addEventListener("submit", e => {
+  e.preventDefault(); const raw = compText.value.trim(); const url = findUrl(raw);
+  const p = { text: url ? raw.replace(url, "").trim() : raw };
+  if (pendingFile) {
+    const id = uid(); fileUrls.set(id, URL.createObjectURL(pendingFile)); idb.put(id, pendingFile).catch(() => toast("この環境ではファイルを保存できないよ。リロードすると消えちゃう"));
+    p.id = id; p.media = { kind: pendingFile.type.startsWith("video") ? "file-video" : "file-image", title: pendingFile.name };
+  } else if (url) p.embed = parseUrl(url);
+  if (!p.text && !p.media && !p.embed) return;
+  addPost(p); compText.value = ""; compText.style.height = ""; pendingFile = null; $("#compFile").value = ""; updateDetect();
+});
+function addPost(p) {
+  const tl = $("#compTl").value || S.active;
+  S.posts.push({ id: p.id || uid(), tl, at: Date.now(), likes: 0, liked: false, ...p, tl });
+  if (tl !== S.active) { S.active = tl; toast(`「${tlById(tl).name}」にツイートしました`); } else toast("ツイートしました");
+  renderAll(); window.scrollTo({ top: 0, behavior: "smooth" });
+}
+/* 表示順の変更（本番では order 列を持たせる想定） */
+function reorder(p, how) {
+  const list = postsOf(p.tl); const i = list.indexOf(p);
+  if (how === "top") { p.sortAt = Date.now(); p.reposted = true; return "再投稿して一番上にしました"; }
+  if (how === "bottom") { p.sortAt = keyOf(list[list.length - 1]) - 1000; return "一番下にしました"; }
+  const n = list[how === "up" ? i - 1 : i + 1]; if (!n) return "";
+  const k = keyOf(p), kn = keyOf(n); p.sortAt = kn; n.sortAt = k === kn ? kn + (how === "up" ? -1 : 1) : k;
+  return how === "up" ? "1つ上にしました" : "1つ下にしました";
+}
+function closeMenus() { document.querySelectorAll(".menu").forEach(m => m.remove()); }
+document.addEventListener("click", e => { if (!e.target.closest(".order-wrap")) closeMenus(); });
+$("#feed").addEventListener("click", e => {
+  if (e.target.matches(".media img")) { openViewer(e.target.closest(".post").dataset.id); return; }
+  const btn = e.target.closest("[data-act]"); if (!btn) return; const id = btn.closest(".post").dataset.id; const p = S.posts.find(x => x.id === id);
+  const act = btn.dataset.act;
+  if (act === "full") { openViewer(id); return; }
+  if (act === "order") {
+    const open = btn.parentElement.querySelector(".menu"); closeMenus(); if (open) return;
+    const list = postsOf(p.tl), i = list.indexOf(p);
+    btn.insertAdjacentHTML("afterend", `<div class="menu" role="menu">
+      <button data-act="top" role="menuitem" ${i === 0 && !p.reposted ? "" : ""}><svg class="i"><use href="#i-repost"/></svg>再投稿して一番上へ</button>
+      <button data-act="up" role="menuitem" ${i === 0 ? "disabled" : ""}><svg class="i"><use href="#i-up"/></svg>1つ上へ</button>
+      <button data-act="down" role="menuitem" ${i === list.length - 1 ? "disabled" : ""}><svg class="i"><use href="#i-down"/></svg>1つ下へ</button>
+      <button data-act="bottom" role="menuitem" ${i === list.length - 1 ? "disabled" : ""}><svg class="i"><use href="#i-bottom"/></svg>一番下へ</button></div>`);
+    return;
+  }
+  if (["top", "up", "down", "bottom"].includes(act)) {
+    closeMenus(); const msg = reorder(p, act); if (!msg) return; save(); toast(msg);
+    if (act === "top") { renderFeed(); scrollTo({ top: 0, behavior: "smooth" }); }
+    else if (act === "bottom") { renderFeedKeepScroll(); }
+    else { const before = document.querySelector(`.post[data-id="${id}"]`).getBoundingClientRect().top; renderFeed(); const el = document.querySelector(`.post[data-id="${id}"]`); scrollBy(0, el.getBoundingClientRect().top - before); }
+    return;
+  }
+  if (act === "like") { p.liked = !p.liked; p.likes = Math.max(0, (p.likes || 0) + (p.liked ? 1 : -1)); renderFeedKeepScroll(); }
+  if (btn.dataset.act === "del") { forgetFiles([p]); S.posts = S.posts.filter(x => x.id !== id); toast("ツイートを削除しました"); renderFeedKeepScroll(); renderTabs(); }
+  save();
+});
+$("#feed").addEventListener("change", e => {
+  if (e.target.dataset.act !== "move") return; const id = e.target.closest(".post").dataset.id; const p = S.posts.find(x => x.id === id);
+  p.tl = e.target.value; toast(`「${tlById(p.tl).name}」へ移動しました`); renderTabs(); renderFeedKeepScroll(); save();
+});
+function renderFeedKeepScroll() { const y = scrollY; renderFeed(); scrollTo(0, y); }
+
+/* タイムライン管理 */
+const ul = $("#tlList");
+ul.addEventListener("input", e => {
+  const row = e.target.closest(".tl-row"); if (!row) return; const t = tlById(row.dataset.tl);
+  if (e.target.dataset.act === "rename") { t.name = e.target.value || "名前なし"; renderTabs(); save(); }
+  if (e.target.dataset.act === "color") { t.color = e.target.value; renderTabs(); save(); }
+});
+ul.addEventListener("change", e => { if (e.target.dataset.act) renderFeedKeepScroll(); });
+ul.addEventListener("click", e => {
+  const b = e.target.closest("button[data-act]"); if (!b) return;
+  const id = b.dataset.tl || b.closest(".tl-row")?.dataset.tl; const i = S.timelines.findIndex(t => t.id === id);
+  const a = b.dataset.act;
+  if (a === "up" || a === "down") { const j = a === "up" ? i - 1 : i + 1; [S.timelines[i], S.timelines[j]] = [S.timelines[j], S.timelines[i]]; renderTabs(); renderManage(); save(); }
+  if (a === "askdel") ul.querySelector(`[data-confirm="${id}"]`).hidden = false;
+  if (a === "nodel") ul.querySelector(`[data-confirm="${id}"]`).hidden = true;
+  if (a === "del") {
+    const name = S.timelines[i].name; S.timelines.splice(i, 1); forgetFiles(S.posts.filter(p => p.tl === id)); S.posts = S.posts.filter(p => p.tl !== id);
+    if (S.active === id) S.active = S.timelines[0].id; toast(`「${name}」を削除しました`); renderAll();
+  }
+});
+/* ドラッグで並べ替え */
+let dragId = null;
+ul.addEventListener("dragstart", e => { const r = e.target.closest(".tl-row"); if (!r) return; dragId = r.dataset.tl; r.classList.add("dragging"); e.dataTransfer.effectAllowed = "move"; try { e.dataTransfer.setData("text/plain", dragId); } catch {} });
+ul.addEventListener("dragover", e => {
+  const r = e.target.closest(".tl-row"); if (!r || !dragId) return; e.preventDefault();
+  ul.querySelectorAll(".tl-row").forEach(x => x.classList.remove("drop-before", "drop-after"));
+  const rect = r.getBoundingClientRect(); r.classList.add(e.clientY < rect.top + rect.height / 2 ? "drop-before" : "drop-after");
+});
+ul.addEventListener("drop", e => {
+  const r = e.target.closest(".tl-row"); if (!r || !dragId) return; e.preventDefault();
+  const before = r.classList.contains("drop-before"); const from = S.timelines.findIndex(t => t.id === dragId);
+  const [moved] = S.timelines.splice(from, 1); let to = S.timelines.findIndex(t => t.id === r.dataset.tl); if (!before) to++;
+  S.timelines.splice(to, 0, moved); renderTabs(); renderManage(); save(); toast("並べ替えました");
+});
+ul.addEventListener("dragend", () => { dragId = null; ul.querySelectorAll(".tl-row").forEach(x => x.classList.remove("dragging", "drop-before", "drop-after")); });
+
+$("#addForm").addEventListener("submit", e => {
+  e.preventDefault(); const name = $("#addName").value.trim(); if (!name) return $("#addName").focus();
+  const colors = ["#1d9bf0", "#7856ff", "#f91880", "#00ba7c", "#ff7a00", "#ffd400"];
+  const t = { id: "tl-" + uid(), name, color: colors[S.timelines.length % colors.length] };
+  S.timelines.push(t); S.active = t.id; $("#addName").value = ""; toast(`「${name}」を作りました`); renderAll();
+});
+
+/* 設定 */
+function applyOpts() {
+  document.body.classList.toggle("show-center", !!S.opts.center);
+  $("#optCenter").checked = !!S.opts.center; $("#optAuto").checked = !!S.opts.auto; $("#optSound").checked = !!S.opts.sound; $("#optPreview").value = String(S.opts.preview);
+  if (S.opts.dark != null) document.documentElement.dataset.theme = S.opts.dark ? "dark" : "light";
+  $("#optDark").checked = S.opts.dark != null ? S.opts.dark : matchMedia("(prefers-color-scheme: dark)").matches;
+}
+$("#optCenter").addEventListener("change", e => { S.opts.center = e.target.checked; applyOpts(); save(); });
+$("#navCenter").addEventListener("click", () => { S.opts.center = !S.opts.center; applyOpts(); save(); toast(S.opts.center ? "中央ラインを表示" : "中央ラインを非表示"); });
+$("#optAuto").addEventListener("change", e => { S.opts.auto = e.target.checked; feedAP.refresh(); save(); });
+$("#optDark").addEventListener("change", e => { S.opts.dark = e.target.checked; applyOpts(); save(); });
+$("#optSound").addEventListener("change", e => { AudioKit.get(); setSoundAll(e.target.checked); });
+$("#optPreview").addEventListener("change", e => { S.opts.preview = +e.target.value; save(); renderFeedKeepScroll(); toast(S.opts.preview ? `タイムラインでは冒頭${fmtLim(S.opts.preview)}を再生` : "最後まで再生"); });
+$("#resetBtn").addEventListener("click", () => { $("#resetConfirm").hidden = false; });
+/* データの書き出し・読み込み（サーバーなしで端末間を手で移す） */
+function openXfer(mode) {
+  $("#xferBox").hidden = false; $("#xferConfirm").hidden = true;
+  $("#xferCopy").hidden = mode !== "export"; $("#xferLoad").hidden = mode !== "import";
+  const ta = $("#xferText");
+  if (mode === "export") {
+    const data = { app: "mytl", version: 1, exportedAt: new Date().toISOString(), timelines: S.timelines, posts: S.posts.filter(p => !isFilePost(p)), opts: S.opts };
+    ta.value = JSON.stringify(data); ta.readOnly = true; ta.focus(); ta.select();
+  } else { ta.value = ""; ta.readOnly = false; ta.placeholder = "書き出した文字をここに貼り付け"; ta.focus(); }
+}
+$("#exportBtn").addEventListener("click", () => openXfer("export"));
+$("#importBtn").addEventListener("click", () => openXfer("import"));
+$("#xferClose").addEventListener("click", () => { $("#xferBox").hidden = true; });
+$("#xferCopy").addEventListener("click", () => {
+  const ta = $("#xferText");
+  try { navigator.clipboard.writeText(ta.value).then(() => toast("コピーしました"), () => { ta.select(); toast("文字を選んだので、長押しかCtrl+Cでコピーしてね"); }); }
+  catch { ta.select(); toast("文字を選んだので、長押しかCtrl+Cでコピーしてね"); }
+});
+let xferPending = null;
+$("#xferLoad").addEventListener("click", () => {
+  let d; try { d = JSON.parse($("#xferText").value.trim()); } catch { toast("読み込めないよ。書き出した文字を全部貼ってね"); return; }
+  if (!d || d.app !== "mytl" || !Array.isArray(d.timelines) || !d.timelines.length || !Array.isArray(d.posts)) { toast("このアプリで書き出したデータじゃないみたい"); return; }
+  xferPending = d; $("#xferConfirm").hidden = false;
+});
+$("#xferNo").addEventListener("click", () => { $("#xferConfirm").hidden = true; xferPending = null; });
+$("#xferYes").addEventListener("click", () => {
+  const d = xferPending; if (!d) return;
+  const keepFiles = S.posts.filter(isFilePost);
+  S = { timelines: d.timelines, posts: d.posts.concat(keepFiles.filter(p => d.timelines.some(t => t.id === p.tl))), active: d.timelines[0].id, opts: { ...S.opts, ...(d.opts || {}) } };
+  xferPending = null; $("#xferBox").hidden = true; applyOpts(); renderAll(); toast(`読み込みました（ツイート ${d.posts.length} 件）`);
+});
+$("#resetNo").addEventListener("click", () => { $("#resetConfirm").hidden = true; });
+$("#resetYes").addEventListener("click", () => { forgetFiles(S.posts); idb.clear(); const o = S.opts; S = seed(); S.opts = o; $("#resetConfirm").hidden = true; renderAll(); toast("サンプルに戻しました"); });
+
+/* 管理パネル（狭い画面ではシート） */
+function openSide() { $("#side").classList.add("open"); $("#backdrop").classList.add("open"); }
+function closeSide() { $("#side").classList.remove("open"); $("#backdrop").classList.remove("open"); }
+["#navManage", "#mManage", "#bManage"].forEach(s => $(s).addEventListener("click", () => { if (innerWidth <= 960) openSide(); else $("#addName").focus(); }));
+$("#sideClose").addEventListener("click", closeSide); $("#backdrop").addEventListener("click", closeSide);
+$("#bHome").addEventListener("click", () => scrollTo({ top: 0, behavior: "smooth" }));
+$("#bPost").addEventListener("click", () => { scrollTo({ top: 0 }); compText.focus(); });
+
+/* ================= TikTok風 縦スワイプ ================= */
+function renderTT() {
+  ttAP?.stop(); [...players.keys()].forEach(k => { if (k.closest && k.closest("#tt")) players.delete(k); });
+  $("#ttTabs").innerHTML = S.timelines.map(t => `<button class="${t.id === S.active ? "on" : ""}" data-tt="${t.id}">${esc(t.name)}</button>`).join("");
+  const sc = $("#ttScroll"); sc.innerHTML = ""; sc.scrollTop = 0;
+  ttAP = createAutoplay(sc);
+  const list = postsOf(S.active).filter(p => p.media || (p.embed && ["youtube", "tiktok"].includes(p.embed.kind)));
+  if (!list.length) { sc.innerHTML = `<div class="tt-empty">このタイムラインには画像・動画の投稿がまだないよ</div>`; return; }
+  list.forEach(p => {
+    const t = tlById(p.tl); const item = document.createElement("section"); item.className = "tt-item";
+    const built = p.media ? buildMedia({ ...p, media: { ...p.media } }) : buildEmbed(p);
+    const el = built.playEl || built.el; if (built.playEl) built.el.querySelector(".note")?.remove();
+    item.append(built.el);
+    item.insertAdjacentHTML("beforeend", `<div class="tt-info"><b>@me · ${esc(t.name)}</b>${p.text ? `<p>${esc(p.text)}</p>` : ""}</div>
+      <div class="tt-rail"><button data-like="${p.id}" class="${p.liked ? "on" : ""}"><span class="circle"><svg class="i" style="${p.liked ? "fill:currentColor" : ""}"><use href="#i-heart"/></svg></span>${p.likes || 0}</button>
+      <button data-full="${p.id}"><span class="circle"><svg class="i"><use href="#i-expand"/></svg></span>全画面</button>
+      ${p.embed ? `<a href="${esc(p.embed.url)}" target="_blank" rel="noopener" style="color:#fff;display:flex;flex-direction:column;align-items:center;gap:4px"><span class="circle"><svg class="i"><use href="#i-link"/></svg></span>開く</a>` : ""}</div>`);
+    sc.append(item); if (built.playable) ttAP.observe(el);
+  });
+}
+function openTT() { feedAP.reset(); $("#tt").classList.add("open"); document.body.style.overflow = "hidden"; renderTT(); }
+function closeTT() { ttAP?.stop(); $("#tt").classList.remove("open"); document.body.style.overflow = ""; renderFeedKeepScroll(); renderTabs(); }
+["#navTT", "#mTT", "#bTT"].forEach(s => $(s).addEventListener("click", openTT));
+$("#ttClose").addEventListener("click", closeTT);
+document.addEventListener("keydown", e => { if (e.key === "Escape" && $("#tt").classList.contains("open")) closeTT(); });
+$("#ttTabs").addEventListener("click", e => { const b = e.target.closest("[data-tt]"); if (!b) return; S.active = b.dataset.tt; save(); renderTT(); });
+$("#ttScroll").addEventListener("click", e => {
+  const b = e.target.closest("[data-like]"); if (!b) return; const p = S.posts.find(x => x.id === b.dataset.like);
+  p.liked = !p.liked; p.likes = Math.max(0, (p.likes || 0) + (p.liked ? 1 : -1)); save();
+  b.classList.toggle("on", p.liked); b.lastChild.textContent = p.likes; b.querySelector("svg").style.fill = p.liked ? "currentColor" : "";
+});
+
+/* ================= 全画面ビューア ================= */
+let vList = [], vIdx = 0, vFrom = "feed";
+function vRender() {
+  const stage = $("#vStage");
+  [...players.keys()].forEach(k => { if (stage.contains(k)) { players.get(k).pause(); players.delete(k); } });
+  stage.innerHTML = "";
+  const p = vList[vIdx]; if (!p) return closeViewer();
+  const built = p.media ? buildMedia({ ...p, media: { ...p.media } }, "full") : buildEmbed(p, "full");
+  const el = built.playEl || built.el;
+  stage.append(el); if (built.playable) players.get(el)?.play();
+  $("#vCount").textContent = `${vIdx + 1} / ${vList.length}`;
+  $("#vCap").textContent = p.text || "";
+  $("#vPrev").disabled = vIdx === 0; $("#vNext").disabled = vIdx === vList.length - 1;
+}
+function openViewer(id, from = "feed") {
+  vFrom = from; vList = postsOf(S.active).filter(hasViewable); vIdx = Math.max(0, vList.findIndex(p => p.id === id));
+  if (from === "feed") feedAP.reset(); else ttAP?.reset();
+  $("#viewer").hidden = false; document.body.style.overflow = "hidden"; vRender(); $("#vClose").focus();
+}
+function closeViewer() {
+  const stage = $("#vStage"); [...players.keys()].forEach(k => { if (stage.contains(k)) { players.get(k).pause(); players.delete(k); } }); stage.innerHTML = "";
+  if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+  $("#viewer").hidden = true;
+  if (vFrom === "feed") { document.body.style.overflow = ""; renderFeedKeepScroll(); } else renderTT();
+}
+const vGo = d => { const n = vIdx + d; if (n < 0 || n >= vList.length) return; vIdx = n; vRender(); };
+$("#vPrev").addEventListener("click", () => vGo(-1)); $("#vNext").addEventListener("click", () => vGo(1));
+$("#vClose").addEventListener("click", closeViewer);
+$("#vFull").addEventListener("click", () => {
+  const v = $("#viewer");
+  if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
+  else if (v.requestFullscreen) v.requestFullscreen().catch(() => toast("この環境ではブラウザの全画面が使えないよ"));
+  else toast("この環境ではブラウザの全画面が使えないよ");
+});
+document.addEventListener("keydown", e => {
+  if ($("#viewer").hidden) return;
+  if (e.key === "Escape") { e.stopImmediatePropagation(); closeViewer(); }
+  if (e.key === "ArrowLeft") vGo(-1); if (e.key === "ArrowRight") vGo(1);
+}, true);
+let tx = null;
+$("#vStage").addEventListener("touchstart", e => { tx = e.touches[0].clientX; }, { passive: true });
+$("#vStage").addEventListener("touchend", e => { if (tx == null) return; const dx = e.changedTouches[0].clientX - tx; tx = null; if (Math.abs(dx) > 50) vGo(dx < 0 ? 1 : -1); });
+/* 縦スワイプ表示からも全画面ビューアへ */
+$("#ttScroll").addEventListener("click", e => { const b = e.target.closest("[data-full]"); if (b) openViewer(b.dataset.full, "tt"); });
+
+/* ================= 共有で受け取る（クイック送信） =================
+   公開版: スマホの共有メニュー（Android の共有ターゲット / iPhone のショートカット）や
+   ブックマークレットから ?url=…&text=…&title=…&tl=タイムライン名 で開かれる。
+   どこでも: URL をコピーしてこの画面に貼り付ける（入力欄の外で Ctrl+V / 長押し→ペースト）と同じシートが開く */
+let shareData = null;
+function openShare(d) {
+  const url = d.url || findUrl(d.text || "") || "";
+  let text = [d.title, d.text].filter(Boolean).join("\n").replace(url, "").trim();
+  if (d.title && d.text && d.text.includes(d.title)) text = d.text.replace(url, "").trim();
+  shareData = { url };
+  const r = url && parseUrl(url);
+  $("#shDetect").innerHTML = r ? `<span class="chip">${KIND_LABEL[r.kind]}</span> として表示されます` : "";
+  $("#shUrl").textContent = url;
+  $("#shText").value = text;
+  const want = d.tl && (S.timelines.find(t => t.id === d.tl || t.name === d.tl));
+  const sel = (want || tlById(S.opts.lastShareTl) || tlById(S.active) || S.timelines[0]).id;
+  $("#shTls").innerHTML = S.timelines.map(t => `<label><input type="radio" name="shTl" value="${t.id}" ${t.id === sel ? "checked" : ""}><span class="dot" style="background:${t.color}"></span>${esc(t.name)}</label>`).join("");
+  $("#share").hidden = false;
+  $("#shSend").focus();
+}
+function closeShare() { $("#share").hidden = true; shareData = null; try { if (location.search) history.replaceState(null, "", location.pathname + location.hash); } catch {} }
+$("#shCancel").addEventListener("click", closeShare);
+$("#share").addEventListener("click", e => { if (e.target.id === "share") closeShare(); });
+$("#shForm").addEventListener("submit", e => {
+  e.preventDefault(); if (!shareData) return;
+  const tl = (document.querySelector('input[name="shTl"]:checked') || {}).value || S.active;
+  const text = $("#shText").value.trim(); const url = shareData.url;
+  if (!url && !text) return closeShare();
+  S.opts.lastShareTl = tl;
+  S.posts.push({ id: uid(), tl, at: Date.now(), likes: 0, liked: false, text, ...(url ? { embed: parseUrl(url) || { kind: "link", url, host: "" } } : {}) });
+  S.active = tl; closeShare(); renderAll(); scrollTo({ top: 0 }); toast(`「${tlById(tl).name}」にツイートしました`);
+});
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#share").hidden) closeShare(); });
+document.addEventListener("paste", e => {
+  if (e.target.closest && e.target.closest("input, textarea, [contenteditable]")) return;
+  const t = (e.clipboardData && e.clipboardData.getData("text")) || ""; const url = findUrl(t);
+  if (!url) return; e.preventDefault(); openShare({ text: t });
+});
+function readShareParams() {
+  try {
+    const q = new URLSearchParams(location.search);
+    const d = { url: q.get("url"), text: q.get("text"), title: q.get("title"), tl: q.get("tl") };
+    return (d.url || d.text || d.title) ? d : null;
+  } catch { return null; }
+}
+
+/* ================= 起動 ================= */
+function boot() {
+  applyOpts(); renderAll();
+  const d = readShareParams(); if (d) openShare(d);
+}
+Promise.race([idb.all(), new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 1500))])
+  .then(m => m.forEach((blob, k) => fileUrls.set(k, URL.createObjectURL(blob))))
+  .catch(() => {})
+  .finally(() => { S.posts = S.posts.filter(p => !isFilePost(p) || fileUrls.has(p.id)); boot(); });
+})();
+</script>
+
+<script>
+if ("serviceWorker" in navigator) addEventListener("load", () => navigator.serviceWorker.register("sw.js").catch(() => {}));
+</script>
+</body>
+</html>

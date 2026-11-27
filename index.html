@@ -692,6 +692,85 @@ body.no-select,body.no-select *{user-select:none!important;-webkit-user-select:n
 :root{--pop-rim:rgba(15,20,25,.07);--pop-s1:rgba(15,20,25,.08);--pop-s2:rgba(15,20,25,.32)}
 :root[data-theme="dark"]{--pop-rim:rgba(255,255,255,.1);--pop-s1:rgba(0,0,0,.5);--pop-s2:rgba(0,0,0,.75)}
 @media (prefers-reduced-motion:reduce){:where(.post) .media.is-playing{transform:none}}
+
+/* ===== Xの考え方の土台（全部のテーマ共通。色はテーマから） ===== */
+#feed .post,#feed .post.focus,#feed2 .post,#feed2 .post.focus{background:transparent;border:0;border-bottom:1px solid var(--line);border-radius:0;box-shadow:none;clip-path:none;margin:0;backdrop-filter:none;-webkit-backdrop-filter:none}
+#feed .post:hover{background:color-mix(in srgb,var(--fg) 2.5%,transparent)}
+#feed .post-meta{padding-right:34px}
+#feed .post-meta b{font-weight:700}
+#feed .post-meta span{color:var(--muted)}
+.post-body{position:relative;min-width:0}
+#app .post-body > .more-wrap{position:absolute;top:-6px;right:-8px;z-index:3}
+#feed .post .media,#feed2 .post .media{border:0}
+#app .more-wrap .menu{right:0;left:auto;top:calc(100% + 4px);bottom:auto;max-height:70vh;overflow-y:auto;z-index:30}
+#app .post-actions{display:flex;justify-content:space-between;align-items:center;max-width:520px;margin-top:8px;color:var(--muted);font-size:13px}
+#app .post-actions .act,#app .more-btn{background:transparent;border:0;box-shadow:none;border-radius:999px;padding:6px 7px;gap:4px;position:relative;isolation:isolate;color:var(--muted);transition:color .2s}
+#app .post-actions .act::before,#app .more-btn::before{content:"";position:absolute;left:50%;top:50%;width:36px;height:36px;margin:-18px 0 0 -18px;border-radius:50%;background:currentColor;opacity:0;transform:scale(.6);transition:opacity .2s,transform .35s cubic-bezier(.2,.9,.3,1.2);z-index:-1;pointer-events:none}
+#app .post-actions .act:has(.num:not(:empty))::before{left:17px}
+#app .post-actions .act:hover::before,#app .more-btn:hover::before{opacity:.1;transform:scale(1)}
+#app .post-actions .act:active::before,#app .more-btn:active::before{opacity:.18;transform:scale(.9);transition-duration:.08s}
+#app .post-actions .cm:hover{color:var(--accent)}#app .post-actions .rt:hover,#app .post-actions .rt.on{color:#00ba7c}#app .post-actions .like:hover{color:#f91880}#app .post-actions .vw:hover,#app .post-actions .bm:hover,#app .post-actions .sh:hover{color:var(--accent)}
+#app .post-actions .bm.on{color:var(--accent)}#app .post-actions .bm.on svg{fill:currentColor}
+#app .post-actions .num{font-size:13px;min-width:1ch}
+.act-end{display:flex;gap:0}
+.like.rxd .rx-e{font-size:17px;line-height:1}
+.rx-note{position:absolute;left:0;right:0;top:-22px;text-align:center;font-size:11px;font-weight:700;color:var(--muted)}
+.rx-pop{position:fixed}
+.menu-a,.menu-move{display:flex;align-items:center;gap:10px;padding:9px 14px;color:var(--fg);font-size:14px;text-decoration:none}
+.menu-move select{margin-left:auto;border:1px solid var(--line);border-radius:8px;background:var(--bg);color:var(--fg);font:inherit;font-size:13px;padding:3px 6px}
+.menu .menu-del{color:#f4212e}
+.ftools{display:none!important}
+/* 上のバー: 1段＋タブ。スマホは下に読むと隠れる */
+@media (max-width:640px){
+  .head-top > span{display:none!important}
+  .head-top{justify-content:space-between}
+  .head-top::after{content:"";width:32px}
+  #searchBar:not(.open){display:none}
+  body:not(.onehand) .head{transition:transform .32s cubic-bezier(.2,.8,.3,1)}
+  body.hd-hide:not(.onehand) .head{transform:translateY(calc(-100% - env(safe-area-inset-top,0px)))}
+  .bottombar,.fab{transition:opacity .3s,transform .25s}
+  body.hd-hide .bottombar{opacity:.55}body.hd-hide .fab{opacity:.6}
+  .bottombar{justify-content:space-around}
+  .bottombar button{font-size:0;padding:10px 14px;position:relative}
+  .share.acct{place-items:stretch start}
+  .share.acct .acct-card{width:min(340px,86vw);height:100%;max-height:none;border-radius:0 20px 20px 0;animation:drawerIn .42s cubic-bezier(.2,.8,.3,1)}
+}
+@keyframes drawerIn{from{transform:translateX(-100%)}to{transform:none}}
+.bdot{position:absolute;top:4px;left:calc(50% + 4px);min-width:16px;height:16px;padding:0 4px;border-radius:8px;background:var(--accent);color:var(--accent-fg,#fff);font-style:normal;font-size:10px;line-height:16px;font-weight:800;text-align:center}
+.nav-item .bdot{position:static;margin-left:auto}
+/* ハブ（見る・お知らせ・しおり） */
+.hub-card{gap:12px}
+.hub-tiles{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.hub-tile{border:0;border-radius:18px;padding:14px 6px 10px;display:flex;flex-direction:column;align-items:center;gap:6px;background:var(--bg-hover);color:var(--fg);font:inherit;font-size:12.5px;font-weight:700;cursor:pointer;transition:transform .15s}
+.hub-tile:active{transform:scale(.95)}
+.hub-tile b{width:44px;height:44px;border-radius:14px;display:grid;place-items:center;color:#fff}
+.hub-tile b svg{width:22px;height:22px}
+.hub-tile.on b{box-shadow:0 0 0 3px var(--bg),0 0 0 5px var(--accent)}
+.hub-rows{display:flex;flex-direction:column;border-radius:16px;background:var(--bg-hover);overflow:hidden}
+.hub-row{display:flex;gap:12px;align-items:center;padding:12px 14px;text-align:left;color:var(--fg);font:inherit;font-size:14px;border:0;background:none;width:100%;cursor:pointer}
+.hub-row+.hub-row{box-shadow:inset 0 1px 0 var(--line)}
+.hub-row .ic{width:32px;height:32px;border-radius:10px;display:grid;place-items:center;color:#fff;flex:none;font-size:15px}
+.hub-row .tx{min-width:0;flex:1;display:flex;flex-direction:column}.hub-row .tx b{font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.hub-row .tx small{color:var(--muted);font-size:12px}
+.hub-row .mks{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.hub-row .mks button{font-size:12px;font-weight:700;padding:2px 8px;border-radius:8px;background:var(--bg);color:var(--accent);border:1px solid var(--line)}
+.hub-empty{padding:24px 10px;text-align:center;color:var(--muted);font-size:14px}
+/* 設定のまとまり */
+.set-group{border-top:1px solid var(--line);padding-top:4px}
+.set-group>summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;font-weight:700;font-size:15px;padding:10px 2px}
+.set-group>summary::-webkit-details-marker{display:none}
+.set-group>summary::after{content:"›";color:var(--muted);transition:transform .25s;font-size:18px}
+.set-group[open]>summary::after{transform:rotate(90deg)}
+.set-group>.set-in{display:flex;flex-direction:column;gap:12px;padding:2px 0 12px}
+.side .card.fold>:not(h2){display:none!important}
+.side .card>h2.foldable{cursor:pointer;display:flex;justify-content:space-between;align-items:center}
+.side .card>h2.foldable::after{content:"›";color:var(--muted);transition:transform .25s}
+.side .card:not(.fold)>h2.foldable::after{transform:rotate(90deg)}
+/* 季節の演出・模様・切り替えの表現 */
+#seasonFx{position:fixed;inset:0;pointer-events:none;z-index:16}
+#main{background-image:var(--patimg,none);background-size:var(--patsz,auto)}
+.sw-glow{position:absolute;left:0;right:0;bottom:-1px;height:2px;pointer-events:none;transform-origin:50% 50%}
+.sw-drop{position:absolute;border-radius:50%;pointer-events:none;z-index:-1}
+.head .brand-mark{transition:background .4s,color .4s}
 /* ---- N案 ---- */
 .grid-view{display:grid;grid-template-columns:repeat(3,1fr);gap:3px;padding:3px}
 .grid-tile{position:relative;aspect-ratio:1;overflow:hidden;background:var(--bg-hover);border-radius:4px;padding:0}
@@ -1030,11 +1109,11 @@ body.sheet-open{overflow:hidden}
     <div class="nav-label">タイムライン</div>
     <div id="navList"></div>
     <div class="nav-spacer"></div>
-    <button class="nav-item" id="navManage"><svg class="i"><use href="#i-sliders"/></svg><span class="label">タイムライン管理</span></button>
-    <button class="nav-item" id="navTT"><svg class="i"><use href="#i-film"/></svg><span class="label">縦スワイプで見る</span></button>
-    <button class="nav-item" id="navPick"><svg class="i"><use href="#i-dice"/></svg><span class="label">今日の1本</span></button>
-    <button class="nav-item" id="navTrash"><svg class="i"><use href="#i-trash"/></svg><span class="label">ゴミ箱</span></button>
-    <button class="nav-item" id="navCenter"><svg class="i"><use href="#i-target"/></svg><span class="label">中央ラインを表示</span></button>
+    <button class="nav-item" id="navWatch"><svg class="i"><use href="#i-watch"/></svg><span class="label">見る</span></button>
+    <button class="nav-item" id="navNotif"><svg class="i"><use href="#i-bell"/></svg><span class="label">お知らせ</span><em class="bdot" id="navNotifN" hidden></em></button>
+    <button class="nav-item" id="navMarks"><svg class="i"><use href="#i-bookmark"/></svg><span class="label">しおり</span></button>
+    <button class="nav-item" id="navManage"><svg class="i"><use href="#i-sliders"/></svg><span class="label">設定とタイムライン</span></button>
+    <span hidden><button id="navTT"></button><button id="navPick"></button><button id="navTrash"></button><button id="navCenter"></button></span>
     <button class="btn-primary" id="navPost">ツイートする</button>
   </nav>
 
@@ -1244,10 +1323,14 @@ body.sheet-open{overflow:hidden}
 <button class="fab" id="fab" aria-label="ツイートする"><svg class="i"><use href="#i-plus"/></svg></button>
 <div class="compose-backdrop" id="composeBackdrop" hidden></div>
 <nav class="bottombar" aria-label="下部メニュー">
-  <button id="bHome"><svg class="i"><use href="#i-home"/></svg>ホーム</button>
-  <button id="bTT"><svg class="i"><use href="#i-film"/></svg>縦スワイプ</button>
-  <button id="bManage"><svg class="i"><use href="#i-sliders"/></svg>管理</button>
+  <button id="bHome" aria-label="ホーム"><svg class="i"><use href="#i-home"/></svg>ホーム</button>
+  <button id="bFind" aria-label="さがす"><svg class="i"><use href="#i-search"/></svg>さがす</button>
+  <button id="bWatch" aria-label="見る（縦スワイプ・連続再生など）"><svg class="i"><use href="#i-watch"/></svg>見る</button>
+  <button id="bNotif" aria-label="お知らせ（予約・スヌーズ）"><svg class="i"><use href="#i-bell"/></svg>お知らせ<em class="bdot" id="bNotifN" hidden></em></button>
+  <button id="bMarks" aria-label="しおり"><svg class="i"><use href="#i-bookmark"/></svg>しおり</button>
+  <button id="bTT" hidden>縦スワイプ</button><button id="bManage" hidden>管理</button>
 </nav>
+<div class="share hub" id="hubSheet" hidden role="dialog" aria-modal="true" aria-labelledby="hubTitle"><div class="share-card hub-card"><div class="lk-head"><h2 id="hubTitle"></h2><button type="button" class="icon-btn" id="hubClose" aria-label="閉じる" style="color:var(--fg)"><svg class="i"><use href="#i-x"/></svg></button></div><div id="hubBody"></div></div></div>
 
 <div class="viewer" id="viewer" hidden aria-label="全画面表示">
   <div class="v-top"><span id="vCount"></span><div class="v-timer" id="vTimer" hidden><i></i></div>
@@ -1355,6 +1438,8 @@ body.sheet-open{overflow:hidden}
     <div class="ac-links">
       <button type="button" class="ac-link" id="acSecret"><span>🔒</span><b>シークレット</b><small id="acSecretSub"></small></button>
       <button type="button" class="ac-link" id="acTrash"><span>🗑</span><b>ゴミ箱</b><small id="acTrashSub"></small></button>
+      <button type="button" class="ac-link" id="acSet"><span>⚙︎</span><b>設定</b><small>見た目・再生・データ</small></button>
+      <button type="button" class="ac-link" id="acPick"><span>🎲</span><b>今日の1本</b><small>迷ったらここ</small></button>
     </div>
   </div>
 </div>
@@ -1475,7 +1560,12 @@ body.sheet-open{overflow:hidden}
   <symbol id="i-split" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M12 4v16"/></symbol>
   <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5V14M12 17h0" stroke-width="2.2"/></symbol>
   <symbol id="i-grid" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="3.5" width="7" height="7" rx="1.5"/><rect x="3.5" y="13.5" width="7" height="7" rx="1.5"/><rect x="13.5" y="13.5" width="7" height="7" rx="1.5"/></symbol>
-  <symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6 3.5h12v17l-6-4.5-6 4.5z"/></symbol>
+  <symbol id="i-bell" viewBox="0 0 24 24"><path d="M6 16v-5a6 6 0 0 1 12 0v5l2 2H4z"/><path d="M10 21h4"/></symbol>
+<symbol id="i-views" viewBox="0 0 24 24"><path d="M5 20v-7M10 20V8M15 20v-5M20 20V4"/></symbol>
+<symbol id="i-share" viewBox="0 0 24 24"><path d="M12 3v13M7 8l5-5 5 5M5 14v5a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2v-5"/></symbol>
+<symbol id="i-more" viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.3"/><circle cx="12" cy="12" r="1.3"/><circle cx="19" cy="12" r="1.3"/></symbol>
+<symbol id="i-watch" viewBox="0 0 24 24"><rect x="5" y="2.5" width="14" height="19" rx="3.5"/><path d="m10.5 9 4 3-4 3z"/></symbol>
+<symbol id="i-bookmark" viewBox="0 0 24 24"><path d="M6 3.5h12v17l-6-4.5-6 4.5z"/></symbol>
   <symbol id="i-scissors" viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.5"/><circle cx="6" cy="18" r="2.5"/><path d="M8 7.5 20 18M8 16.5 20 6"/></symbol>
   <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
   <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
@@ -1817,7 +1907,7 @@ const seenChip = p => p.seenAt ? `<span class="seen" title="${new Date(p.seenAt)
 const unseenOf = id => postsOf(id).filter(p => hasViewable(p) && !p.seenAt).length;
 function paintUnseen(id) { const n = unseenOf(id); document.querySelectorAll(`[data-un="${id}"]`).forEach(el => { el.hidden = !n; el.textContent = n > 99 ? "99+" : n; }); }
 function markSeen(id) {
-  const p = S.posts.find(x => x.id === id); if (!p) return; const first = !p.seenAt; p.seenAt = Date.now(); if (first) dayAdd("seen"); save(); if (first) paintUnseen(p.tl);
+  const p = S.posts.find(x => x.id === id); if (!p) return; const first = !p.seenAt; if (first || Date.now() - (p.seenAt || 0) > 20 * 60e3) p.views = (p.views || (first ? 0 : 1)) + 1; p.seenAt = Date.now(); if (first) dayAdd("seen"); save(); if (first) paintUnseen(p.tl);
   if (first) document.querySelectorAll(`#feed .post[data-id="${id}"] .post-meta`).forEach(m => { if (!m.querySelector(".seen")) m.insertAdjacentHTML("beforeend", seenChip(p)); });
 }
 /* サンプル動画の音: 再生中だけ小さく鳴るメロディ（WebAudio） */
@@ -2091,8 +2181,9 @@ const heartLv = p => { const n = p.likes || 0; return n >= 30 ? 3 : n >= 10 ? 2 
 (() => { let t = 0, sx = 0, sy = 0;
   document.addEventListener("pointerdown", e => { const b = e.target.closest?.('[data-act="like"], [data-like]'); if (!b) return; sx = e.clientX; sy = e.clientY; clearTimeout(t);
     t = setTimeout(() => { const id = b.dataset.like || b.closest(".post")?.dataset.id; const p = S.posts.find(x => x.id === id); if (!p) return;
+      if (b.closest(".post") && typeof openRx === "function") { b._noClick = Date.now(); openRx(b, true); const st = heartState(p); if (rxPop && st.cooling) rxPop.pop.insertAdjacentHTML("afterbegin", `<span class="rx-note">次の♥まで あと${fmtLeft(st.left)}</span>`); return; }
       b._noClick = Date.now(); const st = heartState(p); buzz(10);
-      toast(st.cooling ? `あと${fmtLeft(st.left)}で次のハートが押せるよ（いま ${p.likes || 0} 個）` : `いま押せるよ！（いま ${p.likes || 0} 個）`); }, 500); }, true);
+      toast(st.cooling ? `あと${fmtLeft(st.left)}で次のハートが押せるよ（いま ${p.likes || 0} 個）` : `いま押せるよ！（いま ${p.likes || 0} 個）`); }, 380); }, true);
   ["pointerup", "pointercancel"].forEach(ev => document.addEventListener(ev, () => clearTimeout(t), true));
   document.addEventListener("pointermove", e => { if (Math.hypot(e.clientX - sx, e.clientY - sy) > 10) clearTimeout(t); }, true);
   document.addEventListener("click", e => { const b = e.target.closest('[data-act="like"], [data-like]'); if (b && b._noClick && Date.now() - b._noClick < 1500) { b._noClick = 0; e.stopImmediatePropagation(); e.preventDefault(); } }, true);
@@ -2172,6 +2263,7 @@ document.addEventListener("pointerdown", e => {
 }, true);
 function heartBtn(p) {
   const st = heartState(p);
+  if (p.react) return `<button class="act like rxd ${st.cooling ? "on" : ""} lv${heartLv(p)}" data-act="like" aria-label="リアクション ${p.react}・ハート（${p.likes || 0}）" title="長押しでリアクションを変える"><span class="rx-e">${p.react}</span><span class="num">${p.likes || ""}</span></button>`;
   return `<button class="act like ${st.cooling ? "on" : ""} lv${heartLv(p)}" data-act="like" aria-label="ハート（${p.likes || 0}）" title="${st.cooling ? `あと${fmtLeft(st.left)}で押せる（長押しでも見られるよ）` : "ハートを押す"}"><svg class="i" style="${st.cooling ? "fill:currentColor" : ""}"><use href="#i-heart"/></svg><span class="num">${p.likes || ""}</span></button>`;
 }
 function ttHeart(p) {
@@ -2235,6 +2327,9 @@ function lookStyle(t, mini) {
   return `--fillbg:${fill};--rc1:${t.ringC1};--rc2:${t.ringC2};--rw:${w}px`;
 }
 const avInner = t => t.iconImg ? `<img src="${t.iconImg}" alt="">` : esc(t.icon || (t.name || "?")[0]);
+/* ツイートのアイコン: タイムラインのアイコンを決めてないうちは、アカウントのアイコンを使う */
+function postAv(t) { if (t.iconSet) return tlAvatar(t, "", true); const me = lookTarget("me");
+  return tlAvatar(me, "", false).replace(' aria-hidden="true"', ` role="button" tabindex="0" data-edit="${t.id}" title="「${esc(t.name)}」のアイコンを決める" aria-label="「${esc(t.name)}」のアイコンを決める"`); }
 function tlAvatar(t, extra = "", editable = false) {
   normLook(t);
   const ed = editable ? ` role="button" tabindex="0" data-edit="${t.id}" title="「${esc(t.name)}」のアイコンを変える" aria-label="「${esc(t.name)}」のアイコンを変える"` : ` aria-hidden="true"`;
@@ -2276,23 +2371,21 @@ function shrinkImage(file, max, q, square) {
 function postCard(p, ap = feedAP) {
   const t = tlById(p.tl) || S.timelines[0];
   const art = document.createElement("article"); art.className = "post"; art.dataset.id = p.id;
-  art.innerHTML = `${tlAvatar(t, "", true)}
+  art.innerHTML = `${postAv(t)}
     <div class="post-body">
       ${p.pinned ? `<div class="rp pin"><svg class="i"><use href="#i-pin"/></svg>固定されたツイート</div>` : ""}
       ${p.woke && !p.pinned && Date.now() - p.sortAt < 3 * 864e5 ? `<div class="rp woke"><svg class="i"><use href="#i-snooze"/></svg>${p.sched ? "⏰ 予約していたツイート" : "スヌーズから戻ってきたよ"}</div>` : p.reposted && !p.pinned ? `<div class="rp"><svg class="i"><use href="#i-repost"/></svg>再投稿 · ${ago(p.sortAt)}</div>` : ""}
+      <span class="order-wrap more-wrap"><button class="act more-btn" data-act="order" title="ほかの操作" aria-label="ほかの操作" aria-haspopup="true"><svg class="i"><use href="#i-more"/></svg></button></span>
       <div class="post-meta">${p.label ? `<i class="lbl" style="background:${LABEL_C[p.label]}" title="${LABEL_N[p.label]}ラベル"></i>` : ""}<b>${esc(t.name)}</b><span>@me</span><span>·</span><span>${ago(p.at)}</span>${p.editedAt ? `<span class="edited" title="${new Date(p.editedAt).toLocaleString("ja-JP")} に編集">· 編集済み</span>` : ""}${seenChip(p)}${relChip(p)}${p.dead ? `<span class="dead-chip" title="元のページが消えたか、非公開になったかも">⚠ 見られないかも</span>` : ""}</div>
       ${p.text ? `<div class="post-text">${textWithTags(p.text)}</div>` : ""}
       <div class="slot"></div>
       <div class="cm-peek" data-act="comment">${cmPeek(p)}</div>
       <div class="post-actions">
         ${cmBtn(p)}
+        <button class="act rt" data-act="top" title="再投稿して一番上へ" aria-label="再投稿して一番上へ"><svg class="i"><use href="#i-repost"/></svg><span class="num">${p.reposts || ""}</span></button>
         ${heartBtn(p)}
-        ${rxBtn(p)}
-        <button class="act rt" data-act="top" title="再投稿して一番上へ" aria-label="再投稿して一番上へ"><svg class="i"><use href="#i-repost"/></svg></button>
-        <span class="order-wrap"><button class="act" data-act="order" title="表示順を変える" aria-label="表示順を変える" aria-haspopup="true"><svg class="i"><use href="#i-sort"/></svg></button></span>
-        <label class="act" title="別のタイムラインへ移動"><svg class="i"><use href="#i-move"/></svg><select data-act="move" aria-label="移動先">${orderedTLs().map(x => `<option value="${x.id}" ${x.id === p.tl ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></label>
-        ${(p.embed && p.embed.url) ? `<a class="act" href="${esc(p.embed.url)}" target="_blank" rel="noopener" aria-label="元のページ"><svg class="i"><use href="#i-link"/></svg></a>` : `<span class="act" aria-hidden="true"></span>`}
-        <button class="act del" data-act="del" aria-label="削除"><svg class="i"><use href="#i-trash"/></svg></button>
+        <button class="act vw" data-act="views" title="見た回数" aria-label="見た回数（${p.views || (p.seenAt ? 1 : 0)}）"><svg class="i"><use href="#i-views"/></svg><span class="num">${p.views || (p.seenAt ? 1 : "")}</span></button>
+        <span class="act-end"><button class="act bm ${(p.marks && p.marks.length) || p.saved ? "on" : ""}" data-act="bm" title="しおり" aria-label="しおり"><svg class="i"><use href="#i-bookmark"/></svg></button><button class="act sh" data-act="share" title="共有" aria-label="共有"><svg class="i"><use href="#i-share"/></svg></button></span>
       </div>
     </div>`;
   const built = p.media ? buildMedia(p) : p.embed ? buildEmbed(p) : null;
@@ -2406,7 +2499,7 @@ function setActive(id, dir = 0) {
   rememberPos(); S.active = id; labelFilter = ""; applySkin(); renderTabs(); renderFeed(); save(); restorePos();
   if ((document.documentElement.dataset.skin || "") !== sk0 && !reduceMotion()) document.body.animate?.([{ opacity: .55 }, { opacity: 1 }], { duration: 380, easing: "ease-out" });
   document.querySelector(".tab.on")?.scrollIntoView({ inline: "center", block: "nearest" });
-  tlMotion(dir); updateFocus(); seasonLight();
+  tlMotion(dir); updateFocus(); switchFx();
 }
 /* 選んでるツイート: スマホは画面の真ん中に一番近いツイート、パソコンはマウスを乗せたツイート。すりガラスで見せる */
 let hoverPost = null;
@@ -2546,6 +2639,13 @@ function feedClick(e) {
   const btn = e.target.closest("[data-act]"); if (!btn || !btn.closest(".post")) return; const id = btn.closest(".post").dataset.id; const p = S.posts.find(x => x.id === id);
   const act = btn.dataset.act;
   if (act === "full") { openViewer(id); return; }
+  if (act === "views") { toast(`このツイートを見たのは ${p.views || (p.seenAt ? 1 : 0)} 回だよ`); return; }
+  if (act === "bm") { const mb = btn.closest(".post").querySelector(".media [data-mark]");
+    if (mb) { mb.click(); btn.classList.toggle("on", !!(p.marks && p.marks.length)); }
+    else { p.saved = !p.saved; if (!p.saved) delete p.saved; save(); btn.classList.toggle("on", !!p.saved); toast(p.saved ? "しおりに入れたよ（下のバーのしおりから見られるよ）" : "しおりから外したよ"); haptic("tick"); }
+    if (!reduceMotion()) btn.querySelector("svg").animate([{ transform: "scale(1)" }, { transform: "scale(.6) translateY(3px)", offset: .2 }, { transform: "scale(1.3) translateY(-3px)", offset: .55 }, { transform: "none" }], { duration: 520, easing: "ease-out" }); return; }
+  if (act === "share") { const url = p.embed && p.embed.url, text = p.text || "";
+    if (navigator.share && (url || text)) navigator.share({ url: url || undefined, text: url ? text || undefined : text }).catch(() => {}); else if (url) copyText(url); else if (text) copyText(text); else toast("共有できるURLや文がないよ"); return; }
   if (act === "order") {
     const open = btn.parentElement.querySelector(".menu"); closeMenus(); if (open) return;
     const list = postsOf(p.tl), i = list.indexOf(p);
@@ -2560,14 +2660,18 @@ function feedClick(e) {
       ${p.embed && p.embed.url ? `<button data-act="copy" role="menuitem"><svg class="i"><use href="#i-copy"/></svg>リンクをコピー</button>` : ""}
       <button data-act="pick" role="menuitem"><svg class="i"><use href="#i-select"/></svg>まとめて選ぶ</button>
       <button data-act="shot" role="menuitem"><svg class="i"><use href="#i-photo"/></svg>画像で保存</button>
+      ${p.embed && p.embed.url ? `<a role="menuitem" class="menu-a" href="${esc(p.embed.url)}" target="_blank" rel="noopener"><svg class="i"><use href="#i-link"/></svg>元のページを開く</a>` : ""}
+      <label class="menu-move"><svg class="i"><use href="#i-move"/></svg>移動<select data-act="move" aria-label="移動先">${orderedTLs().map(x => `<option value="${x.id}" ${x.id === p.tl ? "selected" : ""}>${esc(x.name)}</option>`).join("")}</select></label>
       <hr>
       <div class="menu-sub"><svg class="i"><use href="#i-snooze"/></svg>あとでまた見る</div>
       <div class="menu-row">${[[1, "明日"], [3, "3日後"], [7, "1週間後"]].map(([d, l]) => `<button data-act="snooze" data-d="${d}">${l}</button>`).join("")}</div>
       <div class="menu-sub"><svg class="i"><use href="#i-label"/></svg>色ラベル</div>
-      <div class="menu-row lbls">${Object.keys(LABEL_C).map(c => `<button data-act="label" data-c="${c}" class="lbl-pick ${p.label === c ? "on" : ""}" style="--c:${LABEL_C[c]}" aria-label="${LABEL_N[c]}"></button>`).join("")}<button data-act="label" data-c="" class="lbl-none" aria-label="ラベルを外す">なし</button></div></div>`);
+      <div class="menu-row lbls">${Object.keys(LABEL_C).map(c => `<button data-act="label" data-c="${c}" class="lbl-pick ${p.label === c ? "on" : ""}" style="--c:${LABEL_C[c]}" aria-label="${LABEL_N[c]}"></button>`).join("")}<button data-act="label" data-c="" class="lbl-none" aria-label="ラベルを外す">なし</button></div>
+      <hr><button data-act="del" role="menuitem" class="menu-del"><svg class="i"><use href="#i-trash"/></svg>ゴミ箱へ</button></div>`);
     return;
   }
   if (["top", "up", "down", "bottom"].includes(act)) {
+    if (act === "top") p.reposts = (p.reposts || 0) + 1;
     closeMenus(); const msg = reorder(p, act); if (!msg) return; save(); toast(msg);
     if (act === "top") { const before = btn.closest(".post").getBoundingClientRect().top; renderFeed(); haptic("repost"); sfx("repost");
       const near = scrollY < innerHeight; scrollTo({ top: 0, behavior: near && !reduceMotion() ? "smooth" : "auto" });
@@ -2663,7 +2767,8 @@ function applyOpts() {
   $("#optFont").value = S.opts.fontSize; document.documentElement.dataset.fs = S.opts.fontSize;
   $("#optOneHand").checked = !!S.opts.oneHand; document.body.classList.toggle("onehand", !!S.opts.oneHand);
   renderLockUI(); renderStore();
-  $("#optSeason").checked = !!S.opts.seasonLight; $("#optShakeScope").value = S.opts.shakeScope; $("#optAmb").checked = !!S.opts.amb; $("#optTod").checked = !!S.opts.tod; $("#optTilt").checked = !!S.opts.tilt; applyFace(); paintTod();
+  $("#optSeason").checked = !!S.opts.seasonLight; $("#optShakeScope").value = S.opts.shakeScope;
+  if ($("#optSwitchFx")) { $("#optSwitchFx").value = S.opts.switchFx || "tint"; $("#optSeasonFx").value = S.opts.seasonFx ?? (S.opts.seasonLight === false ? "off" : "light"); $("#optPat").value = S.opts.pat || ""; $("#optPatCol").value = S.opts.patCol || "season"; $("#optPatA").value = S.opts.patA ?? 10; $("#patRow").hidden = !S.opts.pat; } $("#optAmb").checked = !!S.opts.amb; $("#optTod").checked = !!S.opts.tod; $("#optTilt").checked = !!S.opts.tilt; applyFace(); paintTod();
   $("#optPip").checked = !!S.opts.pip; $("#optShake").checked = !!S.opts.shake; $("#optAutoColor").value = S.opts.autoColor; $("#optSfx").checked = !!S.opts.sfx; $("#optCalm").checked = !!S.opts.calm; document.documentElement.toggleAttribute("data-calm", !!S.opts.calm);
   $("#optSplit").checked = !!S.opts.split; document.body.classList.toggle("split", !!S.opts.split);
   renderStartSel(); renderRules(); renderSecretUI();
@@ -2687,16 +2792,23 @@ const isNightNow = () => { const h = new Date().getHours(), a = S.opts.nightFrom
 setInterval(() => { if (S.opts.modeTime) applySkin(); }, 60000);
 function applySkin() {
   const r = document.documentElement;
-  const tl = S.active && tlById(S.active), sk = tl && tl.skin ? (tl.skin === "std" ? "" : tl.skin) : S.opts.skin;
-  if (sk) { r.dataset.skin = sk; r.dataset.fam = skinFam(sk); } else { delete r.dataset.skin; delete r.dataset.fam; }
   if (S.opts.modeTime) r.dataset.theme = isNightNow() ? "dark" : "light";
   else if (S.opts.dark == null) delete r.dataset.theme; else r.dataset.theme = S.opts.dark ? "dark" : "light";
+  const night = r.dataset.theme ? r.dataset.theme === "dark" : matchMedia("(prefers-color-scheme: dark)").matches;
+  const base = night && S.opts.skinNight != null && S.opts.skinNight !== "same" ? S.opts.skinNight : S.opts.skin;
+  const tl = S.active && tlById(S.active), sk = tl && tl.skin ? (tl.skin === "std" ? "" : tl.skin) : base;
+  if (sk) { r.dataset.skin = sk; r.dataset.fam = skinFam(sk); } else { delete r.dataset.skin; delete r.dataset.fam; }
+  if ($("#optSkinNight")) $("#optSkinNight").value = S.opts.skinNight ?? "same";
   $("#optSkin").value = S.opts.skin || ""; $("#optMode").value = S.opts.modeTime ? "time" : S.opts.dark == null ? "auto" : S.opts.dark ? "dark" : "light";
   $("#nightRow").hidden = !S.opts.modeTime;
   if (!$("#optNightFrom").options.length) ["#optNightFrom", "#optNightTo"].forEach(sel => $(sel).innerHTML = Array.from({ length: 24 }, (_, h) => `<option value="${h}">${h}時</option>`).join(""));
   $("#optNightFrom").value = S.opts.nightFrom; $("#optNightTo").value = S.opts.nightTo;
   requestAnimationFrame(themeIcon);
 }
+(() => { const a = $("#optSkin"), row = a.closest(".toggle"); row.firstChild.textContent = "テーマ（昼） ";
+  row.insertAdjacentHTML("afterend", `<label class="toggle" for="optSkinNight">テーマ（夜） <select id="optSkinNight" class="sel"><option value="same">昼と同じ</option>${a.innerHTML}</select></label>`);
+  $("#optSkinNight").addEventListener("change", e => { S.opts.skinNight = e.target.value; applySkin(); save(); toast(e.target.value === "same" ? "夜も昼と同じテーマにしたよ" : `夜は「${SKIN_NAMES[e.target.value]}」にしたよ`); });
+  matchMedia("(prefers-color-scheme: dark)").addEventListener("change", () => applySkin()); })();
 $("#optSkin").addEventListener("change", e => { S.opts.skin = e.target.value; applySkin(); save(); toast(`テーマを「${SKIN_NAMES[S.opts.skin]}」にしたよ`); });
 $("#optMode").addEventListener("change", e => { const v = e.target.value; S.opts.modeTime = v === "time"; S.opts.dark = v === "auto" || v === "time" ? null : v === "dark"; applySkin(); save(); if (v === "time") toast(`${S.opts.nightFrom}時〜${S.opts.nightTo}時はナイトモードになるよ`); });
 ["#optNightFrom", "#optNightTo"].forEach(sel => $(sel).addEventListener("change", e => { S.opts[sel === "#optNightFrom" ? "nightFrom" : "nightTo"] = +e.target.value; save(); applySkin(); }));
@@ -2921,7 +3033,7 @@ function renderLook() {
   const t = lookTarget(lkId); if (!t) return closeLook(); normLook(t);
   const isMe = lkId === "me";
   lk("lkTitle").textContent = isMe ? "自分のアイコン" : `「${t.name}」のアイコンと背景`;
-  lk("lkPrev").innerHTML = `<div class="lk-stage" id="lkStage">${tlAvatar(t, "lk-big")}<div><b>${esc(t.name)}</b><div class="lk-sub">${isMe ? "左上と投稿欄に出るよ" : "ツイートと左のリストに出るよ"}</div></div></div>`;
+  lk("lkPrev").innerHTML = `<div class="lk-stage" id="lkStage">${tlAvatar(t, "lk-big")}<div><b>${esc(t.name)}</b><div class="lk-sub">${isMe ? "左上・投稿欄と、アイコンを決めてないタイムラインのツイートに出るよ" : t.iconSet ? "このタイムラインのツイートと左のリストに出るよ" : "いまはツイートにアカウントのアイコンが出てるよ。ここで変えると、このタイムラインだけのアイコンになるの"}</div>${!isMe && t.iconSet ? `<button type="button" class="btn-ghost sm" id="lkUseMe" style="margin-top:6px">アカウントのアイコンに戻す</button>` : ""}</div></div>`;
   if (!isMe) bgVars(t, lk("lkStage")); else lk("lkStage").dataset.bg = "none";
   lk("lkPresets").innerHTML = `<div class="lk-pgroup"><span class="lk-plab">高級感</span>${LUX.map((p, i) => presetChip(p, i, false)).join("")}</div>` +
     (S.presets.length ? `<div class="lk-pgroup"><span class="lk-plab">保存したもの</span>${S.presets.map((p, i) => presetChip(p, i, true)).join("")}</div>` : "");
@@ -2943,10 +3055,11 @@ function renderLook() {
 }
 /* 見た目が変わったら、画面のあちこちに反映して保存 */
 function lookChanged(full) {
-  const t = lookTarget(lkId); save();
+  const t = lookTarget(lkId); if (lkId !== "me" && t && !t.iconSet) { t.iconSet = true; save(); renderFeedKeepScroll(); } save();
   repaintAvatars(lkId); if (lkId !== "me" && lkId === S.active) applyTlTheme();
   if (full) renderLook(); else { const st = lk("lkStage"); st.querySelector(".tl-av").outerHTML = tlAvatar(t, "lk-big"); if (lkId !== "me") bgVars(t, st); }
 }
+document.addEventListener("click", e => { if (!e.target.closest("#lkUseMe")) return; const t = lookTarget(lkId); if (!t) return; delete t.iconSet; save(); renderFeedKeepScroll(); renderLook(); toast("ツイートのアイコンをアカウントのアイコンに戻したよ"); });
 function openLook(id) { lkId = id; renderLook(); lk("lookSheet").hidden = false; document.body.classList.add("sheet-open"); setTimeout(() => lk("lkDone").focus(), 30); }
 function closeLook() { lk("lookSheet").hidden = true; document.body.classList.remove("sheet-open"); if (lkId && lkId !== "me") { renderTabs(); renderManage(); } lkId = null; }
 lk("lkClose").addEventListener("click", closeLook); lk("lkDone").addEventListener("click", closeLook);
@@ -3059,7 +3172,7 @@ document.addEventListener("keydown", e => {
   else if (k === "ArrowLeft") stepTimeline(-1);
   else if (k === "/") { e.preventDefault(); $("#searchBar").classList.add("open"); $("#searchBox").focus(); }
   else if (k === "?") openKeys();
-  else if ((k === "r" || k === "R") && cur) cur.querySelector('[data-act="react"]')?.click();
+  else if ((k === "r" || k === "R") && cur) { const hb = cur.querySelector('[data-act="like"]'); if (hb) openRx(hb, false); }
   else if (k === "n" || k === "N") { e.preventDefault(); if (innerWidth <= 640) openCompose(); else { scrollTo({ top: 0 }); compText.focus(); } }
   else if (k === "g" || k === "G") setGrid(!S.opts.grid);
   else if (k === "t" || k === "T") todayPick();
@@ -3614,7 +3727,7 @@ $("#rgIcon").addEventListener("click", () => { closeRings(); openLook("me"); });
 /* ================= 40案（U・M・D・A） ================= */
 /* アカウントのメニュー: アイコンとヘッダー・今日の記録・シークレット・ゴミ箱 */
 function openAcct() { paintAcct(); $("#acctSheet").hidden = false; document.body.classList.add("sheet-open"); paintRings(); }
-const closeAcct = () => { $("#acctSheet").hidden = true; document.body.classList.remove("sheet-open"); };
+const closeAcct = () => popClose($("#acctSheet"), () => { $("#acctSheet").hidden = true; document.body.classList.remove("sheet-open"); });
 function paintAcct() {
   const me = S.me; normLook(me); const b = $("#acBanner");
   b.style.backgroundImage = me.headerImg ? `url(${me.headerImg})` : `linear-gradient(135deg,${me.color},${me.fill2 || "#7856ff"})`; b.style.backgroundPosition = `50% ${me.headerPos ?? 50}%`;
@@ -3739,6 +3852,8 @@ function closeRx() { if (rxPop) { rxPop.pop.remove(); rxPop = null; } }
 function setRx(id, e) {
   const p = S.posts.find(x => x.id === id); if (!p) return; p.react = p.react === e || !e ? undefined : e; if (!p.react) delete p.react; save();
   document.querySelectorAll(`.post[data-id="${id}"] [data-act="react"]`).forEach(b => { b.outerHTML = rxBtn(p); });
+  document.querySelectorAll(`.post[data-id="${id}"] [data-act="like"]`).forEach(b => { b.outerHTML = heartBtn(p); });
+  { const nh = document.querySelector(`.post[data-id="${id}"] [data-act="like"]`); if (nh && p.react && !reduceMotion()) nh.animate([{ transform: "scale(.5)" }, { transform: "scale(1.25)", offset: .6 }, { transform: "none" }], { duration: 420, easing: "ease-out" }); }
   const nb = document.querySelector(`.post[data-id="${id}"] [data-act="react"]`); if (nb && p.react && !reduceMotion()) nb.animate([{ transform: "scale(1.6) rotate(-12deg)" }, { transform: "none" }], { duration: 320, easing: "cubic-bezier(.3,1.5,.5,1)" });
   if (p.react) { haptic("like"); sfx("pop"); }
 }
@@ -3940,6 +4055,166 @@ document.addEventListener("click", e => { const b = e.target.closest("[data-mch]
 /* M1 とばした秒数の表示 */
 function showSkip(m, side, acc) { let sk = m.querySelector(".skip2"); if (!sk) { sk = document.createElement("div"); sk.className = "skip2"; m.append(sk); } sk.className = `skip2 ${side > 0 ? "r" : "l"}`; sk.textContent = `${side > 0 ? "▶▶" : "◀◀"} ${acc}秒`; clearTimeout(sk._t); sk._t = setTimeout(() => sk.remove(), 650); }
 
+
+/* ===== Xの考え方の土台: 下のバー・ハブ・メニュー・設定のまとまり ===== */
+const $$ = (q, r = document) => [...r.querySelectorAll(q)];
+/* ぽよんの強さ: 跳ねる動き（行き過ぎるイージング）を、選んだ強さに置き換える */
+(() => { const orig = Element.prototype.animate; const BOUNCY = e => typeof e === "string" && (/^linear\(/.test(e) && /1\.[0-9]/.test(e) || (/cubic-bezier\(([^)]*)\)/.test(e) && e.match(/cubic-bezier\(([^)]*)\)/)[1].split(",").map(Number).some((v, i) => (i === 1 || i === 3) && v > 1.05)));
+  const SUB = { soft: ["linear(0,.011,.045 2.5%,.18,.39 9%,.68 15.5%,.88 21%,1.002 27%,1.04 32%,1.05 36%,1.045 40%,1.02 48%,1.004 58%,.998 70%,1)", 1.1], snap: ["cubic-bezier(.22,1,.36,1)", .9], float: ["cubic-bezier(.16,1,.3,1)", 1.35], kyu: ["linear(0,.06,.25 6%,.6 13%,.9 20%,1.03 26%,1.025 31%,.995 40%,1)", .75] };
+  Element.prototype.animate = function (kf, o) { try { const m = S && S.opts && S.opts.bounce || "soft"; if (m !== "now" && o && typeof o === "object" && BOUNCY(o.easing)) { const [ez, k] = SUB[m]; o = { ...o, easing: ez, duration: (o.duration || 300) * k }; } } catch {} return orig.call(this, kf, o); }; })();
+const hub = { open(title, html, wire) { $("#hubTitle").textContent = title; $("#hubBody").innerHTML = html; $("#hubSheet").hidden = false; document.body.classList.add("sheet-open");
+    const c = $("#hubSheet .share-card"), sp = { fast: .6, normal: 1, slow: 1.7 }[S.opts.popSpeed || "normal"]; if (!reduceMotion()) c.animate([{ transform: "translateY(40px)", opacity: 0 }, { transform: "none", opacity: 1 }], { duration: 420 * sp, easing: "cubic-bezier(.2,.8,.3,1)" }); wire && wire($("#hubBody")); },
+  close() { popClose($("#hubSheet"), () => { $("#hubSheet").hidden = true; document.body.classList.remove("sheet-open"); }); } };
+/* ポップアップの閉じ方と速さ（設定で選べる） */
+function popClose(sheet, done) {
+  const card = sheet.querySelector(".share-card"); if (!card || reduceMotion() || sheet._closing) return done();
+  const sp = { fast: .6, normal: 1, slow: 1.7 }[S.opts.popSpeed || "normal"], way = S.opts.popWay || "slide", drawer = sheet.classList.contains("acct") && innerWidth <= 640;
+  const K = drawer ? { slide: [{ transform: "none" }, { transform: "translateX(-100%)" }], fade: [{ opacity: 1 }, { opacity: 0 }], shrink: [{ transform: "none", opacity: 1 }, { transform: "scale(.9) translateX(-20px)", opacity: 0 }], flick: [{ transform: "none" }, { transform: "translateX(12px)", offset: .2 }, { transform: "translateX(-110%)" }] }
+    : { slide: [{ transform: "none", opacity: 1 }, { transform: "translateY(60px)", opacity: 0 }], fade: [{ opacity: 1 }, { opacity: 0 }], shrink: [{ transform: "none", opacity: 1 }, { transform: "scale(.86)", opacity: 0 }], flick: [{ transform: "none" }, { transform: "translateY(-10px)", offset: .2 }, { transform: "translateY(110%)" }] };
+  const E = { slide: "cubic-bezier(.4,0,.9,.6)", fade: "ease-out", shrink: "cubic-bezier(.5,0,.75,0)", flick: "cubic-bezier(.5,-.3,.8,.5)" }[way];
+  sheet._closing = true; sheet.animate([{ background: getComputedStyle(sheet).backgroundColor }, { background: "rgba(0,0,0,0)" }], { duration: 300 * sp, fill: "forwards" });
+  card.animate(K[way], { duration: (way === "flick" ? 320 : 280) * sp, easing: E, fill: "forwards" }).onfinish = () => { sheet._closing = false; done(); sheet.getAnimations().forEach(a => a.cancel()); card.getAnimations().forEach(a => a.cancel()); };
+}
+$("#hubClose").addEventListener("click", () => hub.close()); $("#hubSheet").addEventListener("click", e => { if (e.target.id === "hubSheet") hub.close(); });
+document.addEventListener("keydown", e => { if (e.key === "Escape" && !$("#hubSheet").hidden) hub.close(); });
+const IC = id => `<svg class="i"><use href="#${id}"/></svg>`;
+function openWatch() {
+  const ft = id => document.getElementById(id), sl = ft("ftSleep");
+  const T = [["tt", "縦スワイプ", "i-film", "#0f1419"], ["grid", S.opts.grid ? "リストに戻す" : "グリッド", "i-grid", "#1d9bf0"], ["play", "連続再生", "i-playall", "#7856ff"], ["radio", "ラジオ", "i-radio", "#f91880"],
+    ["pick", "今日の1本", "i-dice", "#ff7a00"], ["sleep", sl ? sl.textContent.trim() : "タイマー", "i-moon", "#00ba7c"], ["date", "日付へ", "i-cal", "#5b6672"], ["select", "まとめて選ぶ", "i-select", "#8b98a5"]];
+  if (ft("ftYT")) T.splice(4, 0, ["yt", "YouTubeで続けて", "i-link", "#e0245e"]);
+  hub.open("見る", `<div class="hub-tiles">${T.map(([k, n, i, c]) => `<button type="button" class="hub-tile ${(k === "grid" && S.opts.grid) || (k === "sleep" && sleepAt) ? "on" : ""}" data-w="${k}"><b style="background:${c}">${IC(i)}</b>${n}</button>`).join("")}</div>
+    <p class="note" style="margin:0">「${esc(tlById(S.active).name)}」のツイートで流すよ</p>`, b => b.addEventListener("click", e => { const t = e.target.closest("[data-w]"); if (!t) return; const k = t.dataset.w;
+      if (k === "sleep") { ft("ftSleep")?.click(); t.querySelector("b").nextSibling.textContent = ft("ftSleep")?.textContent.trim() || "タイマー"; t.classList.toggle("on", !!sleepAt); return; }
+      hub.close();
+      if (k === "tt") openTT(); if (k === "grid") ft("ftGrid")?.click(); if (k === "play") ft("ftPlay")?.click(); if (k === "radio") ft("ftRadio")?.click(); if (k === "yt") ft("ftYT")?.click();
+      if (k === "pick") todayPick(); if (k === "select") ft("ftPick")?.click();
+      if (k === "date") { const d = ft("ftDate"); if (d) { try { d.showPicker(); } catch { d.focus(); d.click(); } } } }));
+}
+function upcoming() { const now = Date.now(); const a = [];
+  S.posts.forEach(p => { if (!visPost(p)) return; if (p.snoozeUntil > now) a.push({ p, at: p.snoozeUntil, kind: p.sched ? "sched" : "snooze" }); if (p.releaseAt && p.releaseAt > now) a.push({ p, at: p.releaseAt, kind: "rel" }); });
+  return a.sort((x, y) => x.at - y.at); }
+function paintNotifN() { const n = upcoming().length; ["#bNotifN", "#navNotifN"].forEach(sel => { const el = $(sel); if (!el) return; el.hidden = !n; el.textContent = n > 9 ? "9+" : n; }); }
+const whenTxt = at => new Date(at).toLocaleString("ja-JP", { month: "numeric", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit" });
+const postTitle = p => (p.text || (p.embed && (p.embed.title || p.embed.url)) || (p.media && p.media.title) || "ツイート").split("\n")[0].slice(0, 60);
+function openNotif() {
+  const L = upcoming(); const K = { sched: ["⏰", "#1d9bf0", "予約"], snooze: ["💤", "#7856ff", "スヌーズ"], rel: ["📅", "#ff7a00", "公開日"] };
+  hub.open("お知らせ", L.length ? `<div class="hub-rows">${L.map(({ p, at, kind }) => `<div class="hub-row" data-pid="${p.id}"><span class="ic" style="background:${K[kind][1]}">${K[kind][0]}</span><span class="tx"><b>${esc(postTitle(p))}</b><small>${K[kind][2]}・${whenTxt(at)}・「${esc(tlById(p.tl).name)}」</small></span>${kind !== "rel" ? `<button type="button" class="btn-ghost sm" data-now="${p.id}">今すぐ出す</button>` : ""}</div>`).join("")}</div>`
+    : `<div class="hub-empty">これから出てくるツイートはないよ。<br>書くときの⏰で予約、「⋯」の「あとでまた見る」でスヌーズできるよ</div>`,
+    b => b.addEventListener("click", e => { const n = e.target.closest("[data-now]"); if (!n) return; const p = S.posts.find(x => x.id === n.dataset.now); if (!p) return; p.snoozeUntil = Date.now() - 1; wakeSnoozed(); hub.close(); paintNotifN(); }));
+}
+function openMarks() {
+  const L = S.posts.filter(p => visPost(p) && ((p.marks && p.marks.length) || p.saved)).sort((a, b) => keyOf(b) - keyOf(a));
+  hub.open("しおり", L.length ? `<div class="hub-rows">${L.map(p => `<div class="hub-row" data-open="${p.id}" role="button" tabindex="0"><span class="ic" style="background:${tlById(p.tl).color}">${IC("i-bookmark")}</span><span class="tx"><b>${esc(postTitle(p))}</b><small>「${esc(tlById(p.tl).name)}」</small>${p.marks && p.marks.length ? `<span class="mks">${p.marks.map(m => `<button type="button" data-seek="${p.id}" data-t="${m.t}">${fmt(m.t)}${m.note ? " " + esc(m.note.slice(0, 10)) : ""}</button>`).join("")}</span>` : ""}</span></div>`).join("")}</div>`
+    : `<div class="hub-empty">まだしおりはないよ。<br>ツイートの下の🔖を押すと、ここに入るよ（動画は見ている秒数に付くよ）</div>`,
+    b => b.addEventListener("click", e => { const sk = e.target.closest("[data-seek]"), op = e.target.closest("[data-open]"); const id = (sk || op)?.dataset.seek || op?.dataset.open; if (!id) return; const p = S.posts.find(x => x.id === id); if (!p) return;
+      hub.close(); if (p.tl !== S.active) setActive(p.tl);
+      if (hasViewable(p)) { openViewer(p.id); if (sk) { const t = +sk.dataset.t; setTimeout(() => { const m = $("#vStage .media"); m && m._seekTo && m._seekTo(t); }, 500); } }
+      else setTimeout(() => { const el = document.querySelector(`#feed .post[data-id="${p.id}"]`); if (el) { el.scrollIntoView({ block: "center", behavior: "smooth" }); el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1700); } }, 200); }));
+}
+const openFind = () => { scrollTo({ top: 0, behavior: "smooth" }); document.body.classList.remove("hd-hide"); const b = $("#searchBar"); b.classList.add("open"); setTimeout(() => $("#searchBox").focus(), 60); };
+$("#bFind").addEventListener("click", openFind); $("#bWatch").addEventListener("click", openWatch); $("#bNotif").addEventListener("click", openNotif); $("#bMarks").addEventListener("click", openMarks);
+$("#navWatch").addEventListener("click", openWatch); $("#navNotif").addEventListener("click", openNotif); $("#navMarks").addEventListener("click", openMarks);
+$("#acSet").addEventListener("click", () => { closeAcct(); if (innerWidth <= 960) openSide(); else $("#side").scrollTo({ top: 0, behavior: "smooth" }); });
+$("#acPick").addEventListener("click", () => { closeAcct(); todayPick(); });
+setInterval(paintNotifN, 60e3);
+/* スマホ: 下に読むと上のバーが隠れて、下のバーが薄くなる。上に戻すとすぐ出る */
+(() => { let ly = scrollY; addEventListener("scroll", () => { const y = scrollY; if (innerWidth > 640) return;
+  if (y > ly + 6 && y > 140) document.body.classList.add("hd-hide"); else if (y < ly - 6 || y < 60) document.body.classList.remove("hd-hide"); if (Math.abs(y - ly) > 6) ly = y; }, { passive: true }); })();
+/* 設定を「見た目・再生・動きと音・くわしい設定」にまとめる */
+(() => {
+  const card = $("#optAuto").closest(".card"); card.querySelector("h2").textContent = "設定";
+  const G = [["見た目", ["optSkin", "optMode", "nightRow", "optFont", "optFace", "optAutoColor", "optSwitchFx", "optSeasonFx", "optPat", "patRow"], true],
+    ["再生", ["optAuto", "wifiRow", "strictRow", "netNote", "optLazy", "optSound", "optVol", "optPreview", "previewCustomRow", "optFullEnd", "optResume", "optSlide", "slideSecRow", "optPip", "optStart"]],
+    ["動きと音", ["optMotion", "optVibe", "optSfx", "optCalm", "optOneHand", "optShake", "optShakeScope", "optAmb", "optTod", "optTilt"]],
+    ["くわしい設定", ["optCenter", "splitRow", "guideBtn"]]];
+  const rowOf = id => { const el = document.getElementById(id); if (!el) return null; return el.closest(".toggle") && el.closest(".card") === card ? el.closest(".toggle") : el; };
+  const blocks = G.map(([name, ids, open]) => { const d = document.createElement("details"); d.className = "set-group"; if (open) d.open = true; d.innerHTML = `<summary>${name}</summary><div class="set-in"></div>`; const inn = d.lastElementChild;
+    ids.forEach(id => { const r = rowOf(id); if (!r || r.parentElement !== card && !r.closest(".card")) return; const take = [r]; let n = r.nextElementSibling; while (n && n.tagName === "P" && !n.id) { take.push(n); n = n.nextElementSibling; } take.forEach(x => inn.append(x)); }); return d; });
+  $("#optSeason")?.closest(".toggle")?.setAttribute("hidden", "");
+  blocks.forEach(b => card.append(b));
+  [...card.children].forEach(c => { if (c.tagName !== "H2" && !c.classList.contains("set-group") && !c.hidden) blocks[3].lastElementChild.append(c); });
+  $$(".side .card").forEach(c => { const h = c.querySelector(":scope > h2"); if (!h || c === card || c.id === "statsCard" || h.textContent.includes("タイムライン管理")) return; h.classList.add("foldable"); if (!/データ|シークレット/.test(h.textContent)) c.classList.add("fold"); h.addEventListener("click", () => c.classList.toggle("fold")); });
+})();
+/* タイムラインを切り替えたときの表現（色がにじむ・しずく・アイコンがくるっ・なし） */
+function switchFx() {
+  const mode = S.opts.switchFx || "tint", t = tlById(S.active), h = $(".head"); if (!t || !h) return; const c = t.color || "var(--accent)";
+  const tab = $("#tabs .tab.on"), ink = $("#tabs .tab-ink");
+  $$("#tabs .tab").forEach(x => x.style.color = ""); if (ink) ink.style.background = "";
+  if (mode === "tint") { if (tab) tab.style.color = c; if (ink) ink.style.background = c; }
+  if (reduceMotion()) return;
+  if (mode === "tint") { const g = document.createElement("i"); g.className = "sw-glow"; g.style.background = c; h.append(g); g.animate([{ opacity: 0, transform: "scaleX(.3)" }, { opacity: .9, transform: "scaleX(1)", offset: .4 }, { opacity: 0, transform: "scaleX(1)" }], { duration: 900, easing: "cubic-bezier(.22,1,.36,1)", fill: "forwards" }).onfinish = () => g.remove(); }
+  if (mode === "drop" && tab) { const hr = h.getBoundingClientRect(), tr = tab.getBoundingClientRect(), d = document.createElement("i"); d.className = "sw-drop"; d.style.cssText += `left:${tr.left - hr.left + tr.width / 2 - 260}px;top:${tr.top - hr.top + tr.height / 2 - 260}px;width:520px;height:520px;background:radial-gradient(circle,color-mix(in srgb,${c} 22%,transparent) 0,color-mix(in srgb,${c} 8%,transparent) 40%,transparent 70%)`; h.append(d);
+    d.animate([{ transform: "scale(0)", opacity: 1 }, { transform: "scale(1)", opacity: 0 }], { duration: 900, easing: "cubic-bezier(.2,.7,.3,1)", fill: "forwards" }).onfinish = () => d.remove(); }
+  if (mode === "depth") { const f = $("#feed"); f.animate([{ transform: "scale(.95) translateY(10px)", opacity: 0, filter: "blur(3px)" }, { transform: "none", opacity: 1, filter: "blur(0)" }], { duration: 560, easing: "cubic-bezier(.22,1,.36,1)" }); }
+  if (mode === "icon") { const bm = $(".head .brand-mark"); if (bm) { bm.textContent = (t.icon || t.name || "?")[0]; bm.style.background = c; bm.style.color = "#fff"; bm.animate([{ transform: "rotateY(0)" }, { transform: "rotateY(90deg) scale(.85)", offset: .4 }, { transform: "rotateY(0) scale(1.1)", offset: .75 }, { transform: "none" }], { duration: 620, easing: "ease-out" }); } }
+  else { const bm = $(".head .brand-mark"); if (bm) { bm.textContent = "TL"; bm.style.background = ""; bm.style.color = ""; } }
+}
+/* D3 季節の演出（アプリを開いたときだけ）: 光・風の帯・さらさら散る */
+const SEASON_C = () => { const m = new Date().getMonth() + 1; return m >= 3 && m <= 5 ? 0 : m >= 6 && m <= 8 ? 1 : m >= 9 && m <= 11 ? 2 : 3; };
+const SEASON_P = [["#ffb7c5", "#ffd1dc", "#fff0f3", "#f78fa7"], ["#7fd3ff", "#c9f0ff", "#ffffff", "#4fb8f0"], ["#f0a646", "#e8743b", "#ffd59a", "#c9532c"], ["#ffffff", "#e6eef8", "#cfdcec", "#f5f9ff"]];
+function seasonOpen() {
+  const k = S.opts.seasonFx ?? (S.opts.seasonLight === false ? "off" : "light"); if (k === "off" || reduceMotion()) return;
+  if (k === "light") { const was = S.opts.seasonLight; S.opts.seasonLight = true; seasonLight(); S.opts.seasonLight = was; return; }
+  let cv = $("#seasonFx"); if (!cv) { cv = document.createElement("canvas"); cv.id = "seasonFx"; document.body.append(cv); }
+  const dpr = devicePixelRatio || 1, W = innerWidth, H = Math.min(innerHeight, 520); cv.style.height = H + "px"; cv.width = W * dpr; cv.height = H * dpr; const c = cv.getContext("2d"); c.setTransform(dpr, 0, 0, dpr, 0, 0);
+  const si = SEASON_C(), cols = SEASON_P[si], A = k === "flowA", N = Math.round((A ? 220 : 170) * Math.min(1.6, W / 500)), P = [];
+  for (let i = 0; i < N; i++) P.push({ d: Math.random() * .9, x: -40 - Math.random() * W * .5, y: A ? H * .42 + (Math.random() - .5) * 60 : Math.random() * H * .85, s: (si === 1 ? .8 : 1) * (.8 + Math.random() * 1.9), v: (2.4 + Math.random() * 2.4) * Math.max(1, W / 700), ph: Math.random() * 6.28, c: cols[i % 4], rot: Math.random() * 6.28, vr: (Math.random() - .5) * .2, w: Math.random() });
+  const t0 = performance.now(), dur = 3200;
+  const shape = p => { c.beginPath(); if (si === 0) c.ellipse(0, 0, p.s * 1.8, p.s * .9, 0, 0, 7); else if (si === 2) { c.moveTo(-p.s * 1.6, 0); c.quadraticCurveTo(0, -p.s * 1.3, p.s * 1.6, 0); c.quadraticCurveTo(0, p.s * 1.3, -p.s * 1.6, 0); } else c.arc(0, 0, p.s * .75, 0, 7); c.fill(); };
+  (function f(t) { const el = t - t0; c.clearRect(0, 0, W, H); const fade = el < 2400 ? 1 : Math.max(0, 1 - (el - 2400) / 800);
+    for (const p of P) { const st = p.d * 900; if (el < st) continue; const k2 = (el - st) / 16.7; p.x += p.v * (1 + .35 * Math.sin(el / 400 + p.ph));
+      const wave = A ? Math.sin(p.x / 80 + el / 520) * 30 + Math.sin(p.x / 23 + p.ph) * 3 : Math.sin(p.x / 90 + p.ph) * 10 + k2 * .12; p.rot += p.vr;
+      const edge = Math.min(1, (p.x + 20) / 80) * Math.min(1, (W + 20 - p.x) / 90); c.globalAlpha = Math.max(0, edge) * fade * .8 * (.5 + p.w * .5); c.fillStyle = p.c;
+      if (si === 3) { c.shadowColor = "rgba(120,150,200,.8)"; c.shadowBlur = 4; } else c.shadowBlur = 0; c.save(); c.translate(p.x, p.y + wave); c.rotate(p.rot); shape(p); c.restore(); }
+    if (el < dur) requestAnimationFrame(f); else c.clearRect(0, 0, W, H); })(t0);
+}
+/* D3c 背景の模様（16種類）。色は季節に合わせるか、墨色 */
+const PATS = {
+  seigaiha: ["青海波", (s, f) => { let o = ""; for (const [cx, cy] of [[0, 0], [40, 0], [20, 10], [0, 20], [40, 20]]) { o += `<circle cx="${cx}" cy="${cy}" r="19.5" fill="${f}"/>`; for (const r of [19, 14, 9, 4]) o += `<circle cx="${cx}" cy="${cy}" r="${r}" fill="none" stroke="${s}" stroke-width="1.2"/>`; } return [40, 20, o]; }],
+  asanoha: ["麻の葉", s => { const S2 = 40, h = S2 * Math.sqrt(3) / 2; let o = ""; const r2 = n => Math.round(n * 100) / 100, L = (a, b) => o += `<line x1="${r2(a[0])}" y1="${r2(a[1])}" x2="${r2(b[0])}" y2="${r2(b[1])}"/>`;
+    for (let r = -1; r < 3; r++) for (let q = -1; q < 2; q++) { const x0 = q * S2 + ((r % 2 + 2) % 2) * S2 / 2, y0 = r * h, y1 = y0 + h; for (const T of [[[x0, y1], [x0 + S2, y1], [x0 + S2 / 2, y0]], [[x0 + S2 / 2, y0], [x0 + S2 * 1.5, y0], [x0 + S2, y1]]]) { const g = [(T[0][0] + T[1][0] + T[2][0]) / 3, (T[0][1] + T[1][1] + T[2][1]) / 3]; L(T[0], T[1]); L(T[1], T[2]); L(T[2], T[0]); T.forEach(v => L(g, v)); } }
+    return [40, r2(h * 2), `<g stroke="${s}" stroke-width="1" fill="none">${o}</g>`]; }],
+  shippo: ["七宝", s => [40, 40, `<g fill="none" stroke="${s}" stroke-width="1.2">${[[0, 0], [40, 0], [0, 40], [40, 40], [20, 20]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="20"/>`).join("")}</g>`]],
+  yagasuri: ["矢絣", s => [40, 40, `<g fill="${s}" fill-opacity=".55"><path d="M0 0 10 7 20 0V20L10 27 0 20Z"/><path d="M20 20 30 27 40 20V40L30 47 20 40Z"/><path d="M20 -20 30 -13 40 -20V0L30 7 20 0Z"/></g>`]],
+  damask: ["ダマスク", s => [60, 84, `<g fill="none" stroke="${s}" stroke-width="1.1">${[[30, 42], [0, 0], [60, 0], [0, 84], [60, 84]].map(([x, y]) => `<g transform="translate(${x} ${y})"><path d="M0-30C9-20 16-10 16 0S9 20 0 30C-9 20-16 10-16 0S-9-20 0-30Z"/><path d="M0-20C4-12 7-6 7 0S4 12 0 20C-4 12-7 6-7 0S-4-12 0-20Z"/><circle r="2"/></g>`).join("")}</g>`]],
+  argyle: ["アーガイル", s => [40, 60, `<path d="M20 0 40 30 20 60 0 30Z" fill="${s}" fill-opacity=".28"/><g stroke="${s}" stroke-width="1" stroke-dasharray="3 3"><line x1="0" y1="0" x2="40" y2="60"/><line x1="40" y1="0" x2="0" y2="60"/></g>`]],
+  herring: ["ヘリンボーン", s => { let o = ""; for (let y = -40; y < 60; y += 8) o += `<line x1="0" y1="${y}" x2="20" y2="${y + 20}"/><line x1="20" y1="${y + 20}" x2="40" y2="${y}"/>`; return [40, 40, `<g stroke="${s}" stroke-width="1.1">${o}</g>`]; }],
+  gothic: ["ゴシックの窓", s => [40, 40, `<g fill="none" stroke="${s}" stroke-width="1.1"><path d="M20 4a8 8 0 0 1 8 8 8 8 0 0 1 0 16 8 8 0 0 1-16 0 8 8 0 0 1 0-16 8 8 0 0 1 8-8Z"/><path d="M0 0 8 8M40 0 32 8M0 40 8 32M40 40 32 32"/></g>`]],
+  raimon: ["雷文", s => [40, 40, `<path d="M4 4H36V36H8V8H32V32H12V12H28V28H16V16H24V24H20" fill="none" stroke="${s}" stroke-width="1.6"/>`]],
+  kaiji: ["回字紋", s => [32, 32, `<g fill="none" stroke="${s}" stroke-width="1.6"><rect x="4" y="4" width="24" height="24"/><rect x="11" y="11" width="10" height="10"/><path d="M28 16H32M0 16H4M16 0V4M16 28V32"/></g>`]],
+  kumo: ["吉祥雲", s => { const cl = (x, y) => `<g transform="translate(${x} ${y})" fill="none" stroke="${s}" stroke-width="1.3" stroke-linecap="round"><path d="M-22 6C-26 6-28 2-26-1-24-4-20-4-18-2-18-8-12-11-7-9-4-14 4-14 7-9 12-11 18-8 18-2 20-4 24-4 26-1 28 2 26 6 22 6Z"/></g>`; return [80, 50, cl(20, 14) + cl(60, 39) + cl(-20, 39) + cl(100, 14) + cl(60, -11)]; }],
+  zeni: ["銭紋", s => [36, 36, `<g fill="none" stroke="${s}" stroke-width="1.2">${[[0, 0], [36, 0], [0, 36], [36, 36], [18, 18]].map(([x, y]) => `<circle cx="${x}" cy="${y}" r="13"/><rect x="${x - 4}" y="${y - 4}" width="8" height="8"/>`).join("")}</g>`]],
+  islam: ["イスラムの八芒星", s => [40, 40, `<g fill="none" stroke="${s}" stroke-width="1.1"><rect x="10" y="10" width="20" height="20"/><rect x="10" y="10" width="20" height="20" transform="rotate(45 20 20)"/><path d="M5.86 20H0M34.14 20H40M20 5.86V0M20 34.14V40"/></g>`]],
+  nordic: ["北欧の刺しゅう", s => { const px = [[3, 0], [3, 1], [3, 2], [2, 1], [4, 1], [0, 3], [1, 3], [2, 3], [4, 3], [5, 3], [6, 3], [1, 2], [1, 4], [5, 2], [5, 4], [3, 4], [3, 5], [3, 6], [2, 5], [4, 5], [3, 3]]; return [44, 44, `<g fill="${s}">${px.map(([x, y]) => `<rect x="${8 + x * 4}" y="${8 + y * 4}" width="3.2" height="3.2"/>`).join("")}</g>`]; }],
+  deco: ["アールデコの扇", (s, f) => { let o = ""; for (const [cx, cy] of [[0, 0], [40, 0], [20, 20], [-20, 20], [60, 20], [0, 40], [40, 40]].map(([x, y]) => [x, y - 20])) { o += `<path d="M${cx - 20} ${cy + 20}A20 20 0 0 1 ${cx + 20} ${cy + 20}Z" fill="${f}"/>`; for (const r of [20, 14]) o += `<path d="M${cx - r} ${cy + 20}A${r} ${r} 0 0 1 ${cx + r} ${cy + 20}" fill="none" stroke="${s}" stroke-width="1.1"/>`; } return [40, 20, o]; }],
+  morocco: ["モロッコの格子", s => [40, 48, `<path d="M20 0C28 0 28 8 36 12 40 14 40 20 40 24 40 28 40 34 36 36 28 40 28 48 20 48 12 48 12 40 4 36 0 34 0 28 0 24 0 20 0 14 4 12 12 8 12 0 20 0Z" fill="none" stroke="${s}" stroke-width="1.3"/>`]]
+};
+const PAT_SC = ["#e0789a", "#3a9fd8", "#c8702e", "#7c93b3"];
+function applyPattern() {
+  const k = S.opts.pat || "", m = $("#main"); if (!k || !PATS[k]) { m.style.removeProperty("--patimg"); return; }
+  const a = (S.opts.patA ?? 10) / 100, col = S.opts.patCol === "ink" ? "#6b7280" : PAT_SC[SEASON_C()], bg = getComputedStyle(document.body).backgroundColor || "#fff";
+  const [w, h, inner] = PATS[k][1](col, bg); const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="${w}" height="${h}" viewBox="0 0 ${w} ${h}"><g opacity="${Math.min(1, a * 2.6)}">${inner}</g></svg>`;
+  m.style.setProperty("--patimg", `url("data:image/svg+xml,${encodeURIComponent(svg)}")`); m.style.setProperty("--patsz", `${w}px ${h}px`);
+}
+(() => {
+  const look = $("#optSkin").closest(".toggle");
+  look.insertAdjacentHTML("afterend", `<label class="toggle" for="optSwitchFx">タイムラインを切り替えたとき
+      <select id="optSwitchFx" class="sel"><option value="tint">色がにじむ</option><option value="drop">しずく</option><option value="icon">アイコンがくるっ</option><option value="depth">奥から浮かぶ</option><option value="none">なし</option></select></label>
+    <label class="toggle" for="optBounce">ぽよんの強さ
+      <select id="optBounce" class="sel"><option value="soft">ひかえめ</option><option value="now">しっかり（前の版）</option><option value="snap">ぴたっ</option><option value="float">ふんわり</option><option value="kyu">キュッ</option></select></label>
+    <label class="toggle" for="optPopWay">ポップアップの閉じ方
+      <select id="optPopWay" class="sel"><option value="slide">下へすっと</option><option value="fade">ふわっと消える</option><option value="shrink">小さくなって消える</option><option value="flick">勢いよく下へ</option></select></label>
+    <label class="toggle" for="optPopSpeed">ポップアップの速さ
+      <select id="optPopSpeed" class="sel"><option value="fast">はやい</option><option value="normal">ふつう</option><option value="slow">ゆっくり</option></select></label>
+    <label class="toggle" for="optSeasonFx">季節の演出（開いたとき）
+      <select id="optSeasonFx" class="sel"><option value="light">季節の光</option><option value="flowA">風の帯（さらさら）</option><option value="flowB">さらさら散る</option><option value="off">なし</option></select></label>
+    <label class="toggle" for="optPat">背景の模様
+      <select id="optPat" class="sel"><option value="">なし</option><optgroup label="和">${["seigaiha", "asanoha", "shippo", "yagasuri"].map(k => `<option value="${k}">${PATS[k][0]}</option>`).join("")}</optgroup><optgroup label="洋">${["damask", "argyle", "herring", "gothic"].map(k => `<option value="${k}">${PATS[k][0]}</option>`).join("")}</optgroup><optgroup label="中">${["raimon", "kaiji", "kumo", "zeni"].map(k => `<option value="${k}">${PATS[k][0]}</option>`).join("")}</optgroup><optgroup label="そのほか">${["islam", "nordic", "deco", "morocco"].map(k => `<option value="${k}">${PATS[k][0]}</option>`).join("")}</optgroup></select></label>
+    <div class="toggle" id="patRow" hidden><span>模様の色と濃さ</span><span style="display:flex;align-items:center;gap:8px"><select id="optPatCol" class="sel"><option value="season">季節の色</option><option value="ink">墨色</option></select><input type="range" id="optPatA" min="4" max="30" value="10" aria-label="模様の濃さ" style="width:90px"></span></div>`);
+  $("#optBounce").value = S.opts.bounce || "soft"; $("#optPopWay").value = S.opts.popWay || "slide"; $("#optPopSpeed").value = S.opts.popSpeed || "normal";
+  $("#optSwitchFx").value = S.opts.switchFx || "tint"; $("#optSeasonFx").value = S.opts.seasonFx ?? (S.opts.seasonLight === false ? "off" : "light"); $("#optPat").value = S.opts.pat || ""; $("#optPatCol").value = S.opts.patCol || "season"; $("#optPatA").value = S.opts.patA ?? 10; $("#patRow").hidden = !S.opts.pat;
+})();
 /* A6 パスワード付きの書き出し（AES-256-GCM。パスワードから鍵を作るのは PBKDF2 を25万回） */
 let encPending = null;
 async function pwKey(pw, salt) { const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]); return crypto.subtle.deriveKey({ name: "PBKDF2", salt, iterations: 250000, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]); }
@@ -3977,6 +4252,14 @@ function seasonLight() {
   tail.animate(kf(40), { duration: 1900, delay: 220, easing: "cubic-bezier(.45,.05,.25,1)", fill: "both" }).onfinish = () => wr.remove();
 }
 $("#optSeason").addEventListener("change", e => { S.opts.seasonLight = e.target.checked; save(); if (S.opts.seasonLight) seasonLight(); });
+$("#optSwitchFx").addEventListener("change", e => { S.opts.switchFx = e.target.value; save(); switchFx(); });
+$("#optBounce").addEventListener("change", e => { S.opts.bounce = e.target.value; save(); const b = $(".fab"); b && b.animate([{ transform: "scale(.7)" }, { transform: "none" }], { duration: 520, easing: "cubic-bezier(.3,1.6,.5,1)" }); toast(`ぽよんの強さを「${e.target.selectedOptions[0].textContent}」にしたよ`); });
+$("#optPopWay").addEventListener("change", e => { S.opts.popWay = e.target.value; save(); });
+$("#optPopSpeed").addEventListener("change", e => { S.opts.popSpeed = e.target.value; save(); });
+$("#optSeasonFx").addEventListener("change", e => { S.opts.seasonFx = e.target.value; save(); seasonOpen(); });
+$("#optPat").addEventListener("change", e => { S.opts.pat = e.target.value; save(); $("#patRow").hidden = !S.opts.pat; applyPattern(); });
+$("#optPatCol").addEventListener("change", e => { S.opts.patCol = e.target.value; save(); applyPattern(); });
+$("#optPatA").addEventListener("input", e => { S.opts.patA = +e.target.value; save(); applyPattern(); });
 
 /* あらすじメモ（配信サービスのカード） */
 let memoId = null;
@@ -4185,7 +4468,7 @@ function paintGuide() { const [a, h, tx] = GUIDE[gIdx]; $("#gArt").textContent =
 $("#gNext").addEventListener("click", () => { if (gIdx < GUIDE.length - 1) { gIdx++; paintGuide(); } else closeGuide(); });
 $("#gSkip").addEventListener("click", closeGuide); $("#guideBtn").addEventListener("click", () => { closeSide(); openGuide(); });
 $("#guide").addEventListener("keydown", e => { if (e.key === "Escape") closeGuide(); });
-window.__mytl = { encryptData, decryptData, exportData, goSleep, openSide: () => openSide(), closeSide: () => closeSide(), closeCompose: () => closeCompose(), setQuery: q => setQuery(q), get S() { return S; }, get qrUrl() { return qrUrl; } }; // 動作チェック用
+window.__mytl = { openRx: (b, h) => openRx(b, h), encryptData, decryptData, exportData, goSleep, openSide: () => openSide(), closeSide: () => closeSide(), closeCompose: () => closeCompose(), setQuery: q => setQuery(q), get S() { return S; }, get qrUrl() { return qrUrl; } }; // 動作チェック用
 function maybeGuide() { if (S.guideSeen || window.__noGuide) return; const go = () => $("#lockScreen").hidden ? openGuide() : setTimeout(go, 800); setTimeout(go, 500); }
 
 /* ================= コメント（ツイートごと・この端末に保存） ================= */
@@ -4406,7 +4689,7 @@ function boot() {
   if (S.opts.startTl && tlById(S.opts.startTl) && !isHiddenTl(tlById(S.opts.startTl))) S.active = S.opts.startTl;
   wakeSnoozed(true); applyOpts(); renderAll();
   const d = readShareParams(); if (d) openShare(d); else restorePos();
-  setTimeout(seasonLight, 700); maybeNagBackup(); purgeTrash(); loadDraft(); netState(); bootLock(); maybeGuide(); paintRings(); readQRLink();
+  setTimeout(seasonOpen, 700); setTimeout(() => { applyPattern(); switchFx(); paintNotifN(); }, 50); maybeNagBackup(); purgeTrash(); loadDraft(); netState(); bootLock(); maybeGuide(); paintRings(); readQRLink();
   setTimeout(updateFocus, 60);
 }
 Promise.race([idb.all(), new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 1500))])

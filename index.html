@@ -906,6 +906,15 @@ body.searching .tab.on::after{opacity:.25}
 .nag{position:fixed;z-index:60;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));width:min(520px,calc(100% - 24px));display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;
   padding:14px 16px;border-radius:18px;background:var(--bg);color:var(--fg);border:1px solid var(--line-strong);box-shadow:0 18px 40px -12px rgba(0,0,0,.35);font-size:14px}
 .nag b{display:block;font-size:15px}
+#backupNag{border:2px solid #f4212e;box-shadow:0 10px 30px rgba(244,33,46,.25)}
+.app-ver{margin:0 0 6px;font-size:13px;color:var(--muted)}.app-ver b{color:var(--fg)}.linkish{background:none;border:0;color:var(--accent);cursor:pointer;font:inherit;padding:0 0 0 6px}
+.news h3{margin:4px 0 6px;font-size:17px}.news h3 small{font-weight:400;color:var(--muted);font-size:13px}.news ul{margin:0 0 12px;padding-left:20px;display:flex;flex-direction:column;gap:6px;font-size:14px}
+.safe-box{display:flex;flex-direction:column;gap:4px;margin:4px 0 10px;padding:10px 12px;border-radius:12px;background:color-mix(in srgb,var(--accent) 8%,transparent);font-size:13px}
+.safe-box p{margin:0}.persist-state.ok{color:#00ba7c}.last-save.warn{color:#f4212e;font-weight:700}
+.snap-list{display:flex;flex-direction:column;gap:6px;margin-top:8px}.snap-row{display:flex;align-items:center;justify-content:space-between;gap:8px;border-top:1px solid var(--line);padding-top:6px}
+.snap-row span{display:flex;flex-direction:column}.snap-row small{color:var(--muted)}.snap-box{margin-top:10px}
+.pulse-hint{animation:pulseHint 0.8s ease-in-out 3}@keyframes pulseHint{50%{box-shadow:0 0 0 6px color-mix(in srgb,var(--accent) 40%,transparent)}}
+.home-hint{bottom:auto!important;top:calc(12px + env(safe-area-inset-top,0px))}
 .nag span{color:var(--muted)}
 .nag-acts{display:flex;gap:8px;margin-left:auto}
 @media (max-width:640px){.nag{bottom:calc(76px + env(safe-area-inset-bottom,0px))}}
@@ -1211,6 +1220,7 @@ body.sheet-open{overflow:hidden}
       <label class="toggle" for="optStart">開いたときのタイムライン
         <select id="optStart" class="sel"></select></label>
       <label class="toggle" id="splitRow">2つ並べて表示（PCの広い画面） <span class="switch"><input type="checkbox" id="optSplit"><span></span></span></label>
+      <p class="app-ver">マイタイムライン <b id="appVer"></b> <button type="button" class="linkish" id="newsBtn">新しくなったこと</button></p>
       <button type="button" class="btn-ghost" id="guideBtn" style="align-self:flex-start"><svg class="i" style="width:16px;height:16px;vertical-align:-3px"><use href="#i-help"/></svg> 使い方ガイド</button>
       <label class="toggle" for="optPreview">タイムラインで再生する長さ
         <select id="optPreview" class="sel"><option value="30">冒頭30秒</option><option value="60">冒頭1分</option><option value="120">冒頭2分</option><option value="300">冒頭5分</option><option value="0">最後まで</option><option value="custom">自分で決める</option></select></label>
@@ -1275,6 +1285,7 @@ body.sheet-open{overflow:hidden}
       <h2>データ</h2>
       <p>ツイートとタイムライン、手元から追加した画像・動画は、このブラウザの中に保存されます（ほかの端末とは共有されません）。</p>
       <p>別の端末にデータを移すときは、ここで書き出した文字をコピーして、移したい端末の「読み込む」に貼ってね（手元から追加した画像・動画は移らないよ）。</p>
+      <div class="safe-box"><p id="lastSave" class="last-save"></p><p id="persistState" class="persist-state">ブラウザの状態を確かめてるよ…</p></div>
       <details class="enc-ex data-how" id="dataHow"><summary>📖 データの守り方（書き出し・読み込みのやり方）</summary>
         <p><b>データが消えちゃう場面</b></p>
         <ul class="dh-list">
@@ -1314,6 +1325,9 @@ body.sheet-open{overflow:hidden}
           <p>本物の暗号化（AES-256）だから、<b>パスワードを忘れると自分でも開けない</b>よ。メモアプリなど別の場所に控えておいてね</p></details>
         <p class="note" style="margin:0">1つのタイムラインだけ書き出したファイルは、友達の端末で読み込むと新しいタイムラインとして追加されるよ（いまのデータは消えないよ）</p>
       </div>
+      <details class="enc-ex snap-box" id="snapBox"><summary>🕘 自動の控え（もしものときに戻せる）</summary>
+        <p>1日1回と、読み込み・リセットの前に、ブラウザの中の別の場所へ自動で控えをとってるよ（最新5つ）。間違えて消したり読み込んだりしたときは、ここから戻してね。<b>ブラウザのデータを消すと控えも一緒に消える</b>から、ファイルでの保存もしてね</p>
+        <div id="snapList" class="snap-list"></div></details>
       <div id="xferBox" hidden style="display:flex;flex-direction:column;gap:8px">
         <textarea id="xferText" rows="5" class="sel" style="border-radius:10px;width:100%;font-family:ui-monospace,monospace;font-size:12px" aria-label="データの文字"></textarea>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
@@ -1410,8 +1424,9 @@ body.sheet-open{overflow:hidden}
     <div class="share-actions"><button type="button" class="btn-ghost" id="cropCancel">やめる</button><button type="button" class="btn-accent" id="cropOk">決定</button></div>
   </div>
 </div>
-<div class="nag" id="backupNag" hidden role="status"><div><b>データを書き出しておく？</b><span>最後に書き出してから <span id="nagDays"></span> 日たったよ。ブラウザのデータが消えても、書き出した文字があれば元に戻せるよ</span></div>
-  <div class="nag-acts"><button type="button" class="btn-ghost sm" id="nagLater">あとで</button><button type="button" class="btn-accent" id="nagGo">書き出す</button></div></div>
+<div class="nag home-hint" id="homeHint" hidden role="status"><div><b>📲 ホーム画面に追加しておこう</b><span>Safariのまま7日くらい開かないと、iPhoneがデータを片付けちゃうことがあるの。共有ボタン（□に↑）→「ホーム画面に追加」で、消えにくくなるよ</span></div><div class="nag-acts"><button type="button" class="btn-ghost sm" id="homeLater">あとで</button></div></div>
+<div class="nag" id="backupNag" hidden role="status"><div><b>⛨ データを保存しておこう</b><span id="nagMsg">最後に書き出してから <span id="nagDays"></span> 日たったよ。ブラウザのデータが消えても、書き出した文字があれば元に戻せるよ</span></div>
+  <div class="nag-acts"><button type="button" class="btn-ghost sm" id="nagLater">あとで</button><button type="button" class="btn-accent" id="nagGo">保存する</button></div></div>
 <div class="share trash-page" id="trashSheet" hidden role="dialog" aria-modal="true" aria-labelledby="trTitle">
   <div class="share-card">
     <div class="tr-hero"><svg viewBox="0 0 48 48" class="tr-can" aria-hidden="true"><path d="M12 15h24l-2.2 25a3 3 0 0 1-3 2.7H17.2a3 3 0 0 1-3-2.7z" fill="currentColor" opacity=".2"/><path d="M12 15h24l-2.2 25a3 3 0 0 1-3 2.7H17.2a3 3 0 0 1-3-2.7zM9 15h30M19 15v-3a2 2 0 0 1 2-2h6a2 2 0 0 1 2 2v3M20 21v15M28 21v15" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
@@ -1463,6 +1478,7 @@ body.sheet-open{overflow:hidden}
       <button type="button" class="ac-link" id="acSecret"><span>🔒</span><b>シークレット</b><small id="acSecretSub"></small></button>
       <button type="button" class="ac-link" id="acTrash"><span>🗑</span><b>ゴミ箱</b><small id="acTrashSub"></small></button>
       <button type="button" class="ac-link" id="acSet"><span>⚙︎</span><b>設定</b><small>見た目・再生・データ</small></button>
+      <button type="button" class="ac-link" id="acNews"><span>✨</span><b>新しくなったこと</b><small id="acVer"></small></button>
       <button type="button" class="ac-link" id="acData"><span>📖</span><b>データの守り方</b><small>書き出し・読み込み・機種変更</small></button>
       <button type="button" class="ac-link" id="acPick"><span>🎲</span><b>今日の1本</b><small>迷ったらここ</small></button>
     </div>
@@ -1714,15 +1730,32 @@ function seed() {
   ];
   return { timelines: T, active: "tl-rec", posts: P.map(p => ({ id: uid(), likes: 0, liked: false, ...p })), opts: { center: false, auto: true } };
 }
-let S;
-try { S = JSON.parse(localStorage.getItem(KEY)); } catch { S = null; }
-if (!S || !Array.isArray(S.timelines) || !S.timelines.length) S = seed();
+/* ===== データの安全策 =====
+   SCHEMA: データの形の版番号。形を変えるときは MIGRATIONS に「n → n+1 の直し方」を足す（古いデータは開いたときに自動で引き継ぐ） */
+const SCHEMA = 2;
+const MIGRATIONS = {
+  // 1 → 2: 版番号のないころのデータを点検して直す（id の抜け・数の型・行き先のないツイート）
+  1: d => {
+    d.timelines = d.timelines.filter(t => t && typeof t === "object").map(t => ({ ...t, id: t.id || "tl-" + uid(), name: String(t.name || "タイムライン") }));
+    const ids = new Set(d.timelines.map(t => t.id)), first = d.timelines[0].id;
+    d.posts = (Array.isArray(d.posts) ? d.posts : []).filter(p => p && typeof p === "object").map(p => ({ ...p, id: p.id || uid(), likes: +p.likes || 0, tl: ids.has(p.tl) ? p.tl : first }));
+    if (!ids.has(d.active)) d.active = first; return d;
+  },
+};
+function migrate(d) { let v = +d.schema || 1; const from = v; while (v < SCHEMA) { d = MIGRATIONS[v](d); v++; } d.schema = Math.max(v, +d.schema || 1); return { d, from }; }
+const isData = d => d && typeof d === "object" && Array.isArray(d.timelines) && d.timelines.length && Array.isArray(d.posts);
+let S, bootBroken = null, bootMigrated = 0, bootNewer = false;
+let rawBoot = null; try { rawBoot = localStorage.getItem(KEY); } catch {}
+try { S = JSON.parse(rawBoot); } catch { S = null; }
+if (rawBoot && !isData(S)) { bootBroken = rawBoot; try { localStorage.setItem("mytl-broken-" + Date.now(), rawBoot.slice(0, 2e6)); } catch {} S = null; }
+if (isData(S)) { try { if ((+S.schema || 1) > SCHEMA) bootNewer = true; else { const r = migrate(S); S = r.d; if (r.from < SCHEMA) bootMigrated = r.from; } } catch { bootBroken = rawBoot; S = null; } }
+if (!S || !Array.isArray(S.timelines) || !S.timelines.length) { S = seed(); S.schema = SCHEMA; }
 S.opts ||= { center: false, auto: true };
 S.me ||= { id: "me", name: "私", color: "#1d9bf0" }; S.me.id = "me";
 S.presets ||= [];
-S.opts.sound ??= true; S.opts.preview ??= 120; S.opts.auto ??= true; S.opts.wifiOnly ??= true; S.opts.strictNet ??= false; S.opts.lazy ??= true; S.opts.fullEnd ??= "loop"; S.opts.slideAuto ??= true; S.opts.slideSec ??= 10; S.rules ||= []; S.opts.grid ??= false; S.opts.amb ??= true; S.opts.seasonLight ??= true; S.opts.face ??= ""; S.opts.tod ??= true; S.opts.tilt ??= true; S.opts.shakeScope ??= "all"; S.opts.pipCorner ??= "br"; S.hist ||= []; S.opts.autoColor ??= "raw"; S.opts.pip ??= true; S.opts.shake ??= !(/iP(hone|ad|od)/.test(navigator.userAgent)); S.goals ||= { seen: 10, hearts: 5, cms: 2 }; S.opts.sfx ??= false; S.cheer ||= {}; S.opts.collapsed ||= {}; S.opts.calm ??= false; S.opts.startTl ??= ""; S.opts.split ??= false; S.opts.splitTl ??= ""; S.opts.secretStealth ??= false; S.opts.volume ??= 100; S.opts.fontSize ??= "m"; S.opts.oneHand ??= false; S.trash ||= []; S.opts.modeTime ??= false; S.opts.nightFrom ??= 19; S.opts.nightTo ??= 6; S.lastExportAt ??= Date.now(); S.opts.tlMotion ??= "spring"; S.opts.vibe ??= true; S.opts.resume ??= true; S.pos ||= {};
+S.opts.sound ??= true; S.opts.preview ??= 120; S.opts.auto ??= true; S.opts.wifiOnly ??= true; S.opts.strictNet ??= false; S.opts.lazy ??= true; S.opts.fullEnd ??= "loop"; S.opts.slideAuto ??= true; S.opts.slideSec ??= 10; S.rules ||= []; S.opts.grid ??= false; S.opts.amb ??= true; S.opts.seasonLight ??= true; S.opts.face ??= ""; S.opts.tod ??= true; S.opts.tilt ??= true; S.opts.shakeScope ??= "all"; S.opts.pipCorner ??= "br"; S.hist ||= []; S.opts.autoColor ??= "raw"; S.opts.pip ??= true; S.opts.shake ??= !(/iP(hone|ad|od)/.test(navigator.userAgent)); S.goals ||= { seen: 10, hearts: 5, cms: 2 }; S.opts.sfx ??= false; S.cheer ||= {}; S.opts.collapsed ||= {}; S.opts.calm ??= false; S.opts.startTl ??= ""; S.opts.split ??= false; S.opts.splitTl ??= ""; S.opts.secretStealth ??= false; S.opts.volume ??= 100; S.opts.fontSize ??= "m"; S.opts.oneHand ??= false; S.trash ||= []; S.opts.modeTime ??= false; S.opts.nightFrom ??= 19; S.opts.nightTo ??= 6; S.firstUseAt ??= S.lastExportAt || Date.now(); if (!S.exportReal) delete S.lastExportAt; S.opts.tlMotion ??= "spring"; S.opts.vibe ??= true; S.opts.resume ??= true; S.pos ||= {};
 const fileUrls = new Map(); // 手元から追加したファイル（IndexedDB から復元）
-function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch { try { toast("保存しきれなかったよ。アイコンの画像を外すか、小さい画像にしてね"); } catch {} return false; } }
+function save() { if (bootNewer) return false; try { S.schema = Math.max(+S.schema || 1, SCHEMA); localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch { try { toast("保存しきれなかったよ。アイコンの画像を外すか、小さい画像にしてね"); } catch {} return false; } }
 /* 手元ファイルの保存先: IndexedDB（ブラウザ内） */
 const idb = (() => {
   let dbp = null;
@@ -2866,17 +2899,82 @@ const onCustom = () => { const m = Math.max(0, +$("#optPrevMin").value || 0), se
 $("#optPrevMin").addEventListener("change", onCustom); $("#optPrevSec").addEventListener("change", onCustom);
 $("#resetBtn").addEventListener("click", () => { $("#resetConfirm").hidden = false; });
 /* データの書き出し・読み込み（サーバーなしで端末間を手で移す） */
+function paintLastSave() { const el = $("#lastSave"); if (!el) return; el.textContent = S.lastExportAt ? `最後にファイルに保存したのは ${whenTxt(S.lastExportAt)}` : "まだ一度もファイルに保存してないよ"; el.classList.toggle("warn", backupDue()); }
+async function bootSafety() {
+  if (bootNewer) toast("このデータは新しい版のアプリで保存されたものだよ。壊さないように、この画面では保存しないでおくね。ページを再読み込みして更新してね");
+  if (bootBroken) { await snaps.take("broken", bootBroken); const a = (await snaps.list()).filter(x => x.why !== "broken"); toast(a.length ? "保存データが読めなかったよ。設定 → データ →「自動の控え」から戻せるよ" : "保存データが読めなかったよ。中身は別の場所に残してあるから、書き出したファイルがあれば読み込んでね"); }
+  if (bootMigrated) await snaps.take("migrate", rawBoot);
+  try { const rs = sessionStorage.getItem("mytl-restored"); if (rs) { sessionStorage.removeItem("mytl-restored"); toast(`${whenTxt(+rs)} の状態に戻したよ（戻す前の状態も控えに残してあるよ）`); }
+    if (sessionStorage.getItem("mytl-otherTab")) { sessionStorage.removeItem("mytl-otherTab"); toast("別のタブで変えた内容を読み直したよ"); } } catch {}
+  const last = (await snaps.list()).find(x => x.why === "daily"); if (!last || Date.now() - last.at > 20 * 3600e3) await snaps.take("daily");
+  maybeNews(); askPersist(false); paintSnaps(); paintLastSave(); maybeHomeHint(); paintNotifN();
+}
+/* 自動の控え（スナップショット）: 1日1回と、読み込み・リセットの前に、ブラウザの別の場所（IndexedDB）へ控えを取る。最新5つ */
+const snaps = (() => {
+  let dbp = null; const open = () => dbp ||= new Promise((res, rej) => { try { const r = indexedDB.open("mytl-snaps", 1); r.onupgradeneeded = () => r.result.createObjectStore("snaps", { keyPath: "at" }); r.onsuccess = () => res(r.result); r.onerror = () => rej(r.error); } catch (e) { rej(e); } });
+  const tx = (mode, fn) => open().then(db => new Promise((res, rej) => { const t = db.transaction("snaps", mode), st = t.objectStore("snaps"); let out; const r = fn(st); if (r) r.onsuccess = () => out = r.result; t.oncomplete = () => res(out); t.onerror = () => rej(t.error); }));
+  return {
+    list: () => tx("readonly", st => st.getAll()).then(a => (a || []).sort((x, y) => y.at - x.at)).catch(() => []),
+    async take(why, raw) { try { const data = raw || JSON.stringify(S); const d = JSON.parse(data); if (!isData(d)) return;
+      await tx("readwrite", st => st.put({ at: Date.now(), why, n: d.posts.length, t: d.timelines.length, data }));
+      const a = await this.list(); for (const x of a.slice(5)) await tx("readwrite", st => st.delete(x.at)); } catch {} },
+    get: at => tx("readonly", st => st.get(at)).catch(() => null),
+  };
+})();
+const SNAP_WHY = { daily: "毎日の控え", import: "読み込む前", reset: "リセットの前", migrate: "アップデートの前", broken: "読めなかったデータ", restore: "戻す前" };
+async function paintSnaps() { const box = $("#snapList"); if (!box) return; const a = await snaps.list();
+  box.innerHTML = a.length ? a.map(x => `<div class="snap-row"><span><b>${whenTxt(x.at)}</b><small>${SNAP_WHY[x.why] || x.why}・ツイート ${x.n} 件</small></span><button type="button" class="btn-ghost sm" data-snap="${x.at}">この時点に戻す</button></div>`).join("") : `<p class="note" style="margin:0">まだ控えはないよ（明日から1日1回とるね）</p>`; }
+document.addEventListener("click", async e => { const b = e.target.closest("[data-snap]"); if (!b) return;
+  const x = await snaps.get(+b.dataset.snap); if (!x) return toast("控えが見つからなかったよ");
+  let d; try { d = JSON.parse(x.data); } catch { return toast("この控えは読めなかったよ"); }
+  if (b.dataset.sure !== "1") { b.dataset.sure = "1"; b.textContent = "本当に戻す？"; b.classList.add("btn-accent"); setTimeout(() => { if (b.isConnected) { b.dataset.sure = ""; b.textContent = "この時点に戻す"; b.classList.remove("btn-accent"); } }, 4000); return; }
+  await snaps.take("restore"); bootNewer = false;
+  try { const r = migrate(d); const keepFiles = S.posts.filter(isFilePost); const nd = r.d; nd.posts = nd.posts.concat(keepFiles.filter(p => nd.timelines.some(t => t.id === p.tl) && !nd.posts.some(q => q.id === p.id))); nd.guideSeen = true; localStorage.setItem(KEY, JSON.stringify(nd)); sessionStorage.setItem("mytl-restored", String(x.at)); location.reload(); }
+  catch (err) { console.warn("restore", err); toast("戻せなかったよ。いまのデータはそのままだよ"); } });
+/* ブラウザに「このデータは消さないで」とお願いする（persist）。Chrome・Safari・Firefox が対応 */
+async function askPersist(user) { const el = $("#persistState"); try {
+  if (!navigator.storage || !navigator.storage.persist) { if (el) el.textContent = "このブラウザは「消さないで」のお願いに対応してないよ。書き出しでバックアップしてね"; return; }
+  let ok = await navigator.storage.persisted(); if (!ok && (user || S.posts.length)) ok = await navigator.storage.persist();
+  S.persisted = ok; if (el) { el.textContent = ok ? "✓ ブラウザに「このデータは消さないで」とお願い済みだよ" : "ブラウザが「消さないで」のお願いをまだ受けてくれてないよ。ホーム画面に追加したり、よく開いたりすると受けてくれやすいの"; el.classList.toggle("ok", ok); }
+  if (navigator.storage.estimate && el) { const q = await navigator.storage.estimate(); if (q.quota) el.textContent += `（使っている量: ${Math.max(1, Math.round(q.usage / 1048576))}MB）`; }
+} catch {} }
+/* 別のタブで変わったら読み直す（古いタブが新しいデータを上書きしないように） */
+addEventListener("storage", e => { if (e.key !== KEY || !e.newValue) return; try { const d = JSON.parse(e.newValue); if (!isData(d)) return; sessionStorage.setItem("mytl-otherTab", "1"); location.reload(); } catch {} });
+/* iPhone・iPad: Safari のまま使っていたら「ホーム画面に追加」をすすめる（7日ルールで消されないように） */
+function maybeHomeHint() { const ios = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+  const standalone = navigator.standalone || matchMedia("(display-mode: standalone)").matches;
+  if (!ios || standalone || window.top !== window || Date.now() - (S.homeHintAt || 0) < 14 * 864e5 || !$("#homeHint")) return;
+  $("#homeHint").hidden = false; }
 /* K6 自動バックアップのお知らせ: 書き出してから7日たったら声をかける */
 const WEEK = 7 * 864e5;
-function maybeNagBackup() {
-  const now = Date.now(); if (!S.posts.length || now - (S.lastExportAt || 0) < WEEK || now - (S.lastNagAt || 0) < WEEK) return;
-  $("#backupNag").hidden = false; $("#nagDays").textContent = Math.floor((now - (S.lastExportAt || 0)) / 864e5);
+/* 版番号と「新しくなったこと」 */
+const APP_VERSION = "1.0.0";
+const NEWS = [
+  ["1.0.0", "2026-11-27", "完成版", [
+    "画面の作りを今のXに近づけたよ。下のバー（ホーム・さがす・見る・お知らせ・しおり）と、左上のアイコンから出るアカウント画面",
+    "ツイートの右上の ⋯ に、固定・編集・移動・ゴミ箱などをまとめたよ",
+    "テーマを昼用と夜用で別々に選べるように。ぽよんの強さ、切り替えの演出、ポップアップの閉じ方と速さ、背景の柄も選べるよ",
+    "タイムラインのアイコンを決めてないときは、アカウントのアイコンが出るよ",
+    "予約ツイートと、パスワード付きの保存（本物の暗号化）",
+    "データの安全策: ブラウザに「消さないで」とお願い、1日1回の自動の控え、読み込みに失敗したら元に戻す、古いデータの自動引き継ぎ",
+    "アカウント画面に「データの守り方」をのせたよ",
+  ]],
+];
+function openNews() { hub.open("新しくなったこと", NEWS.map(([v, d, t, L]) => `<div class="news"><h3>v${v} <small>${d.replace(/-/g, "/")}・${t}</small></h3><ul>${L.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>`).join("")); S.seenVersion = APP_VERSION; save(); }
+$("#appVer").textContent = "v" + APP_VERSION; $("#acVer").textContent = "いまの版: v" + APP_VERSION;
+$("#newsBtn").addEventListener("click", () => { closeSide(); openNews(); });
+$("#acNews").addEventListener("click", () => { closeAcct(); setTimeout(openNews, 60); });
+function maybeNews() { if (!S.guideSeen) { S.seenVersion = APP_VERSION; return; } if (S.seenVersion !== APP_VERSION) setTimeout(openNews, 900); }
+const backupDue = () => S.posts.length >= 3 && Date.now() - (S.lastExportAt || S.firstUseAt || Date.now()) >= WEEK;
+function maybeNagBackup() { S.firstUseAt ||= Date.now();
+  const now = Date.now(); if (!backupDue() || now - (S.lastNagAt || 0) < 3 * 864e5) return;
+  $("#backupNag").hidden = false; $("#nagMsg").innerHTML = S.lastExportAt ? `最後に保存してから <b style="display:inline">${Math.floor((now - S.lastExportAt) / 864e5)}</b> 日たったよ。ブラウザのデータが消えても、保存したファイルがあれば元に戻せるよ` : `まだ一度もファイルに保存してないよ。ブラウザのデータが消えても、保存したファイルがあれば元に戻せるよ`;
 }
 /* R12 書き出すデータ: 全部 か 1つのタイムラインだけ */
 function exportData() {
   const scope = $("#xferScope").value;
-  if (scope) { const t = tlById(scope); return { app: "mytl", version: 1, kind: "timeline", exportedAt: new Date().toISOString(), timelines: [t], posts: S.posts.filter(p => p.tl === t.id && !isFilePost(p)) }; }
-  return { app: "mytl", version: 1, exportedAt: new Date().toISOString(), timelines: S.timelines, posts: S.posts.filter(p => !isFilePost(p)), opts: S.opts, me: S.me, presets: S.presets, rules: S.rules };
+  if (scope) { const t = tlById(scope); return { app: "mytl", version: 1, schema: SCHEMA, kind: "timeline", exportedAt: new Date().toISOString(), timelines: [t], posts: S.posts.filter(p => p.tl === t.id && !isFilePost(p)) }; }
+  return { app: "mytl", version: 1, schema: SCHEMA, exportedAt: new Date().toISOString(), timelines: S.timelines, posts: S.posts.filter(p => !isFilePost(p)), opts: S.opts, me: S.me, presets: S.presets, rules: S.rules };
 }
 function renderScope() { const v = $("#xferScope").value; $("#xferScope").innerHTML = `<option value="">全部</option>` + orderedTLs().map(t => `<option value="${t.id}" ${v === t.id ? "selected" : ""}>「${esc(t.name)}」だけ</option>`).join(""); }
 $("#xferScope").addEventListener("change", () => { if (!$("#xferBox").hidden && !$("#xferCopy").hidden) openXfer("export"); });
@@ -2885,7 +2983,7 @@ $("#fileSave").addEventListener("click", async () => {
   const d = exportData(); let body = JSON.stringify(d), lock = false;
   if ($("#encOn").checked) { const pw = $("#encPw").value; if (pw.length < 8) return toast("パスワードは8文字以上にしてね"); if (pw !== $("#encPw2").value) return toast("2つのパスワードがちがうよ");
     if (!crypto.subtle) return toast("この画面ではパスワードを使えないよ（公開版で使ってね）"); try { body = JSON.stringify(await encryptData(body, pw)); lock = true; } catch { return toast("パスワードをかけられなかったよ"); } }
-  if (!d.kind) { S.lastExportAt = Date.now(); save(); $("#backupNag").hidden = true; }
+  if (!d.kind) { S.lastExportAt = Date.now(); S.exportReal = true; save(); $("#backupNag").hidden = true; paintNotifN(); paintLastSave(); }
   const name = (d.kind ? `mytl-${d.timelines[0].name}-${new Date().toISOString().slice(0, 10)}` : `mytl-backup-${new Date().toISOString().slice(0, 10)}`) + (lock ? "-locked" : "") + ".json";
   if (lock) { $("#encPw").value = $("#encPw2").value = ""; }
   const u = URL.createObjectURL(new Blob([body], { type: "application/json" })), a = document.createElement("a"); a.href = u; a.download = name; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 4000);
@@ -2898,13 +2996,15 @@ $("#fileLoad").addEventListener("change", async e => {
   startImport(d);
 });
 function startImport(d) {
-  if (!d || d.app !== "mytl" || !Array.isArray(d.timelines) || !d.timelines.length || !Array.isArray(d.posts)) { toast("このアプリで書き出したデータじゃないみたい"); return false; }
+  if (!d || d.app !== "mytl" || !isData(d)) { toast("このアプリで書き出したデータじゃないみたい"); return false; }
+  if ((+d.schema || 1) > SCHEMA) { toast("新しい版のアプリで書き出したデータだよ。アプリを更新してから読み込んでね"); return false; }
+  try { d = migrate(JSON.parse(JSON.stringify(d))).d; } catch { toast("このデータは中身がこわれているみたい。いまのデータはそのままだよ"); return false; }
   xferPending = d; $("#xferBox").hidden = false; $("#xferCopy").hidden = true; $("#xferLoad").hidden = true; $("#xferConfirm").hidden = false;
   $("#xferConfirmText").textContent = d.kind === "timeline" ? `「${d.timelines[0].name}」（ツイート ${d.posts.length} 件）を新しいタイムラインとして追加する？` : "いまのデータは消えて、読み込んだ内容に置き換わるよ。いい？";
   $("#xferYes").textContent = d.kind === "timeline" ? "追加する" : "置き換える"; return true;
 }
 function openXfer(mode) { $("#xferConfirmText").textContent = "いまのデータは消えて、貼った内容に置き換わるよ。いい？"; $("#xferYes").textContent = "置き換える"; renderScope();
-  if (mode === "export") { S.lastExportAt = Date.now(); save(); $("#backupNag").hidden = true; }
+  if (mode === "export") { S.lastExportAt = Date.now(); S.exportReal = true; save(); $("#backupNag").hidden = true; paintNotifN(); paintLastSave(); }
   $("#xferBox").hidden = false; $("#xferConfirm").hidden = true;
   $("#xferCopy").hidden = mode !== "export"; $("#xferLoad").hidden = mode !== "import";
   const ta = $("#xferText");
@@ -2927,8 +3027,9 @@ $("#xferLoad").addEventListener("click", () => {
   startImport(d);
 });
 $("#xferNo").addEventListener("click", () => { $("#xferConfirm").hidden = true; xferPending = null; });
-$("#xferYes").addEventListener("click", () => {
-  const d = xferPending; if (!d) return;
+$("#xferYes").addEventListener("click", async () => {
+  const d = xferPending; if (!d) return; const before = JSON.stringify(S); await snaps.take("import", before);
+  try {
   if (d.kind === "timeline") {
     const src = d.timelines[0], t = { ...src, id: "tl-" + uid() }; delete t.secret; if (S.timelines.some(x => x.name === t.name)) t.name += "（読み込み）";
     S.timelines.push(t); d.posts.forEach(p => S.posts.push({ ...p, id: uid(), tl: t.id }));
@@ -2936,10 +3037,11 @@ $("#xferYes").addEventListener("click", () => {
   }
   const keepFiles = S.posts.filter(isFilePost);
   S = { timelines: d.timelines, posts: d.posts.concat(keepFiles.filter(p => d.timelines.some(t => t.id === p.tl))), active: d.timelines[0].id, opts: { ...S.opts, ...(d.opts || {}) }, me: d.me || S.me, presets: d.presets || S.presets || [], trash: S.trash || [], lock: S.lock, rules: d.rules || S.rules || [], secretPin: d.secretPin || S.secretPin, guideSeen: true };
-  xferPending = null; $("#xferBox").hidden = true; applyOpts(); renderAll(); toast(`読み込みました（ツイート ${d.posts.length} 件）`);
+  S.schema = SCHEMA; xferPending = null; $("#xferBox").hidden = true; applyOpts(); renderAll(); save(); paintSnaps(); toast(`読み込みました（ツイート ${d.posts.length} 件）。前の状態は「自動の控え」に残してあるよ`);
+  } catch (err) { S = JSON.parse(before); xferPending = null; $("#xferConfirm").hidden = true; try { applyOpts(); renderAll(); } catch {} save(); toast("読み込みの途中で失敗したから、元のデータに戻したよ"); }
 });
 $("#resetNo").addEventListener("click", () => { $("#resetConfirm").hidden = true; });
-$("#resetYes").addEventListener("click", () => { forgetFiles(S.posts); idb.clear(); const o = S.opts, lock = S.lock, me = S.me; S = seed(); S.opts = o; S.lock = lock; S.me = me || { id: "me", name: "私", color: "#1d9bf0" }; S.trash = []; S.rules = []; S.presets ||= []; S.pos = {}; S.cheer = {}; S.guideSeen = true; S.opts.startTl = ""; S.opts.splitTl = ""; $("#resetConfirm").hidden = true; renderAll(); toast("サンプルに戻しました"); });
+$("#resetYes").addEventListener("click", async () => { await snaps.take("reset"); forgetFiles(S.posts); idb.clear(); const o = S.opts, lock = S.lock, me = S.me; S = seed(); S.opts = o; S.lock = lock; S.me = me || { id: "me", name: "私", color: "#1d9bf0" }; S.trash = []; S.rules = []; S.presets ||= []; S.pos = {}; S.cheer = {}; S.guideSeen = true; S.opts.startTl = ""; S.opts.splitTl = ""; $("#resetConfirm").hidden = true; renderAll(); toast("サンプルに戻しました"); });
 
 /* 管理パネル（狭い画面ではシート） */
 function openSide() { $("#side").classList.add("open"); $("#backdrop").classList.add("open"); }
@@ -3176,8 +3278,10 @@ document.addEventListener("click", e => {
   if (e.target.id === "searchClear") { qf.clear(); setQuery(""); $("#searchBar").classList.remove("open"); return; }
   const gi = e.target.closest(".gallery img[data-gi]"); if (gi && gi.closest("#feed")) { e.stopPropagation(); e.preventDefault(); const id = gi.closest(".post").dataset.id; openViewer(id, "feed", +gi.dataset.gi); }
 }, true);
-$("#nagLater").addEventListener("click", () => { S.lastNagAt = Date.now(); save(); $("#backupNag").hidden = true; toast("また1週間後に声をかけるね"); });
-$("#nagGo").addEventListener("click", () => { $("#backupNag").hidden = true; if (innerWidth <= 960) openSide(); openXfer("export"); });
+$("#homeLater").addEventListener("click", () => { S.homeHintAt = Date.now(); save(); $("#homeHint").hidden = true; });
+$("#nagLater").addEventListener("click", () => { S.lastNagAt = Date.now(); save(); $("#backupNag").hidden = true; toast("また3日後に声をかけるね"); });
+function goSave() { if (innerWidth <= 960) openSide(); setTimeout(() => { const b = $("#fileSave"); b.scrollIntoView({ block: "center" }); b.classList.add("pulse-hint"); setTimeout(() => b.classList.remove("pulse-hint"), 2400); }, 120); }
+$("#nagGo").addEventListener("click", () => { $("#backupNag").hidden = true; S.lastNagAt = Date.now(); save(); goSave(); });
 /* K8 パソコンのキーボード操作 */
 const KEY_HELP = "J/K: 前後のツイート ・ L: ハート ・ R: リアクション ・ C: コメント ・ Space: 再生/停止 ・ F: 全画面 ・ N: 新しいツイート ・ G: グリッド ・ T: 今日の1本 ・ ←/→: タイムライン ・ /: 検索 ・ ?: この一覧";
 document.addEventListener("keydown", e => {
@@ -4119,14 +4223,15 @@ function openWatch() {
 function upcoming() { const now = Date.now(); const a = [];
   S.posts.forEach(p => { if (!visPost(p)) return; if (p.snoozeUntil > now) a.push({ p, at: p.snoozeUntil, kind: p.sched ? "sched" : "snooze" }); if (p.releaseAt && p.releaseAt > now) a.push({ p, at: p.releaseAt, kind: "rel" }); });
   return a.sort((x, y) => x.at - y.at); }
-function paintNotifN() { const n = upcoming().length; ["#bNotifN", "#navNotifN"].forEach(sel => { const el = $(sel); if (!el) return; el.hidden = !n; el.textContent = n > 9 ? "9+" : n; }); }
+function paintNotifN() { const n = upcoming().length + (backupDue() ? 1 : 0); ["#bNotifN", "#navNotifN"].forEach(sel => { const el = $(sel); if (!el) return; el.hidden = !n; el.textContent = n > 9 ? "9+" : n; }); }
 const whenTxt = at => new Date(at).toLocaleString("ja-JP", { month: "numeric", day: "numeric", weekday: "short", hour: "2-digit", minute: "2-digit" });
 const postTitle = p => (p.text || (p.embed && (p.embed.title || p.embed.url)) || (p.media && p.media.title) || "ツイート").split("\n")[0].slice(0, 60);
 function openNotif() {
   const L = upcoming(); const K = { sched: ["⏰", "#1d9bf0", "予約"], snooze: ["💤", "#7856ff", "スヌーズ"], rel: ["📅", "#ff7a00", "公開日"] };
-  hub.open("お知らせ", L.length ? `<div class="hub-rows">${L.map(({ p, at, kind }) => `<div class="hub-row" data-pid="${p.id}"><span class="ic" style="background:${K[kind][1]}">${K[kind][0]}</span><span class="tx"><b>${esc(postTitle(p))}</b><small>${K[kind][2]}・${whenTxt(at)}・「${esc(tlById(p.tl).name)}」</small></span>${kind !== "rel" ? `<button type="button" class="btn-ghost sm" data-now="${p.id}">今すぐ出す</button>` : ""}</div>`).join("")}</div>`
-    : `<div class="hub-empty">これから出てくるツイートはないよ。<br>書くときの⏰で予約、「⋯」の「あとでまた見る」でスヌーズできるよ</div>`,
-    b => b.addEventListener("click", e => { const n = e.target.closest("[data-now]"); if (!n) return; const p = S.posts.find(x => x.id === n.dataset.now); if (!p) return; p.snoozeUntil = Date.now() - 1; wakeSnoozed(); hub.close(); paintNotifN(); }));
+  const bk = backupDue() ? `<div class="hub-row bk-row"><span class="ic" style="background:#f4212e">⛨</span><span class="tx"><b>データのバックアップをしよう</b><small>${S.lastExportAt ? `最後に保存してから ${Math.floor((Date.now() - S.lastExportAt) / 864e5)} 日たったよ` : "まだ一度もファイルに保存してないよ"}</small></span><button type="button" class="btn-accent sm" data-bk="1">保存する</button></div>` : "";
+  hub.open("お知らせ", bk + (L.length ? `<div class="hub-rows">${L.map(({ p, at, kind }) => `<div class="hub-row" data-pid="${p.id}"><span class="ic" style="background:${K[kind][1]}">${K[kind][0]}</span><span class="tx"><b>${esc(postTitle(p))}</b><small>${K[kind][2]}・${whenTxt(at)}・「${esc(tlById(p.tl).name)}」</small></span>${kind !== "rel" ? `<button type="button" class="btn-ghost sm" data-now="${p.id}">今すぐ出す</button>` : ""}</div>`).join("")}</div>`
+    : `<div class="hub-empty">これから出てくるツイートはないよ。<br>書くときの⏰で予約、「⋯」の「あとでまた見る」でスヌーズできるよ</div>`),
+    b => b.addEventListener("click", e => { if (e.target.closest("[data-bk]")) { hub.close(); setTimeout(goSave, 120); return; } const n = e.target.closest("[data-now]"); if (!n) return; const p = S.posts.find(x => x.id === n.dataset.now); if (!p) return; p.snoozeUntil = Date.now() - 1; wakeSnoozed(); hub.close(); paintNotifN(); }));
 }
 function openMarks() {
   const L = S.posts.filter(p => visPost(p) && ((p.marks && p.marks.length) || p.saved)).sort((a, b) => keyOf(b) - keyOf(a));
@@ -4716,7 +4821,7 @@ function boot() {
   if (S.opts.startTl && tlById(S.opts.startTl) && !isHiddenTl(tlById(S.opts.startTl))) S.active = S.opts.startTl;
   wakeSnoozed(true); applyOpts(); renderAll();
   const d = readShareParams(); if (d) openShare(d); else restorePos();
-  setTimeout(seasonOpen, 700); setTimeout(() => { applyPattern(); switchFx(); paintNotifN(); }, 50); maybeNagBackup(); purgeTrash(); loadDraft(); netState(); bootLock(); maybeGuide(); paintRings(); readQRLink();
+  setTimeout(seasonOpen, 700); setTimeout(() => { applyPattern(); switchFx(); paintNotifN(); }, 50); maybeNagBackup(); bootSafety(); purgeTrash(); loadDraft(); netState(); bootLock(); maybeGuide(); paintRings(); readQRLink();
   setTimeout(updateFocus, 60);
 }
 Promise.race([idb.all(), new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 1500))])

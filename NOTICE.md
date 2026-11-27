@@ -1,8 +1,8 @@
 # 著作権について
 
-Copyright (c) 2026 kaito1998930-eng. All rights reserved.
+Copyright (c) 2026 hardbank0905. All rights reserved.
 
-このリポジトリのコード・デザイン・文章の著作権は kaito1998930-eng にあります。
+このリポジトリのコード・デザイン・文章の著作権は hardbank0905 にあります。
 オープンソースのライセンスは付けていません。
 
 - 公開しているURLから、このアプリを使うのは自由です

@@ -92,4 +92,4 @@ URL をコピーして、アプリの画面（入力欄の外）で貼り付け�
 
 ## 著作権
 
-Copyright (c) 2026 kaito1998930-eng. All rights reserved. 無断での転用・再配布はできません。くわしくは [NOTICE.md](NOTICE.md) を見てください。
+Copyright (c) 2026 hardbank0905. All rights reserved. 無断での転用・再配布はできません。くわしくは [NOTICE.md](NOTICE.md) を見てください。

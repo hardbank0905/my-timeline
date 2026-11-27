@@ -683,6 +683,7 @@ body.no-select,body.no-select *{user-select:none!important;-webkit-user-select:n
 .sched-ex button{text-align:left;font-size:13px;color:var(--accent);padding:2px 0}
 .enc-row{display:flex;gap:6px;flex-wrap:wrap}.enc-row[hidden]{display:none}.enc-row input{flex:1;min-width:140px;border-radius:10px}
 .enc-ex{font-size:13px;border:1px solid var(--line);border-radius:12px;padding:8px 12px}.enc-ex summary{cursor:pointer;font-weight:700}
+.enc-ex .dh-list{margin:6px 0 10px;padding-left:20px;display:flex;flex-direction:column;gap:6px}.data-how p{margin:8px 0 2px}.data-how p b{color:var(--fg)}.data-how{margin-bottom:10px}
 .enc-ex ol{margin:8px 0;padding-left:20px;display:flex;flex-direction:column;gap:6px}.enc-ex p{margin:0;color:var(--muted)}
 
 /* ぷっくり浮き上がるメディア: 影を2段、ふちに細い光。再生中はもう少し浮く */
@@ -1274,6 +1275,29 @@ body.sheet-open{overflow:hidden}
       <h2>データ</h2>
       <p>ツイートとタイムライン、手元から追加した画像・動画は、このブラウザの中に保存されます（ほかの端末とは共有されません）。</p>
       <p>別の端末にデータを移すときは、ここで書き出した文字をコピーして、移したい端末の「読み込む」に貼ってね（手元から追加した画像・動画は移らないよ）。</p>
+      <details class="enc-ex data-how" id="dataHow"><summary>📖 データの守り方（書き出し・読み込みのやり方）</summary>
+        <p><b>データが消えちゃう場面</b></p>
+        <ul class="dh-list">
+          <li><b>ブラウザの「履歴とWebサイトデータを消去」</b>をしたとき → 消す前に書き出しておいてね</li>
+          <li><b>iPhone・iPadで、Safariのまま7日くらい開かなかった</b>とき（Safariが自動で片付けちゃうの） → 共有ボタン →「ホーム画面に追加」して、そこから開くと消えにくいよ</li>
+          <li><b>アプリのURLが変わった</b>とき（データはURLごとに別の箱なの） → 引っ越す前に書き出して、新しいURLで読み込んでね</li>
+          <li><b>スマホやPCが壊れた・なくした</b>とき → 端末の外（iCloud Drive、Googleドライブなど）にファイルを置いておけば大丈夫</li>
+        </ul>
+        <p><b>おすすめ: 週に1回くらい「ファイルで保存」</b>。保存してから時間がたつと、上にお知らせが出るよ</p>
+        <p><b>書き出すやり方</b></p>
+        <ol>
+          <li><b>ファイルで保存</b>（いちばんおすすめ）: 下の「書き出す範囲」で「全部」を選ぶ →「ファイルで保存」→ iPhoneは「ファイル」アプリに保存、PCはダウンロードフォルダに入るよ</li>
+          <li><b>文字でコピー</b>: 「書き出す」→「コピー」→ メモアプリやLINEのKeepに貼っておく</li>
+          <li><b>QRコード</b>: 「QRコードで渡す」→ 別の端末のカメラで読む（データが少ないときだけ使えるよ）</li>
+        </ol>
+        <p><b>読み込むやり方</b></p>
+        <ol>
+          <li>ファイルなら「ファイルから読み込む」でファイルを選ぶ。文字なら「読み込む」に貼って「この内容で置き換える」</li>
+          <li>「全部」で書き出したデータは、<b>いまのデータと入れ替わる</b>よ。1つのタイムラインだけのデータは、新しいタイムラインとして追加されるの</li>
+          <li>パスワード付きのファイルは、読み込むときにパスワードを聞かれるよ</li>
+        </ol>
+        <p>※手元から追加した画像・動画は、書き出しには入らないよ。元の写真は端末に残しておいてね</p>
+      </details>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
         <button class="btn-ghost" id="exportBtn">書き出す</button>
         <button class="btn-ghost" id="importBtn">読み込む</button>
@@ -1439,6 +1463,7 @@ body.sheet-open{overflow:hidden}
       <button type="button" class="ac-link" id="acSecret"><span>🔒</span><b>シークレット</b><small id="acSecretSub"></small></button>
       <button type="button" class="ac-link" id="acTrash"><span>🗑</span><b>ゴミ箱</b><small id="acTrashSub"></small></button>
       <button type="button" class="ac-link" id="acSet"><span>⚙︎</span><b>設定</b><small>見た目・再生・データ</small></button>
+      <button type="button" class="ac-link" id="acData"><span>📖</span><b>データの守り方</b><small>書き出し・読み込み・機種変更</small></button>
       <button type="button" class="ac-link" id="acPick"><span>🎲</span><b>今日の1本</b><small>迷ったらここ</small></button>
     </div>
   </div>
@@ -4115,6 +4140,8 @@ function openMarks() {
 const openFind = () => { scrollTo({ top: 0, behavior: "smooth" }); document.body.classList.remove("hd-hide"); const b = $("#searchBar"); b.classList.add("open"); setTimeout(() => $("#searchBox").focus(), 60); };
 $("#bFind").addEventListener("click", openFind); $("#bWatch").addEventListener("click", openWatch); $("#bNotif").addEventListener("click", openNotif); $("#bMarks").addEventListener("click", openMarks);
 $("#navWatch").addEventListener("click", openWatch); $("#navNotif").addEventListener("click", openNotif); $("#navMarks").addEventListener("click", openMarks);
+function openDataHow() { if (innerWidth <= 960) openSide(); const d = $("#dataHow"); d.open = true; setTimeout(() => d.scrollIntoView({ behavior: reduceMotion() ? "auto" : "smooth", block: "start" }), 120); }
+$("#acData").addEventListener("click", () => { closeAcct(); setTimeout(openDataHow, 60); });
 $("#acSet").addEventListener("click", () => { closeAcct(); if (innerWidth <= 960) openSide(); else $("#side").scrollTo({ top: 0, behavior: "smooth" }); });
 $("#acPick").addEventListener("click", () => { closeAcct(); todayPick(); });
 setInterval(paintNotifN, 60e3);
@@ -4457,8 +4484,8 @@ $("#optStealth").addEventListener("change", e => { S.opts.secretStealth = e.targ
 const GUIDE = [
   ["▶", "真ん中の動画だけ動くよ", "スクロールして画面の真ん中に来た動画だけが自動で再生されるの。タップで一時停止、長押しで2倍速、長押しのまま下にずらすと2倍速のまま固定だよ"],
   ["⇆", "左右でタイムラインを切り替え", "スマホは左右にスワイプ、PCはトラックパッドの横スクロールか ← → キー。グループでまとめたり、シークレットで隠したりもできるよ"],
-  ["⇅", "ツイートの整理", "⇅ボタンから、固定・編集・あとでまた見る・色ラベル・まとめて選ぶ・画像で保存ができるよ。消したツイートは30日間ゴミ箱に残るの"],
-  ["⛨", "データはこの端末の中", "ツイートはこのブラウザだけに保存されるよ。ときどき「書き出す」でバックアップしてね。かんたんロックで4桁の番号もかけられるよ"],
+  ["⋯", "ツイートの整理", "右上の ⋯ ボタンから、固定・編集・あとでまた見る・色ラベル・まとめて選ぶ・画像で保存ができるよ。消したツイートは30日間ゴミ箱に残るの"],
+  ["⛨", "データはこの端末の中", "ツイートはこのブラウザだけに保存されるよ。ブラウザのデータを消すと一緒に消えちゃうから、ときどき「ファイルで保存」でバックアップしてね。やり方は、左上のアイコン →「データの守り方」にまとめてあるよ"],
 ];
 let gIdx = 0;
 function openGuide() { gIdx = 0; $("#guide").hidden = false; document.body.classList.add("sheet-open"); paintGuide(); $("#gNext").focus(); }

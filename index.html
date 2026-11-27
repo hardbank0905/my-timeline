@@ -387,6 +387,12 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 .tr-text{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
 .tr-acts{display:flex;gap:6px;align-items:center}
 .tr-del{color:var(--danger);font-size:13px;font-weight:700;padding:4px 8px;border-radius:999px}
+.tr-bar{display:flex;align-items:center;gap:8px;padding:8px 12px;border-radius:14px;border:1px solid var(--line);flex-wrap:wrap}
+.tr-bar .grow{flex:1}
+.tr-check{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700;cursor:pointer}
+.tr-check input{width:20px;height:20px;accent-color:var(--accent);cursor:pointer}
+.tr-item.picked{outline:2px solid var(--accent);outline-offset:-2px}
+#trKillSel.sure{background:var(--danger);color:#fff}
 .tr-del.sure,#trEmpty.sure{background:var(--danger);color:#fff}
 .bulk{position:fixed;z-index:70;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;
   width:min(640px,calc(100% - 24px));padding:10px 12px;border-radius:18px;background:var(--bg);border:1px solid var(--line-strong);box-shadow:0 18px 40px -12px rgba(0,0,0,.35);font-size:14px}
@@ -518,6 +524,29 @@ body.locked > :not(#lockScreen):not(svg){filter:blur(12px)}
 .lock.secret .lock-logo{background:#222;color:#fff}
 :root[data-calm] *,:root[data-calm] *::before,:root[data-calm] *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 :root[data-calm] .post.focus{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+/* ---- F案 ---- */
+#tabs{position:relative}
+#tabs.has-ink .tab.on::after{display:none}
+.tab-ink{position:absolute;bottom:0;height:4px;border-radius:4px;background:var(--accent);pointer-events:none}
+:root[data-skin] .tab-ink{background:var(--metal)}
+:root[data-fam="gem"] .tab-ink{background:conic-gradient(from 90deg,var(--g1),var(--g2),var(--g3),var(--g1))}
+:root[data-fam="cyber"] .tab-ink{border-radius:0;box-shadow:0 0 10px var(--glow)}
+body.searching .tab-ink{opacity:.25}
+.num{display:inline-block}
+.rpl{position:relative;overflow:hidden}
+.ripple{position:absolute;border-radius:50%;pointer-events:none;background:currentColor;transform:translate(-50%,-50%) scale(0);opacity:0}
+.press-gauge{position:absolute;width:64px;height:64px;transform:translate(-50%,-50%);pointer-events:none;z-index:6;opacity:0}
+.press-gauge circle{fill:none;stroke:#fff;stroke-width:5;stroke-linecap:round}
+.press-gauge .bgc{stroke:rgba(255,255,255,.28)}
+.undo-slot{position:relative;display:flex;align-items:center;justify-content:space-between;gap:8px;height:52px;padding:0 16px;margin:0;border-bottom:1px solid var(--line);color:var(--muted);font-size:14px;overflow:hidden;background:color-mix(in srgb,var(--bg-hover) 60%,transparent)}
+.undo-slot span{display:flex;align-items:center;gap:8px}
+.undo-slot .i{width:16px;height:16px}
+.undo-slot button{font-weight:800;color:var(--accent);text-decoration:underline;text-underline-offset:3px;padding:6px 8px}
+.undo-slot i{position:absolute;left:0;bottom:0;height:2px;background:var(--accent);opacity:.5}
+.toast{pointer-events:auto;touch-action:pan-y;cursor:grab}
+.toast:not(.show){pointer-events:none}
+.confetti{position:fixed;width:7px;height:10px;border-radius:2px;pointer-events:none;z-index:90}
+.cheer-msg{color:var(--fg);font-size:15px}
 /* ---- R案 ---- */
 .act.like.lv1{color:#e0115f}
 .act.like.lv2{color:#e0115f}
@@ -858,6 +887,7 @@ body.sheet-open{overflow:hidden}
       <label class="toggle" for="optMotion">タイムライン切り替えの動き
         <select id="optMotion" class="sel"><option value="spring">ばねスライド</option><option value="depth">奥行き</option><option value="flip">カードめくり</option></select></label>
       <label class="toggle">ハートや2倍速で軽く振動 <span class="switch"><input type="checkbox" id="optVibe"><span></span></span></label>
+      <label class="toggle">操作の小さな効果音 <span class="switch"><input type="checkbox" id="optSfx"><span></span></span></label>
       <p class="note" style="margin:-4px 0 0">Android は対応、iPhone のブラウザは振動しないよ</p>
       <label class="toggle">開き直したら続きから <span class="switch"><input type="checkbox" id="optResume"><span></span></span></label>
       <label class="toggle">画像の全画面は自動で次へ <span class="switch"><input type="checkbox" id="optSlide"><span></span></span></label>
@@ -1001,7 +1031,14 @@ body.sheet-open{overflow:hidden}
 <div class="share" id="trashSheet" hidden role="dialog" aria-modal="true" aria-labelledby="trTitle">
   <div class="share-card">
     <div class="lk-head"><h2 id="trTitle">ゴミ箱</h2><button type="button" class="icon-btn" id="trClose" aria-label="閉じる" style="color:var(--fg)"><svg class="i"><use href="#i-x"/></svg></button></div>
-    <p class="lk-hint" style="margin:0">消したツイートは30日間ここに残るよ。30日たつと自動で消えるの</p>
+    <p class="lk-hint" style="margin:0">消したツイートは30日間ここに残るよ。30日たつか、300件を超えるか、保存の置き場が混んでくると、古いものから自動で消えるの</p>
+    <p class="lk-hint" id="trSize" style="margin:0;font-weight:700"></p>
+    <div class="tr-bar" id="trBar" hidden>
+      <label class="tr-check"><input type="checkbox" id="trAll" aria-label="全部選ぶ"><span id="trN">全部選ぶ</span></label>
+      <span class="grow"></span>
+      <button type="button" class="btn-ghost sm" id="trRestoreSel" disabled>元に戻す</button>
+      <button type="button" class="btn-ghost sm danger" id="trKillSel" disabled>完全に消す</button>
+    </div>
     <ul class="tr-list" id="trList"></ul>
     <div class="share-actions"><button type="button" class="btn-ghost" id="trEmpty">ゴミ箱を空にする</button></div>
   </div>
@@ -1216,7 +1253,7 @@ if (!S || !Array.isArray(S.timelines) || !S.timelines.length) S = seed();
 S.opts ||= { center: false, auto: true };
 S.me ||= { id: "me", name: "私", color: "#1d9bf0" }; S.me.id = "me";
 S.presets ||= [];
-S.opts.sound ??= true; S.opts.preview ??= 120; S.opts.auto ??= true; S.opts.wifiOnly ??= true; S.opts.strictNet ??= false; S.opts.lazy ??= true; S.opts.fullEnd ??= "loop"; S.opts.slideAuto ??= true; S.opts.slideSec ??= 10; S.rules ||= []; S.opts.collapsed ||= {}; S.opts.calm ??= false; S.opts.startTl ??= ""; S.opts.split ??= false; S.opts.splitTl ??= ""; S.opts.secretStealth ??= false; S.opts.volume ??= 100; S.opts.fontSize ??= "m"; S.opts.oneHand ??= false; S.trash ||= []; S.opts.modeTime ??= false; S.opts.nightFrom ??= 19; S.opts.nightTo ??= 6; S.lastExportAt ??= Date.now(); S.opts.tlMotion ??= "spring"; S.opts.vibe ??= true; S.opts.resume ??= true; S.pos ||= {};
+S.opts.sound ??= true; S.opts.preview ??= 120; S.opts.auto ??= true; S.opts.wifiOnly ??= true; S.opts.strictNet ??= false; S.opts.lazy ??= true; S.opts.fullEnd ??= "loop"; S.opts.slideAuto ??= true; S.opts.slideSec ??= 10; S.rules ||= []; S.opts.sfx ??= false; S.cheer ||= {}; S.opts.collapsed ||= {}; S.opts.calm ??= false; S.opts.startTl ??= ""; S.opts.split ??= false; S.opts.splitTl ??= ""; S.opts.secretStealth ??= false; S.opts.volume ??= 100; S.opts.fontSize ??= "m"; S.opts.oneHand ??= false; S.trash ||= []; S.opts.modeTime ??= false; S.opts.nightFrom ??= 19; S.opts.nightTo ??= 6; S.lastExportAt ??= Date.now(); S.opts.tlMotion ??= "spring"; S.opts.vibe ??= true; S.opts.resume ??= true; S.pos ||= {};
 const fileUrls = new Map(); // 手元から追加したファイル（IndexedDB から復元）
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch { try { toast("保存しきれなかったよ。アイコンの画像を外すか、小さい画像にしてね"); } catch {} return false; } }
 /* 手元ファイルの保存先: IndexedDB（ブラウザ内） */
@@ -1354,19 +1391,19 @@ document.addEventListener("pointerdown", e => {
   if (e.target.closest("button, a, .seek, [data-snd], [data-act]")) return;
   hideMarks(w);
   const pl = players.get(w); if (!pl || !pl.setRate) return;
-  press = { w, pl, x: e.clientX, y: e.clientY, long: false, id: e.pointerId };
+  press = { w, pl, x: e.clientX, y: e.clientY, long: false, id: e.pointerId }; gaugeStart(w, e);
   press.t = setTimeout(() => {
     if (!press) return; press.long = true;
     if (!pl.playing) { players.forEach(o => { if (o !== pl && o.playing) o.pause(); }); pl.play(); }
     if (pl.rateLocked) { setRateUI(w, pl, 1, false); press.unlocked = true; toast("等速に戻したよ"); }
     else setRateUI(w, pl, 2, false);
-    buzz(20); w.classList.add("pressing");
+    haptic("rate"); w.classList.add("pressing"); gaugeDone(w);
   }, LONG_MS);
 }, true);
 document.addEventListener("pointermove", e => {
   if (!press || e.pointerId !== press.id) return;
   const dx = e.clientX - press.x, dy = e.clientY - press.y;
-  if (!press.long) { if (Math.hypot(dx, dy) > 12) { clearTimeout(press.t); press = null; } return; }
+  if (!press.long) { if (Math.hypot(dx, dy) > 12) { clearTimeout(press.t); gaugeStop(press.w); press = null; } return; }
   if (press.x0 == null) { press.x0 = e.clientX; } // 長押しが始まった位置から左右を測る
   if (!press.unlocked && !press.pl.rateLocked) {
     // 長押しのまま左右にずらすと速さが変わる: 左 1.5倍 / まん中 2倍 / 右 3倍
@@ -1375,9 +1412,20 @@ document.addEventListener("pointermove", e => {
   }
   if (!press.unlocked && dy > LOCK_DY && !press.pl.rateLocked) { const r = press.pl.rate; setRateUI(press.w, press.pl, r, true); buzz([15, 60, 15]); toast(`${r}倍速で固定したよ`); }
 }, true);
+/* F9 長押しのたまるゲージ */
+function gaugeStart(w, e) {
+  if (reduceMotion()) return; gaugeStop(w); const r = w.getBoundingClientRect(), C = 2 * Math.PI * 26;
+  const g = document.createElementNS("http://www.w3.org/2000/svg", "svg"); g.setAttribute("viewBox", "0 0 64 64"); g.setAttribute("class", "press-gauge"); g.setAttribute("aria-hidden", "true");
+  g.innerHTML = `<circle class="bgc" cx="32" cy="32" r="26"/><circle class="fg" cx="32" cy="32" r="26" stroke-dasharray="${C}" stroke-dashoffset="${C}" transform="rotate(-90 32 32)"/>`;
+  g.style.left = e.clientX - r.left + "px"; g.style.top = e.clientY - r.top + "px"; w.append(g); w._gauge = g;
+  g.animate([{ opacity: 0 }, { opacity: 1 }], { duration: 120, delay: 90, fill: "both" });
+  g.querySelector(".fg").animate([{ strokeDashoffset: C }, { strokeDashoffset: 0 }], { duration: LONG_MS - 90, delay: 90, easing: "linear", fill: "forwards" });
+}
+function gaugeDone(w) { const g = w._gauge; if (!g) return; w._gauge = null; g.animate([{ transform: "translate(-50%,-50%) scale(1)", opacity: 1 }, { transform: "translate(-50%,-50%) scale(1.6)", opacity: 0 }], { duration: 260, fill: "forwards" }).onfinish = () => g.remove(); }
+function gaugeStop(w) { if (w && w._gauge) { w._gauge.remove(); w._gauge = null; } }
 function endPress(e) {
   if (!press || (e && e.pointerId !== press.id)) return;
-  clearTimeout(press.t);
+  clearTimeout(press.t); gaugeStop(press.w);
   if (press.long) {
     press.w.classList.remove("pressing");
     if (!press.pl.rateLocked && press.pl.rate !== 1) setRateUI(press.w, press.pl, 1, false);
@@ -1692,7 +1740,39 @@ function pressHeart(p) {
   toast(`ハート ${p.likes} 個目！ 次は3日後に押せるよ`); return true;
 }
 /* 軽い振動（対応している端末だけ。iPhone のブラウザは非対応） */
-function buzz(ms) { if (S.opts.vibe && navigator.vibrate) try { navigator.vibrate(ms); } catch {} }
+function buzz(ms) { if (!S.opts.vibe) return; if (navigator.vibrate) { try { navigator.vibrate(ms); } catch {} } else iosTick(); }
+/* F7 iPhone用のおまけ: iOS 18以降の「スイッチ」部品を押したときの軽い振動を借りる（効かない端末もある） */
+const IS_IOS = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+let iosSw = null;
+function iosTick() {
+  if (!IS_IOS) return;
+  if (!iosSw) { iosSw = document.createElement("label"); iosSw.setAttribute("aria-hidden", "true"); iosSw.style.cssText = "position:fixed;left:-99px;top:0;width:1px;height:1px;opacity:0;pointer-events:none"; iosSw.innerHTML = `<input type="checkbox" switch tabindex="-1">`; document.body.append(iosSw); }
+  try { iosSw.click(); } catch {}
+}
+/* F7 操作ごとに振動を使い分け: ハート=ポン、再投稿=トトン、ゴミ箱=トン、2倍速=ブーン */
+const HAPTIC = { like: [12], repost: [10, 50, 10], trash: [22], rate: [60], tick: [8] };
+const haptic = k => buzz(HAPTIC[k] || [10]);
+/* F8 小さな効果音（設定でオンにしたときだけ） */
+let sfxCtx = null;
+function sfx(kind) {
+  if (!S.opts.sfx) return;
+  try {
+    sfxCtx ||= new (window.AudioContext || window.webkitAudioContext)(); if (sfxCtx.state === "suspended") sfxCtx.resume();
+    const v = .1 * (S.opts.volume ?? 100) / 100;
+    const tone = (f1, f2, dur, type = "sine", vol = v, at = 0) => { const o = sfxCtx.createOscillator(), g = sfxCtx.createGain(), t = sfxCtx.currentTime + at;
+      o.type = type; o.frequency.setValueAtTime(f1, t); o.frequency.exponentialRampToValueAtTime(f2, t + dur); g.gain.setValueAtTime(Math.max(.0002, vol), t); g.gain.exponentialRampToValueAtTime(.0001, t + dur); o.connect(g).connect(sfxCtx.destination); o.start(t); o.stop(t + dur + .02); };
+    if (kind === "like") tone(660, 990, .09);
+    else if (kind === "repost") tone(300, 1400, .14, "triangle", v * .6);
+    else if (kind === "post") { tone(784, 784, .12); tone(1175, 1175, .16, "sine", v, .07); }
+    else if (kind === "pop") tone(520, 700, .07, "sine", v * .8);
+    else if (kind === "trash") tone(420, 180, .12, "triangle", v * .7);
+  } catch {}
+}
+/* F2 数字がくるっと回る */
+function rollNum(btn, dir = 1) {
+  const n = btn && btn.querySelector(".num"); if (!n || reduceMotion() || !n.animate) return;
+  n.animate([{ transform: `translateY(${dir > 0 ? 70 : -70}%)`, opacity: 0 }, { transform: `translateY(${dir > 0 ? -12 : 12}%)`, opacity: 1, offset: .7 }, { transform: "none" }], { duration: 320, easing: "cubic-bezier(.3,1.4,.5,1)" });
+}
 /* ハートを押したとき、小さなハートがボタンのまわりに控えめに散る */
 const reduceMotion = () => !!S.opts.calm || matchMedia("(prefers-reduced-motion: reduce)").matches;
 function heartBurst(r, reach = 18) {
@@ -1708,6 +1788,13 @@ function heartBurst(r, reach = 18) {
       { duration: 650 + Math.random() * 200, easing: "cubic-bezier(.2,.7,.3,1)" }).onfinish = () => h.remove();
   }
 }
+/* F6 押したところから波紋 */
+document.addEventListener("pointerdown", e => {
+  if (reduceMotion()) return; const b = e.target.closest?.(".act, .btn-accent, .btn-ghost, .btn-primary, .ft, .tab, .nav-item, .icon-btn, .tt-rail button .circle, .menu button"); if (!b || b.disabled) return;
+  const r = b.getBoundingClientRect(), D = Math.hypot(r.width, r.height) * 2.2, s = document.createElement("span"); s.className = "ripple";
+  s.style.cssText = `left:${e.clientX - r.left}px;top:${e.clientY - r.top}px;width:${D}px;height:${D}px`; b.classList.add("rpl"); b.append(s);
+  s.animate([{ transform: "translate(-50%,-50%) scale(0)", opacity: .22 }, { transform: "translate(-50%,-50%) scale(1)", opacity: 0 }], { duration: 520, easing: "ease-out" }).onfinish = () => s.remove();
+}, true);
 /* ボタンを押すと、ぷにっと縮んで戻る */
 document.addEventListener("pointerdown", e => {
   const b = e.target.closest("button, .act, label.icon-btn, .btn-ghost"); if (!b || b.disabled || reduceMotion()) return;
@@ -1716,18 +1803,29 @@ document.addEventListener("pointerdown", e => {
 }, true);
 function heartBtn(p) {
   const st = heartState(p);
-  return `<button class="act like ${st.cooling ? "on" : ""} lv${heartLv(p)}" data-act="like" aria-label="ハート（${p.likes || 0}）" title="${st.cooling ? `あと${fmtLeft(st.left)}で押せる（長押しでも見られるよ）` : "ハートを押す"}"><svg class="i" style="${st.cooling ? "fill:currentColor" : ""}"><use href="#i-heart"/></svg>${p.likes || ""}</button>`;
+  return `<button class="act like ${st.cooling ? "on" : ""} lv${heartLv(p)}" data-act="like" aria-label="ハート（${p.likes || 0}）" title="${st.cooling ? `あと${fmtLeft(st.left)}で押せる（長押しでも見られるよ）` : "ハートを押す"}"><svg class="i" style="${st.cooling ? "fill:currentColor" : ""}"><use href="#i-heart"/></svg><span class="num">${p.likes || ""}</span></button>`;
 }
 function ttHeart(p) {
   const st = heartState(p);
-  return `<button data-like="${p.id}" class="${st.cooling ? "on" : ""} lv${heartLv(p)}" aria-label="ハート（${p.likes || 0}）"><span class="circle"><svg class="i" style="${st.cooling ? "fill:currentColor" : ""}"><use href="#i-heart"/></svg></span>${p.likes || 0}</button>`;
+  return `<button data-like="${p.id}" class="${st.cooling ? "on" : ""} lv${heartLv(p)}" aria-label="ハート（${p.likes || 0}）"><span class="circle"><svg class="i" style="${st.cooling ? "fill:currentColor" : ""}"><use href="#i-heart"/></svg></span><span class="num">${p.likes || 0}</span></button>`;
 }
 
 /* ================= 描画 ================= */
 const feedAP = createAutoplay(null);
 let ttAP = null;
 
+/* F1 タブの線: 切り替えるとびよんと伸びて、次のタブでぴたっと縮む */
+function inkPos(tab) { const box = $("#tabs"); const r = tab.getBoundingClientRect(), o = box.getBoundingClientRect(); return { l: r.left - o.left + box.scrollLeft + r.width / 2 - 28, w: 56 }; }
+function placeInk(from) {
+  const box = $("#tabs"), on = box.querySelector(".tab.on"); let ink = box.querySelector(".tab-ink");
+  if (!on) { ink?.remove(); return; } if (!ink) { ink = document.createElement("i"); ink.className = "tab-ink"; ink.setAttribute("aria-hidden", "true"); box.append(ink); }
+  const z = inkPos(on); ink.style.left = z.l + "px"; ink.style.width = z.w + "px"; box.classList.add("has-ink");
+  if (!from || reduceMotion() || Math.abs(from.l - z.l) < 2) return;
+  const L = Math.min(from.l, z.l), W = Math.max(from.l, z.l) + z.w - L;
+  ink.animate([{ left: from.l + "px", width: from.w + "px" }, { left: (z.l > from.l ? from.l : L) + "px", width: W + "px", offset: .45 }, { left: z.l + "px", width: z.w * 1.18 + "px", offset: .78 }, { left: z.l + "px", width: z.w + "px" }], { duration: 440, easing: "cubic-bezier(.3,.7,.2,1)" });
+}
 function renderTabs() {
+  const oldInk = $("#tabs .tab-ink"), from = oldInk ? { l: parseFloat(oldInk.style.left), w: parseFloat(oldInk.style.width) } : null;
   ensureVisibleActive();
   const TL = orderedTLs(); let lastG = "";
   const lockMark = t => t.secret ? `<svg class="i sec-mark" aria-label="シークレット"><use href="#i-hide"/></svg>` : "";
@@ -1740,7 +1838,7 @@ function renderTabs() {
   lastG = "";
   $("#navList").innerHTML = TL.map(t => grpHead(t, "nav") + (folded(t) ? "" : `<button class="nav-item ${t.id === S.active ? "on" : ""}" data-tl="${t.id}" title="${esc(t.name)}">${tlAvatar(t, "mini-av")}<span class="label">${esc(t.name)}${lockMark(t)}</span>${un(t)}<span class="count">${postsOf(t.id).length}</span></button>`)).join("");
   $("#compTl").innerHTML = TL.map(t => `<option value="${t.id}" ${t.id === S.active ? "selected" : ""}>送り先: ${esc(t.name)}</option>`).join("");
-  paintMe(); applyTlTheme(); renderStats(); renderScope();
+  paintMe(); applyTlTheme(); renderStats(); renderScope(); requestAnimationFrame(() => placeInk(from));
 }
 
 /* タイムラインごとの見た目: アイコン（文字か画像）・アイコンの縁・背景 */
@@ -1863,7 +1961,7 @@ function renderFeed() {
     if (labelFilter) feed.insertAdjacentHTML("beforeend", `<div class="empty"><h3>このラベルのツイートはないよ</h3></div>`); else feed.innerHTML = `<div class="empty"><h3>まだ何もないよ</h3><p>上の欄に YouTube や X、記事の URL を貼ってツイートするか、画像・動画を追加してね。</p></div>`;
   } else {
     list.forEach(p => feed.append(postCard(p)));
-    const end = document.createElement("div"); end.className = "feed-end"; end.textContent = query ? `検索の結果は以上 ${list.length} 件` : `「${tlById(S.active).name}」のツイートは以上 ${list.length} 件`; feed.append(end);
+    const end = document.createElement("div"); end.className = "feed-end"; if (!query && !labelFilter && list.length >= 3) watchEnd(end); end.textContent = query ? `検索の結果は以上 ${list.length} 件` : `「${tlById(S.active).name}」のツイートは以上 ${list.length} 件`; feed.append(end);
   }
   if (!query) { const sn = S.posts.filter(p => p.tl === S.active && p.snoozeUntil > Date.now()); if (sn.length) feed.insertAdjacentHTML("beforeend", `<div class="snooze-note"><svg class="i"><use href="#i-snooze"/></svg>スヌーズ中 ${sn.length} 件（次は ${new Date(Math.min(...sn.map(p => p.snoozeUntil))).toLocaleDateString("ja-JP", { month: "numeric", day: "numeric", weekday: "short" })}）<button type="button" class="btn-ghost sm" id="snoozeNow">今すぐ戻す</button></div>`); }
   renderSplit();
@@ -1899,8 +1997,19 @@ let tt = null;
 function toast(msg, undo) {
   const el = $("#toast"); el.textContent = msg; el.classList.toggle("has-undo", !!undo);
   if (undo) { const b = document.createElement("button"); b.type = "button"; b.className = "undo"; b.textContent = "元に戻す"; b.onclick = () => { el.classList.remove("show"); undo(); }; el.append(b); }
+  const was = el.classList.contains("show"); el.style.translate = ""; el.style.opacity = "";
   el.classList.add("show"); clearTimeout(toast.t); toast.t = setTimeout(() => el.classList.remove("show"), undo ? 5000 : 1800);
+  if (!reduceMotion() && el.animate) el.animate(was ? [{ scale: "1" }, { scale: "1.05" }, { scale: "1" }] : [{ translate: "0 30px", scale: ".9", opacity: 0 }, { translate: "0 -6px", scale: "1.03", opacity: 1, offset: .6 }, { translate: "0 0", scale: "1" }], { duration: was ? 220 : 420, easing: "cubic-bezier(.3,.8,.3,1)" });
 }
+/* F10 お知らせは横にはじくと消える */
+(() => { const el = $("#toast"); let sx = null, dx = 0;
+  el.addEventListener("pointerdown", e => { if (e.target.closest(".undo")) return; sx = e.clientX; dx = 0; try { el.setPointerCapture(e.pointerId); } catch {} clearTimeout(toast.t); });
+  el.addEventListener("pointermove", e => { if (sx == null) return; dx = e.clientX - sx; el.style.translate = `${dx}px 0`; el.style.rotate = `${dx / 30}deg`; el.style.opacity = 1 - Math.min(.8, Math.abs(dx) / 220); });
+  const up = () => { if (sx == null) return; sx = null;
+    if (Math.abs(dx) > 60) { const a = el.animate([{ translate: `${dx}px 0` }, { translate: `${dx > 0 ? 340 : -340}px 0`, opacity: 0 }], { duration: 200 }); a.onfinish = () => { el.classList.remove("show"); el.style.translate = ""; el.style.rotate = ""; el.style.opacity = ""; }; }
+    else { el.style.translate = ""; el.style.rotate = ""; el.style.opacity = ""; toast.t = setTimeout(() => el.classList.remove("show"), 1500); } };
+  el.addEventListener("pointerup", up); el.addEventListener("pointercancel", up);
+})();
 /* 続きから: タイムラインごとにスクロール位置を覚える */
 function rememberPos() { if (S.active) { S.pos[S.active] = Math.round(scrollY); } }
 function restorePos() { const y = S.opts.resume ? (S.pos[S.active] || 0) : 0; window.scrollTo({ top: y }); requestAnimationFrame(() => window.scrollTo({ top: y })); }
@@ -2010,7 +2119,10 @@ function addPost(p) {
   const tl = $("#compTl").value || S.active;
   S.posts.push({ id: p.id || uid(), tl, at: Date.now(), likes: 0, liked: false, ...p, tl });
   if (tl !== S.active && !isHiddenTl(tlById(tl))) { S.active = tl; toast(`「${tlById(tl).name}」にツイートしました`); } else toast("ツイートしました");
-  renderAll(); window.scrollTo({ top: 0, behavior: "smooth" });
+  const from = $("#compText").getBoundingClientRect();
+  renderAll(); window.scrollTo({ top: 0, behavior: "auto" }); sfx("post"); haptic("tick");
+  const el = $("#feed .post"); if (el && !reduceMotion()) { const to = el.getBoundingClientRect(), dy = Math.max(-200, Math.min(0, from.top - to.top));
+    el.animate([{ transform: `translateY(${dy}px) scale(.92)`, opacity: 0, borderRadius: "24px" }, { transform: "translateY(-8px) scale(1.02)", opacity: 1, offset: .7 }, { transform: "none" }], { duration: 520, easing: "cubic-bezier(.3,.8,.3,1)" }); }
 }
 /* 表示順の変更（本番では order 列を持たせる想定） */
 function reorder(p, how) {
@@ -2052,7 +2164,12 @@ function feedClick(e) {
   }
   if (["top", "up", "down", "bottom"].includes(act)) {
     closeMenus(); const msg = reorder(p, act); if (!msg) return; save(); toast(msg);
-    if (act === "top") { renderFeed(); scrollTo({ top: 0, behavior: "smooth" }); }
+    if (act === "top") { const before = btn.closest(".post").getBoundingClientRect().top; renderFeed(); haptic("repost"); sfx("repost");
+      const near = scrollY < innerHeight; scrollTo({ top: 0, behavior: near && !reduceMotion() ? "smooth" : "auto" });
+      const el = document.querySelector(`#feed .post[data-id="${id}"]`);
+      if (el && !reduceMotion()) { const dy = Math.max(-60, Math.min(260, before - el.getBoundingClientRect().top - (near ? 0 : before)));
+        el.animate([{ transform: `translateY(${near ? Math.min(260, Math.max(0, before - el.getBoundingClientRect().top - scrollY)) : 120}px) scale(.97)`, opacity: .5, boxShadow: "none" },
+          { transform: "translateY(-10px) scale(1.03)", opacity: 1, boxShadow: "0 18px 40px -14px rgba(0,0,0,.35)", offset: .65 }, { transform: "none", boxShadow: "none" }], { duration: 560, easing: "cubic-bezier(.3,.8,.3,1)" }); } }
     else if (act === "bottom") { renderFeedKeepScroll(); }
     else { const before = document.querySelector(`.post[data-id="${id}"]`).getBoundingClientRect().top; renderFeed(); const el = document.querySelector(`.post[data-id="${id}"]`); scrollBy(0, el.getBoundingClientRect().top - before); }
     return;
@@ -2068,7 +2185,7 @@ function feedClick(e) {
     toast(`${d === 1 ? "明日" : d === 3 ? "3日後" : "1週間後"}にまた一番上に出すね`, () => { delete p.snoozeUntil; save(); renderFeedKeepScroll(); renderTabs(); }); return; }
   if (act === "label") { closeMenus(); const old = p.label; p.label = btn.dataset.c || undefined; if (!p.label) delete p.label; save(); renderFeedKeepScroll(); toast(p.label ? `${LABEL_N[p.label]}のラベルを付けたよ` : "ラベルを外したよ", () => { p.label = old; if (!old) delete p.label; save(); renderFeedKeepScroll(); }); return; }
   if (act === "comment") { openComments(p.id); return; }
-  if (act === "like") { const r = btn.getBoundingClientRect(), res = pressHeart(p); btn.outerHTML = heartBtn(p); if (res === true) heartBurst(r, 18); }
+  if (act === "like") { const r = btn.getBoundingClientRect(), res = pressHeart(p), par = btn.parentElement, i = [...par.children].indexOf(btn); btn.outerHTML = heartBtn(p); rollNum(par.children[i], res === true ? 1 : -1); if (res === true) { heartBurst(r, 18); haptic("like"); sfx("like"); } }
   if (btn.dataset.act === "del") { trashPosts([p]); }
   save();
 }
@@ -2141,7 +2258,7 @@ function applyOpts() {
   $("#optFont").value = S.opts.fontSize; document.documentElement.dataset.fs = S.opts.fontSize;
   $("#optOneHand").checked = !!S.opts.oneHand; document.body.classList.toggle("onehand", !!S.opts.oneHand);
   renderLockUI(); renderStore();
-  $("#optCalm").checked = !!S.opts.calm; document.documentElement.toggleAttribute("data-calm", !!S.opts.calm);
+  $("#optSfx").checked = !!S.opts.sfx; $("#optCalm").checked = !!S.opts.calm; document.documentElement.toggleAttribute("data-calm", !!S.opts.calm);
   $("#optSplit").checked = !!S.opts.split; document.body.classList.toggle("split", !!S.opts.split);
   renderStartSel(); renderRules(); renderSecretUI();
 }
@@ -2272,7 +2389,7 @@ $("#xferYes").addEventListener("click", () => {
   xferPending = null; $("#xferBox").hidden = true; applyOpts(); renderAll(); toast(`読み込みました（ツイート ${d.posts.length} 件）`);
 });
 $("#resetNo").addEventListener("click", () => { $("#resetConfirm").hidden = true; });
-$("#resetYes").addEventListener("click", () => { forgetFiles(S.posts); idb.clear(); const o = S.opts; S = seed(); S.opts = o; $("#resetConfirm").hidden = true; renderAll(); toast("サンプルに戻しました"); });
+$("#resetYes").addEventListener("click", () => { forgetFiles(S.posts); idb.clear(); const o = S.opts, lock = S.lock, me = S.me; S = seed(); S.opts = o; S.lock = lock; S.me = me || { id: "me", name: "私", color: "#1d9bf0" }; S.trash = []; S.rules = []; S.presets ||= []; S.pos = {}; S.cheer = {}; S.guideSeen = true; S.opts.startTl = ""; S.opts.splitTl = ""; $("#resetConfirm").hidden = true; renderAll(); toast("サンプルに戻しました"); });
 
 /* 管理パネル（狭い画面ではシート） */
 function openSide() { $("#side").classList.add("open"); $("#backdrop").classList.add("open"); }
@@ -2326,6 +2443,16 @@ function renderTT() {
     sc.append(item); if (built.playable) { ttAP.observe(el); const pl = players.get(el); if (pl) pl.pid = p.id; }
   });
 }
+/* F11 縦スワイプ: マウスでも指に吸いつくようにドラッグ。半分を超えたら次へ、手前で離すとゴムみたいに戻る（指はもともとスクロールの吸いつき） */
+(() => { const sc = $("#ttScroll"); let sy = null, st = 0, dy = 0;
+  sc.addEventListener("pointerdown", e => { if (e.pointerType !== "mouse" || e.button !== 0 || e.target.closest("button, a, .seek, .tt-rail")) return; sy = e.clientY; st = sc.scrollTop; dy = 0; });
+  addEventListener("pointermove", e => { if (sy == null) return; dy = e.clientY - sy; if (Math.abs(dy) > 6) { sc.style.scrollSnapType = "none"; sc.scrollTop = st - dy; } });
+  addEventListener("pointerup", () => { if (sy == null) return; sy = null; if (Math.abs(dy) <= 6) return;
+    const H = sc.clientHeight, i0 = Math.round(st / H), i = Math.abs(dy) > H / 2 ? i0 + (dy < 0 ? 1 : -1) : i0, n = sc.children.length, to = Math.max(0, Math.min(n - 1, i)) * H;
+    sc.scrollTo({ top: to, behavior: reduceMotion() ? "auto" : "smooth" }); setTimeout(() => { sc.style.scrollSnapType = ""; }, 450);
+    sc._noClick = Date.now(); });
+  sc.addEventListener("click", e => { if (sc._noClick && Date.now() - sc._noClick < 300) { e.stopPropagation(); e.preventDefault(); } }, true);
+})();
 function openTT() { feedAP.reset(); $("#tt").classList.add("open"); document.body.style.overflow = "hidden"; renderTT(); }
 function closeTT() { ttAP?.stop(); $("#tt").classList.remove("open"); document.body.style.overflow = ""; renderFeedKeepScroll(); renderTabs(); }
 ["#navTT", "#mTT", "#bTT"].forEach(s => $(s).addEventListener("click", openTT));
@@ -2335,7 +2462,7 @@ $("#ttOrder").addEventListener("change", e => { const tl = tlById(S.active); tl.
 $("#ttTabs").addEventListener("click", e => { const b = e.target.closest("[data-tt]"); if (!b) return; S.active = b.dataset.tt; save(); renderTT(); });
 $("#ttScroll").addEventListener("click", e => {
   const b = e.target.closest("[data-like]"); if (!b) return; const p = S.posts.find(x => x.id === b.dataset.like);
-  const r = b.querySelector(".circle").getBoundingClientRect(), res = pressHeart(p); b.outerHTML = ttHeart(p); if (res === true) heartBurst(r, 26);
+  const r = b.querySelector(".circle").getBoundingClientRect(), res = pressHeart(p), par = b.parentElement, i = [...par.children].indexOf(b); b.outerHTML = ttHeart(p); rollNum(par.children[i], res === true ? 1 : -1); if (res === true) { heartBurst(r, 26); haptic("like"); sfx("like"); }
 });
 
 /* ================= アイコン設定（タイムライン・自分） ================= */
@@ -2524,11 +2651,38 @@ function copyText(t) {
   try { navigator.clipboard ? navigator.clipboard.writeText(t).then(ok, legacy) : legacy(); } catch { legacy(); }
 }
 
+/* F12 一番下まで見たら、小さな紙吹雪（タイムラインごとに1日1回） */
+const endIO = "IntersectionObserver" in window ? new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { endIO.unobserve(en.target); cheer(en.target); } }), { threshold: .9 }) : null;
+function watchEnd(el) { const day = new Date().toDateString(); if ((S.cheer ||= {})[S.active] === day || !endIO) return; el._tl = S.active; setTimeout(() => el.isConnected && endIO.observe(el), 600); }
+function cheer(el) {
+  const day = new Date().toDateString(); if (!el.isConnected || (S.cheer ||= {})[el._tl] === day || scrollY < 200) return; (S.cheer ||= {})[el._tl] = day; save();
+  el.innerHTML = `<b class="cheer-msg">全部見たよ ✨</b><br>${esc(el.textContent)}`; haptic("tick");
+  if (reduceMotion()) return; const r = el.getBoundingClientRect(), cx = r.left + r.width / 2, cy = r.top + 30, cols = ["#f91880", "#1d9bf0", "#ffd400", "#00ba7c", "#7856ff"];
+  el.querySelector(".cheer-msg").animate([{ opacity: 0, transform: "translateY(6px) scale(.9)" }, { opacity: 1, transform: "none" }], { duration: 360, easing: "cubic-bezier(.3,1.4,.5,1)" });
+  for (let i = 0; i < 26; i++) { const c = document.createElement("i"); c.className = "confetti"; c.style.background = cols[i % 5]; c.style.left = cx + "px"; c.style.top = cy + "px"; document.body.append(c);
+    const a = -Math.PI / 2 + (Math.random() - .5) * 2.2, v = 70 + Math.random() * 80, x = Math.cos(a) * v, y = Math.sin(a) * v;
+    c.animate([{ transform: "translate(-50%,0) rotate(0)", opacity: 1 }, { transform: `translate(calc(-50% + ${x}px),${y}px) rotate(${Math.random() * 360}deg)`, opacity: 1, offset: .45 }, { transform: `translate(calc(-50% + ${x * 1.3}px),${y + 100}px) rotate(${Math.random() * 720}deg)`, opacity: 0 }], { duration: 1100 + Math.random() * 400, easing: "cubic-bezier(.2,.7,.4,1)" }).onfinish = () => c.remove(); }
+}
+/* F4 消したツイートはしゅっと縮んで、その場所に「元に戻す」の帯が8秒残る */
+function undoSlot(card, id) {
+  const slot = document.createElement("div"); slot.className = "undo-slot"; slot.dataset.slot = id;
+  slot.innerHTML = `<span><svg class="i"><use href="#i-trash"/></svg>ゴミ箱に入れたよ</span><button type="button" data-undo-slot="${id}">元に戻す</button><i aria-hidden="true"></i>`;
+  const swap = () => { const h = card.offsetHeight; card.replaceWith(slot); if (reduceMotion()) return; slot.animate([{ height: h + "px" }, { height: "52px" }], { duration: 220, easing: "ease-out" }); slot.querySelector("i").animate([{ width: "100%" }, { width: "0%" }], { duration: 8000, fill: "forwards" }); };
+  players.forEach((pl, k) => { if (card.contains(k)) { try { pl.pause(); } catch {} players.delete(k); } });
+  if (reduceMotion() || !card.animate) swap(); else card.animate([{ transform: "scale(1)", opacity: 1 }, { transform: "scale(.6)", opacity: 0 }], { duration: 220, easing: "cubic-bezier(.4,0,.2,1)" }).onfinish = swap;
+  slot._t = setTimeout(() => { if (!slot.isConnected) return; if (reduceMotion()) return slot.remove(); slot.animate([{ height: "52px", opacity: 1 }, { height: "0px", opacity: 0 }], { duration: 260 }).onfinish = () => slot.remove(); }, 8000);
+  sfx("trash");
+}
+document.addEventListener("click", e => { const b = e.target.closest("[data-undo-slot]"); if (!b) return; e.stopPropagation(); clearTimeout(b.closest(".undo-slot")._t); const id = b.dataset.undoSlot; restoreFromTrash([id]);
+  const el = document.querySelector(`#feed .post[data-id="${id}"]`); if (el && !reduceMotion()) el.animate([{ transform: "scale(.6)", opacity: 0 }, { transform: "scale(1.03)", opacity: 1, offset: .7 }, { transform: "scale(1)" }], { duration: 300, easing: "cubic-bezier(.3,.8,.3,1)" }); }, true);
 /* K11 ゴミ箱 / K12 元に戻す */
 const TRASH_DAYS = 30;
 function trashPosts(list) {
   const at = Date.now(); const ids = new Set(list.map(p => p.id));
-  S.trash.push(...list.map(p => ({ p, at }))); S.posts = S.posts.filter(p => !ids.has(p.id)); save(); renderFeedKeepScroll(); renderTabs();
+  const one = list.length === 1 && document.querySelector(`#feed .post[data-id="${list[0].id}"]`);
+  S.trash.push(...list.map(p => ({ p, at }))); S.posts = S.posts.filter(p => !ids.has(p.id)); purgeTrash(); save();
+  haptic("trash");
+  if (one) undoSlot(one, list[0].id); else renderFeedKeepScroll(); renderTabs();
   toast(list.length > 1 ? `${list.length}件をゴミ箱に入れたよ` : "ゴミ箱に入れたよ", () => restoreFromTrash([...ids]));
 }
 function restoreFromTrash(ids) {
@@ -2538,21 +2692,46 @@ function restoreFromTrash(ids) {
   save(); renderFeedKeepScroll(); renderTabs(); if (!$("#trashSheet").hidden) renderTrash();
   toast(back.length > 1 ? `${back.length}件を元に戻したよ` : "元に戻したよ");
 }
+const TRASH_MAX = 300, LS_SOFT = 3.5e6; // ゴミ箱は300件まで / 本体の置き場（約5MB）が7割を超えたら古い順に消す
 function purgeTrash() {
-  const lim = Date.now() - TRASH_DAYS * 864e5; const old = S.trash.filter(x => x.at < lim);
-  if (old.length) { forgetFiles(old.map(x => x.p)); S.trash = S.trash.filter(x => x.at >= lim); save(); }
+  const lim = Date.now() - TRASH_DAYS * 864e5; S.trash.sort((a, b) => a.at - b.at);
+  const drop = S.trash.filter((x, i) => x.at < lim || i < S.trash.length - TRASH_MAX);
+  if (drop.length) { forgetFiles(drop.map(x => x.p)); S.trash = S.trash.filter(x => !drop.includes(x)); save(); }
+  let size = 0; try { size = (localStorage.getItem(KEY) || "").length * 2; } catch {}
+  let n = 0; while (size > LS_SOFT && S.trash.length) { const x = S.trash.shift(); forgetFiles([x.p]); size -= JSON.stringify(x).length * 2; n++; }
+  if (n) { save(); toast(`保存の置き場が混んできたから、ゴミ箱の古い${n}件を完全に消したよ`); }
 }
+async function trashFileSize() {
+  const keys = new Set(S.trash.map(x => x.p).filter(isFilePost).flatMap(fileKeys)); if (!keys.size) return 0;
+  try { const m = await idb.all(); let sum = 0; m.forEach((b, k) => { if (keys.has(k)) sum += b.size || 0; }); return sum; } catch { return 0; }
+}
+const trPicked = new Set();
 function renderTrash() {
   const list = S.trash.filter(x => !isHiddenTl(tlById(x.p.tl))).sort((a, b) => b.at - a.at);
+  [...trPicked].forEach(id => { if (!list.some(x => x.p.id === id)) trPicked.delete(id); });
+  const all = list.length && trPicked.size === list.length;
+  $("#trBar").hidden = !list.length; $("#trAll").checked = !!all; $("#trAll").indeterminate = trPicked.size > 0 && !all;
+  $("#trN").textContent = trPicked.size ? `${trPicked.size}件を選択中` : "全部選ぶ";
+  $("#trRestoreSel").disabled = $("#trKillSel").disabled = !trPicked.size; $("#trKillSel").classList.remove("sure"); $("#trKillSel").textContent = "完全に消す";
   $("#trList").innerHTML = list.length ? list.map(({ p, at }) => { const t = tlById(p.tl); const left = Math.max(0, TRASH_DAYS - Math.floor((Date.now() - at) / 864e5));
-    return `<li class="tr-item"><div class="tr-body"><div class="tr-meta">${esc(t ? t.name : "消したタイムライン")} · ${ago(at)}に削除 · あと${left}日</div><div class="tr-text">${esc(p.text || (p.embed ? p.embed.url : p.media ? (p.media.title || "画像・動画") : ""))}</div></div>
+    return `<li class="tr-item ${trPicked.has(p.id) ? "picked" : ""}"><label class="tr-check"><input type="checkbox" data-tpick="${p.id}" ${trPicked.has(p.id) ? "checked" : ""} aria-label="選ぶ"></label><div class="tr-body"><div class="tr-meta">${esc(t ? t.name : "消したタイムライン")} · ${ago(at)}に削除 · あと${left}日</div><div class="tr-text">${esc(p.text || (p.embed ? p.embed.url : p.media ? (p.media.title || "画像・動画") : ""))}</div></div>
       <div class="tr-acts"><button type="button" class="btn-ghost sm" data-restore="${p.id}">元に戻す</button><button type="button" class="tr-del" data-kill="${p.id}">完全に消す</button></div></li>`; }).join("")
     : `<li class="cm-empty">ゴミ箱は空だよ</li>`;
+  const files = S.trash.filter(x => isFilePost(x.p)).length;
+  $("#trSize").textContent = `${S.trash.length}件（最大${TRASH_MAX}件）` + (files ? ` · 写真・動画 ${files}件` : "");
+  if (files) trashFileSize().then(b => { if (b) $("#trSize").textContent += `（約${b >= 1e9 ? (b / 1e9).toFixed(1) + "GB" : Math.max(1, Math.round(b / 1e6)) + "MB"}）`; });
   $("#trEmpty").disabled = !list.length; $("#trashBtn").textContent = S.trash.length ? `ゴミ箱（${S.trash.length}）` : "ゴミ箱";
 }
 $("#trashBtn").addEventListener("click", () => { renderTrash(); $("#trashSheet").hidden = false; document.body.classList.add("sheet-open"); });
 const closeTrash = () => { $("#trashSheet").hidden = true; document.body.classList.remove("sheet-open"); $("#trashBtn").textContent = S.trash.length ? `ゴミ箱（${S.trash.length}）` : "ゴミ箱"; };
 $("#trClose").addEventListener("click", closeTrash); $("#trashSheet").addEventListener("click", e => { if (e.target.id === "trashSheet") closeTrash(); });
+$("#trList").addEventListener("change", e => { const c = e.target.closest("[data-tpick]"); if (!c) return; c.checked ? trPicked.add(c.dataset.tpick) : trPicked.delete(c.dataset.tpick); renderTrash(); });
+$("#trAll").addEventListener("change", e => { const list = S.trash.filter(x => !isHiddenTl(tlById(x.p.tl))); trPicked.clear(); if (e.target.checked) list.forEach(x => trPicked.add(x.p.id)); renderTrash(); });
+$("#trRestoreSel").addEventListener("click", () => { const ids = [...trPicked]; trPicked.clear(); restoreFromTrash(ids); });
+$("#trKillSel").addEventListener("click", e => {
+  const b = e.target; if (!b.classList.contains("sure")) { b.classList.add("sure"); b.textContent = `${trPicked.size}件を本当に消す？`; setTimeout(() => { if (b.classList.contains("sure")) { b.classList.remove("sure"); b.textContent = "完全に消す"; } }, 3000); return; }
+  const n = trPicked.size, gone = S.trash.filter(x => trPicked.has(x.p.id)); forgetFiles(gone.map(x => x.p)); S.trash = S.trash.filter(x => !trPicked.has(x.p.id)); trPicked.clear(); save(); renderTrash(); toast(`${n}件を完全に消したよ`);
+});
 $("#trList").addEventListener("click", e => {
   const r = e.target.closest("[data-restore]"); if (r) { restoreFromTrash([r.dataset.restore]); return; }
   const k = e.target.closest("[data-kill]"); if (!k) return;
@@ -2716,6 +2895,7 @@ function feedTools(all) {
   const used = Object.keys(LABEL_C).filter(c => all.some(p => p.label === c));
   const left = sleepAt ? Math.max(1, Math.ceil((sleepAt - Date.now()) / 60e3)) : 0;
   return `<div class="ftools" role="toolbar" aria-label="タイムラインの道具">
+    <button type="button" class="ft" id="ftPick"><svg class="i"><use href="#i-select"/></svg>選ぶ</button>
     <button type="button" class="ft" id="ftPlay"><svg class="i"><use href="#i-playall"/></svg>連続再生</button>
     <button type="button" class="ft ${left ? "on" : ""}" id="ftSleep" title="押すたびに 15分→30分→60分→オフ"><svg class="i"><use href="#i-moon"/></svg>${left ? `あと${left}分` : "タイマー"}</button>
     <label class="ft" title="日付へジャンプ"><svg class="i"><use href="#i-cal"/></svg>日付<input type="date" id="ftDate" aria-label="この日のツイートへ移動"></label>
@@ -2725,6 +2905,7 @@ function feedTools(all) {
 document.addEventListener("click", e => {
   const lf = e.target.closest("[data-lf]"); if (lf) { labelFilter = labelFilter === lf.dataset.lf ? "" : lf.dataset.lf; renderFeed(); return; }
   if (e.target.closest("#ftPlay")) return marathon();
+  if (e.target.closest("#ftPick")) return startPick();
   if (e.target.closest("#ftSleep")) return cycleSleep();
   if (e.target.closest("#snoozeNow")) { const sn = S.posts.filter(p => p.tl === S.active && p.snoozeUntil > Date.now()); sn.forEach(p => p.snoozeUntil = 1); wakeSnoozed(); return; }
 });
@@ -2799,6 +2980,7 @@ $("#ruleAdd").addEventListener("click", () => { S.rules.push({ id: uid(), kind: 
 $("#ruleList").addEventListener("input", e => { const li = e.target.closest("[data-rule]"); if (!li) return; const x = S.rules.find(r => r.id === li.dataset.rule); x[e.target.dataset.r] = e.target.value; save(); });
 $("#ruleList").addEventListener("click", e => { const b = e.target.closest('[data-r="del"]'); if (!b) return; S.rules = S.rules.filter(r => r.id !== b.closest("[data-rule]").dataset.rule); save(); renderRules(); });
 /* K33 動きを減らす / K34 最初に開くタイムライン / K35 並べて表示 */
+$("#optSfx").addEventListener("change", e => { S.opts.sfx = e.target.checked; save(); sfx("like"); toast(S.opts.sfx ? "小さな効果音を鳴らすよ" : "効果音をやめたよ"); });
 $("#optCalm").addEventListener("change", e => { S.opts.calm = e.target.checked; save(); applyOpts(); toast(S.opts.calm ? "動きを控えめにしたよ" : "動きを元に戻したよ"); });
 function renderStartSel() { const v = S.opts.startTl; $("#optStart").innerHTML = `<option value="">前回の続き</option>` + orderedTLs().map(t => `<option value="${t.id}" ${v === t.id ? "selected" : ""}>${esc(t.name)}</option>`).join(""); }
 $("#optStart").addEventListener("change", e => { S.opts.startTl = e.target.value; save(); toast(e.target.value ? `開いたら「${tlById(e.target.value).name}」から始めるよ` : "前回見ていたタイムラインから始めるよ"); });
@@ -2887,7 +3069,7 @@ function maybeGuide() { if (S.guideSeen || window.__noGuide) return; const go = 
 
 /* ================= コメント（ツイートごと・この端末に保存） ================= */
 let cmId = null;
-function cmBtn(p) { const n = (p.comments || []).length; return `<button class="act cm" data-act="comment" aria-label="コメント（${n}）" title="コメント"><svg class="i"><use href="#i-comment"/></svg>${n || ""}</button>`; }
+function cmBtn(p) { const n = (p.comments || []).length; return `<button class="act cm" data-act="comment" aria-label="コメント（${n}）" title="コメント"><svg class="i"><use href="#i-comment"/></svg><span class="num">${n || ""}</span></button>`; }
 /* R10 コメントの「1:23」は押せる文字になって、その場面へ飛べる */
 function cmText(t, id) { return esc(t).replace(/(^|[^\d:])((?:\d{1,2}:)?\d{1,2}:[0-5]\d)(?![\d:])/g, (m, a, tm) => { const sec = tm.split(":").reduce((s, v) => s * 60 + +v, 0); return `${a}<button type="button" class="tlink" data-tjump="${id}" data-sec="${sec}">${tm}</button>`; }); }
 document.addEventListener("click", e => {
@@ -2932,7 +3114,7 @@ $("#cmText").addEventListener("keydown", e => { if (e.key === "Enter" && (e.meta
 $("#cmForm").addEventListener("submit", e => {
   e.preventDefault(); const text = $("#cmText").value.trim(); const p = S.posts.find(x => x.id === cmId); if (!text || !p) return;
   (p.comments ||= []).push({ id: uid(), text, at: Date.now() }); save();
-  $("#cmText").value = ""; $("#cmSend").disabled = true; renderComments(); refreshPostComments(p);
+  $("#cmText").value = ""; $("#cmSend").disabled = true; renderComments(); refreshPostComments(p); rollNum(document.querySelector(`#feed .post[data-id="${p.id}"] .act.cm`), 1); sfx("pop");
   $("#cmList").lastElementChild?.scrollIntoView({ block: "nearest" });
 });
 $("#cmList").addEventListener("click", e => {

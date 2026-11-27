@@ -518,6 +518,29 @@ body.locked > :not(#lockScreen):not(svg){filter:blur(12px)}
 .lock.secret .lock-logo{background:#222;color:#fff}
 :root[data-calm] *,:root[data-calm] *::before,:root[data-calm] *::after{animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}
 :root[data-calm] .post.focus{backdrop-filter:none!important;-webkit-backdrop-filter:none!important}
+/* ---- R案 ---- */
+.act.like.lv1{color:#e0115f}
+.act.like.lv2{color:#e0115f}
+.act.like.lv2 .i{filter:drop-shadow(0 0 3px rgba(249,24,128,.55))}
+.act.like.lv3{color:transparent;background-image:linear-gradient(120deg,#ff4f9a,#ffb3d1 40%,#f91880 60%,#ff7ab6);-webkit-background-clip:text;background-clip:text}
+.act.like.lv3 .i{color:#f91880;filter:drop-shadow(0 0 4px rgba(249,24,128,.7));animation:hglint 2.8s ease-in-out infinite}
+@keyframes hglint{0%,70%,100%{filter:drop-shadow(0 0 3px rgba(249,24,128,.6))}80%{filter:drop-shadow(0 0 7px rgba(255,180,215,1)) brightness(1.25)}}
+.tt-rail .lv2 .circle,.tt-rail .lv3 .circle{box-shadow:0 0 12px rgba(249,24,128,.6)}
+.unseen{display:inline-grid;place-items:center;min-width:18px;height:18px;padding:0 5px;margin-left:6px;border-radius:9px;background:var(--accent);color:var(--accent-fg,#fff);font-size:11px;font-weight:800;vertical-align:1px;line-height:1}
+.unseen[hidden]{display:none}
+.nav-item .unseen{margin-left:auto}
+.nav-item .unseen + .count{margin-left:6px}
+@media (max-width:1100px){.nav .unseen{position:absolute;margin:0;transform:translate(14px,-12px);min-width:8px;height:8px;padding:0;font-size:0}.nav-item{position:relative}}
+.tlink{color:var(--accent);font-weight:700;text-decoration:underline;text-underline-offset:2px;padding:0 1px}
+.crop-card{align-items:center;gap:14px;display:flex;flex-direction:column}
+.crop-view{position:relative;width:240px;height:240px;overflow:hidden;border-radius:20px;background:#111;touch-action:none;cursor:grab;user-select:none}
+.crop-view:active{cursor:grabbing}
+.crop-view img{position:absolute;left:0;top:0;max-width:none;pointer-events:none}
+.crop-ring{position:absolute;inset:0;border-radius:50%;box-shadow:0 0 0 999px rgba(0,0,0,.55);outline:2px solid rgba(255,255,255,.9);outline-offset:-2px;pointer-events:none}
+.crop-zoom{display:flex;align-items:center;gap:8px;width:240px;font-size:12px;color:var(--muted)}
+.crop-zoom input{flex:1;accent-color:var(--accent)}
+.crop{z-index:120}
+.xfer-file{display:flex;flex-direction:column;gap:8px;padding-top:4px}
 /* ---- 検索・タグ ---- */
 .search-bar{display:flex;align-items:center;gap:8px;margin:8px 16px 4px;padding:6px 12px;border-radius:999px;background:var(--bg-hover);border:1px solid transparent;color:var(--muted)}
 .search-bar:focus-within{border-color:var(--accent);background:var(--bg);color:var(--accent)}
@@ -883,6 +906,11 @@ body.sheet-open{overflow:hidden}
         <button class="btn-ghost" id="exportBtn">書き出す</button>
         <button class="btn-ghost" id="importBtn">読み込む</button>
       </div>
+      <div class="xfer-file">
+        <label class="toggle" for="xferScope" style="margin:0">書き出す範囲<select id="xferScope" class="sel"></select></label>
+        <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn-ghost" id="fileSave">ファイルで保存</button><label class="btn-ghost" style="cursor:pointer">ファイルから読み込む<input type="file" id="fileLoad" accept=".json,application/json" hidden></label></div>
+        <p class="note" style="margin:0">1つのタイムラインだけ書き出したファイルは、友達の端末で読み込むと新しいタイムラインとして追加されるよ（いまのデータは消えないよ）</p>
+      </div>
       <div id="xferBox" hidden style="display:flex;flex-direction:column;gap:8px">
         <textarea id="xferText" rows="5" class="sel" style="border-radius:10px;width:100%;font-family:ui-monospace,monospace;font-size:12px" aria-label="データの文字"></textarea>
         <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
@@ -890,7 +918,7 @@ body.sheet-open{overflow:hidden}
           <button class="btn-accent" id="xferLoad" hidden>この内容で置き換える</button>
           <button class="btn-ghost" id="xferClose">閉じる</button>
         </div>
-        <div class="confirm" id="xferConfirm" hidden style="padding-left:0">いまのデータは消えて、貼った内容に置き換わるよ。いい？ <button class="yes" id="xferYes">置き換える</button><button class="no" id="xferNo">やめる</button></div>
+        <div class="confirm" id="xferConfirm" hidden style="padding-left:0"><span id="xferConfirmText">いまのデータは消えて、貼った内容に置き換わるよ。いい？</span> <button class="yes" id="xferYes">置き換える</button><button class="no" id="xferNo">やめる</button></div>
       </div>
       <div class="store" id="storeMeter"></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn-ghost" id="trashBtn">ゴミ箱</button></div>
@@ -907,7 +935,7 @@ body.sheet-open{overflow:hidden}
 <div class="tt" id="tt" aria-label="縦スワイプ表示">
   <div class="tt-top">
     <div class="tt-tabs" id="ttTabs"></div>
-    <select id="ttOrder" class="tt-order" aria-label="流れる順番（このタイムラインだけ）"><option value="new">新しい順</option><option value="old">古い順</option><option value="random">ランダム</option><option value="popular">人気順</option><option value="unseen">まだ見てない順</option></select>
+    <select id="ttOrder" class="tt-order" aria-label="流れる順番（このタイムラインだけ）"><option value="new">新しい順</option><option value="old">古い順</option><option value="random">ランダム</option><option value="popular">人気順</option><option value="unseen">まだ見てない順</option><option value="unseenrand">まだ見てないものをランダム</option></select>
     <button class="tt-close" id="ttClose" aria-label="閉じる"><svg class="i"><use href="#i-x"/></svg></button>
   </div>
   <div class="tt-scroll" id="ttScroll"></div>
@@ -948,12 +976,24 @@ body.sheet-open{overflow:hidden}
       <div class="lk-row" id="lkRingCols"><span class="lk-lab">色</span><input type="color" id="lkRc1" class="lk-color" aria-label="縁の色">
         <input type="color" id="lkRc2" class="lk-color" aria-label="縁の2色目"></div>
       <div class="lk-row" id="lkRingW"><label class="lk-lab" for="lkRw">太さ</label><input type="range" id="lkRw" min="1" max="10" step="1"><output id="lkRwOut"></output></div></div>
+    <div class="lk-sec" id="lkSkinSec"><h3>このタイムラインのテーマ</h3>
+      <div class="lk-row"><select id="lkSkin" class="sel" aria-label="このタイムラインのテーマ"></select></div>
+      <p class="lk-hint" style="margin:0">このタイムラインを開いているあいだだけ、アプリ全体の色がこのテーマになるよ</p></div>
     <div class="lk-sec" id="lkBgSec"><h3>タイムラインの背景</h3>
       <div class="lk-chips" id="lkBg" role="radiogroup" aria-label="背景の種類"></div>
       <div class="lk-row" id="lkBgCols"><span class="lk-lab">色</span><input type="color" id="lkBc1" class="lk-color" aria-label="背景の色">
         <input type="color" id="lkBc2" class="lk-color" aria-label="背景の2色目"></div>
       <div class="lk-row" id="lkBaRow"><label class="lk-lab" for="lkBa" id="lkBaLab">濃さ</label><input type="range" id="lkBa" min="0" max="100" step="1"><output id="lkBaOut"></output></div></div>
     <div class="share-actions"><button type="button" class="btn-accent" id="lkDone">完了</button></div>
+  </div>
+</div>
+<div class="share crop" id="cropSheet" hidden role="dialog" aria-modal="true" aria-labelledby="cropTitle">
+  <div class="share-card crop-card">
+    <h2 id="cropTitle" style="margin:0;font-size:18px">丸の中に入る部分を決めてね</h2>
+    <div class="crop-view" id="cropView"><img id="cropImg" alt="" draggable="false"><div class="crop-ring" aria-hidden="true"></div></div>
+    <label class="crop-zoom"><span>小</span><input type="range" id="cropZoom" min="1" max="4" step="0.01" aria-label="大きさ"><span>大</span></label>
+    <p class="lk-hint" style="margin:0;text-align:center">ドラッグで位置、スライダーか2本指（PCはホイール）で大きさ</p>
+    <div class="share-actions"><button type="button" class="btn-ghost" id="cropCancel">やめる</button><button type="button" class="btn-accent" id="cropOk">決定</button></div>
   </div>
 </div>
 <div class="nag" id="backupNag" hidden role="status"><div><b>データを書き出しておく？</b><span>最後に書き出してから <span id="nagDays"></span> 日たったよ。ブラウザのデータが消えても、書き出した文字があれば元に戻せるよ</span></div>
@@ -1301,9 +1341,10 @@ function showMark(w, kind) {
 function hideMarks(except) { document.querySelectorAll(".mark.on").forEach(m => { if (!except || !except.contains(m)) { clearTimeout(m._t); m.classList.remove("on"); } }); }
 /* 倍速: 長押しで2倍、そのまま下へスワイプで固定（もう一度長押しで解除） */
 function setRateUI(w, pl, rate, locked) {
+  if (pl.maxRate && rate > pl.maxRate) rate = pl.maxRate;
   pl.rate = rate; pl.rateLocked = !!locked; pl.setRate?.(rate);
   const b = w.querySelector(".rate-badge"); if (!b) return;
-  b.hidden = rate === 1; b.textContent = locked ? "2倍速で固定中 ・ 長押しで解除" : "2倍速 ▶▶ ・ 下にスワイプで固定";
+  b.hidden = rate === 1; b.textContent = locked ? `${rate}倍速で固定中 ・ 長押しで解除` : `${rate}倍速 ${rate >= 3 ? "▶▶▶" : rate >= 2 ? "▶▶" : "▶"} ・ 左右で速さ／下で固定`;
   b.classList.toggle("locked", !!locked);
 }
 const LONG_MS = 450, LOCK_DY = 60;
@@ -1326,7 +1367,13 @@ document.addEventListener("pointermove", e => {
   if (!press || e.pointerId !== press.id) return;
   const dx = e.clientX - press.x, dy = e.clientY - press.y;
   if (!press.long) { if (Math.hypot(dx, dy) > 12) { clearTimeout(press.t); press = null; } return; }
-  if (!press.unlocked && dy > LOCK_DY && !press.pl.rateLocked) { setRateUI(press.w, press.pl, 2, true); buzz([15, 60, 15]); toast("2倍速で固定したよ"); }
+  if (press.x0 == null) { press.x0 = e.clientX; } // 長押しが始まった位置から左右を測る
+  if (!press.unlocked && !press.pl.rateLocked) {
+    // 長押しのまま左右にずらすと速さが変わる: 左 1.5倍 / まん中 2倍 / 右 3倍
+    const hx = e.clientX - press.x0; const want = hx < -40 ? 1.5 : hx > 40 ? 3 : 2;
+    if (want !== press.pl.rate && !(press.pl.maxRate && want > press.pl.maxRate && press.pl.rate === press.pl.maxRate)) { setRateUI(press.w, press.pl, want, false); buzz(8); }
+  }
+  if (!press.unlocked && dy > LOCK_DY && !press.pl.rateLocked) { const r = press.pl.rate; setRateUI(press.w, press.pl, r, true); buzz([15, 60, 15]); toast(`${r}倍速で固定したよ`); }
 }, true);
 function endPress(e) {
   if (!press || (e && e.pointerId !== press.id)) return;
@@ -1356,8 +1403,10 @@ document.addEventListener("click", e => {
 function reachedEnd(pl, restart) { if (pl.pid) markSeen(pl.pid); if (pl.onEnd && pl.onEnd()) return; restart(); }
 /* K4 見たよチェック: 最後まで見た（画像は全画面で3秒）ツイートに印をつける */
 const seenChip = p => p.seenAt ? `<span class="seen" title="${new Date(p.seenAt).toLocaleString("ja-JP")} に見たよ"><svg class="i"><use href="#i-check"/></svg>見た</span>` : "";
+const unseenOf = id => postsOf(id).filter(p => hasViewable(p) && !p.seenAt).length;
+function paintUnseen(id) { const n = unseenOf(id); document.querySelectorAll(`[data-un="${id}"]`).forEach(el => { el.hidden = !n; el.textContent = n > 99 ? "99+" : n; }); }
 function markSeen(id) {
-  const p = S.posts.find(x => x.id === id); if (!p) return; const first = !p.seenAt; p.seenAt = Date.now(); save();
+  const p = S.posts.find(x => x.id === id); if (!p) return; const first = !p.seenAt; p.seenAt = Date.now(); save(); if (first) paintUnseen(p.tl);
   if (first) document.querySelectorAll(`#feed .post[data-id="${id}"] .post-meta`).forEach(m => { if (!m.querySelector(".seen")) m.insertAdjacentHTML("beforeend", seenChip(p)); });
 }
 /* サンプル動画の音: 再生中だけ小さく鳴るメロディ（WebAudio） */
@@ -1396,7 +1445,7 @@ function buildMedia(p, mode = "feed") {
       play() { this.playing = true; w.classList.add("is-playing"); if (S.opts.sound) voice.start(); upd(); },
       pause() { this.playing = false; w.classList.remove("is-playing"); voice.stop(); upd(); },
       setSound(on) { if (!this.playing) return; on ? voice.start() : voice.stop(); },
-      setRate(r) { this.rate = r; },
+      setRate(r) { this.rate = r; }, seek(sec) { v.seek(Math.min(sec, v.dur - .1)); upd(); },
       tick(dt) { v.step(dt * this.rate); if (v.t >= Math.min(lim, v.dur) - 0.001) reachedEnd(this, () => v.seek(0)); voice.at(v.t); upd(); }
     };
     players.set(w, pl);
@@ -1420,7 +1469,7 @@ function buildMedia(p, mode = "feed") {
       playing: false,
       play() { this.playing = true; w.classList.add("is-playing"); tryPlay(); upd(); },
       pause() { this.playing = false; w.classList.remove("is-playing"); vid.pause(); upd(); },
-      rate: 1, setRate(r) { this.rate = r; try { vid.playbackRate = r; } catch {} },
+      rate: 1, setRate(r) { this.rate = r; try { vid.playbackRate = r; } catch {} }, seek(sec) { try { vid.currentTime = sec; } catch {} upd(); },
       setSound(on) { vid.muted = !on; if (this.playing && on) vid.play().catch(() => { vid.muted = true; soundHint(); }); }
     });
     return { el: w, playable: true };
@@ -1568,7 +1617,7 @@ function buildEmbed(p, mode = "feed") {
         play() { this.playing = true; w.classList.add("is-playing"); ctl.want(true); upd(); },
         pause() { this.playing = false; w.classList.remove("is-playing"); ctl.want(false); upd(); },
         setSound(on) { ctl.sound(on); },
-        ...(isTT ? {} : { setRate(r) { this.rate = r; ctl.rate(r); } })
+        ...(isTT ? {} : { maxRate: 2, setRate(r) { this.rate = r; ctl.rate(r); }, seek(sec) { ctl.seek(sec); } })
       };
       players.set(w, pl);
       return { el: w, playable: true };
@@ -1618,7 +1667,20 @@ function heartState(p) {
   const last = p.lastLikedAt || 0, left = last + HEART_COOLDOWN - Date.now();
   return { cooling: left > 0, left };
 }
-const fmtLeft = ms => { const h = Math.ceil(ms / 3600000); return h >= 24 ? `${Math.floor(h / 24)}日${h % 24 ? `${h % 24}時間` : ""}` : `${h}時間`; };
+const fmtLeft = ms => { if (ms < 3600000) return `${Math.max(1, Math.ceil(ms / 60000))}分`; const h = Math.ceil(ms / 3600000); return h >= 24 ? `${Math.floor(h / 24)}日${h % 24 ? `${h % 24}時間` : ""}` : `${h}時間`; };
+/* R1 ハートの育ち方: 5・10・30個で色が濃く、きらきらに */
+const heartLv = p => { const n = p.likes || 0; return n >= 30 ? 3 : n >= 10 ? 2 : n >= 5 ? 1 : 0; };
+/* R1 ハートを長押しすると、あとどれくらいで押せるか教えてくれる */
+(() => { let t = 0, sx = 0, sy = 0;
+  document.addEventListener("pointerdown", e => { const b = e.target.closest?.('[data-act="like"], [data-like]'); if (!b) return; sx = e.clientX; sy = e.clientY; clearTimeout(t);
+    t = setTimeout(() => { const id = b.dataset.like || b.closest(".post")?.dataset.id; const p = S.posts.find(x => x.id === id); if (!p) return;
+      b._noClick = Date.now(); const st = heartState(p); buzz(10);
+      toast(st.cooling ? `あと${fmtLeft(st.left)}で次のハートが押せるよ（いま ${p.likes || 0} 個）` : `いま押せるよ！（いま ${p.likes || 0} 個）`); }, 500); }, true);
+  ["pointerup", "pointercancel"].forEach(ev => document.addEventListener(ev, () => clearTimeout(t), true));
+  document.addEventListener("pointermove", e => { if (Math.hypot(e.clientX - sx, e.clientY - sy) > 10) clearTimeout(t); }, true);
+  document.addEventListener("click", e => { const b = e.target.closest('[data-act="like"], [data-like]'); if (b && b._noClick && Date.now() - b._noClick < 1500) { b._noClick = 0; e.stopImmediatePropagation(); e.preventDefault(); } }, true);
+  document.addEventListener("contextmenu", e => { if (e.target.closest?.('[data-act="like"], [data-like]')) e.preventDefault(); });
+})();
 function pressHeart(p) {
   const st = heartState(p);
   if (st.cooling) {
@@ -1654,11 +1716,11 @@ document.addEventListener("pointerdown", e => {
 }, true);
 function heartBtn(p) {
   const st = heartState(p);
-  return `<button class="act like ${st.cooling ? "on" : ""}" data-act="like" aria-label="ハート（${p.likes || 0}）" title="${st.cooling ? `あと${fmtLeft(st.left)}で押せる` : "ハートを押す"}"><svg class="i" style="${st.cooling ? "fill:currentColor" : ""}"><use href="#i-heart"/></svg>${p.likes || ""}</button>`;
+  return `<button class="act like ${st.cooling ? "on" : ""} lv${heartLv(p)}" data-act="like" aria-label="ハート（${p.likes || 0}）" title="${st.cooling ? `あと${fmtLeft(st.left)}で押せる（長押しでも見られるよ）` : "ハートを押す"}"><svg class="i" style="${st.cooling ? "fill:currentColor" : ""}"><use href="#i-heart"/></svg>${p.likes || ""}</button>`;
 }
 function ttHeart(p) {
   const st = heartState(p);
-  return `<button data-like="${p.id}" class="${st.cooling ? "on" : ""}" aria-label="ハート（${p.likes || 0}）"><span class="circle"><svg class="i" style="${st.cooling ? "fill:currentColor" : ""}"><use href="#i-heart"/></svg></span>${p.likes || 0}</button>`;
+  return `<button data-like="${p.id}" class="${st.cooling ? "on" : ""} lv${heartLv(p)}" aria-label="ハート（${p.likes || 0}）"><span class="circle"><svg class="i" style="${st.cooling ? "fill:currentColor" : ""}"><use href="#i-heart"/></svg></span>${p.likes || 0}</button>`;
 }
 
 /* ================= 描画 ================= */
@@ -1673,11 +1735,12 @@ function renderTabs() {
     const c = !!S.opts.collapsed[g]; return kind === "tab" ? `<button class="tab-grp ${c ? "closed" : ""}" data-grp="${esc(g)}" aria-expanded="${!c}">${esc(g)}<span aria-hidden="true">${c ? "▸" : "▾"}</span></button>`
       : `<button class="nav-group ${c ? "closed" : ""}" data-grp="${esc(g)}" aria-expanded="${!c}"><span aria-hidden="true">${c ? "▸" : "▾"}</span><span class="label">${esc(g)}</span></button>`; };
   const folded = t => { const g = (t.group || "").trim(); return g && S.opts.collapsed[g] && t.id !== S.active; };
-  $("#tabs").innerHTML = TL.map(t => grpHead(t, "tab") + (folded(t) ? "" : `<button class="tab ${t.id === S.active ? "on" : ""}" role="tab" aria-selected="${t.id === S.active}" data-tl="${t.id}">${esc(t.name)}${lockMark(t)}</button>`)).join("") + `<button class="tab tab-add" id="tabAdd" aria-label="タイムラインを追加">＋</button>`;
+  const un = t => { const n = unseenOf(t.id); return n ? `<span class="unseen" data-un="${t.id}" aria-label="まだ見てない ${n} 件">${n > 99 ? "99+" : n}</span>` : `<span class="unseen" data-un="${t.id}" hidden></span>`; };
+  $("#tabs").innerHTML = TL.map(t => grpHead(t, "tab") + (folded(t) ? "" : `<button class="tab ${t.id === S.active ? "on" : ""}" role="tab" aria-selected="${t.id === S.active}" data-tl="${t.id}">${esc(t.name)}${lockMark(t)}${un(t)}</button>`)).join("") + `<button class="tab tab-add" id="tabAdd" aria-label="タイムラインを追加">＋</button>`;
   lastG = "";
-  $("#navList").innerHTML = TL.map(t => grpHead(t, "nav") + (folded(t) ? "" : `<button class="nav-item ${t.id === S.active ? "on" : ""}" data-tl="${t.id}" title="${esc(t.name)}">${tlAvatar(t, "mini-av")}<span class="label">${esc(t.name)}${lockMark(t)}</span><span class="count">${postsOf(t.id).length}</span></button>`)).join("");
+  $("#navList").innerHTML = TL.map(t => grpHead(t, "nav") + (folded(t) ? "" : `<button class="nav-item ${t.id === S.active ? "on" : ""}" data-tl="${t.id}" title="${esc(t.name)}">${tlAvatar(t, "mini-av")}<span class="label">${esc(t.name)}${lockMark(t)}</span>${un(t)}<span class="count">${postsOf(t.id).length}</span></button>`)).join("");
   $("#compTl").innerHTML = TL.map(t => `<option value="${t.id}" ${t.id === S.active ? "selected" : ""}>送り先: ${esc(t.name)}</option>`).join("");
-  paintMe(); applyTlTheme(); renderStats();
+  paintMe(); applyTlTheme(); renderStats(); renderScope();
 }
 
 /* タイムラインごとの見た目: アイコン（文字か画像）・アイコンの縁・背景 */
@@ -1852,7 +1915,9 @@ function tlMotion(dir) {
 }
 function setActive(id, dir = 0) {
   if (query) { query = ""; $("#searchBox").value = ""; $("#searchX").hidden = true; }
-  rememberPos(); S.active = id; labelFilter = ""; renderTabs(); renderFeed(); save(); restorePos();
+  const sk0 = document.documentElement.dataset.skin || "";
+  rememberPos(); S.active = id; labelFilter = ""; applySkin(); renderTabs(); renderFeed(); save(); restorePos();
+  if ((document.documentElement.dataset.skin || "") !== sk0 && !reduceMotion()) document.body.animate?.([{ opacity: .55 }, { opacity: 1 }], { duration: 380, easing: "ease-out" });
   document.querySelector(".tab.on")?.scrollIntoView({ inline: "center", block: "nearest" });
   tlMotion(dir); updateFocus();
 }
@@ -2099,7 +2164,8 @@ const isNightNow = () => { const h = new Date().getHours(), a = S.opts.nightFrom
 setInterval(() => { if (S.opts.modeTime) applySkin(); }, 60000);
 function applySkin() {
   const r = document.documentElement;
-  if (S.opts.skin) { r.dataset.skin = S.opts.skin; r.dataset.fam = skinFam(S.opts.skin); } else { delete r.dataset.skin; delete r.dataset.fam; }
+  const tl = S.active && tlById(S.active), sk = tl && tl.skin ? (tl.skin === "std" ? "" : tl.skin) : S.opts.skin;
+  if (sk) { r.dataset.skin = sk; r.dataset.fam = skinFam(sk); } else { delete r.dataset.skin; delete r.dataset.fam; }
   if (S.opts.modeTime) r.dataset.theme = isNightNow() ? "dark" : "light";
   else if (S.opts.dark == null) delete r.dataset.theme; else r.dataset.theme = S.opts.dark ? "dark" : "light";
   $("#optSkin").value = S.opts.skin || ""; $("#optMode").value = S.opts.modeTime ? "time" : S.opts.dark == null ? "auto" : S.opts.dark ? "dark" : "light";
@@ -2146,14 +2212,38 @@ function maybeNagBackup() {
   const now = Date.now(); if (!S.posts.length || now - (S.lastExportAt || 0) < WEEK || now - (S.lastNagAt || 0) < WEEK) return;
   $("#backupNag").hidden = false; $("#nagDays").textContent = Math.floor((now - (S.lastExportAt || 0)) / 864e5);
 }
-function openXfer(mode) {
+/* R12 書き出すデータ: 全部 か 1つのタイムラインだけ */
+function exportData() {
+  const scope = $("#xferScope").value;
+  if (scope) { const t = tlById(scope); return { app: "mytl", version: 1, kind: "timeline", exportedAt: new Date().toISOString(), timelines: [t], posts: S.posts.filter(p => p.tl === t.id && !isFilePost(p)) }; }
+  return { app: "mytl", version: 1, exportedAt: new Date().toISOString(), timelines: S.timelines, posts: S.posts.filter(p => !isFilePost(p)), opts: S.opts, me: S.me, presets: S.presets, rules: S.rules };
+}
+function renderScope() { const v = $("#xferScope").value; $("#xferScope").innerHTML = `<option value="">全部</option>` + orderedTLs().map(t => `<option value="${t.id}" ${v === t.id ? "selected" : ""}>「${esc(t.name)}」だけ</option>`).join(""); }
+$("#xferScope").addEventListener("change", () => { if (!$("#xferBox").hidden && !$("#xferCopy").hidden) openXfer("export"); });
+$("#fileSave").addEventListener("click", () => {
+  const d = exportData(); if (!d.kind) { S.lastExportAt = Date.now(); save(); $("#backupNag").hidden = true; }
+  const name = d.kind ? `mytl-${d.timelines[0].name}-${new Date().toISOString().slice(0, 10)}.json` : `mytl-backup-${new Date().toISOString().slice(0, 10)}.json`;
+  const u = URL.createObjectURL(new Blob([JSON.stringify(d)], { type: "application/json" })), a = document.createElement("a"); a.href = u; a.download = name; document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(u), 4000);
+  toast(d.kind ? `「${d.timelines[0].name}」をファイルにしたよ` : "全部をファイルに保存したよ");
+});
+$("#fileLoad").addEventListener("change", async e => {
+  const f = e.target.files[0]; e.target.value = ""; if (!f) return;
+  let d; try { d = JSON.parse(await f.text()); } catch { return toast("このファイルは読み込めないよ"); }
+  startImport(d);
+});
+function startImport(d) {
+  if (!d || d.app !== "mytl" || !Array.isArray(d.timelines) || !d.timelines.length || !Array.isArray(d.posts)) { toast("このアプリで書き出したデータじゃないみたい"); return false; }
+  xferPending = d; $("#xferBox").hidden = false; $("#xferCopy").hidden = true; $("#xferLoad").hidden = true; $("#xferConfirm").hidden = false;
+  $("#xferConfirmText").textContent = d.kind === "timeline" ? `「${d.timelines[0].name}」（ツイート ${d.posts.length} 件）を新しいタイムラインとして追加する？` : "いまのデータは消えて、読み込んだ内容に置き換わるよ。いい？";
+  $("#xferYes").textContent = d.kind === "timeline" ? "追加する" : "置き換える"; return true;
+}
+function openXfer(mode) { $("#xferConfirmText").textContent = "いまのデータは消えて、貼った内容に置き換わるよ。いい？"; $("#xferYes").textContent = "置き換える"; renderScope();
   if (mode === "export") { S.lastExportAt = Date.now(); save(); $("#backupNag").hidden = true; }
   $("#xferBox").hidden = false; $("#xferConfirm").hidden = true;
   $("#xferCopy").hidden = mode !== "export"; $("#xferLoad").hidden = mode !== "import";
   const ta = $("#xferText");
   if (mode === "export") {
-    const data = { app: "mytl", version: 1, exportedAt: new Date().toISOString(), timelines: S.timelines, posts: S.posts.filter(p => !isFilePost(p)), opts: S.opts, me: S.me, presets: S.presets };
-    ta.value = JSON.stringify(data); ta.readOnly = true; ta.focus(); ta.select();
+    ta.value = JSON.stringify(exportData()); ta.readOnly = true; ta.focus(); ta.select();
   } else { ta.value = ""; ta.readOnly = false; ta.placeholder = "書き出した文字をここに貼り付け"; ta.focus(); }
 }
 $("#exportBtn").addEventListener("click", () => openXfer("export"));
@@ -2167,12 +2257,16 @@ $("#xferCopy").addEventListener("click", () => {
 let xferPending = null;
 $("#xferLoad").addEventListener("click", () => {
   let d; try { d = JSON.parse($("#xferText").value.trim()); } catch { toast("読み込めないよ。書き出した文字を全部貼ってね"); return; }
-  if (!d || d.app !== "mytl" || !Array.isArray(d.timelines) || !d.timelines.length || !Array.isArray(d.posts)) { toast("このアプリで書き出したデータじゃないみたい"); return; }
-  xferPending = d; $("#xferConfirm").hidden = false;
+  startImport(d);
 });
 $("#xferNo").addEventListener("click", () => { $("#xferConfirm").hidden = true; xferPending = null; });
 $("#xferYes").addEventListener("click", () => {
   const d = xferPending; if (!d) return;
+  if (d.kind === "timeline") {
+    const src = d.timelines[0], t = { ...src, id: "tl-" + uid() }; delete t.secret; if (S.timelines.some(x => x.name === t.name)) t.name += "（読み込み）";
+    S.timelines.push(t); d.posts.forEach(p => S.posts.push({ ...p, id: uid(), tl: t.id }));
+    xferPending = null; $("#xferBox").hidden = true; $("#xferConfirm").hidden = true; S.active = t.id; applySkin(); renderAll(); toast(`「${t.name}」を追加したよ（ツイート ${d.posts.length} 件）`); return;
+  }
   const keepFiles = S.posts.filter(isFilePost);
   S = { timelines: d.timelines, posts: d.posts.concat(keepFiles.filter(p => d.timelines.some(t => t.id === p.tl))), active: d.timelines[0].id, opts: { ...S.opts, ...(d.opts || {}) }, me: d.me || S.me, presets: d.presets || S.presets || [], trash: S.trash || [], lock: S.lock, rules: d.rules || S.rules || [], secretPin: d.secretPin || S.secretPin, guideSeen: true };
   xferPending = null; $("#xferBox").hidden = true; applyOpts(); renderAll(); toast(`読み込みました（ツイート ${d.posts.length} 件）`);
@@ -2217,6 +2311,7 @@ function renderTT() {
   else if (order === "random") { for (let i = list.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [list[i], list[j]] = [list[j], list[i]]; } }
   else if (order === "popular") list = list.map((p, i) => [p, i]).sort((a, b) => (b[0].likes || 0) - (a[0].likes || 0) || a[1] - b[1]).map(x => x[0]);
   else if (order === "unseen") list = list.filter(p => !p.seenAt).concat(list.filter(p => p.seenAt).sort((a, b) => a.seenAt - b.seenAt));
+  else if (order === "unseenrand") { const u = list.filter(p => !p.seenAt); for (let i = u.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [u[i], u[j]] = [u[j], u[i]]; } list = u.concat(list.filter(p => p.seenAt).sort((a, b) => a.seenAt - b.seenAt)); }
   if (!list.length) { sc.innerHTML = `<div class="tt-empty">このタイムラインには画像・動画の投稿がまだないよ</div>`; return; }
   list.forEach(p => {
     const t = tlById(p.tl); const item = document.createElement("section"); item.className = "tt-item";
@@ -2278,7 +2373,8 @@ function renderLook() {
   lk("lkRingCols").hidden = lk("lkRingW").hidden = t.ringType === "none";
   lk("lkRc1").value = t.ringC1; lk("lkRc2").value = t.ringC2; lk("lkRc2").hidden = !["grad", "metal", "glow"].includes(t.ringType);
   lk("lkRw").value = t.ringW; lk("lkRwOut").textContent = t.ringW + "px";
-  lk("lkBgSec").hidden = isMe;
+  lk("lkBgSec").hidden = isMe; lk("lkSkinSec").hidden = isMe;
+  if (!isMe) lk("lkSkin").innerHTML = `<option value="">アプリと同じ（${SKIN_NAMES[S.opts.skin || ""]}）</option><option value="std" ${t.skin === "std" ? "selected" : ""}>標準</option>` + Object.entries(SKIN_NAMES).filter(([k]) => k).map(([k, n]) => `<option value="${k}" ${t.skin === k ? "selected" : ""}>${n}</option>`).join("");
   lk("lkBg").innerHTML = chipHTML(BGS, t.bgType);
   lk("lkBgCols").hidden = t.bgType === "none";
   lk("lkBc1").value = t.bgC1; lk("lkBc2").value = t.bgC2; lk("lkBc2").hidden = t.bgType !== "grad";
@@ -2317,11 +2413,39 @@ lk("lkBg").addEventListener("click", e => {
   const b = e.target.closest("[data-v]"); if (!b) return; const t = lookTarget(lkId);
   t.bgType = b.dataset.v; t.bgAlpha = BG_ALPHA[t.bgType] ?? 20; lookChanged(true);
 });
-lk("lkIconImg").addEventListener("change", async e => {
-  const f = e.target.files[0]; e.target.value = ""; if (!f) return;
-  try { lookTarget(lkId).iconImg = await shrinkImage(f, 160, .85, true); } catch { toast("この画像は読み込めなかったよ"); return; }
-  lookChanged(true);
+lk("lkIconImg").addEventListener("change", e => {
+  const f = e.target.files[0]; e.target.value = ""; if (!f) return; openCrop(f);
 });
+/* R8 アイコンのトリミング: ドラッグで位置、スライダー・ホイール・2本指で大きさ */
+let crop = null;
+function openCrop(file) {
+  const u = URL.createObjectURL(file), img = new Image();
+  img.onload = () => { crop = { img, u, z: 1, x: 0, y: 0, ptrs: new Map() }; $("#cropZoom").value = 1; $("#cropSheet").hidden = false; document.body.classList.add("sheet-open"); paintCrop(); $("#cropOk").focus(); };
+  img.onerror = () => { URL.revokeObjectURL(u); toast("この画像は読み込めなかったよ"); }; img.src = u;
+}
+const CROP_V = 240;
+function clampCrop() { const { img, z } = crop, base = CROP_V / Math.min(img.width, img.height), w = img.width * base * z, h = img.height * base * z;
+  crop.x = Math.min(0, Math.max(CROP_V - w, crop.x)); crop.y = Math.min(0, Math.max(CROP_V - h, crop.y)); return { w, h }; }
+function paintCrop() { if (!crop) return; const { w, h } = clampCrop(); const el = $("#cropImg"); el.src = crop.u; el.style.width = w + "px"; el.style.height = h + "px"; el.style.transform = `translate(${crop.x}px,${crop.y}px)`; }
+function zoomCrop(z, cx = CROP_V / 2, cy = CROP_V / 2) { const z0 = crop.z; z = Math.max(1, Math.min(4, z)); crop.x = cx - (cx - crop.x) * z / z0; crop.y = cy - (cy - crop.y) * z / z0; crop.z = z; $("#cropZoom").value = z; paintCrop(); }
+function closeCrop() { if (crop) URL.revokeObjectURL(crop.u); crop = null; $("#cropSheet").hidden = true; if ($("#lookSheet").hidden) document.body.classList.remove("sheet-open"); }
+(() => { const v = $("#cropView");
+  v.addEventListener("pointerdown", e => { if (!crop) return; v.setPointerCapture(e.pointerId); crop.ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); });
+  v.addEventListener("pointermove", e => { if (!crop || !crop.ptrs.has(e.pointerId)) return; const prev = crop.ptrs.get(e.pointerId), pts = [...crop.ptrs.values()];
+    if (crop.ptrs.size === 2) { const o = pts.find(q => q !== prev), d0 = Math.hypot(prev.x - o.x, prev.y - o.y), d1 = Math.hypot(e.clientX - o.x, e.clientY - o.y); if (d0 > 0) { const r = v.getBoundingClientRect(); zoomCrop(crop.z * d1 / d0, (e.clientX + o.x) / 2 - r.left, (e.clientY + o.y) / 2 - r.top); } }
+    else { crop.x += e.clientX - prev.x; crop.y += e.clientY - prev.y; paintCrop(); }
+    crop.ptrs.set(e.pointerId, { x: e.clientX, y: e.clientY }); });
+  ["pointerup", "pointercancel"].forEach(ev => v.addEventListener(ev, e => crop?.ptrs.delete(e.pointerId)));
+  v.addEventListener("wheel", e => { if (!crop) return; e.preventDefault(); const r = v.getBoundingClientRect(); zoomCrop(crop.z * (e.deltaY < 0 ? 1.1 : 1 / 1.1), e.clientX - r.left, e.clientY - r.top); }, { passive: false });
+})();
+$("#cropZoom").addEventListener("input", e => zoomCrop(+e.target.value));
+$("#cropCancel").addEventListener("click", closeCrop);
+$("#cropOk").addEventListener("click", () => {
+  const { img, z, x, y } = crop, base = CROP_V / Math.min(img.width, img.height) * z, c = document.createElement("canvas"); c.width = c.height = 160;
+  c.getContext("2d").drawImage(img, -x / base, -y / base, CROP_V / base, CROP_V / base, 0, 0, 160, 160);
+  lookTarget(lkId).iconImg = c.toDataURL("image/jpeg", .85); closeCrop(); lookChanged(true); toast("アイコンにしたよ");
+});
+lk("lkSkin").addEventListener("change", e => { const t = lookTarget(lkId); t.skin = e.target.value; if (!t.skin) delete t.skin; save(); if (lkId === S.active) applySkin(); toast(t.skin ? `「${t.name}」は「${SKIN_NAMES[t.skin === "std" ? "" : t.skin]}」で表示するよ` : `「${t.name}」はアプリと同じテーマにしたよ`); });
 lk("lkIconClear").addEventListener("click", () => { delete lookTarget(lkId).iconImg; lookChanged(true); });
 lk("lkPresets").addEventListener("click", e => {
   const del = e.target.closest("[data-pdel]");
@@ -2764,10 +2888,25 @@ function maybeGuide() { if (S.guideSeen || window.__noGuide) return; const go = 
 /* ================= コメント（ツイートごと・この端末に保存） ================= */
 let cmId = null;
 function cmBtn(p) { const n = (p.comments || []).length; return `<button class="act cm" data-act="comment" aria-label="コメント（${n}）" title="コメント"><svg class="i"><use href="#i-comment"/></svg>${n || ""}</button>`; }
+/* R10 コメントの「1:23」は押せる文字になって、その場面へ飛べる */
+function cmText(t, id) { return esc(t).replace(/(^|[^\d:])((?:\d{1,2}:)?\d{1,2}:[0-5]\d)(?![\d:])/g, (m, a, tm) => { const sec = tm.split(":").reduce((s, v) => s * 60 + +v, 0); return `${a}<button type="button" class="tlink" data-tjump="${id}" data-sec="${sec}">${tm}</button>`; }); }
+document.addEventListener("click", e => {
+  const b = e.target.closest("[data-tjump]"); if (!b) return; e.preventDefault(); e.stopPropagation();
+  const id = b.dataset.tjump, sec = +b.dataset.sec, p = S.posts.find(x => x.id === id); if (!p) return;
+  if (!isVideoPost(p)) return toast("このツイートは動画じゃないよ");
+  if (!$("#cmSheet").hidden) closeComments();
+  openViewer(id, $("#tt").classList.contains("open") ? "tt" : "feed");
+  const go = (n = 0) => { const k = [...players.keys()].find(k => $("#vStage").contains(k)), pl = k && players.get(k);
+    if (!pl) return n < 10 && setTimeout(() => go(n + 1), 100);
+    if (!pl.seek) return toast("この動画は場所を飛べないよ");
+    const lim = previewLimit(); if (sec >= lim) { toast(`再生する長さ（${fmt(lim)}）より後ろだから、設定で長さを伸ばしてね`); return; }
+    pl.seek(sec); toast(`${b.textContent} へ飛んだよ`); };
+  setTimeout(go, 60);
+}, true);
 function cmPeek(p) {
   const list = p.comments || []; if (!list.length) return "";
   const last = list.slice(-2);
-  return last.map(c => `<div class="cm-peek-row"><b>私</b><span>${esc(c.text)}</span></div>`).join("") + (list.length > 2 ? `<div class="cm-more">コメントをすべて見る（${list.length}件）</div>` : "");
+  return last.map(c => `<div class="cm-peek-row"><b>私</b><span>${cmText(c.text, p.id)}</span></div>`).join("") + (list.length > 2 ? `<div class="cm-more">コメントをすべて見る（${list.length}件）</div>` : "");
 }
 function refreshPostComments(p) {
   const card = document.querySelector(`#feed .post[data-id="${p.id}"]`);
@@ -2779,7 +2918,7 @@ function renderComments() {
   const t = tlById(p.tl) || S.timelines[0];
   $("#cmTarget").innerHTML = `${tlAvatar(t, "mini-av")}<div><b>${esc(t.name)}</b> <span class="cm-time">${ago(p.at)}</span><div class="cm-tt">${esc(p.text || (p.embed ? p.embed.url : "（画像・動画）"))}</div></div>`;
   const list = p.comments || [];
-  $("#cmList").innerHTML = list.length ? list.map(c => `<li class="cm-item" data-c="${c.id}">${tlAvatar(S.me, "mini-av")}<div class="cm-body"><div class="cm-meta"><b>${esc(S.me.name)}</b><span class="cm-time">${ago(c.at)}</span></div><div class="cm-text">${esc(c.text)}</div></div><button type="button" class="cm-del" data-del="${c.id}" aria-label="このコメントを消す">消す</button></li>`).join("")
+  $("#cmList").innerHTML = list.length ? list.map(c => `<li class="cm-item" data-c="${c.id}">${tlAvatar(S.me, "mini-av")}<div class="cm-body"><div class="cm-meta"><b>${esc(S.me.name)}</b><span class="cm-time">${ago(c.at)}</span></div><div class="cm-text">${cmText(c.text, p.id)}</div></div><button type="button" class="cm-del" data-del="${c.id}" aria-label="このコメントを消す">消す</button></li>`).join("")
     : `<li class="cm-empty">まだコメントはないよ。思ったことをメモしておけるよ</li>`;
   paintAvatar($("#cmMe"), S.me, "avatar");
 }

@@ -308,19 +308,98 @@ svg.i{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stro
 :root[data-skin] .tab.on::after{background:var(--metal)}
 :root[data-skin] .tl-av{box-shadow:inset 0 1px 1px rgba(255,255,255,.3),0 2px 6px rgba(0,0,0,.18)}
 /* ミッドナイト: 金/プラチナの細い縁のすりガラス */
-:root[data-skin^="b"] .post.focus{border-color:var(--glass-line);background:linear-gradient(160deg,color-mix(in srgb,var(--fg) 7%,transparent),color-mix(in srgb,var(--fg) 2%,transparent));box-shadow:inset 0 1px 0 color-mix(in srgb,#fff 14%,transparent),0 18px 40px -16px rgba(0,0,0,.55)}
-:root[data-skin^="b"] .post-actions .act{background:color-mix(in srgb,var(--fg) 5%,transparent);border:1px solid color-mix(in srgb,var(--glass-line) 70%,transparent)}
-:root[data-skin^="b"] .card{background:color-mix(in srgb,var(--fg) 4%,transparent);border:1px solid var(--line);box-shadow:0 14px 30px -18px rgba(0,0,0,.5)}
+:root[data-fam="glass"] .post.focus,:root[data-fam="gem"] .post.focus{border-color:var(--glass-line);background:linear-gradient(160deg,color-mix(in srgb,var(--fg) 7%,transparent),color-mix(in srgb,var(--fg) 2%,transparent));box-shadow:inset 0 1px 0 color-mix(in srgb,#fff 14%,transparent),0 18px 40px -16px rgba(0,0,0,.55)}
+:root[data-fam="glass"] .post-actions .act,:root[data-fam="gem"] .post-actions .act{background:color-mix(in srgb,var(--fg) 5%,transparent);border:1px solid color-mix(in srgb,var(--glass-line) 70%,transparent)}
+:root[data-fam="glass"] .card,:root[data-fam="gem"] .card{background:color-mix(in srgb,var(--fg) 4%,transparent);border:1px solid var(--line);box-shadow:0 14px 30px -18px rgba(0,0,0,.5)}
 /* パール: 表面から盛り上がる立体感 */
-:root[data-skin^="c"] .post{border-bottom-color:transparent}
-:root[data-skin^="c"] .post.focus{border-color:transparent;background:var(--bg);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:8px 8px 18px var(--shd),-8px -8px 18px var(--shl)}
-:root[data-skin^="c"] .post-actions .act{background:var(--bg);box-shadow:3px 3px 6px var(--shd),-3px -3px 6px var(--shl)}
+:root[data-fam="neu"] .post{border-bottom-color:transparent}
+:root[data-fam="neu"] .post.focus{border-color:transparent;background:var(--bg);backdrop-filter:none;-webkit-backdrop-filter:none;box-shadow:8px 8px 18px var(--shd),-8px -8px 18px var(--shl)}
+:root[data-fam="neu"] .post-actions .act{background:var(--bg);box-shadow:3px 3px 6px var(--shd),-3px -3px 6px var(--shl)}
 :root[data-skin] .post-actions span.act[aria-hidden]{box-shadow:none;border:0;background:none}
-:root[data-skin^="c"] .card{background:var(--bg);box-shadow:7px 7px 16px var(--shd),-7px -7px 16px var(--shl)}
-:root[data-skin^="c"] .btn-ghost,:root[data-skin^="c"] .icon-btn{box-shadow:3px 3px 6px var(--shd),-3px -3px 6px var(--shl)}
-:root[data-skin^="c"] .media{border-color:transparent;box-shadow:5px 5px 12px var(--shd),-5px -5px 12px var(--shl)}
-:root[data-skin^="c"] .composer,:root[data-skin^="c"] .head{border-bottom-color:transparent}
+:root[data-fam="neu"] .card{background:var(--bg);box-shadow:7px 7px 16px var(--shd),-7px -7px 16px var(--shl)}
+:root[data-fam="neu"] .btn-ghost,:root[data-fam="neu"] .icon-btn{box-shadow:3px 3px 6px var(--shd),-3px -3px 6px var(--shl)}
+:root[data-fam="neu"] .media{border-color:transparent;box-shadow:5px 5px 12px var(--shd),-5px -5px 12px var(--shl)}
+:root[data-fam="neu"] .composer,:root[data-fam="neu"] .head{border-bottom-color:transparent}
 
+/* ---- 宝石テーマ（G1〜G8）とサイバーパンク（P1・P2）。色は見比べページと同じ ---- */
+:root[data-skin="g1"]{--bg:#eef3fb;--bg-soft:color-mix(in srgb,#eef3fb 94%,#0d1b3a);--bg-hover:color-mix(in srgb,#eef3fb 92%,#0d1b3a);--fg:#0d1b3a;--muted:#56647f;--line:#d6e0f2;--line-strong:color-mix(in srgb,#d6e0f2 80%,#0d1b3a);--accent:#1f4fb8;--accent-fg:#fff;--metal:linear-gradient(135deg,#0b3d91,#6fa2ff 50%,#123f99);--onmetal:#fff;--glass-line:rgba(31,79,184,.25);--glow:rgba(31,79,184,.5);--media:#05060a;--g1:#0b3d91;--g2:#4f8cff;--g3:#0a1f5c;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#4f8cff 6%,transparent) 6deg 9deg) fixed,#eef3fb;color-scheme:light;}
+@media (prefers-color-scheme: dark){:root[data-skin="g1"]:not([data-theme="light"]){--bg:#060c1d;--bg-soft:color-mix(in srgb,#060c1d 94%,#e6edff);--bg-hover:color-mix(in srgb,#060c1d 92%,#e6edff);--fg:#e6edff;--muted:#8592b3;--line:#15214a;--line-strong:color-mix(in srgb,#15214a 80%,#e6edff);--accent:#7fa8ff;--accent-fg:#06112b;--metal:linear-gradient(135deg,#1d4fb8,#a9c6ff 50%,#2a5cc4);--onmetal:#06112b;--glass-line:rgba(127,168,255,.35);--glow:rgba(127,168,255,.5);--media:#05060a;--g1:#0b3d91;--g2:#4f8cff;--g3:#0a1f5c;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#4f8cff 6%,transparent) 6deg 9deg) fixed,#060c1d;color-scheme:dark;}}
+:root[data-skin="g1"][data-theme="dark"]{--bg:#060c1d;--bg-soft:color-mix(in srgb,#060c1d 94%,#e6edff);--bg-hover:color-mix(in srgb,#060c1d 92%,#e6edff);--fg:#e6edff;--muted:#8592b3;--line:#15214a;--line-strong:color-mix(in srgb,#15214a 80%,#e6edff);--accent:#7fa8ff;--accent-fg:#06112b;--metal:linear-gradient(135deg,#1d4fb8,#a9c6ff 50%,#2a5cc4);--onmetal:#06112b;--glass-line:rgba(127,168,255,.35);--glow:rgba(127,168,255,.5);--media:#05060a;--g1:#0b3d91;--g2:#4f8cff;--g3:#0a1f5c;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#4f8cff 6%,transparent) 6deg 9deg) fixed,#060c1d;color-scheme:dark;}
+:root[data-skin="g2"]{--bg:#fbf0f2;--bg-soft:color-mix(in srgb,#fbf0f2 94%,#2b0a12);--bg-hover:color-mix(in srgb,#fbf0f2 92%,#2b0a12);--fg:#2b0a12;--muted:#7d5a63;--line:#f0d7dd;--line-strong:color-mix(in srgb,#f0d7dd 80%,#2b0a12);--accent:#b3123f;--accent-fg:#fff;--metal:linear-gradient(135deg,#8a0a2a,#f0517f 50%,#9b0f33);--onmetal:#fff;--glass-line:rgba(179,18,63,.22);--glow:rgba(179,18,63,.45);--media:#05060a;--g1:#7a0019;--g2:#e0115f;--g3:#4a000f;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#e0115f 6%,transparent) 6deg 9deg) fixed,#fbf0f2;color-scheme:light;}
+@media (prefers-color-scheme: dark){:root[data-skin="g2"]:not([data-theme="light"]){--bg:#14050a;--bg-soft:color-mix(in srgb,#14050a 94%,#fbe6ec);--bg-hover:color-mix(in srgb,#14050a 92%,#fbe6ec);--fg:#fbe6ec;--muted:#ad8792;--line:#36121d;--line-strong:color-mix(in srgb,#36121d 80%,#fbe6ec);--accent:#ff6f96;--accent-fg:#2a0510;--metal:linear-gradient(135deg,#b3123f,#ff9bb7 50%,#c21a48);--onmetal:#2a0510;--glass-line:rgba(255,111,150,.3);--glow:rgba(255,111,150,.45);--media:#05060a;--g1:#7a0019;--g2:#e0115f;--g3:#4a000f;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#e0115f 6%,transparent) 6deg 9deg) fixed,#14050a;color-scheme:dark;}}
+:root[data-skin="g2"][data-theme="dark"]{--bg:#14050a;--bg-soft:color-mix(in srgb,#14050a 94%,#fbe6ec);--bg-hover:color-mix(in srgb,#14050a 92%,#fbe6ec);--fg:#fbe6ec;--muted:#ad8792;--line:#36121d;--line-strong:color-mix(in srgb,#36121d 80%,#fbe6ec);--accent:#ff6f96;--accent-fg:#2a0510;--metal:linear-gradient(135deg,#b3123f,#ff9bb7 50%,#c21a48);--onmetal:#2a0510;--glass-line:rgba(255,111,150,.3);--glow:rgba(255,111,150,.45);--media:#05060a;--g1:#7a0019;--g2:#e0115f;--g3:#4a000f;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#e0115f 6%,transparent) 6deg 9deg) fixed,#14050a;color-scheme:dark;}
+:root[data-skin="g3"]{--bg:#eff7f3;--bg-soft:color-mix(in srgb,#eff7f3 94%,#0b2219);--bg-hover:color-mix(in srgb,#eff7f3 92%,#0b2219);--fg:#0b2219;--muted:#567066;--line:#d5e9df;--line-strong:color-mix(in srgb,#d5e9df 80%,#0b2219);--accent:#0b7a55;--accent-fg:#fff;--metal:linear-gradient(135deg,#016546,#5fe0ab 50%,#03714f);--onmetal:#fff;--glass-line:rgba(11,122,85,.22);--glow:rgba(11,122,85,.45);--media:#05060a;--g1:#014d38;--g2:#2ecc8f;--g3:#00301f;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#2ecc8f 6%,transparent) 6deg 9deg) fixed,#eff7f3;color-scheme:light;}
+@media (prefers-color-scheme: dark){:root[data-skin="g3"]:not([data-theme="light"]){--bg:#04110c;--bg-soft:color-mix(in srgb,#04110c 94%,#e2f6ec);--bg-hover:color-mix(in srgb,#04110c 92%,#e2f6ec);--fg:#e2f6ec;--muted:#86a597;--line:#12302a;--line-strong:color-mix(in srgb,#12302a 80%,#e2f6ec);--accent:#5fe0ab;--accent-fg:#03150e;--metal:linear-gradient(135deg,#0b7a55,#a2f0cf 50%,#0e8a60);--onmetal:#03150e;--glass-line:rgba(95,224,171,.3);--glow:rgba(95,224,171,.4);--media:#05060a;--g1:#014d38;--g2:#2ecc8f;--g3:#00301f;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#2ecc8f 6%,transparent) 6deg 9deg) fixed,#04110c;color-scheme:dark;}}
+:root[data-skin="g3"][data-theme="dark"]{--bg:#04110c;--bg-soft:color-mix(in srgb,#04110c 94%,#e2f6ec);--bg-hover:color-mix(in srgb,#04110c 92%,#e2f6ec);--fg:#e2f6ec;--muted:#86a597;--line:#12302a;--line-strong:color-mix(in srgb,#12302a 80%,#e2f6ec);--accent:#5fe0ab;--accent-fg:#03150e;--metal:linear-gradient(135deg,#0b7a55,#a2f0cf 50%,#0e8a60);--onmetal:#03150e;--glass-line:rgba(95,224,171,.3);--glow:rgba(95,224,171,.4);--media:#05060a;--g1:#014d38;--g2:#2ecc8f;--g3:#00301f;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#2ecc8f 6%,transparent) 6deg 9deg) fixed,#04110c;color-scheme:dark;}
+:root[data-skin="g4"]{--bg:#f4f0fb;--bg-soft:color-mix(in srgb,#f4f0fb 94%,#1e1030);--bg-hover:color-mix(in srgb,#f4f0fb 92%,#1e1030);--fg:#1e1030;--muted:#6c5f80;--line:#e3d9f2;--line-strong:color-mix(in srgb,#e3d9f2 80%,#1e1030);--accent:#6a35b0;--accent-fg:#fff;--metal:linear-gradient(135deg,#5a27a0,#c9a2ff 50%,#6a35b0);--onmetal:#fff;--glass-line:rgba(106,53,176,.22);--glow:rgba(106,53,176,.45);--media:#05060a;--g1:#4b1d7a;--g2:#b07cf0;--g3:#2c0e4d;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#b07cf0 6%,transparent) 6deg 9deg) fixed,#f4f0fb;color-scheme:light;}
+@media (prefers-color-scheme: dark){:root[data-skin="g4"]:not([data-theme="light"]){--bg:#0d0716;--bg-soft:color-mix(in srgb,#0d0716 94%,#efe6ff);--bg-hover:color-mix(in srgb,#0d0716 92%,#efe6ff);--fg:#efe6ff;--muted:#9d8fb3;--line:#261640;--line-strong:color-mix(in srgb,#261640 80%,#efe6ff);--accent:#c9a2ff;--accent-fg:#160a28;--metal:linear-gradient(135deg,#7a45c4,#e2ccff 50%,#8a52d4);--onmetal:#160a28;--glass-line:rgba(201,162,255,.32);--glow:rgba(201,162,255,.45);--media:#05060a;--g1:#4b1d7a;--g2:#b07cf0;--g3:#2c0e4d;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#b07cf0 6%,transparent) 6deg 9deg) fixed,#0d0716;color-scheme:dark;}}
+:root[data-skin="g4"][data-theme="dark"]{--bg:#0d0716;--bg-soft:color-mix(in srgb,#0d0716 94%,#efe6ff);--bg-hover:color-mix(in srgb,#0d0716 92%,#efe6ff);--fg:#efe6ff;--muted:#9d8fb3;--line:#261640;--line-strong:color-mix(in srgb,#261640 80%,#efe6ff);--accent:#c9a2ff;--accent-fg:#160a28;--metal:linear-gradient(135deg,#7a45c4,#e2ccff 50%,#8a52d4);--onmetal:#160a28;--glass-line:rgba(201,162,255,.32);--glow:rgba(201,162,255,.45);--media:#05060a;--g1:#4b1d7a;--g2:#b07cf0;--g3:#2c0e4d;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#b07cf0 6%,transparent) 6deg 9deg) fixed,#0d0716;color-scheme:dark;}
+:root[data-skin="g5"]{--bg:#fbf7ea;--bg-soft:color-mix(in srgb,#fbf7ea 94%,#2a2108);--bg-hover:color-mix(in srgb,#fbf7ea 92%,#2a2108);--fg:#2a2108;--muted:#76694a;--line:#eee4c4;--line-strong:color-mix(in srgb,#eee4c4 80%,#2a2108);--accent:#9a6a00;--accent-fg:#2a1d00;--metal:linear-gradient(135deg,#c98a08,#ffe38f 50%,#d59a12);--onmetal:#2a1d00;--glass-line:rgba(201,138,8,.25);--glow:rgba(201,138,8,.45);--media:#05060a;--g1:#a86a00;--g2:#ffd25a;--g3:#6b4300;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#ffd25a 6%,transparent) 6deg 9deg) fixed,#fbf7ea;color-scheme:light;}
+@media (prefers-color-scheme: dark){:root[data-skin="g5"]:not([data-theme="light"]){--bg:#120e03;--bg-soft:color-mix(in srgb,#120e03 94%,#fbf3dc);--bg-hover:color-mix(in srgb,#120e03 92%,#fbf3dc);--fg:#fbf3dc;--muted:#a89c7c;--line:#2e260f;--line-strong:color-mix(in srgb,#2e260f 80%,#fbf3dc);--accent:#ffd25a;--accent-fg:#1f1600;--metal:linear-gradient(135deg,#d59a12,#fff0bd 50%,#e0a91c);--onmetal:#1f1600;--glass-line:rgba(255,210,90,.3);--glow:rgba(255,210,90,.4);--media:#05060a;--g1:#a86a00;--g2:#ffd25a;--g3:#6b4300;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#ffd25a 6%,transparent) 6deg 9deg) fixed,#120e03;color-scheme:dark;}}
+:root[data-skin="g5"][data-theme="dark"]{--bg:#120e03;--bg-soft:color-mix(in srgb,#120e03 94%,#fbf3dc);--bg-hover:color-mix(in srgb,#120e03 92%,#fbf3dc);--fg:#fbf3dc;--muted:#a89c7c;--line:#2e260f;--line-strong:color-mix(in srgb,#2e260f 80%,#fbf3dc);--accent:#ffd25a;--accent-fg:#1f1600;--metal:linear-gradient(135deg,#d59a12,#fff0bd 50%,#e0a91c);--onmetal:#1f1600;--glass-line:rgba(255,210,90,.3);--glow:rgba(255,210,90,.4);--media:#05060a;--g1:#a86a00;--g2:#ffd25a;--g3:#6b4300;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#ffd25a 6%,transparent) 6deg 9deg) fixed,#120e03;color-scheme:dark;}
+:root[data-skin="g6"]{--bg:#fdf3f6;--bg-soft:color-mix(in srgb,#fdf3f6 94%,#3a1724);--bg-hover:color-mix(in srgb,#fdf3f6 92%,#3a1724);--fg:#3a1724;--muted:#8a6672;--line:#f4dbe3;--line-strong:color-mix(in srgb,#f4dbe3 80%,#3a1724);--accent:#c2507a;--accent-fg:#3a0f20;--metal:linear-gradient(135deg,#d16a8e,#ffd6e3 50%,#d6769a);--onmetal:#3a0f20;--glass-line:rgba(194,80,122,.22);--glow:rgba(194,80,122,.4);--media:#05060a;--g1:#d16a8e;--g2:#ffc4d6;--g3:#a94570;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#ffc4d6 6%,transparent) 6deg 9deg) fixed,#fdf3f6;color-scheme:light;}
+@media (prefers-color-scheme: dark){:root[data-skin="g6"]:not([data-theme="light"]){--bg:#1a0d12;--bg-soft:color-mix(in srgb,#1a0d12 94%,#fde8ef);--bg-hover:color-mix(in srgb,#1a0d12 92%,#fde8ef);--fg:#fde8ef;--muted:#b4919c;--line:#3a1f29;--line-strong:color-mix(in srgb,#3a1f29 80%,#fde8ef);--accent:#ff9ec0;--accent-fg:#2e0c18;--metal:linear-gradient(135deg,#d6769a,#ffe0ea 50%,#e088a8);--onmetal:#2e0c18;--glass-line:rgba(255,158,192,.32);--glow:rgba(255,158,192,.45);--media:#05060a;--g1:#d16a8e;--g2:#ffc4d6;--g3:#a94570;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#ffc4d6 6%,transparent) 6deg 9deg) fixed,#1a0d12;color-scheme:dark;}}
+:root[data-skin="g6"][data-theme="dark"]{--bg:#1a0d12;--bg-soft:color-mix(in srgb,#1a0d12 94%,#fde8ef);--bg-hover:color-mix(in srgb,#1a0d12 92%,#fde8ef);--fg:#fde8ef;--muted:#b4919c;--line:#3a1f29;--line-strong:color-mix(in srgb,#3a1f29 80%,#fde8ef);--accent:#ff9ec0;--accent-fg:#2e0c18;--metal:linear-gradient(135deg,#d6769a,#ffe0ea 50%,#e088a8);--onmetal:#2e0c18;--glass-line:rgba(255,158,192,.32);--glow:rgba(255,158,192,.45);--media:#05060a;--g1:#d16a8e;--g2:#ffc4d6;--g3:#a94570;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#ffc4d6 6%,transparent) 6deg 9deg) fixed,#1a0d12;color-scheme:dark;}
+:root[data-skin="g7"]{--bg:#eff9fa;--bg-soft:color-mix(in srgb,#eff9fa 94%,#0b2428);--bg-hover:color-mix(in srgb,#eff9fa 92%,#0b2428);--fg:#0b2428;--muted:#557479;--line:#d3ecef;--line-strong:color-mix(in srgb,#d3ecef 80%,#0b2428);--accent:#13788b;--accent-fg:#062a31;--metal:linear-gradient(135deg,#1a8aa0,#b5f3f8 50%,#1f97ad);--onmetal:#062a31;--glass-line:rgba(19,120,139,.22);--glow:rgba(19,120,139,.4);--media:#05060a;--g1:#1a8aa0;--g2:#8ee8f0;--g3:#0d5866;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#8ee8f0 6%,transparent) 6deg 9deg) fixed,#eff9fa;color-scheme:light;}
+@media (prefers-color-scheme: dark){:root[data-skin="g7"]:not([data-theme="light"]){--bg:#04131a;--bg-soft:color-mix(in srgb,#04131a 94%,#e0f8fb);--bg-hover:color-mix(in srgb,#04131a 92%,#e0f8fb);--fg:#e0f8fb;--muted:#86a8ae;--line:#0f2f38;--line-strong:color-mix(in srgb,#0f2f38 80%,#e0f8fb);--accent:#8ee8f0;--accent-fg:#03252c;--metal:linear-gradient(135deg,#1f97ad,#c9f7fb 50%,#28a7be);--onmetal:#03252c;--glass-line:rgba(142,232,240,.3);--glow:rgba(142,232,240,.4);--media:#05060a;--g1:#1a8aa0;--g2:#8ee8f0;--g3:#0d5866;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#8ee8f0 6%,transparent) 6deg 9deg) fixed,#04131a;color-scheme:dark;}}
+:root[data-skin="g7"][data-theme="dark"]{--bg:#04131a;--bg-soft:color-mix(in srgb,#04131a 94%,#e0f8fb);--bg-hover:color-mix(in srgb,#04131a 92%,#e0f8fb);--fg:#e0f8fb;--muted:#86a8ae;--line:#0f2f38;--line-strong:color-mix(in srgb,#0f2f38 80%,#e0f8fb);--accent:#8ee8f0;--accent-fg:#03252c;--metal:linear-gradient(135deg,#1f97ad,#c9f7fb 50%,#28a7be);--onmetal:#03252c;--glass-line:rgba(142,232,240,.3);--glow:rgba(142,232,240,.4);--media:#05060a;--g1:#1a8aa0;--g2:#8ee8f0;--g3:#0d5866;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#8ee8f0 6%,transparent) 6deg 9deg) fixed,#04131a;color-scheme:dark;}
+:root[data-skin="g8"]{--bg:#f2f2f2;--bg-soft:color-mix(in srgb,#f2f2f2 94%,#111111);--bg-hover:color-mix(in srgb,#f2f2f2 92%,#111111);--fg:#111111;--muted:#5e5e5e;--line:#dcdcdc;--line-strong:color-mix(in srgb,#dcdcdc 80%,#111111);--accent:#2b2b2b;--accent-fg:#ffffff;--metal:linear-gradient(135deg,#1a1a1a,#6a6a6a 50%,#222);--onmetal:#ffffff;--glass-line:rgba(0,0,0,.18);--glow:rgba(0,0,0,.4);--media:#05060a;--g1:#0a0a0a;--g2:#5a5a5a;--g3:#1c1c1c;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#5a5a5a 6%,transparent) 6deg 9deg) fixed,#f2f2f2;color-scheme:light;}
+@media (prefers-color-scheme: dark){:root[data-skin="g8"]:not([data-theme="light"]){--bg:#050505;--bg-soft:color-mix(in srgb,#050505 94%,#f0f0f0);--bg-hover:color-mix(in srgb,#050505 92%,#f0f0f0);--fg:#f0f0f0;--muted:#8c8c8c;--line:#1e1e1e;--line-strong:color-mix(in srgb,#1e1e1e 80%,#f0f0f0);--accent:#d8d8d8;--accent-fg:#0a0a0a;--metal:linear-gradient(135deg,#8e8e8e,#ffffff 50%,#a0a0a0);--onmetal:#0a0a0a;--glass-line:rgba(220,220,220,.28);--glow:rgba(255,255,255,.25);--media:#05060a;--g1:#0a0a0a;--g2:#5a5a5a;--g3:#1c1c1c;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#5a5a5a 6%,transparent) 6deg 9deg) fixed,#050505;color-scheme:dark;}}
+:root[data-skin="g8"][data-theme="dark"]{--bg:#050505;--bg-soft:color-mix(in srgb,#050505 94%,#f0f0f0);--bg-hover:color-mix(in srgb,#050505 92%,#f0f0f0);--fg:#f0f0f0;--muted:#8c8c8c;--line:#1e1e1e;--line-strong:color-mix(in srgb,#1e1e1e 80%,#f0f0f0);--accent:#d8d8d8;--accent-fg:#0a0a0a;--metal:linear-gradient(135deg,#8e8e8e,#ffffff 50%,#a0a0a0);--onmetal:#0a0a0a;--glass-line:rgba(220,220,220,.28);--glow:rgba(255,255,255,.25);--media:#05060a;--g1:#0a0a0a;--g2:#5a5a5a;--g3:#1c1c1c;--page:repeating-conic-gradient(from 0deg at 110% -10%,transparent 0 6deg,color-mix(in srgb,#5a5a5a 6%,transparent) 6deg 9deg) fixed,#050505;color-scheme:dark;}
+:root[data-skin="p1"]{--bg:#eef0f7;--bg-soft:color-mix(in srgb,#eef0f7 94%,#120b2a);--bg-hover:color-mix(in srgb,#eef0f7 92%,#120b2a);--fg:#120b2a;--muted:#5b5577;--line:#d9d6ea;--line-strong:color-mix(in srgb,#d9d6ea 80%,#120b2a);--accent:#c2009f;--accent-fg:#ffffff;--metal:linear-gradient(90deg,#ff2bd6,#00c8ff);--onmetal:#ffffff;--glass-line:rgba(194,0,159,.4);--glow:rgba(255,43,214,.45);--media:#05060a;--g1:#ff2bd6;--g2:#00e5ff;--g3:#7a00ff;--page:#eef0f7;color-scheme:light;}
+@media (prefers-color-scheme: dark){:root[data-skin="p1"]:not([data-theme="light"]){--bg:#07040f;--bg-soft:color-mix(in srgb,#07040f 94%,#f2eaff);--bg-hover:color-mix(in srgb,#07040f 92%,#f2eaff);--fg:#f2eaff;--muted:#8f84b3;--line:#1d1338;--line-strong:color-mix(in srgb,#1d1338 80%,#f2eaff);--accent:#00e5ff;--accent-fg:#07040f;--metal:linear-gradient(90deg,#ff2bd6,#00e5ff);--onmetal:#07040f;--glass-line:rgba(0,229,255,.55);--glow:rgba(0,229,255,.6);--media:#05060a;--g1:#ff2bd6;--g2:#00e5ff;--g3:#7a00ff;--page:#07040f;color-scheme:dark;--scan:1;}}
+:root[data-skin="p1"][data-theme="dark"]{--bg:#07040f;--bg-soft:color-mix(in srgb,#07040f 94%,#f2eaff);--bg-hover:color-mix(in srgb,#07040f 92%,#f2eaff);--fg:#f2eaff;--muted:#8f84b3;--line:#1d1338;--line-strong:color-mix(in srgb,#1d1338 80%,#f2eaff);--accent:#00e5ff;--accent-fg:#07040f;--metal:linear-gradient(90deg,#ff2bd6,#00e5ff);--onmetal:#07040f;--glass-line:rgba(0,229,255,.55);--glow:rgba(0,229,255,.6);--media:#05060a;--g1:#ff2bd6;--g2:#00e5ff;--g3:#7a00ff;--page:#07040f;color-scheme:dark;--scan:1;}
+:root[data-skin="p2"]{--bg:#f3f5ec;--bg-soft:color-mix(in srgb,#f3f5ec 94%,#141a05);--bg-hover:color-mix(in srgb,#f3f5ec 92%,#141a05);--fg:#141a05;--muted:#5f664a;--line:#dfe3cf;--line-strong:color-mix(in srgb,#dfe3cf 80%,#141a05);--accent:#5a7a00;--accent-fg:#ffffff;--metal:linear-gradient(90deg,#b8f000,#7a2bd6);--onmetal:#ffffff;--glass-line:rgba(90,122,0,.45);--glow:rgba(122,43,214,.4);--media:#05060a;--g1:#c6ff00;--g2:#8a2be2;--g3:#00ffa3;--page:#f3f5ec;color-scheme:light;}
+@media (prefers-color-scheme: dark){:root[data-skin="p2"]:not([data-theme="light"]){--bg:#070904;--bg-soft:color-mix(in srgb,#070904 94%,#efffd6);--bg-hover:color-mix(in srgb,#070904 92%,#efffd6);--fg:#efffd6;--muted:#93a07a;--line:#1a2010;--line-strong:color-mix(in srgb,#1a2010 80%,#efffd6);--accent:#c6ff00;--accent-fg:#070904;--metal:linear-gradient(90deg,#c6ff00,#00ffa3);--onmetal:#070904;--glass-line:rgba(198,255,0,.5);--glow:rgba(198,255,0,.55);--media:#05060a;--g1:#c6ff00;--g2:#8a2be2;--g3:#00ffa3;--page:#070904;color-scheme:dark;--scan:1;}}
+:root[data-skin="p2"][data-theme="dark"]{--bg:#070904;--bg-soft:color-mix(in srgb,#070904 94%,#efffd6);--bg-hover:color-mix(in srgb,#070904 92%,#efffd6);--fg:#efffd6;--muted:#93a07a;--line:#1a2010;--line-strong:color-mix(in srgb,#1a2010 80%,#efffd6);--accent:#c6ff00;--accent-fg:#070904;--metal:linear-gradient(90deg,#c6ff00,#00ffa3);--onmetal:#070904;--glass-line:rgba(198,255,0,.5);--glow:rgba(198,255,0,.55);--media:#05060a;--g1:#c6ff00;--g2:#8a2be2;--g3:#00ffa3;--page:#070904;color-scheme:dark;--scan:1;}
+
+/* 宝石: 選んでるツイートは石の色の縁のすりガラス、ボタンはカット面の光沢 */
+:root[data-fam="gem"] .post-actions .act{border:1px solid color-mix(in srgb,var(--glass-line) 80%,transparent)}
+:root[data-fam="gem"] .tab.on::after{background:conic-gradient(from 90deg,var(--g1),var(--g2),var(--g3),var(--g1))}
+:root[data-fam="gem"] .btn-primary,:root[data-fam="gem"] .btn-accent,:root[data-fam="gem"] .fab{box-shadow:inset 0 1px 0 rgba(255,255,255,.55),inset 0 -2px 6px rgba(0,0,0,.18),0 8px 20px -8px var(--glow)}
+/* サイバーパンク: 角を切った形・ネオンの光・走査線 */
+:root[data-fam="cyber"]{--r:4px}
+:root[data-fam="cyber"] .post.focus{border-radius:0;clip-path:polygon(0 0,calc(100% - 16px) 0,100% 16px,100% 100%,16px 100%,0 calc(100% - 16px));border-color:var(--glass-line);background:color-mix(in srgb,var(--accent) 5%,transparent);box-shadow:inset 0 0 0 1px var(--glass-line),inset 0 0 30px -10px var(--glow)}
+:root[data-fam="cyber"] .post-actions .act{border-radius:2px;border:1px solid color-mix(in srgb,var(--glass-line) 80%,transparent);background:transparent}
+:root[data-fam="cyber"] .btn-primary,:root[data-fam="cyber"] .btn-accent{border-radius:2px;clip-path:polygon(8px 0,100% 0,100% calc(100% - 8px),calc(100% - 8px) 100%,0 100%,0 8px);letter-spacing:.06em}
+:root[data-fam="cyber"] .fab{border-radius:6px;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%);width:62px}
+:root[data-fam="cyber"] .tab.on::after{border-radius:0;box-shadow:0 0 10px var(--glow)}
+:root[data-fam="cyber"] .tl-av{border-radius:10px;clip-path:polygon(25% 0,75% 0,100% 50%,75% 100%,25% 100%,0 50%)}
+:root[data-fam="cyber"] .brand .label,:root[data-fam="cyber"] .tab.on{text-shadow:0 0 8px var(--glow)}
+:root[data-fam="cyber"] .card{border-radius:4px;border:1px solid var(--glass-line);box-shadow:inset 0 0 24px -12px var(--glow)}
+:root[data-fam="cyber"] .media{border-radius:4px;border-color:var(--glass-line)}
+:root[data-fam="cyber"] body::after{content:"";position:fixed;inset:0;pointer-events:none;z-index:200;opacity:calc(var(--scan,0) * 1);background:repeating-linear-gradient(0deg,rgba(255,255,255,.03) 0 1px,transparent 1px 3px)}
+
+/* ---- 検索・タグ ---- */
+.search-bar{display:flex;align-items:center;gap:8px;margin:8px 16px 4px;padding:6px 12px;border-radius:999px;background:var(--bg-hover);border:1px solid transparent;color:var(--muted)}
+.search-bar:focus-within{border-color:var(--accent);background:var(--bg);color:var(--accent)}
+.search-bar input{flex:1;min-width:0;border:0;background:transparent;color:var(--fg);font:inherit;outline:none;padding:4px 0}
+.search-bar input::-webkit-search-cancel-button{display:none}
+@media (max-width:640px){.search-bar{display:none}.search-bar.open{display:flex}}
+.search-head{display:flex;align-items:center;justify-content:space-between;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);font-size:14px;color:var(--muted);flex-wrap:wrap}
+.search-head b{color:var(--fg)}
+body.searching .tab.on{color:var(--muted)}
+body.searching .tab.on::after{opacity:.25}
+.in-tl{margin-left:6px;padding:0 8px;border-radius:999px;background:var(--bg-hover);font-size:12px}
+.tag{color:var(--accent);font-weight:600;padding:0;font:inherit;cursor:pointer}
+.tag:hover{text-decoration:underline}
+/* ---- 見たよ ---- */
+.seen{display:inline-flex;align-items:center;gap:2px;margin-left:6px;padding:0 8px 0 5px;border-radius:999px;font-size:12px;font-weight:700;color:var(--ok);background:color-mix(in srgb,var(--ok) 12%,transparent)}
+.seen svg.i{width:13px;height:13px;stroke-width:2.6}
+/* ---- 画像まとめ投稿 ---- */
+.gallery{display:grid;gap:2px;aspect-ratio:16/10}
+.gallery img{width:100%;height:100%;object-fit:cover;display:block;cursor:zoom-in;min-height:0}
+.gallery.g2{grid-template-columns:1fr 1fr}
+.gallery.g3{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
+.gallery.g3 img:first-child{grid-row:span 2}
+.gallery.g4{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
+/* ---- バックアップのお知らせ ---- */
+.nag{position:fixed;z-index:60;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));width:min(520px,calc(100% - 24px));display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;
+  padding:14px 16px;border-radius:18px;background:var(--bg);color:var(--fg);border:1px solid var(--line-strong);box-shadow:0 18px 40px -12px rgba(0,0,0,.35);font-size:14px}
+.nag b{display:block;font-size:15px}
+.nag span{color:var(--muted)}
+.nag-acts{display:flex;gap:8px;margin-left:auto}
+@media (max-width:640px){.nag{bottom:calc(76px + env(safe-area-inset-bottom,0px))}}
 /* ---- 選んでるツイート: すりガラス ---- */
 .post{border:1px solid transparent;border-bottom-color:var(--line);border-radius:0;transition:background .35s,border-color .35s,border-radius .35s,box-shadow .35s}
 .post:hover{background:transparent}
@@ -533,8 +612,10 @@ body.sheet-open{overflow:hidden}
       <div class="head-top">
         <button class="avatar head-avatar" id="mManage" aria-label="自分のアイコンを変える">私</button>
         <div class="brand-mark" aria-hidden="true">TL</div>
-        <button class="icon-btn" id="mTT" aria-label="縦スワイプで見る" style="color:var(--fg)"><svg class="i" style="width:22px;height:22px"><use href="#i-film"/></svg></button>
+        <span style="display:flex;gap:2px"><button class="icon-btn" id="mSearch" aria-label="検索" style="color:var(--fg)"><svg class="i" style="width:22px;height:22px"><use href="#i-search"/></svg></button>
+        <button class="icon-btn" id="mTT" aria-label="縦スワイプで見る" style="color:var(--fg)"><svg class="i" style="width:22px;height:22px"><use href="#i-film"/></svg></button></span>
       </div>
+      <div class="search-bar" id="searchBar"><svg class="i"><use href="#i-search"/></svg><input type="search" id="searchBox" placeholder="検索（本文・コメント・URL・#タグ）" aria-label="検索" enterkeyhint="search"><button type="button" class="mini" id="searchX" aria-label="検索をやめる" hidden><svg class="i"><use href="#i-x"/></svg></button></div>
       <div class="tabs" id="tabs" role="tablist"></div>
     </div>
 
@@ -545,7 +626,7 @@ body.sheet-open{overflow:hidden}
         <div class="detect" id="detect"></div>
         <div class="composer-bar">
           <label class="icon-btn" title="画像・動画ファイルを追加" for="compFile"><svg class="i"><use href="#i-image"/></svg></label>
-          <input type="file" id="compFile" accept="image/*,video/*" hidden>
+          <input type="file" id="compFile" accept="image/*,video/*" multiple hidden>
           <button type="button" class="icon-btn" id="compSample" title="サンプル動画を追加"><svg class="i"><use href="#i-film"/></svg></button>
           <select id="compTl" aria-label="送り先のタイムライン"></select>
           <span class="grow"></span>
@@ -595,9 +676,12 @@ body.sheet-open{overflow:hidden}
       <label class="toggle">画像の全画面は自動で次へ <span class="switch"><input type="checkbox" id="optSlide"><span></span></span></label>
       <div class="toggle" id="slideSecRow"><span>次へ進むまで</span><span style="display:flex;align-items:center;gap:4px"><input type="number" id="optSlideSec" class="sel" min="2" max="600" step="1" style="width:72px" aria-label="秒数">秒</span></div>
       <label class="toggle" for="optSkin">テーマ
-        <select id="optSkin" class="sel"><option value="">標準</option><option value="b1">ミッドナイト・ゴールド</option><option value="b2">ミッドナイト・プラチナ</option><option value="c1">パール・ローズ</option><option value="c2">パール・ラベンダー</option></select></label>
+        <select id="optSkin" class="sel"><option value="">標準</option><option value="b1">ミッドナイト・ゴールド</option><option value="b2">ミッドナイト・プラチナ</option><option value="c1">パール・ローズ</option><option value="c2">パール・ラベンダー</option>
+          <optgroup label="宝石"><option value="g1">サファイア</option><option value="g2">ルビー</option><option value="g3">エメラルド</option><option value="g4">アメジスト</option><option value="g5">シトリン</option><option value="g6">ローズクォーツ</option><option value="g7">アクアマリン</option><option value="g8">オニキス</option></optgroup>
+          <optgroup label="サイバーパンク"><option value="p1">ネオン・トーキョー</option><option value="p2">アシッド・グリッチ</option></optgroup></select></label>
       <label class="toggle" for="optMode">明るさ
-        <select id="optMode" class="sel"><option value="auto">端末に合わせる</option><option value="light">通常モード</option><option value="dark">ナイトモード</option></select></label>
+        <select id="optMode" class="sel"><option value="auto">端末に合わせる</option><option value="light">通常モード</option><option value="dark">ナイトモード</option><option value="time">時間で切り替え</option></select></label>
+      <div class="toggle" id="nightRow"><span>ナイトモードの時間</span><span style="display:flex;align-items:center;gap:4px"><select id="optNightFrom" class="sel" aria-label="始まり"></select>〜<select id="optNightTo" class="sel" aria-label="終わり"></select></span></div>
     </section>
     <section class="card">
       <h2>貼れるURL</h2>
@@ -638,7 +722,7 @@ body.sheet-open{overflow:hidden}
 <div class="tt" id="tt" aria-label="縦スワイプ表示">
   <div class="tt-top">
     <div class="tt-tabs" id="ttTabs"></div>
-    <select id="ttOrder" class="tt-order" aria-label="流れる順番（このタイムラインだけ）"><option value="new">新しい順</option><option value="old">古い順</option><option value="random">ランダム</option><option value="popular">人気順</option></select>
+    <select id="ttOrder" class="tt-order" aria-label="流れる順番（このタイムラインだけ）"><option value="new">新しい順</option><option value="old">古い順</option><option value="random">ランダム</option><option value="popular">人気順</option><option value="unseen">まだ見てない順</option></select>
     <button class="tt-close" id="ttClose" aria-label="閉じる"><svg class="i"><use href="#i-x"/></svg></button>
   </div>
   <div class="tt-scroll" id="ttScroll"></div>
@@ -687,6 +771,8 @@ body.sheet-open{overflow:hidden}
     <div class="share-actions"><button type="button" class="btn-accent" id="lkDone">完了</button></div>
   </div>
 </div>
+<div class="nag" id="backupNag" hidden role="status"><div><b>データを書き出しておく？</b><span>最後に書き出してから <span id="nagDays"></span> 日たったよ。ブラウザのデータが消えても、書き出した文字があれば元に戻せるよ</span></div>
+  <div class="nag-acts"><button type="button" class="btn-ghost sm" id="nagLater">あとで</button><button type="button" class="btn-accent" id="nagGo">書き出す</button></div></div>
 <div class="share cm-sheet" id="cmSheet" hidden role="dialog" aria-modal="true" aria-labelledby="cmTitle">
   <div class="share-card">
     <div class="lk-head"><h2 id="cmTitle">コメント</h2><button type="button" class="icon-btn" id="cmClose" aria-label="閉じる" style="color:var(--fg)"><svg class="i"><use href="#i-x"/></svg></button></div>
@@ -730,6 +816,8 @@ body.sheet-open{overflow:hidden}
   <symbol id="i-up" viewBox="0 0 24 24"><path d="M6 15l6-6 6 6"/></symbol>
   <symbol id="i-down" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
   <symbol id="i-play" viewBox="0 0 24 24"><path d="M7 4l13 8-13 8z" stroke="none"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="6.5"/><path d="M16 16l4.5 4.5"/></symbol>
+  <symbol id="i-check" viewBox="0 0 24 24"><path d="M5 12.5l4.5 4.5L19 7.5"/></symbol>
   <symbol id="i-comment" viewBox="0 0 24 24"><path d="M4 6.5A2.5 2.5 0 0 1 6.5 4h11A2.5 2.5 0 0 1 20 6.5v7a2.5 2.5 0 0 1-2.5 2.5H10l-4.5 4v-4h0A2.5 2.5 0 0 1 4 13.5z"/></symbol>
   <symbol id="i-repost" viewBox="0 0 24 24"><path d="M7 7h11v5M17 17H6v-5M15 4l3 3-3 3M9 20l-3-3 3-3"/></symbol>
   <symbol id="i-sort" viewBox="0 0 24 24"><path d="M8 4v16M4 8l4-4 4 4M16 20V4M12 16l4 4 4-4"/></symbol>
@@ -852,7 +940,7 @@ if (!S || !Array.isArray(S.timelines) || !S.timelines.length) S = seed();
 S.opts ||= { center: false, auto: true };
 S.me ||= { id: "me", name: "私", color: "#1d9bf0" }; S.me.id = "me";
 S.presets ||= [];
-S.opts.sound ??= true; S.opts.preview ??= 120; S.opts.auto ??= true; S.opts.wifiOnly ??= true; S.opts.strictNet ??= false; S.opts.lazy ??= true; S.opts.fullEnd ??= "loop"; S.opts.slideAuto ??= true; S.opts.slideSec ??= 10; S.opts.tlMotion ??= "spring"; S.opts.vibe ??= true; S.opts.resume ??= true; S.pos ||= {};
+S.opts.sound ??= true; S.opts.preview ??= 120; S.opts.auto ??= true; S.opts.wifiOnly ??= true; S.opts.strictNet ??= false; S.opts.lazy ??= true; S.opts.fullEnd ??= "loop"; S.opts.slideAuto ??= true; S.opts.slideSec ??= 10; S.opts.modeTime ??= false; S.opts.nightFrom ??= 19; S.opts.nightTo ??= 6; S.lastExportAt ??= Date.now(); S.opts.tlMotion ??= "spring"; S.opts.vibe ??= true; S.opts.resume ??= true; S.pos ||= {};
 const fileUrls = new Map(); // 手元から追加したファイル（IndexedDB から復元）
 function save() { try { localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch { try { toast("保存しきれなかったよ。アイコンの画像を外すか、小さい画像にしてね"); } catch {} return false; } }
 /* 手元ファイルの保存先: IndexedDB（ブラウザ内） */
@@ -868,7 +956,10 @@ const idb = (() => {
   };
 })();
 const isFilePost = p => p.media && p.media.kind.startsWith("file-");
-const forgetFiles = posts => posts.filter(isFilePost).forEach(p => { idb.del(p.id); const u = fileUrls.get(p.id); if (u) URL.revokeObjectURL(u); fileUrls.delete(p.id); });
+/* 画像まとめ投稿（file-gallery）は1枚ずつ「ツイートのid~番号」で保存する */
+const fileKeys = p => p.media.kind === "file-gallery" ? Array.from({ length: p.media.n }, (_, i) => `${p.id}~${i}`) : [p.id];
+const hasFiles = p => fileUrls.has(fileKeys(p)[0]);
+const forgetFiles = posts => posts.filter(isFilePost).forEach(p => fileKeys(p).forEach(k => { idb.del(k); const u = fileUrls.get(k); if (u) URL.revokeObjectURL(u); fileUrls.delete(k); }));
 const tlById = id => S.timelines.find(t => t.id === id);
 /* 表示順は sortAt（再投稿・並べ替えで変わる）→ なければ投稿日時 */
 const keyOf = p => p.sortAt ?? p.at;
@@ -1014,7 +1105,13 @@ document.addEventListener("click", e => {
   else { players.forEach(o => { if (o !== pl && o.playing) o.pause(); }); AudioKit.get(); pl.userPaused = false; pl.play(); showMark(m, "play"); }
 });
 /* 再生する長さの終わりに来たとき: onEnd があれば任せる（全画面の「次の動画へ」など）。なければ頭からループ */
-function reachedEnd(pl, restart) { if (pl.onEnd && pl.onEnd()) return; restart(); }
+function reachedEnd(pl, restart) { if (pl.pid) markSeen(pl.pid); if (pl.onEnd && pl.onEnd()) return; restart(); }
+/* K4 見たよチェック: 最後まで見た（画像は全画面で3秒）ツイートに印をつける */
+const seenChip = p => p.seenAt ? `<span class="seen" title="${new Date(p.seenAt).toLocaleString("ja-JP")} に見たよ"><svg class="i"><use href="#i-check"/></svg>見た</span>` : "";
+function markSeen(id) {
+  const p = S.posts.find(x => x.id === id); if (!p) return; const first = !p.seenAt; p.seenAt = Date.now(); save();
+  if (first) document.querySelectorAll(`#feed .post[data-id="${id}"] .post-meta`).forEach(m => { if (!m.querySelector(".seen")) m.insertAdjacentHTML("beforeend", seenChip(p)); });
+}
 /* サンプル動画の音: 再生中だけ小さく鳴るメロディ（WebAudio） */
 function toneVoice(seed) {
   let osc = null, gain = null;
@@ -1028,6 +1125,13 @@ function toneVoice(seed) {
 const SAMPLE_DURS = [95, 150, 45, 200, 30, 135];
 function buildMedia(p, mode = "feed") {
   const m = p.media, lim = previewLimit(mode);
+  if (m.kind === "file-gallery") {
+    // 全画面では1枚ずつ（vSub 番目）、タイムラインではXと同じ並べ方
+    if (mode === "full") { const w = document.createElement("div"); w.className = "media"; const img = new Image(); img.alt = p.text || "画像"; img.src = fileUrls.get(`${p.id}~${vSub}`) || ""; w.append(img); return { el: w, playable: false }; }
+    const w = document.createElement("div"); w.className = `media gallery g${Math.min(4, m.n)}`;
+    for (let i = 0; i < Math.min(4, m.n); i++) { const img = new Image(); img.alt = `${i + 1}枚目`; img.loading = "lazy"; img.src = fileUrls.get(`${p.id}~${i}`) || ""; img.dataset.gi = i; w.append(img); }
+    return { el: w, playable: false };
+  }
   if (m.kind === "sample-image" || m.kind === "file-image" || m.kind === "url-image") {
     const w = document.createElement("div"); w.className = "media" + (m.vertical ? " vertical" : "");
     const img = new Image(); img.alt = p.text || m.title || "画像"; img.loading = "lazy";
@@ -1387,8 +1491,8 @@ function postCard(p) {
   art.innerHTML = `${tlAvatar(t, "", true)}
     <div class="post-body">
       ${p.reposted ? `<div class="rp"><svg class="i"><use href="#i-repost"/></svg>再投稿 · ${ago(p.sortAt)}</div>` : ""}
-      <div class="post-meta"><b>${esc(t.name)}</b><span>@me</span><span>·</span><span>${ago(p.at)}</span></div>
-      ${p.text ? `<div class="post-text">${esc(p.text)}</div>` : ""}
+      <div class="post-meta"><b>${esc(t.name)}</b><span>@me</span><span>·</span><span>${ago(p.at)}</span>${seenChip(p)}</div>
+      ${p.text ? `<div class="post-text">${textWithTags(p.text)}</div>` : ""}
       <div class="slot"></div>
       <div class="cm-peek" data-act="comment">${cmPeek(p)}</div>
       <div class="post-actions">
@@ -1403,22 +1507,39 @@ function postCard(p) {
     </div>`;
   const built = p.media ? buildMedia(p) : p.embed ? buildEmbed(p) : null;
   if (built) {
-    art.querySelector(".slot").append(built.el); if (built.playable) feedAP.observe(built.playEl || built.el);
+    art.querySelector(".slot").append(built.el); if (built.playable) { feedAP.observe(built.playEl || built.el); const pl = players.get(built.playEl || built.el); if (pl) pl.pid = p.id; }
     const box = built.playEl || built.el;
     if (hasViewable(p) && box.classList.contains("media")) box.insertAdjacentHTML("beforeend", `<button class="fs-btn" data-act="full" aria-label="全画面で見る" title="全画面で見る"><svg class="i"><use href="#i-expand"/></svg></button>`);
   }
   return art;
 }
 
+/* ---- K1 検索 / K2 タグ ---- */
+let query = "";
+const tagsOf = text => [...(text || "").matchAll(/(?:^|\s)#([^\s#、。,.!?！？]+)/g)].map(m => m[1].toLowerCase());
+function textWithTags(text) { return esc(text).replace(/(^|\s)#([^\s#、。,.!?！？&<]+)/g, (_, a, t) => `${a}<button type="button" class="tag" data-tag="${t}">#${t}</button>`); }
+function matchPost(p, q) {
+  if (q.startsWith("#")) { const t = q.slice(1).toLowerCase(); return tagsOf(p.text).includes(t) || (p.comments || []).some(c => tagsOf(c.text).includes(t)); }
+  const hay = [p.text, p.embed && p.embed.url, p.embed && p.embed.title, p.media && p.media.title, ...(p.comments || []).map(c => c.text)].filter(Boolean).join("\n").toLowerCase();
+  return q.toLowerCase().split(/\s+/).every(w => hay.includes(w));
+}
+function setQuery(q) {
+  query = (q || "").trim(); $("#searchBox").value = query; $("#searchX").hidden = !query;
+  if (query) $("#searchBar").classList.add("open");
+  renderFeed(); scrollTo({ top: 0 }); updateFocus();
+}
 function renderFeed() {
   feedAP.reset(); players.clear();
   const feed = $("#feed"); feed.innerHTML = "";
-  const list = postsOf(S.active);
+  document.body.classList.toggle("searching", !!query);
+  const list = query ? S.posts.filter(p => matchPost(p, query)).sort((a, b) => keyOf(b) - keyOf(a)) : postsOf(S.active);
+  if (query) feed.insertAdjacentHTML("beforeend", `<div class="search-head"><span>「${esc(query)}」の結果 <b>${list.length}</b> 件（すべてのタイムラインから）</span><button type="button" class="btn-ghost sm" id="searchClear">検索をやめる</button></div>`);
+  if (query && !list.length) { feed.insertAdjacentHTML("beforeend", `<div class="empty"><h3>見つからなかったよ</h3><p>ことばを短くするか、#タグで探してみてね。</p></div>`); feedAP.refresh(); return; }
   if (!list.length) {
     feed.innerHTML = `<div class="empty"><h3>まだ何もないよ</h3><p>上の欄に YouTube や X、記事の URL を貼ってツイートするか、画像・動画を追加してね。</p></div>`;
   } else {
     list.forEach(p => feed.append(postCard(p)));
-    const end = document.createElement("div"); end.className = "feed-end"; end.textContent = `「${tlById(S.active).name}」のツイートは以上 ${list.length} 件`; feed.append(end);
+    const end = document.createElement("div"); end.className = "feed-end"; end.textContent = query ? `検索の結果は以上 ${list.length} 件` : `「${tlById(S.active).name}」のツイートは以上 ${list.length} 件`; feed.append(end);
   }
   feedAP.refresh();
 }
@@ -1457,6 +1578,7 @@ function tlMotion(dir) {
   else f.animate([{ transform: `translateX(${70 * s}%)`, opacity: .3 }, { transform: "translateX(0)", opacity: 1 }], { duration: 560, easing: "cubic-bezier(.2,1.25,.4,1)" });
 }
 function setActive(id, dir = 0) {
+  if (query) { query = ""; $("#searchBox").value = ""; $("#searchX").hidden = true; }
   rememberPos(); S.active = id; renderTabs(); renderFeed(); save(); restorePos();
   document.querySelector(".tab.on")?.scrollIntoView({ inline: "center", block: "nearest" });
   tlMotion(dir); updateFocus();
@@ -1510,12 +1632,17 @@ $("#tabs").addEventListener("click", e => { if (e.target.closest("#tabAdd")) { o
 const compText = $("#compText");
 function updateDetect() {
   const v = compText.value.trim(); const url = findUrl(v); const r = url && parseUrl(url);
-  $("#detect").innerHTML = r ? `<span class="chip">${KIND_LABEL[r.kind]}</span> として表示されます` : (pendingFile ? `<span class="chip">${pendingFile.type.startsWith("video") ? "動画ファイル" : "画像ファイル"}</span> ${esc(pendingFile.name)}` : "");
+  $("#detect").innerHTML = r ? `<span class="chip">${KIND_LABEL[r.kind]}</span> として表示されます` : pendingFiles.length > 1 ? `<span class="chip">画像 ${pendingFiles.length} 枚</span> 1つのツイートにまとめるよ` : (pendingFile ? `<span class="chip">${pendingFile.type.startsWith("video") ? "動画ファイル" : "画像ファイル"}</span> ${esc(pendingFile.name)}` : "");
   $("#compPost").disabled = !v && !pendingFile;
 }
-let pendingFile = null;
+let pendingFile = null, pendingFiles = [];
 compText.addEventListener("input", () => { compText.style.height = "auto"; compText.style.height = compText.scrollHeight + "px"; updateDetect(); });
-$("#compFile").addEventListener("change", e => { pendingFile = e.target.files[0] || null; updateDetect(); });
+$("#compFile").addEventListener("change", e => {
+  const fs = [...e.target.files]; const imgs = fs.filter(f => f.type.startsWith("image"));
+  if (fs.length > 1 && imgs.length === fs.length) { pendingFiles = imgs.slice(0, 4); pendingFile = pendingFiles[0]; if (imgs.length > 4) toast("画像は1つのツイートに4枚までだよ。先頭の4枚にしたよ"); }
+  else { pendingFiles = []; pendingFile = fs[0] || null; if (fs.length > 1) toast("動画が入っているときは1つずつ投稿してね。最初の1つにしたよ"); }
+  updateDetect();
+});
 $("#compSample").addEventListener("click", () => {
   const n = S.posts.length; addPost({ text: compText.value.trim() || "サンプル動画を追加したよ", media: { kind: "sample-video", seed: n % 6, title: `Clip ${String(n + 1).padStart(2, "0")}`, vertical: n % 3 === 0 } });
   compText.value = ""; updateDetect();
@@ -1523,12 +1650,15 @@ $("#compSample").addEventListener("click", () => {
 $("#composer").addEventListener("submit", e => {
   e.preventDefault(); const raw = compText.value.trim(); const url = findUrl(raw);
   const p = { text: url ? raw.replace(url, "").trim() : raw };
-  if (pendingFile) {
+  if (pendingFiles.length > 1) {
+    const id = uid(); p.id = id; p.media = { kind: "file-gallery", n: pendingFiles.length, title: `画像 ${pendingFiles.length} 枚` };
+    pendingFiles.forEach((f, i) => { const k = `${id}~${i}`; fileUrls.set(k, URL.createObjectURL(f)); idb.put(k, f).catch(() => toast("この環境ではファイルを保存できないよ。リロードすると消えちゃう")); });
+  } else if (pendingFile) {
     const id = uid(); fileUrls.set(id, URL.createObjectURL(pendingFile)); idb.put(id, pendingFile).catch(() => toast("この環境ではファイルを保存できないよ。リロードすると消えちゃう"));
     p.id = id; p.media = { kind: pendingFile.type.startsWith("video") ? "file-video" : "file-image", title: pendingFile.name };
   } else if (url) p.embed = parseUrl(url);
   if (!p.text && !p.media && !p.embed) return;
-  addPost(p); closeCompose(); compText.value = ""; compText.style.height = ""; pendingFile = null; $("#compFile").value = ""; updateDetect();
+  addPost(p); closeCompose(); compText.value = ""; compText.style.height = ""; pendingFile = null; pendingFiles = []; $("#compFile").value = ""; updateDetect();
 });
 function addPost(p) {
   const tl = $("#compTl").value || S.active;
@@ -1646,16 +1776,40 @@ $("#optSlideSec").addEventListener("change", e => { const v = Math.max(2, Math.m
 $("#optLazy").addEventListener("change", e => { S.opts.lazy = e.target.checked; save(); renderFeedKeepScroll(); toast(S.opts.lazy ? "近づいてから読み込む" : "最初から全部読み込む"); });
 $("#optStrict").addEventListener("change", e => { S.opts.strictNet = e.target.checked; save(); updateNetNote(); feedAP.refresh(); });
 /* テーマと明るさ */
-const SKIN_NAMES = { "": "標準", b1: "ミッドナイト・ゴールド", b2: "ミッドナイト・プラチナ", c1: "パール・ローズ", c2: "パール・ラベンダー" };
+const SKIN_NAMES = { "": "標準", b1: "ミッドナイト・ゴールド", b2: "ミッドナイト・プラチナ", c1: "パール・ローズ", c2: "パール・ラベンダー", g1: "サファイア", g2: "ルビー", g3: "エメラルド", g4: "アメジスト", g5: "シトリン", g6: "ローズクォーツ", g7: "アクアマリン", g8: "オニキス", p1: "ネオン・トーキョー", p2: "アシッド・グリッチ" };
+const skinFam = k => !k ? "" : k[0] === "b" ? "glass" : k[0] === "c" ? "neu" : k[0] === "g" ? "gem" : "cyber";
+const isNightNow = () => { const h = new Date().getHours(), a = S.opts.nightFrom, b = S.opts.nightTo; return a === b ? false : a < b ? h >= a && h < b : h >= a || h < b; };
+setInterval(() => { if (S.opts.modeTime) applySkin(); }, 60000);
 function applySkin() {
   const r = document.documentElement;
-  if (S.opts.skin) r.dataset.skin = S.opts.skin; else delete r.dataset.skin;
-  if (S.opts.dark == null) delete r.dataset.theme; else r.dataset.theme = S.opts.dark ? "dark" : "light";
-  $("#optSkin").value = S.opts.skin || ""; $("#optMode").value = S.opts.dark == null ? "auto" : S.opts.dark ? "dark" : "light";
-  const m = document.querySelector('meta[name="theme-color"]'); if (m) m.content = getComputedStyle(r).getPropertyValue("--bg").trim() || m.content;
+  if (S.opts.skin) { r.dataset.skin = S.opts.skin; r.dataset.fam = skinFam(S.opts.skin); } else { delete r.dataset.skin; delete r.dataset.fam; }
+  if (S.opts.modeTime) r.dataset.theme = isNightNow() ? "dark" : "light";
+  else if (S.opts.dark == null) delete r.dataset.theme; else r.dataset.theme = S.opts.dark ? "dark" : "light";
+  $("#optSkin").value = S.opts.skin || ""; $("#optMode").value = S.opts.modeTime ? "time" : S.opts.dark == null ? "auto" : S.opts.dark ? "dark" : "light";
+  $("#nightRow").hidden = !S.opts.modeTime;
+  if (!$("#optNightFrom").options.length) ["#optNightFrom", "#optNightTo"].forEach(sel => $(sel).innerHTML = Array.from({ length: 24 }, (_, h) => `<option value="${h}">${h}時</option>`).join(""));
+  $("#optNightFrom").value = S.opts.nightFrom; $("#optNightTo").value = S.opts.nightTo;
+  requestAnimationFrame(themeIcon);
 }
 $("#optSkin").addEventListener("change", e => { S.opts.skin = e.target.value; applySkin(); save(); toast(`テーマを「${SKIN_NAMES[S.opts.skin]}」にしたよ`); });
-$("#optMode").addEventListener("change", e => { S.opts.dark = e.target.value === "auto" ? null : e.target.value === "dark"; applySkin(); save(); });
+$("#optMode").addEventListener("change", e => { const v = e.target.value; S.opts.modeTime = v === "time"; S.opts.dark = v === "auto" || v === "time" ? null : v === "dark"; applySkin(); save(); if (v === "time") toast(`${S.opts.nightFrom}時〜${S.opts.nightTo}時はナイトモードになるよ`); });
+["#optNightFrom", "#optNightTo"].forEach(sel => $(sel).addEventListener("change", e => { S.opts[sel === "#optNightFrom" ? "nightFrom" : "nightTo"] = +e.target.value; save(); applySkin(); }));
+/* K7 テーマに合わせたアイコン（ブラウザのタブ、ホーム画面に追加するときのアイコン）と上のバーの色 */
+function themeIcon() {
+  try {
+    const cs = getComputedStyle(document.documentElement), get = k => cs.getPropertyValue(k).trim();
+    const c = document.createElement("canvas"); c.width = c.height = 180; const x = c.getContext("2d");
+    const g1 = get("--g1") || get("--accent"), g2 = get("--g2") || get("--bg-soft"), g3 = get("--g3") || get("--accent");
+    const gr = x.createLinearGradient(0, 0, 180, 180); gr.addColorStop(0, g1); gr.addColorStop(.5, g2); gr.addColorStop(1, g3);
+    x.fillStyle = S.opts.skin ? gr : get("--fg"); x.fillRect(0, 0, 180, 180);
+    x.fillStyle = S.opts.skin ? "rgba(255,255,255,.18)" : "transparent"; x.beginPath(); x.moveTo(0, 0); x.lineTo(180, 0); x.lineTo(0, 120); x.fill();
+    x.fillStyle = S.opts.skin ? "#ffffff" : get("--bg"); x.font = "800 76px system-ui,sans-serif"; x.textAlign = "center"; x.textBaseline = "middle";
+    x.shadowColor = "rgba(0,0,0,.35)"; x.shadowBlur = S.opts.skin ? 8 : 0; x.fillText("TL", 90, 96);
+    const url = c.toDataURL("image/png");
+    for (const rel of ["icon", "apple-touch-icon"]) { let l = document.querySelector(`link[rel="${rel}"]`); if (!l) { l = document.createElement("link"); l.rel = rel; document.head.append(l); } l.href = url; }
+    let m = document.querySelector('meta[name="theme-color"]'); if (!m) { m = document.createElement("meta"); m.name = "theme-color"; document.head.append(m); } m.content = get("--bg");
+  } catch {}
+}
 $("#optSound").addEventListener("change", e => { AudioKit.get(); setSoundAll(e.target.checked); });
 function setPreview(sec, custom) {
   S.opts.preview = Math.max(0, Math.min(3600, Math.round(sec))); S.opts.previewCustom = !!custom; save(); applyOpts(); renderFeedKeepScroll();
@@ -1669,7 +1823,14 @@ const onCustom = () => { const m = Math.max(0, +$("#optPrevMin").value || 0), se
 $("#optPrevMin").addEventListener("change", onCustom); $("#optPrevSec").addEventListener("change", onCustom);
 $("#resetBtn").addEventListener("click", () => { $("#resetConfirm").hidden = false; });
 /* データの書き出し・読み込み（サーバーなしで端末間を手で移す） */
+/* K6 自動バックアップのお知らせ: 書き出してから7日たったら声をかける */
+const WEEK = 7 * 864e5;
+function maybeNagBackup() {
+  const now = Date.now(); if (!S.posts.length || now - (S.lastExportAt || 0) < WEEK || now - (S.lastNagAt || 0) < WEEK) return;
+  $("#backupNag").hidden = false; $("#nagDays").textContent = Math.floor((now - (S.lastExportAt || 0)) / 864e5);
+}
 function openXfer(mode) {
+  if (mode === "export") { S.lastExportAt = Date.now(); save(); $("#backupNag").hidden = true; }
   $("#xferBox").hidden = false; $("#xferConfirm").hidden = true;
   $("#xferCopy").hidden = mode !== "export"; $("#xferLoad").hidden = mode !== "import";
   const ta = $("#xferText");
@@ -1738,6 +1899,7 @@ function renderTT() {
   if (order === "old") list.reverse();
   else if (order === "random") { for (let i = list.length - 1; i > 0; i--) { const j = Math.floor(Math.random() * (i + 1)); [list[i], list[j]] = [list[j], list[i]]; } }
   else if (order === "popular") list = list.map((p, i) => [p, i]).sort((a, b) => (b[0].likes || 0) - (a[0].likes || 0) || a[1] - b[1]).map(x => x[0]);
+  else if (order === "unseen") list = list.filter(p => !p.seenAt).concat(list.filter(p => p.seenAt).sort((a, b) => a.seenAt - b.seenAt));
   if (!list.length) { sc.innerHTML = `<div class="tt-empty">このタイムラインには画像・動画の投稿がまだないよ</div>`; return; }
   list.forEach(p => {
     const t = tlById(p.tl); const item = document.createElement("section"); item.className = "tt-item";
@@ -1749,7 +1911,7 @@ function renderTT() {
       <button data-cm="${p.id}"><span class="circle"><svg class="i"><use href="#i-comment"/></svg></span><span class="cm-n">${(p.comments || []).length}</span></button>
       <button data-full="${p.id}"><span class="circle"><svg class="i"><use href="#i-expand"/></svg></span>全画面</button>
       ${p.embed ? `<a href="${esc(p.embed.url)}" target="_blank" rel="noopener" style="color:#fff;display:flex;flex-direction:column;align-items:center;gap:4px"><span class="circle"><svg class="i"><use href="#i-link"/></svg></span>開く</a>` : ""}</div>`);
-    sc.append(item); if (built.playable) ttAP.observe(el);
+    sc.append(item); if (built.playable) { ttAP.observe(el); const pl = players.get(el); if (pl) pl.pid = p.id; }
   });
 }
 function openTT() { feedAP.reset(); $("#tt").classList.add("open"); document.body.style.overflow = "hidden"; renderTT(); }
@@ -1861,6 +2023,40 @@ lk("lkSave").addEventListener("click", () => {
   S.presets.push(pr); if (save()) toast(`「${pr.name}」として保存したよ`); renderLook();
 });
 
+/* ---- 検索の操作 ---- */
+let sT = 0;
+$("#searchBox").addEventListener("input", e => { clearTimeout(sT); $("#searchX").hidden = !e.target.value; sT = setTimeout(() => setQuery(e.target.value), 250); });
+$("#searchBox").addEventListener("keydown", e => { if (e.key === "Escape") { setQuery(""); e.target.blur(); } });
+$("#searchX").addEventListener("click", () => { setQuery(""); $("#searchBar").classList.remove("open"); });
+$("#mSearch").addEventListener("click", () => { const b = $("#searchBar"); b.classList.toggle("open"); if (b.classList.contains("open")) $("#searchBox").focus(); else setQuery(""); });
+document.addEventListener("click", e => {
+  const tg = e.target.closest(".tag[data-tag]"); if (tg) { e.preventDefault(); e.stopPropagation(); setQuery("#" + tg.dataset.tag); toast(`#${tg.dataset.tag} のツイートだけ出したよ`); return; }
+  if (e.target.id === "searchClear") { setQuery(""); $("#searchBar").classList.remove("open"); return; }
+  const gi = e.target.closest(".gallery img[data-gi]"); if (gi && gi.closest("#feed")) { e.stopPropagation(); e.preventDefault(); const id = gi.closest(".post").dataset.id; openViewer(id, "feed", +gi.dataset.gi); }
+}, true);
+$("#nagLater").addEventListener("click", () => { S.lastNagAt = Date.now(); save(); $("#backupNag").hidden = true; toast("また1週間後に声をかけるね"); });
+$("#nagGo").addEventListener("click", () => { $("#backupNag").hidden = true; if (innerWidth <= 960) openSide(); openXfer("export"); });
+/* K8 パソコンのキーボード操作 */
+const KEY_HELP = "J/K: 前後のツイート ・ L: ハート ・ C: コメント ・ Space: 再生/停止 ・ F: 全画面 ・ ←/→: タイムライン ・ /: 検索";
+document.addEventListener("keydown", e => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (e.target.closest && e.target.closest("input, textarea, select, [contenteditable]")) return;
+  if (!$("#viewer").hidden || $("#tt").classList.contains("open") || !$("#lookSheet").hidden || !$("#cmSheet").hidden || !$("#share").hidden) return;
+  const posts = [...document.querySelectorAll("#feed .post")]; let cur = document.querySelector("#feed .post.focus"); const i = posts.indexOf(cur);
+  const go = el => { if (!el) return; hoverPost = el; el.scrollIntoView({ block: "center", behavior: reduceMotion() ? "auto" : "smooth" }); updateFocus(); };
+  const k = e.key;
+  if (k === "j" || k === "J") { e.preventDefault(); go(posts[Math.min(posts.length - 1, i + 1)]); }
+  else if (k === "k" || k === "K") { e.preventDefault(); go(posts[Math.max(0, i - 1)]); }
+  else if ((k === "l" || k === "L") && cur) cur.querySelector('[data-act="like"]')?.click();
+  else if ((k === "c" || k === "C") && cur) cur.querySelector(".act.cm")?.click();
+  else if ((k === "f" || k === "F") && cur) cur.querySelector('[data-act="full"]')?.click();
+  else if (k === " " && cur) { const m = cur.querySelector(".media"); if (m && players.get(m)) { e.preventDefault(); m.click(); } }
+  else if (k === "ArrowRight") stepTimeline(1);
+  else if (k === "ArrowLeft") stepTimeline(-1);
+  else if (k === "/") { e.preventDefault(); $("#searchBar").classList.add("open"); $("#searchBox").focus(); }
+  else if (k === "?") toast(KEY_HELP);
+});
+
 /* ================= コメント（ツイートごと・この端末に保存） ================= */
 let cmId = null;
 function cmBtn(p) { const n = (p.comments || []).length; return `<button class="act cm" data-act="comment" aria-label="コメント（${n}）" title="コメント"><svg class="i"><use href="#i-comment"/></svg>${n || ""}</button>`; }
@@ -1903,6 +2099,7 @@ $("#cmList").addEventListener("click", e => {
 });
 
 /* ================= 全画面ビューア ================= */
+let vSub = 0;
 let vList = [], vIdx = 0, vFrom = "feed", vSlideT = 0;
 const isVideoPost = p => !!((p.media && /video/.test(p.media.kind)) || (p.embed && ["youtube", "tiktok"].includes(p.embed.kind)) || (HOSTED && p.embed && p.embed.kind === "video-url"));
 function updateVEnd() { const b = $("#vEnd"); if (b) b.textContent = S.opts.fullEnd === "next" ? "見終わったら: 次へ" : "見終わったら: ループ"; }
@@ -1911,7 +2108,7 @@ $("#vEnd").addEventListener("click", () => { S.opts.fullEnd = S.opts.fullEnd ===
 let vSlideRaf = 0;
 function stopSlide() { clearTimeout(vSlideT); cancelAnimationFrame(vSlideRaf); document.querySelectorAll("#vStage .slide-bar").forEach(b => b.remove()); }
 function startSlide() {
-  stopSlide(); if (!S.opts.slideAuto || vIdx >= vList.length - 1) return;
+  stopSlide(); if (!S.opts.slideAuto || (vIdx >= vList.length - 1 && vSub >= galN(vList[vIdx]) - 1)) return;
   const host = $("#vStage").firstElementChild; if (!host) return;
   const bar = document.createElement("div"); bar.className = "slide-bar"; bar.setAttribute("aria-label", "次の画像までの時間");
   bar.innerHTML = `<span class="slide-time"></span><div class="seek-track"><i></i></div>`; host.append(bar);
@@ -1920,8 +2117,9 @@ function startSlide() {
   step(t0);
   vSlideT = setTimeout(() => vGo(1), total);
 }
+let vSeenT = 0;
 function vRender() {
-  const stage = $("#vStage"); stopSlide(); updateVEnd();
+  const stage = $("#vStage"); stopSlide(); updateVEnd(); clearTimeout(vSeenT);
   [...players.keys()].forEach(k => { if (stage.contains(k)) { players.get(k).pause(); players.delete(k); } });
   stage.innerHTML = "";
   const p = vList[vIdx]; if (!p) return closeViewer();
@@ -1930,7 +2128,7 @@ function vRender() {
   stage.append(el);
   if (built.playable) {
     const pl = players.get(el);
-    if (pl) {
+    if (pl) { pl.pid = p.id;
       // 見終わったら: 「次の動画へ」設定なら、次の動画（画像は飛ばす）へ。なければループ
       pl.onEnd = () => {
         if (S.opts.fullEnd !== "next") return false;
@@ -1940,13 +2138,13 @@ function vRender() {
       };
       pl.play();
     }
-  } else if (p.media || (p.embed && p.embed.kind === "image-url")) startSlide();
-  $("#vCount").textContent = `${vIdx + 1} / ${vList.length}`;
+  } else if (p.media || (p.embed && p.embed.kind === "image-url")) { startSlide(); const id = p.id; vSeenT = setTimeout(() => markSeen(id), 3000); }
+  $("#vCount").textContent = `${vIdx + 1} / ${vList.length}` + (galN(p) > 1 ? `（画像 ${vSub + 1}/${galN(p)}）` : "");
   $("#vCap").textContent = p.text || "";
-  $("#vPrev").disabled = vIdx === 0; $("#vNext").disabled = vIdx === vList.length - 1;
+  $("#vPrev").disabled = vIdx === 0 && vSub === 0; $("#vNext").disabled = vIdx === vList.length - 1 && vSub >= galN(p) - 1;
 }
-function openViewer(id, from = "feed") {
-  vFrom = from; vList = postsOf(S.active).filter(hasViewable); vIdx = Math.max(0, vList.findIndex(p => p.id === id));
+function openViewer(id, from = "feed", sub = 0) {
+  vFrom = from; vList = (query && from === "feed" ? S.posts.filter(p => matchPost(p, query)).sort((a, b) => keyOf(b) - keyOf(a)) : postsOf(S.active)).filter(hasViewable); vIdx = Math.max(0, vList.findIndex(p => p.id === id)); vSub = Math.min(sub, galN(vList[vIdx]) - 1);
   if (from === "feed") feedAP.reset(); else ttAP?.reset();
   $("#viewer").hidden = false; document.body.style.overflow = "hidden"; vRender(); $("#vClose").focus();
 }
@@ -1957,7 +2155,12 @@ function closeViewer() {
   $("#viewer").hidden = true;
   if (vFrom === "feed") { document.body.style.overflow = ""; renderFeedKeepScroll(); } else renderTT();
 }
-const vGo = d => { const n = vIdx + d; if (n < 0 || n >= vList.length) return; vIdx = n; vRender(); };
+const galN = p => p && p.media && p.media.kind === "file-gallery" ? p.media.n : 1;
+const vGo = d => {
+  const p = vList[vIdx], s = vSub + d;
+  if (s >= 0 && s < galN(p)) { vSub = s; vRender(); return; }
+  const n = vIdx + d; if (n < 0 || n >= vList.length) return; vIdx = n; vSub = d > 0 ? 0 : galN(vList[n]) - 1; vRender();
+};
 $("#vPrev").addEventListener("click", () => vGo(-1)); $("#vNext").addEventListener("click", () => vGo(1));
 $("#vClose").addEventListener("click", closeViewer);
 $("#vFull").addEventListener("click", () => {
@@ -2027,12 +2230,13 @@ function readShareParams() {
 function boot() {
   applyOpts(); renderAll();
   const d = readShareParams(); if (d) openShare(d); else restorePos();
+  maybeNagBackup();
   setTimeout(updateFocus, 60);
 }
 Promise.race([idb.all(), new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 1500))])
   .then(m => m.forEach((blob, k) => fileUrls.set(k, URL.createObjectURL(blob))))
   .catch(() => {})
-  .finally(() => { S.posts = S.posts.filter(p => !isFilePost(p) || fileUrls.has(p.id)); boot(); });
+  .finally(() => { S.posts = S.posts.filter(p => !isFilePost(p) || hasFiles(p)); boot(); });
 })();
 </script>
 

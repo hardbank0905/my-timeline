@@ -1724,7 +1724,7 @@ body.tl-picking .tab.picked,body.tl-picking .tab-grp.picked,body.tl-picking .nav
   <div class="share-card acct-card">
     <div id="acBanner" hidden></div>
     <div class="ac-top"><span id="acAv"></span><span class="ac-top-r"><button type="button" class="ac-mini" id="acEdit" aria-label="アイコンとヘッダーを変える" title="アイコンとヘッダーを変える"><svg class="i"><use href="#i-brush"/></svg></button><button type="button" class="ac-mini" id="acClose" aria-label="閉じる"><svg class="i"><use href="#i-x"/></svg></button></span></div>
-    <div class="ac-name"><b id="acTitle">私</b><span>@me ・ <em style="color:#ff7a00;font-style:normal;font-weight:800">テスト版 v1.3 試作8（本番とはデータ別）</em></span></div>
+    <div class="ac-name"><b id="acTitle">私</b><span>@me ・ <em style="color:#ff7a00;font-style:normal;font-weight:800">テスト版 v1.3 試作9（本番とはデータ別）</em></span></div>
     <div class="ac-stats" id="acStats"></div>
     <nav class="ac-big" aria-label="メニュー">
       <button type="button" class="ac-item" id="acRec" aria-expanded="false"><svg class="i"><use href="#i-target"/></svg><b>今日の記録</b><small id="acRecSub"></small></button>
@@ -2100,6 +2100,13 @@ const ago = at => { const s = (Date.now() - at) / 1000; if (s < 60) return "今"
 /* ================= 自動再生エンジン =================
    IntersectionObserver で「画面中央の帯」に入った候補を集め、
    中心に最も近い1つだけ再生する（本番の useCenterAutoplay の原型） */
+/* 自動再生が端末に止められたとき（iPhoneの省電力モードなど）: 次に画面をさわった瞬間に、その動画をもう一度動かす */
+let apRetry = null, apToldAt = 0;
+function apBlocked(w, retry, err) {
+  apRetry = retry;
+  if (Date.now() - apToldAt > 6e5) { apToldAt = Date.now(); toast(err?.name === "NotAllowedError" ? "この端末が自動再生を止めてるみたい（省電力モードなど）。画面をさわると動くよ" : "動画を読み込めなかったよ。電波を確かめてね"); }
+}
+["touchend", "click", "keydown"].forEach(ev => addEventListener(ev, () => { const r = apRetry; apRetry = null; if (r) r(); }, { capture: true, passive: true }));
 function createAutoplay(root) {
   const candidates = new Set(); let current = null; let raf = 0;
   const io = new IntersectionObserver(es => {
@@ -2162,8 +2169,8 @@ const spanOf = (d, lim) => isFinite(lim) ? (d > 0 ? Math.min(lim, d) : lim) : (d
 function wireBadges(w, getT, getDur, lim) {
   const badge = w.querySelector(".badge"), bar = w.querySelector(".seek-track i"), seek = w.querySelector(".seek"), st = w.querySelector(".play-state");
   return () => {
-    const span = spanOf(getDur(), lim), t = Math.min(getT(), span);
-    badge.textContent = !w.closest("#vStage, #ttScroll") ? fmt(Math.ceil(Math.max(0, span - t))) : `${fmt(t)} / ${fmt(span)}`; // タイムラインは残り時間だけ（Xと同じ）
+    const d0 = getDur(), known = d0 > 0 && isFinite(d0), span = spanOf(d0, lim), t = Math.min(getT(), span);
+    badge.textContent = !known ? (w.closest("#vStage, #ttScroll") ? fmt(t) : "▶") : !w.closest("#vStage, #ttScroll") ? fmt(Math.ceil(Math.max(0, span - t))) : `${fmt(t)} / ${fmt(span)}`; // タイムラインは残り時間だけ（Xと同じ）
     bar.style.width = `${Math.min(100, t / span * 100)}%`;
     if (seek) { seek.setAttribute("aria-valuemax", String(Math.round(span))); seek.setAttribute("aria-valuenow", String(Math.round(t))); seek.setAttribute("aria-valuetext", `${fmt(t)} / ${fmt(span)}`); }
     st.textContent = w.classList.contains("is-playing") ? "再生中" : "停止中";
@@ -2348,16 +2355,21 @@ function buildMedia(p, mode = "feed") {
   if (m.kind === "file-video" || m.kind === "url-video") {
     const w = mediaChrome(!!m.vertical); const vid = document.createElement("video");
     vid.src = m.kind === "file-video" ? (fileUrls.get(fileBase(p)) || "") : m.src;
-    vid.muted = true; vid.playsInline = true; vid.preload = "metadata"; vid.setAttribute("playsinline", ""); if (m.poster) vid.poster = m.poster;
-    w.prepend(vid); const upd = wireBadges(w, () => vid.currentTime || 0, () => vid.duration, lim);
-    attachSeek(w, () => spanOf(vid.duration, lim), () => vid.currentTime || 0, sec => { try { vid.currentTime = sec; } catch {} upd(); });
+    vid.muted = true; vid.defaultMuted = true; vid.setAttribute("muted", ""); vid.playsInline = true; vid.preload = "metadata"; vid.setAttribute("playsinline", ""); vid.setAttribute("webkit-playsinline", ""); if (m.poster) vid.poster = m.poster;
+    const dur = () => vid.duration > 0 && isFinite(vid.duration) ? vid.duration : (m.dur || 0);
+    w.prepend(vid); const upd = wireBadges(w, () => vid.currentTime || 0, dur, lim);
+    attachSeek(w, () => spanOf(dur(), lim), () => vid.currentTime || 0, sec => { try { vid.currentTime = sec; } catch {} upd(); });
     vid.addEventListener("loadedmetadata", () => { if (vid.videoHeight > vid.videoWidth) w.classList.add("vertical"); upd(); });
+    vid.addEventListener("durationchange", upd);
     const restart = () => { try { vid.currentTime = 0; } catch {} if (players.get(w)?.playing) vid.play().catch(() => {}); };
     vid.addEventListener("timeupdate", () => { if (vid.currentTime >= lim) reachedEnd(players.get(w), restart); upd(); });
     vid.addEventListener("ended", () => reachedEnd(players.get(w), restart));
+    /* iPhone は「音あり」の自動再生を止めるから、まず音なしで始めて、動き出してから音を出す。
+       音なしでも止められたら（省電力モードなど）、次に画面をさわったときにもう一度動かす */
     const tryPlay = () => {
-      vid.muted = !S.opts.sound; vid.volume = S.opts.volume / 100;
-      vid.play().catch(() => { if (!vid.muted) { vid.muted = true; soundHint(); vid.play().catch(() => {}); } });
+      vid.muted = true; vid.volume = S.opts.volume / 100;
+      vid.play().then(() => { if (S.opts.sound && (!navigator.userActivation || navigator.userActivation.hasBeenActive)) { vid.muted = false; if (vid.paused) { vid.muted = true; soundHint(); vid.play().catch(() => {}); } } })
+        .catch(err => { if (players.get(w)?.playing) apBlocked(w, () => players.get(w)?.playing && tryPlay(), err); });
     };
     players.set(w, {
       playing: false,
@@ -2437,7 +2449,7 @@ function ytController(ifr, lim, onInfo = () => {}, onLimit = () => false) {
     send("setPlaybackRate", [rate]);
     send("playVideo");
     if (playing()) sendSound();
-    guard = setTimeout(() => { if (wantPlay && !playing() && tries++ < 4) apply(); }, 1500);
+    guard = setTimeout(() => { if (!wantPlay || playing()) return; if (tries++ < 4) apply(); else if (ifr.isConnected) apBlocked(null, () => { if (wantPlay && !playing()) { tries = 0; apply(); } }, { name: "NotAllowedError" }); }, 1500);
   }
   function loopToStart() {
     const now = Date.now(); if (now - lastLoop < 1500) return; lastLoop = now;
@@ -2481,7 +2493,7 @@ function loadX() { return xScript ||= new Promise(res => { const s = document.cr
 
 /* Xの投稿の中身（文・画像・動画）を受け取る。①Xの埋め込みが使っている置き場 ②fxtwitter（URLだけ送る） の順に試す */
 function xMediaOf(p) { const xm = p && p.embed && p.embed.kind === "x" && p.embed.xm; if (!xm) return null;
-  if (xm.videos && xm.videos.length) return { kind: "url-video", src: xm.videos[0].src, poster: xm.videos[0].poster, vertical: xm.videos[0].vertical };
+  if (xm.videos && xm.videos.length) return { kind: "url-video", src: xm.videos[0].src, poster: xm.videos[0].poster, vertical: xm.videos[0].vertical, dur: xm.videos[0].dur };
   if (xm.photos && xm.photos.length > 1) return { kind: "url-gallery", srcs: xm.photos.slice(0, 10) };
   if (xm.photos && xm.photos.length) return { kind: "url-image", src: xm.photos[0] }; return null; }
 const xToken = id => ((Number(id) / 1e15) * Math.PI).toString(36).replace(/(0+|\.)/g, "");
@@ -2491,9 +2503,9 @@ async function xFetch(user, id) {
     const md = j.mediaDetails || [];
     return { text: (j.text || "").replace(/\s*https:\/\/t\.co\/\w+$/, ""), name: j.user?.name, handle: j.user?.screen_name, avatar: j.user?.profile_image_url_https,
       photos: md.filter(m => m.type === "photo").map(m => m.media_url_https),
-      videos: md.filter(m => m.type === "video" || m.type === "animated_gif").map(m => { const v = (m.video_info?.variants || []).filter(x => x.content_type === "video/mp4").sort((a, b) => (b.bitrate || 0) - (a.bitrate || 0)); const pick = v.find(x => (x.bitrate || 0) <= 2200000) || v[0]; return pick && { src: pick.url, poster: m.media_url_https, vertical: (m.original_info?.height || 0) > (m.original_info?.width || 1) }; }).filter(Boolean), src: "x" }; } } catch {}
+      videos: md.filter(m => m.type === "video" || m.type === "animated_gif").map(m => { const v = (m.video_info?.variants || []).filter(x => x.content_type === "video/mp4").sort((a, b) => (b.bitrate || 0) - (a.bitrate || 0)); const pick = v.find(x => (x.bitrate || 0) <= 2200000) || v[0]; return pick && { src: pick.url, poster: m.media_url_https, vertical: (m.original_info?.height || 0) > (m.original_info?.width || 1), dur: (m.video_info?.duration_millis || 0) / 1000 || undefined }; }).filter(Boolean), src: "x" }; } } catch {}
   try { const j = await get(`https://api.fxtwitter.com/${encodeURIComponent(user)}/status/${id}`); const t = j && j.tweet; if (t) return { text: t.text || "", name: t.author?.name, handle: t.author?.screen_name, avatar: t.author?.avatar_url,
-      photos: (t.media?.photos || []).map(x => x.url), videos: (t.media?.videos || []).map(x => ({ src: x.url, poster: x.thumbnail_url, vertical: (x.height || 0) > (x.width || 1) })), src: "fx" }; } catch {}
+      photos: (t.media?.photos || []).map(x => x.url), videos: (t.media?.videos || []).map(x => ({ src: x.url, poster: x.thumbnail_url, vertical: (x.height || 0) > (x.width || 1), dur: x.duration || undefined })), src: "fx" }; } catch {}
   return null;
 }
 const xQueue = new Set(); let xTimer = 0;
@@ -2552,6 +2564,7 @@ function buildEmbed(p, mode = "feed") {
   if (e.kind === "x" && e.xm) {
     /* Xの中身を受け取れたツイート: 画像・動画をアプリで表示（真ん中で再生・全画面・しおりも使える） */
     const xm = e.xm, med = xMediaOf(p);
+    if (HOSTED && xm.videos?.length && xm.videos[0].dur == null && !e.xDur) { e.xDur = 1; xFetch(e.user, e.id).then(n => { if (n?.videos?.[0]?.dur) { e.xm = n; save(); clearTimeout(xTimer); xTimer = setTimeout(() => renderFeedKeepScroll(), 400); } }); }
     if (mode === "full" && med) return buildMedia({ ...p, media: med }, "full");
     const w = document.createElement("div"); w.className = "embed-x xm";
     w.innerHTML = `<div class="xhead"><div class="avatar" style="background:#333;width:36px;height:36px">${xm.avatar ? `<img src="${esc(xm.avatar)}" alt="" style="width:100%;height:100%;border-radius:50%">` : esc((xm.handle || e.user)[0].toUpperCase())}</div><div><b>${esc(xm.name || e.user)}</b><div style="color:var(--muted);font-size:13px">@${esc(xm.handle || e.user)}</div></div><a class="xlink" href="${esc(e.url)}" target="_blank" rel="noopener">X で見る</a></div>${xm.text ? `<div class="xtext">${linkify(xm.text)}</div>` : ""}`;

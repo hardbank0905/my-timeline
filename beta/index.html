@@ -1251,6 +1251,24 @@ body.sheet-open{overflow:hidden}
 .v-pill{display:flex;align-items:center;gap:8px;height:44px;padding:0 18px;border-radius:99px;border:0;background:rgba(40,40,40,.75);color:#fff;font:700 15px system-ui,sans-serif;cursor:pointer;margin-left:auto;margin-right:8px}.v-pill[hidden]{display:none}.v-pill .i{width:20px;height:20px}.v-pill.on{background:#1d9bf0}
 .viewer .v-top{gap:0}.viewer #vCount{flex:1}
 
+
+/* v1.3 タブの長押しメニュー・選ぶモード・入れ子のグループ */
+.pm-title{padding:6px 18px 8px;font-size:13px;color:var(--muted);font-weight:700;border-bottom:1px solid var(--line);margin-bottom:4px}
+.rt-card button.danger{color:#f4212e}
+.tab-grp.d1,.tab.in-grp.d2{box-shadow:inset 0 -3px 0 color-mix(in srgb,var(--accent) 22%,transparent)}.tab-grp.d2,.tab.in-grp.d3{box-shadow:inset 0 -3px 0 color-mix(in srgb,var(--accent) 40%,transparent)}
+.tab.in-grp.d2,.tab.in-grp.d3{background:color-mix(in srgb,var(--accent) 11%,transparent)}
+#navList .nav-item.in-grp,#navList .nav-group{padding-left:calc(12px + var(--d,0) * 14px)}
+.pk-chk{display:inline-block;width:16px;height:16px;border-radius:50%;border:2px solid var(--muted);margin-right:6px;vertical-align:-3px;flex:none}.pk-chk.on{background:var(--accent);border-color:var(--accent);box-shadow:inset 0 0 0 2px var(--bg)}
+body.tl-picking #fab{display:none}
+body.tl-picking .tab.picked,body.tl-picking .tab-grp.picked,body.tl-picking .nav-item.picked,body.tl-picking .nav-group.picked{background:color-mix(in srgb,var(--accent) 16%,transparent)}
+.pick-bar{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(72px + env(safe-area-inset-bottom,0px));z-index:120;display:flex;align-items:center;gap:4px;background:var(--bg);color:var(--fg);border:1px solid var(--line-strong);border-radius:18px;box-shadow:0 10px 34px rgba(0,0,0,.22);padding:6px;max-width:calc(100vw - 16px);flex-wrap:wrap;justify-content:center}
+.pick-bar .pk-n{padding:0 8px;font-size:13px;white-space:nowrap}.pick-bar .pk-n small{color:var(--muted);margin-left:4px}
+.pick-bar button{display:flex;align-items:center;gap:6px;border:0;background:none;color:inherit;font:700 14px system-ui,sans-serif;padding:9px 11px;border-radius:12px;cursor:pointer}.pick-bar button:hover{background:rgba(127,127,127,.1)}.pick-bar button .i{width:18px;height:18px}.pick-bar .danger{color:#f4212e}.pick-bar .pk-x{color:var(--muted)}
+@media (min-width:700px){.pick-bar{bottom:24px}}
+.btn-accent.danger-bg{background:#f4212e;border-color:#f4212e}
+.tr-item.tr-tl{background:color-mix(in srgb,var(--accent) 5%,transparent)}
+.rcv-list{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:12px;overflow:hidden}.rcv-row{display:flex;align-items:center;gap:10px;padding:10px 12px;cursor:pointer}.rcv-row+.rcv-row{border-top:1px solid var(--line)}.rcv-row small{color:var(--muted);margin-left:auto;font-size:12px;white-space:nowrap}.rcv-dot{width:12px;height:12px;border-radius:50%;flex:none}
+#addForm{flex-wrap:wrap}
 /* 複数の画像の横スクロール */
 .media.carousel{border:0;background:none;border-radius:0;aspect-ratio:auto;display:block;position:relative;overflow:visible}
 .car-row{display:flex;gap:6px;overflow-x:auto;overflow-y:hidden;height:clamp(210px,64vw,330px);scrollbar-width:none;overscroll-behavior-x:contain;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
@@ -1392,10 +1410,11 @@ body.sheet-open{overflow:hidden}
       <h2>タイムライン管理</h2>
       <p>名前はその場で書き換え。左のつまみをドラッグか ↑↓ で並べ替え。</p>
       <ul class="tl-list" id="tlList"></ul><datalist id="grpList"></datalist>
-      <p class="note" style="margin:0">タブを長押しして、ほかのタブの上で離すと「フォルダ」にまとまるよ。下の欄に同じフォルダ名を入れてもOK。フォルダのタブを押すと中をまぜて見られて、もう一度押すと中のタブが開くの</p>
+      <p class="note" style="margin:0">タブを長押しするとメニュー（選んで選択・名前変更・シークレット・削除）。長押ししたままほかのタブに重ねると「グループ」にまとまるよ。下の欄に同じグループ名を入れてもOK。グループのタブを押すと中をまぜて見られて、もう一度押すと中のタブが開くの</p>
       <form class="add-row" id="addForm">
         <input id="addName" placeholder="新しいタイムライン名" maxlength="20">
         <button class="btn-accent" id="addBtn">追加</button>
+        <button type="button" class="btn-ghost" id="addGrpBtn" title="空のグループを作る（あとでタブを重ねて入れられるよ）">グループを作る</button>
       </form>
     </section>
     <section class="card">
@@ -1468,7 +1487,7 @@ body.sheet-open{overflow:hidden}
       <p style="margin:0" id="secretLead"></p>
       <div style="display:flex;gap:6px;flex-wrap:wrap" id="secretBtns"></div>
       <label class="toggle" id="stealthRow">設定にこの欄を出さない <span class="switch"><input type="checkbox" id="optStealth"><span></span></span></label>
-      <p class="note" style="margin:0">隠したタイムラインは、タブ・検索・今日の1本・ゴミ箱のどこにも出ないよ。ブラウザの中に保存しているから、詳しい人が調べれば見える「目隠し」だよ。書き出したデータには入るから気をつけてね</p>
+      <p class="note" style="margin:0">隠したタイムラインは、タブ・検索・今日の1本・ゴミ箱のどこにも出ないよ。ブラウザの中に保存しているから、詳しい人が調べれば見える「目隠し」だよ。共有したデータには入るから気をつけてね</p>
     </section>
     <section class="card">
       <h2>見られなくなった投稿をさがす</h2>
@@ -1495,37 +1514,37 @@ body.sheet-open{overflow:hidden}
     <section class="card">
       <h2>データ</h2>
       <p>ツイートとタイムライン、手元から追加した画像・動画は、このブラウザの中に保存されます（ほかの端末とは共有されません）。</p>
-      <p>別の端末にデータを移すときは、ここで書き出した文字をコピーして、移したい端末の「読み込む」に貼ってね（手元から追加した画像・動画は移らないよ）。</p>
+      <p>別の端末にデータを移すときは、ここで共有した文字をコピーして、移したい端末の「読み込む」に貼ってね（手元から追加した画像・動画は移らないよ）。</p>
       <div class="safe-box"><p id="lastSave" class="last-save"></p><p id="persistState" class="persist-state">ブラウザの状態を確かめてるよ…</p></div>
-      <details class="enc-ex data-how" id="dataHow"><summary>📖 データの守り方（書き出し・読み込みのやり方）</summary>
+      <details class="enc-ex data-how" id="dataHow"><summary>📖 データの守り方（共有・読み込みのやり方）</summary>
         <p><b>データが消えちゃう場面</b></p>
         <ul class="dh-list">
-          <li><b>ブラウザの「履歴とWebサイトデータを消去」</b>をしたとき → 消す前に書き出しておいてね</li>
+          <li><b>ブラウザの「履歴とWebサイトデータを消去」</b>をしたとき → 消す前に共有しておいてね</li>
           <li><b>iPhone・iPadで、Safariのまま7日くらい開かなかった</b>とき（Safariが自動で片付けちゃうの） → 共有ボタン →「ホーム画面に追加」して、そこから開くと消えにくいよ</li>
-          <li><b>アプリのURLが変わった</b>とき（データはURLごとに別の箱なの） → 引っ越す前に書き出して、新しいURLで読み込んでね</li>
+          <li><b>アプリのURLが変わった</b>とき（データはURLごとに別の箱なの） → 引っ越す前に共有して、新しいURLで読み込んでね</li>
           <li><b>スマホやPCが壊れた・なくした</b>とき → 端末の外（iCloud Drive、Googleドライブなど）にファイルを置いておけば大丈夫</li>
         </ul>
         <p><b>おすすめ: 週に1回くらい「ファイルで保存」</b>。保存してから時間がたつと、上にお知らせが出るよ</p>
-        <p><b>書き出すやり方</b></p>
+        <p><b>共有するやり方</b></p>
         <ol>
-          <li><b>ファイルで保存</b>（いちばんおすすめ）: 下の「書き出す範囲」で「全部」を選ぶ →「ファイルで保存」→ iPhoneは「ファイル」アプリに保存、PCはダウンロードフォルダに入るよ</li>
-          <li><b>文字でコピー</b>: 「書き出す」→「コピー」→ メモアプリやLINEのKeepに貼っておく</li>
+          <li><b>ファイルで保存</b>（いちばんおすすめ）: 下の「共有する範囲」で「全部」を選ぶ →「ファイルで保存」→ iPhoneは「ファイル」アプリに保存、PCはダウンロードフォルダに入るよ</li>
+          <li><b>文字でコピー</b>: 「共有する」→「コピー」→ メモアプリやLINEのKeepに貼っておく</li>
           <li><b>QRコード</b>: 「QRコードで渡す」→ 別の端末のカメラで読む（データが少ないときだけ使えるよ）</li>
         </ol>
         <p><b>読み込むやり方</b></p>
         <ol>
           <li>ファイルなら「ファイルから読み込む」でファイルを選ぶ。文字なら「読み込む」に貼って「この内容で置き換える」</li>
-          <li>「全部」で書き出したデータは、<b>いまのデータと入れ替わる</b>よ。1つのタイムラインだけのデータは、新しいタイムラインとして追加されるの</li>
+          <li>「全部」で共有したデータは、<b>いまのデータと入れ替わる</b>よ。1つのタイムラインだけのデータは、新しいタイムラインとして追加されるの</li>
           <li>パスワード付きのファイルは、読み込むときにパスワードを聞かれるよ</li>
         </ol>
-        <p>※手元から追加した画像・動画は、書き出しには入らないよ。元の写真は端末に残しておいてね</p>
+        <p>※手元から追加した画像・動画は、共有には入らないよ。元の写真は端末に残しておいてね</p>
       </details>
       <div style="display:flex;gap:8px;flex-wrap:wrap">
-        <button class="btn-ghost" id="exportBtn">書き出す</button>
+        <button class="btn-ghost" id="exportBtn">共有する</button>
         <button class="btn-ghost" id="importBtn">読み込む</button>
       </div>
       <div class="xfer-file">
-        <label class="toggle" for="xferScope" style="margin:0">書き出す範囲<select id="xferScope" class="sel"></select></label>
+        <label class="toggle" for="xferScope" style="margin:0">共有する範囲<select id="xferScope" class="sel"></select></label>
         <label class="toggle" for="xferName" id="xferNameRow" style="margin:0" hidden>相手に届く名前<input type="text" id="xferName" class="sel" maxlength="30" style="max-width:180px"></label>
         <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn-ghost" id="fileSave">ファイルで保存</button><button class="btn-ghost" id="qrMake">QRコードで渡す</button><label class="btn-ghost" style="cursor:pointer">ファイルから読み込む<input type="file" id="fileLoad" accept=".json,application/json" hidden></label></div>
         <label class="toggle" style="margin:0">パスワードをかけて保存 <span class="switch"><input type="checkbox" id="encOn"><span></span></span></label>
@@ -1535,7 +1554,7 @@ body.sheet-open{overflow:hidden}
           <li><b>iCloudやGoogleドライブにバックアップ</b>: 範囲は「全部」 → パスワードをオン → 保存 → 「ファイル」アプリでiCloud Driveに移す。もしアカウントをのぞかれても中身は読めないよ</li>
           <li><b>機種変更</b>: 古いスマホで保存 → AirDropなどで新しいスマホへ → 新しいスマホで「ファイルから読み込む」→ パスワードを入れる</li></ol>
           <p>本物の暗号化（AES-256）だから、<b>パスワードを忘れると自分でも開けない</b>よ。メモアプリなど別の場所に控えておいてね</p></details>
-        <p class="note" style="margin:0">1つのタイムラインだけ書き出したファイルは、友達の端末で読み込むと新しいタイムラインとして追加されるよ（いまのデータは消えないよ）</p>
+        <p class="note" style="margin:0">1つのタイムラインだけ共有したファイルは、友達の端末で読み込むと新しいタイムラインとして追加されるよ（いまのデータは消えないよ）</p>
       </div>
       <details class="enc-ex snap-box" id="snapBox"><summary>🕘 自動の控え（もしものときに戻せる）</summary>
         <p>1日1回と、読み込み・リセットの前に、ブラウザの中の別の場所へ自動で控えをとってるよ（最新5つ）。間違えて消したり読み込んだりしたときは、ここから戻してね。<b>ブラウザのデータを消すと控えも一緒に消える</b>から、ファイルでの保存もしてね</p>
@@ -1552,7 +1571,7 @@ body.sheet-open{overflow:hidden}
       <div class="store" id="storeMeter"></div>
       <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="btn-ghost" id="trashBtn">ゴミ箱</button></div>
       <div class="lock-set"><div><b>かんたんロック</b><span id="lockState">オフ</span></div><div style="display:flex;gap:6px;flex-wrap:wrap" id="lockBtns"></div></div>
-      <p class="note" style="margin:0">開くときに4桁の数字を聞くよ。人にちらっと見られないための鍵で、本格的な守りではないよ。忘れると開けなくなるから、先に書き出しておいてね</p>
+      <p class="note" style="margin:0">開くときに4桁の数字を聞くよ。人にちらっと見られないための鍵で、本格的な守りではないよ。忘れると開けなくなるから、先に共有しておいてね</p>
       <button class="btn-ghost" id="resetBtn" style="align-self:flex-start">サンプルに戻す</button>
       <div class="confirm" id="resetConfirm" hidden style="padding-left:0">全部消してサンプルに戻す？ <button class="yes" id="resetYes">戻す</button><button class="no" id="resetNo">やめる</button></div>
     </section>
@@ -1657,7 +1676,7 @@ body.sheet-open{overflow:hidden}
   </div>
 </div>
 <div class="nag home-hint" id="homeHint" hidden role="status"><div><b>📲 ホーム画面に追加しておこう</b><span>Safariのまま7日くらい開かないと、iPhoneがデータを片付けちゃうことがあるの。共有ボタン（□に↑）→「ホーム画面に追加」で、消えにくくなるよ</span></div><div class="nag-acts"><button type="button" class="btn-ghost sm" id="homeLater">あとで</button></div></div>
-<div class="nag" id="backupNag" hidden role="status"><div><b>⛨ データを保存しておこう</b><span id="nagMsg">最後に書き出してから <span id="nagDays"></span> 日たったよ。ブラウザのデータが消えても、書き出した文字があれば元に戻せるよ</span></div>
+<div class="nag" id="backupNag" hidden role="status"><div><b>⛨ データを保存しておこう</b><span id="nagMsg">最後に共有してから <span id="nagDays"></span> 日たったよ。ブラウザのデータが消えても、共有した文字があれば元に戻せるよ</span></div>
   <div class="nag-acts"><button type="button" class="btn-ghost sm" id="nagLater">あとで</button><button type="button" class="btn-accent" id="nagGo">保存する</button></div></div>
 <div class="share trash-page" id="trashSheet" hidden role="dialog" aria-modal="true" aria-labelledby="trTitle">
   <div class="share-card">
@@ -1705,7 +1724,7 @@ body.sheet-open{overflow:hidden}
   <div class="share-card acct-card">
     <div id="acBanner" hidden></div>
     <div class="ac-top"><span id="acAv"></span><span class="ac-top-r"><button type="button" class="ac-mini" id="acEdit" aria-label="アイコンとヘッダーを変える" title="アイコンとヘッダーを変える"><svg class="i"><use href="#i-brush"/></svg></button><button type="button" class="ac-mini" id="acClose" aria-label="閉じる"><svg class="i"><use href="#i-x"/></svg></button></span></div>
-    <div class="ac-name"><b id="acTitle">私</b><span>@me ・ <em style="color:#ff7a00;font-style:normal;font-weight:800">テスト版 v1.3 試作6（本番とはデータ別）</em></span></div>
+    <div class="ac-name"><b id="acTitle">私</b><span>@me ・ <em style="color:#ff7a00;font-style:normal;font-weight:800">テスト版 v1.3 試作7（本番とはデータ別）</em></span></div>
     <div class="ac-stats" id="acStats"></div>
     <nav class="ac-big" aria-label="メニュー">
       <button type="button" class="ac-item" id="acRec" aria-expanded="false"><svg class="i"><use href="#i-target"/></svg><b>今日の記録</b><small id="acRecSub"></small></button>
@@ -1776,7 +1795,7 @@ body.sheet-open{overflow:hidden}
     <p class="lock-msg" id="lockMsg"></p>
     <div class="lock-pad" id="lockPad"></div>
     <div class="lock-foot"><button type="button" class="lock-link" id="lockCancel" hidden>やめる</button><button type="button" class="lock-link" id="lockForgot">忘れたとき</button></div>
-    <div class="lock-forgot" id="lockForgotBox" hidden>番号を忘れたら、この端末のデータを全部消して最初からにするしかないよ。書き出した文字があれば、あとで読み込めるよ。
+    <div class="lock-forgot" id="lockForgotBox" hidden>番号を忘れたら、この端末のデータを全部消して最初からにするしかないよ。共有した文字があれば、あとで読み込めるよ。
       <button type="button" class="lock-reset" id="lockReset">全部消して最初から</button></div>
   </div>
 </div>
@@ -2032,12 +2051,26 @@ const isHiddenTl = t => !!t && !showAllTl && (secretOn ? !(t.secret && secretOpe
 /* 前の版の「全体で1つの番号」を、シークレットのタイムラインそれぞれの合言葉に引っ越す（同じ番号で開けるよ） */
 function migSecret() { if (!S.secretPin) return; S.timelines.forEach(t => { if (t.secret && !t.pass) t.pass = { kind: "pin", salt: S.secretPin.salt, hash: S.secretPin.hash }; }); delete S.secretPin; delete S.opts.secretNoPin; }
 const visPost = p => !isHiddenTl(tlById(p.tl));
-/* グループ: グループなし → グループ（最初に出てきた順）の順に並べる */
+/* グループ（v1.3）: タイムラインをまとめる入れ物。グループの中にグループも入れられる（入れ子）。
+   t.group = 入っているグループの名前（前の版のフォルダと同じ形なので、前の版に戻しても1段のフォルダとして読める）
+   S.groups = [{ name, parent }]（parent は外側のグループの名前。いちばん外は ""）。空のグループも置いておける */
+const gInfo = n => (S.groups || []).find(g => g.name === n);
+const gParent = n => gInfo(n)?.parent || "";
+const gKids = n => (S.groups || []).filter(g => (g.parent || "") === n);
+const gAncestors = n => { const a = []; let p = n; while (p && !a.includes(p)) { a.push(p); p = gParent(p); } return a; }; // 自分を含む外側の列
+const inGroup = (t, g) => gAncestors(grpOf(t)).includes(g);
+function migGroups() { S.groups ||= []; S.timelines.forEach(t => { const g = (t.group || "").trim(); if (t.group !== g) { if (g) t.group = g; else delete t.group; } if (g && !gInfo(g)) S.groups.push({ name: g, parent: "" }); });
+  const names = new Set(); S.groups = S.groups.filter(g => g && g.name && !names.has(g.name) && names.add(g.name));
+  S.groups.forEach(g => { if (g.parent && (!gInfo(g.parent) || g.parent === g.name)) g.parent = ""; });
+  S.groups.forEach(g => { const seen = [g.name]; let p = g.parent; while (p) { if (seen.includes(p)) { g.parent = ""; break; } seen.push(p); p = gParent(p); } }); }
+let pickState = null; // 「選んで選択」の最中に選んでいるもの { tl: Set, grp: Set }
+const newGroupName = () => { let n = 1, name; do { name = `グループ${n++}`; } while (gInfo(name)); return name; };
+/* 並び: グループなしのタイムライン → グループ（中のタイムライン → 中のグループ…）の順 */
 function orderedTLs() {
   if (secretOn) { secretOpen.forEach(id => { if (!tlById(id)?.secret) secretOpen.delete(id); }); if (!secretOpen.size) secretOn = false; }
-  const vis = S.timelines.filter(t => !isHiddenTl(t)); const groups = [];
-  vis.forEach(t => { const g = (t.group || "").trim(); if (g && !groups.includes(g)) groups.push(g); });
-  return [...vis.filter(t => !(t.group || "").trim()), ...groups.flatMap(g => vis.filter(t => (t.group || "").trim() === g))];
+  migGroups(); const vis = S.timelines.filter(t => !isHiddenTl(t)), out = [], seen = new Set();
+  const walk = g => { if (seen.has(g)) return; seen.add(g); vis.filter(t => grpOf(t) === g).forEach(t => out.push(t)); gKids(g).forEach(k => walk(k.name)); };
+  walk(""); vis.forEach(t => { if (!out.includes(t)) out.push(t); }); return out;
 }
 function ensureVisibleActive() { if (!tlById(S.active) || isHiddenTl(tlById(S.active))) S.active = orderedTLs()[0].id; }
 /* 表示順は sortAt（リツイート・並べ替えで変わる）→ なければ投稿日時 */
@@ -2050,10 +2083,10 @@ const sortOf = id => { const t = tlById(id), mix = !t; const o = (t ? t.sort : (
 const setSort = o => { const t = mixOn() ? null : tlById(S.active); if (t) t.sort = o; else (S.mixSort ||= {})[curKey()] = o; save(); renderFeed(); scrollTo(0, 0); };
 /* フォルダ（v1.2）: タブをまとめたもの。フォルダのタブを押すと、中のタイムラインをまぜて見る（ミックス）。もう一度押すと中のタブが開く */
 const grpOf = t => (t?.group || "").trim();
-const mixOn = () => { const g = S.mixGrp; return g && orderedTLs().some(t => grpOf(t) === g) ? g : ""; };
+const mixOn = () => { const g = S.mixGrp; return g && orderedTLs().some(t => inGroup(t, g)) ? g : ""; };
 const curKey = () => mixOn() ? "mix:" + mixOn() : S.active;
 function curPosts() { const g = mixOn(); if (!g) return postsOf(S.active);
-  const ids = new Set(orderedTLs().filter(t => grpOf(t) === g).map(t => t.id)), { k, asc } = sortOf("mix:" + g), f = SORT_KEY[k];
+  const ids = new Set(orderedTLs().filter(t => inGroup(t, g)).map(t => t.id)), { k, asc } = sortOf("mix:" + g), f = SORT_KEY[k];
   return S.posts.filter(p => ids.has(p.tl) && !(p.snoozeUntil > Date.now())).sort((a, b) => (asc ? f(a) - f(b) : f(b) - f(a)) || keyOf(b) - keyOf(a)); }
 const postsOf = id => { const { k, asc } = sortOf(id), f = SORT_KEY[k]; return S.posts.filter(p => p.tl === id && !(p.snoozeUntil > Date.now())).sort((a, b) => (!!b.pinned - !!a.pinned) || (asc ? f(a) - f(b) : f(b) - f(a)) || keyOf(b) - keyOf(a)); };
 function sortBar() { const { k, asc } = sortOf(curKey()); const isNum = k === "likes" || k === "views";
@@ -2682,19 +2715,24 @@ function placeInk(from) {
 function renderTabs() {
   const oldInk = $("#tabs .tab-ink"), from = oldInk ? { l: parseFloat(oldInk.style.left), w: parseFloat(oldInk.style.width) } : null;
   ensureVisibleActive();
-  const TL = orderedTLs(); let lastG = "";
+  const TL = orderedTLs();
   const lockMark = t => t.secret ? `<svg class="i sec-mark" aria-label="シークレット"><use href="#i-hide"/></svg>` : "";
   const mx = mixOn();
-  const grpHead = (t, kind) => { const g = (t.group || "").trim(); if (g === lastG) return ""; lastG = g; if (!g) return "";
-    const c = !!S.opts.collapsed[g], on = mx === g, n = TL.filter(x => grpOf(x) === g).length;
-    return kind === "tab" ? `<button class="tab-grp ${c ? "closed" : ""} ${on ? "on" : ""}" data-grp="${esc(g)}" aria-expanded="${!c}" aria-selected="${on}" title="押すとまぜて見る・もう一度押すと中を開く"><svg class="i"><use href="#i-folder"/></svg>${esc(g)}<small>${n}</small><span class="caret" aria-hidden="true">${c ? "▸" : "▾"}</span></button>`
-      : `<button class="nav-group ${c ? "closed" : ""} ${on ? "on" : ""}" data-grp="${esc(g)}" aria-expanded="${!c}"><span aria-hidden="true">${c ? "▸" : "▾"}</span><svg class="i"><use href="#i-folder"/></svg><span class="label">${esc(g)}</span><small>${n}</small></button>`; };
-  const folded = t => { const g = (t.group || "").trim(); return g && S.opts.collapsed[g] && (mx === g || t.id !== S.active); };
+  const pk = pickState, pkT = id => pk && pk.tl.has(id) ? " picked" : "", pkG = g => pk && pk.grp.has(g) ? " picked" : "", chk = on => pk ? `<i class="pk-chk${on ? " on" : ""}" aria-hidden="true"></i>` : "";
+  const grpHead = (g, d, kind) => { const c = !!S.opts.collapsed[g], on = mx === g, n = TL.filter(x => inGroup(x, g)).length;
+    return kind === "tab" ? `<button class="tab-grp d${Math.min(d, 3)} ${c ? "closed" : ""} ${on ? "on" : ""}${pkG(g)}" data-grp="${esc(g)}" aria-expanded="${!c}" aria-selected="${on}" title="押すとまぜて見る・もう一度押すと中を開く・長押しでメニュー">${chk(pk && pk.grp.has(g))}<svg class="i"><use href="#i-folder"/></svg>${esc(g)}<small>${n}</small><span class="caret" aria-hidden="true">${c ? "▸" : "▾"}</span></button>`
+      : `<button class="nav-group d${Math.min(d, 3)} ${c ? "closed" : ""} ${on ? "on" : ""}${pkG(g)}" data-grp="${esc(g)}" aria-expanded="${!c}" style="--d:${d}">${chk(pk && pk.grp.has(g))}<span aria-hidden="true">${c ? "▸" : "▾"}</span><svg class="i"><use href="#i-folder"/></svg><span class="label">${esc(g)}</span><small>${n}</small></button>`; };
+  /* 見せる順に並べる: [{ t, d }] か [{ g, d }]。閉じたグループの中は、いま見ているタイムラインだけ出す */
+  const shut = g => gAncestors(g).some(x => S.opts.collapsed[x]);
+  const gHidden = g => { const all = S.timelines.filter(t => inGroup(t, g)); return all.length && !all.some(t => !isHiddenTl(t)); };
+  const items = [], walked = new Set(), walk = (g, d) => { if (walked.has(g)) return; walked.add(g);
+    TL.filter(t => grpOf(t) === g).forEach(t => { if (!g || !shut(g) || (t.id === S.active && !mx)) items.push({ t, d }); });
+    gKids(g).forEach(k => { if (gHidden(k.name) || (g && shut(g))) return; items.push({ g: k.name, d }); walk(k.name, d + 1); }); };
+  walk("", 0); TL.forEach(t => { if (!items.some(x => x.t === t)) items.push({ t, d: 0 }); });
   const isOn = t => t.id === S.active && !mx;
   const un = t => { const n = unseenOf(t.id); return n ? `<span class="unseen" data-un="${t.id}" aria-label="まだ見てない ${n} 件">${n > 99 ? "99+" : n}</span>` : `<span class="unseen" data-un="${t.id}" hidden></span>`; };
-  $("#tabs").innerHTML = TL.map(t => grpHead(t, "tab") + (folded(t) ? "" : `<button class="tab ${isOn(t) ? "on" : ""} ${grpOf(t) ? "in-grp" : ""}" role="tab" aria-selected="${isOn(t)}" data-tl="${t.id}">${esc(t.name)}${lockMark(t)}${un(t)}</button>`)).join("") + `<button class="tab tab-add" id="tabAdd" aria-label="タイムラインを追加">＋</button>`;
-  lastG = "";
-  $("#navList").innerHTML = TL.map(t => grpHead(t, "nav") + (folded(t) ? "" : `<button class="nav-item ${isOn(t) ? "on" : ""} ${grpOf(t) ? "in-grp" : ""}" data-tl="${t.id}" title="${esc(t.name)}">${tlAvatar(t, "mini-av")}<span class="label">${esc(t.name)}${lockMark(t)}</span>${un(t)}<span class="count">${postsOf(t.id).length}</span></button>`)).join("");
+  $("#tabs").innerHTML = items.map(({ t, g, d }) => g ? grpHead(g, d, "tab") : `<button class="tab ${isOn(t) ? "on" : ""} ${d ? "in-grp d" + Math.min(d, 3) : ""}${pkT(t.id)}" role="tab" aria-selected="${isOn(t)}" data-tl="${t.id}">${chk(pk && pk.tl.has(t.id))}${esc(t.name)}${lockMark(t)}${un(t)}</button>`).join("") + `<button class="tab tab-add" id="tabAdd" aria-label="タイムラインを追加">＋</button>`;
+  $("#navList").innerHTML = items.map(({ t, g, d }) => g ? grpHead(g, d, "nav") : `<button class="nav-item ${isOn(t) ? "on" : ""} ${d ? "in-grp" : ""}${pkT(t.id)}" data-tl="${t.id}" title="${esc(t.name)}" style="--d:${d}">${chk(pk && pk.tl.has(t.id))}${tlAvatar(t, "mini-av")}<span class="label">${esc(t.name)}${lockMark(t)}</span>${un(t)}<span class="count">${postsOf(t.id).length}</span></button>`).join("");
   $("#compTl").innerHTML = TL.map(t => `<option value="${t.id}" ${t.id === S.active ? "selected" : ""}>送り先: ${esc(t.name)}</option>`).join("");
   paintMe(); applyTlTheme(); renderStats(); renderScope(); requestAnimationFrame(() => placeInk(from));
 }
@@ -2851,7 +2889,7 @@ function renderFeed() {
 
 function renderManage() {
   const ul = $("#tlList");
-  const groups = [...new Set(S.timelines.map(t => (t.group || "").trim()).filter(Boolean))];
+  migGroups(); const groups = S.groups.map(g => g.name);
   $("#grpList").innerHTML = groups.map(g => `<option value="${esc(g)}">`).join("");
   ul.innerHTML = S.timelines.map((t, i) => isHiddenTl(t) ? "" : `
     <li class="tl-row" draggable="true" data-tl="${t.id}">
@@ -2864,13 +2902,13 @@ function renderManage() {
       <button class="mini danger" data-act="askdel" ${S.timelines.length <= 1 ? "disabled" : ""} aria-label="削除"><svg class="i"><use href="#i-trash"/></svg></button>
     </li>
     <li class="tl-sub" data-sub="${t.id}">
-      <input type="text" list="grpList" value="${esc(t.group || "")}" maxlength="12" data-act="group" placeholder="フォルダ" aria-label="「${esc(t.name)}」のフォルダ">
+      <input type="text" list="grpList" value="${esc(t.group || "")}" maxlength="12" data-act="group" placeholder="グループ" aria-label="「${esc(t.name)}」のグループ">
     </li>
     <li class="confirm" data-confirm="${t.id}" hidden>ツイート ${S.posts.filter(p => p.tl === t.id).length} 件ごと消す？
       <button class="yes" data-act="del" data-tl="${t.id}">削除</button><button class="no" data-act="nodel" data-tl="${t.id}">やめる</button></li>`).join("");
 }
 
-function renderAll() { migSecret(); renderTabs(); renderFeed(); renderManage(); save(); }
+function renderAll() { migSecret(); migGroups(); renderTabs(); renderFeed(); renderManage(); save(); }
 
 /* ================= 操作 ================= */
 let tt = null;
@@ -2951,9 +2989,10 @@ function stepTimeline(d) {
   }, { passive: true });
 })();
 document.addEventListener("click", e => {
-  const g = e.target.closest("[data-grp]"); if (g) { const k = g.dataset.grp; if (mixOn() !== k) openMix(k); else { S.opts.collapsed[k] = !S.opts.collapsed[k]; save(); renderTabs(); } return; }
+  const g = e.target.closest("[data-grp]"); if (g) { const k = g.dataset.grp; if (!orderedTLs().some(t => inGroup(t, k))) { toast(`グループ「${k}」はまだ空っぽだよ。タブを長押しして、このグループに重ねると入るよ`); return; } if (mixOn() !== k) openMix(k); else { S.opts.collapsed[k] = !S.opts.collapsed[k]; save(); renderTabs(); } return; }
   const tab = e.target.closest("[data-tl].tab, .nav-item[data-tl]"); if (tab) return setActive(tab.dataset.tl);
 });
+$("#addGrpBtn").addEventListener("click", () => { migGroups(); const v = $("#addName").value.trim().slice(0, 12); if (v && gInfo(v)) return toast("その名前のグループはもうあるよ"); const name = v || newGroupName(); S.groups.push({ name, parent: "" }); $("#addName").value = ""; save(); renderAll(); if (v) toast(`グループ「${name}」を作ったよ。タブを長押しして重ねると入るよ`); else askFolder(name, true); });
 $("#tabs").addEventListener("click", e => { if (e.target.closest("#tabAdd")) { openSide(); setTimeout(() => $("#addName").focus(), 260); } });
 
 /* 投稿 */
@@ -3140,6 +3179,147 @@ function feedChange(e) {
   const from = p.tl; p.tl = e.target.value; renderTabs(); renderFeedKeepScroll(); save();
   toast(`「${tlById(p.tl).name}」へ移動したよ`, () => { p.tl = from; save(); renderTabs(); renderFeedKeepScroll(); });
 }
+/* ===== v1.3 タブの長押しメニュー ===== */
+function popMenu(anchor, title, items, done) {
+  document.getElementById("rtPop")?.remove(); const phone = matchMedia("(max-width:640px)").matches;
+  const el = document.createElement("div"); el.id = "rtPop"; el.className = "rt-pop" + (phone ? " sheet" : "");
+  el.innerHTML = `<div class="rt-card" role="menu">${title ? `<div class="pm-title">${title}</div>` : ""}${items.map(([k, label, ic, cls]) => `<button type="button" data-rt="${k}" role="menuitem" class="${cls || ""}"><svg class="i"><use href="#${ic}"/></svg>${label}</button>`).join("")}${phone ? `<button type="button" data-rt="x" class="rt-x">キャンセル</button>` : ""}</div>`;
+  document.body.append(el); const card = el.firstChild;
+  if (!phone) { const r = anchor.getBoundingClientRect(), h = card.offsetHeight, w = card.offsetWidth; card.style.left = Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width / 2 - w / 2)) + "px"; card.style.top = (r.bottom + h + 8 > innerHeight ? Math.max(8, r.top - h - 4) : r.bottom + 4) + "px"; }
+  else if (!reduceMotion()) card.animate([{ transform: "translateY(100%)" }, { transform: "none" }], { duration: 220, easing: "cubic-bezier(.2,.8,.3,1)" });
+  const close = () => { el.remove(); document.removeEventListener("keydown", esc_); }, esc_ = e => { if (e.key === "Escape") close(); };
+  document.addEventListener("keydown", esc_);
+  /* 長押しで開いたとき、指を離した「クリック」で閉じないように少し待つ */
+  const t0 = Date.now(); el.addEventListener("click", e => { e.stopPropagation(); if (Date.now() - t0 < 350) return; const b = e.target.closest("[data-rt]"); if (!b && card.contains(e.target)) return; close(); if (b && b.dataset.rt !== "x") done(b.dataset.rt); });
+}
+function tabMenu(el) {
+  if (!el) return; const isG = !!el.dataset.grp, id = isG ? el.dataset.grp : el.dataset.tl, t = !isG && tlById(id); if (!isG && !t) return;
+  const items = [["pick", "選んで選択", "i-select"], ["rename", "名前変更", "i-edit"]];
+  if (!isG) items.push(["secret", t.secret ? "シークレットをやめる" : "シークレットモード", "i-hide"]);
+  items.push(["del", "削除", "i-trash", "danger"]);
+  popMenu(el, isG ? `📁 ${esc(id)}` : esc(t.name), items, k => {
+    if (k === "pick") return tlPickStart(isG ? { grp: id } : { tl: id });
+    if (k === "rename") return isG ? askFolder(id) : renameTl(t);
+    if (k === "secret") return secretFromMenu(t);
+    if (k === "del") return isG ? askDelGroup(id) : askTrashTls([t.id]);
+  });
+}
+function renameTl(t) {
+  hub.open("タイムラインの名前", `<div class="fd-box"><label class="fd-name">名前<input type="text" id="rnName" class="sel" maxlength="20" value="${esc(t.name)}" autocomplete="off"></label><div style="display:flex;gap:8px"><button type="button" class="btn-accent" id="rnOk">決める</button></div></div>`, b => {
+    const go = () => { const v = b.querySelector("#rnName").value.trim().slice(0, 20); if (!v) return toast("名前を入れてね"); const old = t.name; t.name = v; save(); hub.close(); renderAll(); toast(`「${old}」を「${v}」にしたよ`); };
+    b.querySelector("#rnOk").addEventListener("click", go); const i = b.querySelector("#rnName"); i.addEventListener("keydown", e => { e.stopPropagation(); if (e.key === "Enter") { e.preventDefault(); go(); } }); setTimeout(() => { i.focus(); i.select(); }, 80); });
+}
+function secretFromMenu(t) {
+  if (t.secret) { delete t.secret; delete t.pass; secretOpen.delete(t.id); save(); if (!secretOpen.size) setSecretOn(false, true); else renderAll(); renderSecretUI(); toast(`「${t.name}」をふつうのタイムラインに戻したよ`); return; }
+  if (orderedTLsAll().filter(x => !x.secret).length <= 1) return toast("ふつうのタイムラインを1つは残してね");
+  secMake = { id: t.id }; openSecret();
+}
+/* --- 選んで選択 --- */
+function tlPickStart(first) { pickState = { tl: new Set(first.tl ? [first.tl] : []), grp: new Set(first.grp ? [first.grp] : []) }; document.body.classList.add("tl-picking"); renderTabs(); paintPickBar(); haptic("tick"); }
+function tlPickEnd() { pickState = null; document.body.classList.remove("tl-picking"); $("#pickBar")?.remove(); renderTabs(); }
+/* 選んだものに入っているタイムライン（グループを選んだら中身全部） */
+const pickedTls = () => { if (!pickState) return []; const all = orderedTLsAll(); return all.filter(t => pickState.tl.has(t.id) || [...pickState.grp].some(g => inGroup(t, g))); };
+/* 選んだものの「いちばん外側」だけ（グループと、その中のものを両方選んでいたら、グループだけ） */
+const pickTops = () => { const gs = [...pickState.grp].filter(g => !gAncestors(gParent(g)).some(a => pickState.grp.has(a))), ts = [...pickState.tl].filter(id => !gAncestors(grpOf(tlById(id))).some(a => pickState.grp.has(a))); return { gs, ts }; };
+function paintPickBar() {
+  let bar = $("#pickBar"); if (!bar) { bar = document.createElement("div"); bar.id = "pickBar"; bar.className = "pick-bar"; bar.setAttribute("role", "toolbar"); document.body.append(bar);
+    bar.addEventListener("click", e => { const b = e.target.closest("[data-pk]"); if (!b) return; const k = b.dataset.pk;
+      if (k === "x") return tlPickEnd(); const n = pickState.tl.size + pickState.grp.size; if (!n) return toast("まずタブを押して選んでね");
+      if (k === "grp") return pickGroup(); if (k === "share") { const ids = pickedTls().map(t => t.id); if (!ids.length) return toast("選んだグループの中にタイムラインがないよ"); return shareTls(ids); }
+      if (k === "del") { const { gs } = pickTops(), ids = pickedTls().map(t => t.id); if (!ids.length && gs.length) return askDelGroup(gs[0]); return askTrashTls(ids, gs); } }); }
+  const n = pickState.tl.size + pickState.grp.size, m = pickedTls().length;
+  bar.innerHTML = `<span class="pk-n"><b>${n}</b>個えらんだよ${pickState.grp.size ? `<small>（タイムライン ${m}個）</small>` : ""}</span><button type="button" data-pk="grp"><svg class="i"><use href="#i-folder"/></svg>グループ化</button><button type="button" data-pk="share"><svg class="i"><use href="#i-share"/></svg>共有</button><button type="button" data-pk="del" class="danger"><svg class="i"><use href="#i-trash"/></svg>削除</button><button type="button" data-pk="x" class="pk-x" aria-label="選ぶのをやめる">やめる</button>`;
+}
+/* 選ぶモードの間は、タブを押すと選ぶ・外す（切り替えない） */
+document.addEventListener("click", e => { if (!pickState) return; const el = e.target.closest?.("#tabs .tab[data-tl], #tabs .tab-grp, #navList .nav-item[data-tl], #navList .nav-group"); if (!el) return;
+  e.stopPropagation(); e.preventDefault(); const set = el.dataset.tl ? pickState.tl : pickState.grp, k = el.dataset.tl || el.dataset.grp; set.has(k) ? set.delete(k) : set.add(k); haptic("tick"); renderTabs(); paintPickBar(); }, true);
+document.addEventListener("keydown", e => { if (e.key === "Escape" && pickState && !$("#rtPop") && $("#hubSheet").hidden) tlPickEnd(); });
+function pickGroup() {
+  const { gs, ts } = pickTops(), parents = [...gs.map(gParent), ...ts.map(id => grpOf(tlById(id)))], same = parents.every(p => p === parents[0]) ? parents[0] : "";
+  const def = newGroupName();
+  hub.open("グループにまとめる", `<div class="fd-box"><label class="fd-name">グループの名前<input type="text" id="pgName" class="sel" maxlength="12" value="${esc(def)}" autocomplete="off"></label>
+    <p class="note" style="margin:0">${[...gs.map(g => "📁" + esc(g)), ...ts.map(id => esc(tlById(id).name))].join("・")} をまとめるよ${same ? `（「${esc(same)}」の中に作るよ）` : ""}</p><div style="display:flex;gap:8px"><button type="button" class="btn-accent" id="pgOk">まとめる</button></div></div>`, b => {
+    const go = () => { const v = b.querySelector("#pgName").value.trim().slice(0, 12); if (!v) return toast("名前を入れてね"); if (gInfo(v)) return toast("その名前のグループはもうあるよ");
+      S.groups.push({ name: v, parent: same }); gs.forEach(g => { gInfo(g).parent = v; }); ts.forEach(id => { tlById(id).group = v; }); S.opts.collapsed[v] = false;
+      hub.close(); tlPickEnd(); save(); renderAll(); toast(`グループ「${v}」にまとめたよ`); };
+    b.querySelector("#pgOk").addEventListener("click", go); const i = b.querySelector("#pgName"); i.addEventListener("keydown", e => { e.stopPropagation(); if (e.key === "Enter") { e.preventDefault(); go(); } }); setTimeout(() => { i.focus(); i.select(); }, 80); });
+}
+/* --- 削除: タイムラインをゴミ箱へ（30日のあいだは元に戻せる） --- */
+function askTrashTls(ids, groups = []) {
+  const tls = ids.map(tlById).filter(Boolean), normalLeft = orderedTLsAll().filter(t => !t.secret && !ids.includes(t.id)).length;
+  if (tls.length && normalLeft < 1 && tls.some(t => !t.secret)) return toast("ふつうのタイムラインを1つは残してね");
+  const n = tls.reduce((a, t) => a + S.posts.filter(p => p.tl === t.id).length, 0);
+  hub.open("ゴミ箱に入れる？", `<div class="fd-box"><p style="margin:0">${tls.map(t => `「${esc(t.name)}」`).join("")}${groups.length ? `と、グループ ${groups.map(g => "📁" + esc(g)).join("")}` : ""}を、ツイート ${n} 件ごとゴミ箱に入れるよ。</p><p class="note" style="margin:0">30日のあいだは、ゴミ箱から元に戻せるよ</p>
+    <div style="display:flex;gap:8px"><button type="button" class="btn-accent danger-bg" id="dtOk">ゴミ箱に入れる</button><button type="button" class="btn-ghost sm" id="dtNo">やめる</button></div></div>`, b => {
+    b.querySelector("#dtNo").addEventListener("click", () => hub.close());
+    b.querySelector("#dtOk").addEventListener("click", () => { hub.close(); if (pickState) tlPickEnd(); trashTls(ids, groups); }); });
+}
+function trashTls(ids, groups = []) {
+  const at = Date.now(), gone = []; S.trashTl ||= [];
+  ids.forEach(id => { const t = tlById(id); if (!t) return; const posts = S.posts.filter(p => p.tl === id); S.posts = S.posts.filter(p => p.tl !== id); S.timelines = S.timelines.filter(x => x !== t); secretOpen.delete(id); S.trashTl.push({ t, posts, at }); gone.push(t); });
+  groups.forEach(g => { if (!S.timelines.some(t => inGroup(t, g))) dropGroupTree(g); });
+  if (!tlById(S.active) || isHiddenTl(tlById(S.active))) { delete S.mixGrp; ensureVisibleActive(); }
+  save(); renderAll(); haptic("trash");
+  toast(gone.length > 1 ? `${gone.length}個のタイムラインをゴミ箱に入れたよ` : `「${gone[0]?.name || ""}」をゴミ箱に入れたよ`, () => restoreTls(gone.map(t => t.id)));
+}
+const dropGroupTree = g => { const all = [g, ...(S.groups || []).filter(x => gAncestors(x.name).includes(g)).map(x => x.name)]; S.groups = S.groups.filter(x => !all.includes(x.name)); all.forEach(n => delete S.opts.collapsed[n]); if (all.includes(S.mixGrp)) delete S.mixGrp; };
+function restoreTls(ids) {
+  const back = (S.trashTl || []).filter(x => ids.includes(x.t.id)); S.trashTl = (S.trashTl || []).filter(x => !back.includes(x));
+  back.forEach(({ t, posts }) => { if (t.group && !gInfo(t.group)) (S.groups ||= []).push({ name: t.group, parent: "" }); S.timelines.push(t); S.posts.push(...posts); });
+  save(); renderAll(); if (!$("#trashSheet").hidden) renderTrash(); toast(back.length > 1 ? `${back.length}個のタイムラインを元に戻したよ` : `「${back[0]?.t.name || ""}」を元に戻したよ`);
+}
+function askDelGroup(g) {
+  const n = orderedTLsAll().filter(t => inGroup(t, g)).length;
+  hub.open(`グループ「${g}」を削除`, `<div class="fd-box"><p style="margin:0">中にタイムラインが ${n} 個あるよ。どうする？</p>
+    <div style="display:flex;flex-direction:column;gap:8px"><button type="button" class="btn-ghost" id="dgOnly">グループだけやめる（中身は外に出す）</button>${n ? `<button type="button" class="btn-accent danger-bg" id="dgAll">中のタイムラインごとゴミ箱へ</button>` : ""}<button type="button" class="btn-ghost sm" id="dgNo">やめる</button></div></div>`, b => {
+    b.querySelector("#dgNo").addEventListener("click", () => hub.close());
+    b.querySelector("#dgOnly").addEventListener("click", () => { hub.close(); if (pickState) tlPickEnd(); renameFolder(g, ""); toast(`グループ「${g}」をやめて、中身を外に出したよ`); });
+    b.querySelector("#dgAll")?.addEventListener("click", () => { hub.close(); askTrashTls(orderedTLsAll().filter(t => inGroup(t, g)).map(t => t.id), [g]); }); });
+}
+/* --- 共有: 選んだタイムラインを1つのURLにまとめる（文字とURLのツイートだけ。手元の写真・動画は入らない） --- */
+const shareBase = () => HOSTED && /^https?:/.test(location.protocol) ? location.origin + location.pathname : PWA_URL;
+async function shareTls(ids) {
+  const tls = ids.map(tlById).filter(t => t && !t.secret); if (!tls.length) return toast("シークレットのタイムラインは共有できないよ");
+  const skipSecret = ids.length - tls.length, gs = new Map(); tls.forEach(t => gAncestors(grpOf(t)).forEach(n => gs.set(n, gParent(n))));
+  const own = t => S.posts.filter(p => p.tl === t.id && !isFilePost(p) && !(p.media && /^sample/.test(p.media.kind))).sort((a, b) => keyOf(b) - keyOf(a));
+  const lists = tls.map(own), total = lists.reduce((a, l) => a + l.length, 0); if (!total) return toast("共有できるツイート（文字やURL）がないよ");
+  const enc = async k => shareBase() + "#imp=" + b64u(await zip(JSON.stringify({ v: 2, t: tls.map((t, i) => ({ n: t.name, c: t.color, i: t.icon || "", g: grpOf(t), p: lists[i].slice(0, Math.ceil(lists[i].length * k)).map(p => [p.text || "", p.embed ? p.embed.url : "", Math.round(p.at / 1000)]) })), g: [...gs] })));
+  let k = 1, url = await enc(k); while (url.length > 60000 && k > .02) { k *= Math.min(.9, 60000 / url.length); url = await enc(k); }
+  const sent = tls.reduce((a, t, i) => a + Math.ceil(lists[i].length * k), 0);
+  if (pickState) tlPickEnd();
+  hub.open("共有する", `<div class="fd-box"><p style="margin:0">${tls.map(t => `「${esc(t.name)}」`).join("")}の <b>${sent}件</b>${sent < total ? `（全部で${total}件のうち新しい順）` : ""}を、<b>1つのURL</b>にまとめたよ。</p>
+    <p class="note" style="margin:0">受け取った人がURLを開くと、「追加する？」の画面が出るよ。入るのは文字とURLだけで、手元から入れた写真・動画は入らないの${skipSecret ? `。シークレットのタイムライン（${skipSecret}個）は入れてないよ` : ""}</p>
+    <div style="display:flex;gap:8px;flex-wrap:wrap">${navigator.share ? `<button type="button" class="btn-accent" id="shGo">共有する（LINE・メールなど）</button>` : ""}<button type="button" class="${navigator.share ? "btn-ghost sm" : "btn-accent"}" id="shCopy">URLをコピー</button>${url.length <= 2200 ? `<button type="button" class="btn-ghost sm" id="shQR">QRコード</button>` : ""}</div>
+    <p class="note" style="margin:0">URLの長さ: ${url.length.toLocaleString()}文字</p></div>`, b => {
+    b.querySelector("#shGo")?.addEventListener("click", () => navigator.share({ title: "タイムラインを共有", url }).catch(() => {}));
+    b.querySelector("#shCopy").addEventListener("click", () => copyText(url));
+    b.querySelector("#shQR")?.addEventListener("click", async () => { hub.close(); $("#qrSheet").hidden = false; document.body.classList.add("sheet-open"); $("#qrBox").innerHTML = ""; qrUrl = url;
+      try { const QR = await loadQR(); new QR($("#qrBox"), { text: url, width: 260, height: 260, colorDark: "#000000", colorLight: "#ffffff", correctLevel: QR.CorrectLevel.L }); $("#qrInfo").innerHTML = `${tls.map(t => `「${esc(t.name)}」`).join("")}の <b>${sent}件</b>`; } catch { $("#qrBox").innerHTML = `<p class="lk-hint">QRを作る道具を読み込めなかったよ</p>`; } }); });
+}
+/* --- 受け取り: 共有のURLを開いたとき。どれを追加するか選べて、同じ名前があれば合流もできる --- */
+function openReceive(d) {
+  const names = new Set(S.timelines.filter(t => !t.secret).map(t => t.name));
+  hub.open("タイムラインが届いたよ", `<div class="fd-box rcv"><p class="note" style="margin:0">追加するものを選んでね。いまのデータは消えないよ</p>
+    <div class="rcv-list">${d.t.map((t, i) => `<label class="rcv-row"><input type="checkbox" data-ri="${i}" checked><i class="rcv-dot" style="background:${esc(t.c || "#1d9bf0")}"></i><b>${esc(t.n || "もらったタイムライン")}</b><small>${t.g ? "📁" + esc(t.g) + " · " : ""}${(t.p || []).length}件${names.has(t.n) ? " · 同じ名前あり" : ""}</small></label>`).join("")}</div>
+    ${d.t.some(t => names.has(t.n)) ? `<label class="toggle" style="margin:0">同じ名前のタイムラインがあったら合流する（同じURLは入れない） <span class="switch"><input type="checkbox" id="rcvMerge" checked><span></span></span></label>` : ""}
+    ${d.g.length ? `<label class="toggle" style="margin:0">グループの形もそのまま作る <span class="switch"><input type="checkbox" id="rcvGrp" checked><span></span></span></label>` : ""}
+    <div style="display:flex;gap:8px"><button type="button" class="btn-accent" id="rcvOk">追加する</button><button type="button" class="btn-ghost sm" id="rcvNo">やめる</button></div></div>`, b => {
+    b.querySelector("#rcvNo").addEventListener("click", () => hub.close());
+    b.querySelector("#rcvOk").addEventListener("click", async () => { const pick = [...b.querySelectorAll("[data-ri]")].filter(x => x.checked).map(x => +x.dataset.ri); if (!pick.length) return toast("1つは選んでね");
+      const merge = !!b.querySelector("#rcvMerge")?.checked, useG = !!b.querySelector("#rcvGrp")?.checked; await snaps.take("import"); hub.close(); applyReceive(d, pick, merge, useG); }); });
+}
+function applyReceive(d, pick, merge, useG) {
+  migGroups(); const gmap = new Map(), gname = n => { if (!n || !useG) return ""; if (gmap.has(n)) return gmap.get(n); const par = gname((d.g.find(x => x[0] === n) || [])[1] || "");
+    let v = n; if (gInfo(v) && !(merge && gParent(v) === par)) { let k = 2; while (gInfo(`${n}${k}`)) k++; v = `${n}${k}`; } if (!gInfo(v)) S.groups.push({ name: v, parent: par }); gmap.set(n, v); return v; };
+  let added = 0, skipped = 0, made = 0, first = null;
+  pick.forEach(i => { const src = d.t[i], posts = (src.p || []).map(([text, url, at]) => { const o = { id: uid(), at: (at || 0) * 1000 || Date.now(), likes: 0, liked: false, text: text || "" }; if (url) { const r = parseUrl(url); if (r) o.embed = r; else o.text = (o.text ? o.text + " " : "") + url; } return o; });
+    let t = merge && S.timelines.find(x => !x.secret && x.name === src.n);
+    if (!t) { t = { id: "tl-" + uid(), name: src.n || "もらったタイムライン", color: src.c || "#1d9bf0", icon: src.i || "" }; const g = gname(src.g); if (g) t.group = g; S.timelines.push(t); made++; }
+    const have = new Set(S.posts.filter(p => p.tl === t.id).map(p => p.embed ? p.embed.url : "t:" + p.text));
+    posts.forEach(p => { const k = p.embed ? p.embed.url : "t:" + p.text; if (merge && have.has(k)) { skipped++; return; } have.add(k); p.tl = t.id; S.posts.push(p); added++; }); first ||= t; });
+  if (first) { S.active = first.id; delete S.mixGrp; } save(); applySkin(); renderAll(); scrollTo({ top: 0 });
+  toast(`${made ? `タイムラインを${made}個作って、` : ""}ツイートを${added}件追加したよ${skipped ? `（同じURLの${skipped}件は入れなかったよ）` : ""}。前の状態は「自動の控え」に残してあるよ`);
+}
 /* v1.3 複数の画像: Xと同じ横スクロールの列（高さをそろえて、次の画像が右に少し見える）。タップで拡大 */
 function carousel(L) {
   const w = document.createElement("div"); w.className = "media gallery carousel"; w.setAttribute("role", "group"); w.setAttribute("aria-label", `画像${L.length}枚（横にスクロール）`);
@@ -3198,12 +3378,12 @@ function renderFeedKeepScroll() { const y = scrollY; renderFeed(); scrollTo(0, y
 /* タイムライン管理 */
 const ul = $("#tlList");
 ul.addEventListener("input", e => {
-  if (e.target.dataset.act === "group") { const t = tlById(e.target.closest(".tl-sub").dataset.sub); t.group = e.target.value.trim(); if (!t.group) delete t.group; renderTabs(); save(); return; }
+  if (e.target.dataset.act === "group") return; // 打ち終わって（決めて）から反映する。1文字ずつグループができないように
   const row = e.target.closest(".tl-row"); if (!row) return; const t = tlById(row.dataset.tl);
   if (e.target.dataset.act === "rename") { t.name = e.target.value || "名前なし"; renderTabs(); save(); }
   if (e.target.dataset.act === "color") { t.color = e.target.value; renderTabs(); save(); }
 });
-ul.addEventListener("change", e => { if (e.target.dataset.act === "group") { renderManage(); return; } if (e.target.dataset.act) renderFeedKeepScroll(); });
+ul.addEventListener("change", e => { if (e.target.dataset.act === "group") { const t = tlById(e.target.closest(".tl-sub").dataset.sub), v = e.target.value.trim().slice(0, 12); if (v) t.group = v; else delete t.group; save(); renderAll(); return; } if (e.target.dataset.act) renderFeedKeepScroll(); });
 ul.addEventListener("click", e => {
   const b = e.target.closest("button[data-act]"); if (!b) return;
   const id = b.dataset.tl || b.closest(".tl-row")?.dataset.tl || b.closest(".tl-sub")?.dataset.sub; const i = S.timelines.findIndex(t => t.id === id);
@@ -3330,11 +3510,11 @@ $("#optPreview").addEventListener("change", e => {
 const onCustom = () => { const m = Math.max(0, +$("#optPrevMin").value || 0), sec = Math.max(0, Math.min(59, +$("#optPrevSec").value || 0)); const total = m * 60 + sec; if (total < 5) { toast("5秒以上にしてね"); return; } setPreview(total, true); };
 $("#optPrevMin").addEventListener("change", onCustom); $("#optPrevSec").addEventListener("change", onCustom);
 $("#resetBtn").addEventListener("click", () => { $("#resetConfirm").hidden = false; });
-/* データの書き出し・読み込み（サーバーなしで端末間を手で移す） */
+/* データの共有・読み込み（サーバーなしで端末間を手で移す） */
 function paintLastSave() { const el = $("#lastSave"); if (!el) return; el.textContent = S.lastExportAt ? `最後にファイルに保存したのは ${whenTxt(S.lastExportAt)}` : "まだ一度もファイルに保存してないよ"; el.classList.toggle("warn", backupDue()); }
 async function bootSafety() {
   if (bootNewer) toast("このデータは新しい版のアプリで保存されたものだよ。壊さないように、この画面では保存しないでおくね。ページを再読み込みして更新してね");
-  if (bootBroken) { await snaps.take("broken", bootBroken); const a = (await snaps.list()).filter(x => x.why !== "broken"); toast(a.length ? "保存データが読めなかったよ。設定 → データ →「自動の控え」から戻せるよ" : "保存データが読めなかったよ。中身は別の場所に残してあるから、書き出したファイルがあれば読み込んでね"); }
+  if (bootBroken) { await snaps.take("broken", bootBroken); const a = (await snaps.list()).filter(x => x.why !== "broken"); toast(a.length ? "保存データが読めなかったよ。設定 → データ →「自動の控え」から戻せるよ" : "保存データが読めなかったよ。中身は別の場所に残してあるから、共有したファイルがあれば読み込んでね"); }
   if (bootMigrated) await snaps.take("migrate", rawBoot);
   try { const m = sessionStorage.getItem("mytl-beta-toast"), pg = sessionStorage.getItem("mytl-beta-setpage"); sessionStorage.removeItem("mytl-beta-toast"); sessionStorage.removeItem("mytl-beta-setpage"); if (m) setTimeout(() => toast(m), 300); if (pg) setTimeout(() => { openSetPage(pg); if (innerWidth <= 960) openSide(); }, 200); } catch {}
   try { const rs = sessionStorage.getItem("mytl-beta-restored"); if (rs) { sessionStorage.removeItem("mytl-beta-restored"); toast(`${whenTxt(+rs)} の状態に戻したよ（戻す前の状態も控えに残してあるよ）`); }
@@ -3366,7 +3546,7 @@ document.addEventListener("click", async e => { const b = e.target.closest("[dat
   catch (err) { console.warn("restore", err); toast("戻せなかったよ。いまのデータはそのままだよ"); } });
 /* ブラウザに「このデータは消さないで」とお願いする（persist）。Chrome・Safari・Firefox が対応 */
 async function askPersist(user) { const el = $("#persistState"); try {
-  if (!navigator.storage || !navigator.storage.persist) { if (el) el.textContent = "このブラウザは「消さないで」のお願いに対応してないよ。書き出しでバックアップしてね"; return; }
+  if (!navigator.storage || !navigator.storage.persist) { if (el) el.textContent = "このブラウザは「消さないで」のお願いに対応してないよ。共有でバックアップしてね"; return; }
   let ok = await navigator.storage.persisted(); if (!ok && (user || S.posts.length)) ok = await navigator.storage.persist();
   S.persisted = ok; if (el) { el.textContent = ok ? "✓ ブラウザに「このデータは消さないで」とお願い済みだよ" : "ブラウザが「消さないで」のお願いをまだ受けてくれてないよ。ホーム画面に追加したり、よく開いたりすると受けてくれやすいの"; el.classList.toggle("ok", ok); }
   if (navigator.storage.estimate && el) { const q = await navigator.storage.estimate(); if (q.quota) el.textContent += `（使っている量: ${Math.max(1, Math.round(q.usage / 1048576))}MB）`; }
@@ -3381,11 +3561,20 @@ function maybeHomeHint() { const ios = /iP(hone|ad|od)/.test(navigator.userAgent
   const standalone = navigator.standalone || matchMedia("(display-mode: standalone)").matches;
   if (!ios || standalone || window.top !== window || Date.now() - (S.homeHintAt || 0) < 14 * 864e5 || !$("#homeHint")) return;
   $("#homeHint").hidden = false; }
-/* K6 自動バックアップのお知らせ: 書き出してから7日たったら声をかける */
+/* K6 自動バックアップのお知らせ: 共有してから7日たったら声をかける */
 const WEEK = 7 * 864e5;
 /* 版番号と「新しくなったこと」 */
-const APP_VERSION = "1.2.0";
+const APP_VERSION = "1.3.0";
 const NEWS = [
+  ["1.3.0", "2026-11-28", "グループ・まとめて共有・リツイート", [
+    "タブを長押しするとメニューが出るよ。「選んで選択」でいくつも選んで、グループ化・共有・削除をまとめてできるの",
+    "フォルダは「グループ」になったよ。グループの中にグループも入れられて、長押しで持ち上げて重ねる・外へ引っぱるで出し入れできるよ",
+    "「書き出し」は「共有」に。選んだタイムラインを1つのURLにまとめて送れて、開いた人は「追加する？」の画面で選んで入れられるよ",
+    "消したタイムラインは30日のあいだゴミ箱から元に戻せるように",
+    "「再投稿」は「リツイート」に。引用リツイートも選べるよ。リツイート数・いいね数は出さないようにしたの",
+    "タイムラインの動画はくり返し再生・ミュートボタンだけ・残り時間つき。タップで大きく見られるよ。PCはミュートの上で音量も変えられるよ",
+    "画像が2枚以上のときは横にめくれる並びに。しおりは「印」になって、印を長押しで全部消せるよ",
+  ]],
   ["1.2.0", "2026-11-28", "シークレット・フォルダ・画像20枚", [
     "シークレットの合言葉を、タイムラインごとに決められるように。4桁の番号か好きな文字（なしも選べるよ）。前の版の番号は、そのまま使えるよ",
     "シークレットにしたタイムラインは、ふつうのホームには出なくなったよ。合言葉を入れると、暗い色の「シークレットのホーム」に切り替わるの",
@@ -3404,7 +3593,7 @@ const NEWS = [
     "本文とコメントのURLを押せるように。YouTube・Xなどは「このアプリにツイートする」も選べるよ",
     "スマホで本文を長押しすると文字を選べるように。⋯ に「文をコピー」も追加",
     "全画面の画像に「自動送り」のオン・オフボタン",
-    "タイムラインを書き出すとき、相手に届く名前を決められるように",
+    "タイムラインを共有するとき、相手に届く名前を決められるように",
     "設定の中に「ヘルプ」を追加。注意書きの「くわしく」から開けるよ",
   ]],
   ["1.0.0", "2026-11-27", "完成版", [
@@ -3430,11 +3619,11 @@ function maybeNagBackup() { S.firstUseAt ||= Date.now();
   const now = Date.now(); if (!backupDue() || now - (S.lastNagAt || 0) < 3 * 864e5) return;
   $("#backupNag").hidden = false; $("#nagMsg").innerHTML = S.lastExportAt ? `最後に保存してから <b style="display:inline">${Math.floor((now - S.lastExportAt) / 864e5)}</b> 日たったよ。ブラウザのデータが消えても、保存したファイルがあれば元に戻せるよ` : `まだ一度もファイルに保存してないよ。ブラウザのデータが消えても、保存したファイルがあれば元に戻せるよ`;
 }
-/* R12 書き出すデータ: 全部 か 1つのタイムラインだけ */
+/* R12 共有するデータ: 全部 か 1つのタイムラインだけ */
 function exportData() {
   const scope = $("#xferScope").value;
   if (scope) { const t = tlById(scope); return { app: "mytl", version: 1, schema: SCHEMA, kind: "timeline", exportedAt: new Date().toISOString(), timelines: [{ ...t, name: outName(t) }], posts: S.posts.filter(p => p.tl === t.id && !isFilePost(p)) }; }
-  return { app: "mytl", version: 1, schema: SCHEMA, exportedAt: new Date().toISOString(), timelines: S.timelines, posts: S.posts.filter(p => !isFilePost(p)), opts: S.opts, me: S.me, presets: S.presets, rules: S.rules };
+  return { app: "mytl", version: 1, schema: SCHEMA, exportedAt: new Date().toISOString(), timelines: S.timelines, groups: S.groups || [], posts: S.posts.filter(p => !isFilePost(p)), opts: S.opts, me: S.me, presets: S.presets, rules: S.rules };
 }
 const outName = t => { const v = ($("#xferName") && !$("#xferNameRow").hidden && $("#xferName").value.trim()) || ""; return v || t.name; };
 function paintXferName() { const id = $("#xferScope").value, t = id && tlById(id); $("#xferNameRow").hidden = !t; if (t && $("#xferName").dataset.for !== id) { $("#xferName").value = t.name; $("#xferName").dataset.for = id; } }
@@ -3460,8 +3649,8 @@ $("#fileLoad").addEventListener("change", async e => {
   startImport(d);
 });
 function startImport(d) {
-  if (!d || d.app !== "mytl" || !isData(d)) { toast("このアプリで書き出したデータじゃないみたい"); return false; }
-  if ((+d.schema || 1) > SCHEMA) { toast("新しい版のアプリで書き出したデータだよ。アプリを更新してから読み込んでね"); return false; }
+  if (!d || d.app !== "mytl" || !isData(d)) { toast("このアプリで共有したデータじゃないみたい"); return false; }
+  if ((+d.schema || 1) > SCHEMA) { toast("新しい版のアプリで共有したデータだよ。アプリを更新してから読み込んでね"); return false; }
   try { d = migrate(JSON.parse(JSON.stringify(d))).d; } catch { toast("このデータは中身がこわれているみたい。いまのデータはそのままだよ"); return false; }
   xferPending = d; $("#xferBox").hidden = false; $("#xferCopy").hidden = true; $("#xferLoad").hidden = true; $("#xferConfirm").hidden = false;
   $("#xferConfirmText").textContent = d.kind === "timeline" ? `「${d.timelines[0].name}」（ツイート ${d.posts.length} 件）を新しいタイムラインとして追加する？` : "いまのデータは消えて、読み込んだ内容に置き換わるよ。いい？";
@@ -3474,7 +3663,7 @@ function openXfer(mode) { $("#xferConfirmText").textContent = "いまのデー�
   const ta = $("#xferText");
   if (mode === "export") {
     ta.value = JSON.stringify(exportData()); ta.readOnly = true; ta.focus(); ta.select();
-  } else { ta.value = ""; ta.readOnly = false; ta.placeholder = "書き出した文字をここに貼り付け"; ta.focus(); }
+  } else { ta.value = ""; ta.readOnly = false; ta.placeholder = "共有した文字をここに貼り付け"; ta.focus(); }
 }
 $("#exportBtn").addEventListener("click", () => openXfer("export"));
 $("#importBtn").addEventListener("click", () => openXfer("import"));
@@ -3487,7 +3676,7 @@ $("#xferCopy").addEventListener("click", () => {
 let xferPending = null;
 $("#xferLoad").addEventListener("click", () => {
   const tv = $("#xferText").value.trim(); if (tv.includes("#imp=")) { readQRLink(tv.slice(tv.indexOf("#imp="))); return; }
-  let d; try { d = JSON.parse(tv); } catch { toast("読み込めないよ。書き出した文字を全部貼ってね"); return; }
+  let d; try { d = JSON.parse(tv); } catch { toast("読み込めないよ。共有した文字を全部貼ってね"); return; }
   startImport(d);
 });
 $("#xferNo").addEventListener("click", () => { $("#xferConfirm").hidden = true; xferPending = null; });
@@ -3500,7 +3689,7 @@ $("#xferYes").addEventListener("click", async () => {
     xferPending = null; $("#xferBox").hidden = true; $("#xferConfirm").hidden = true; S.active = t.id; applySkin(); renderAll(); toast(`「${t.name}」を追加したよ（ツイート ${d.posts.length} 件）`); return;
   }
   const keepFiles = S.posts.filter(isFilePost);
-  S = { timelines: d.timelines, posts: d.posts.concat(keepFiles.filter(p => d.timelines.some(t => t.id === p.tl))), active: d.timelines[0].id, opts: { ...S.opts, ...(d.opts || {}) }, me: d.me || S.me, presets: d.presets || S.presets || [], trash: S.trash || [], lock: S.lock, rules: d.rules || S.rules || [], secretPin: d.secretPin || S.secretPin, guideSeen: true };
+  S = { timelines: d.timelines, posts: d.posts.concat(keepFiles.filter(p => d.timelines.some(t => t.id === p.tl))), active: d.timelines[0].id, opts: { ...S.opts, ...(d.opts || {}) }, me: d.me || S.me, presets: d.presets || S.presets || [], trash: S.trash || [], trashTl: S.trashTl || [], groups: d.groups || [], lock: S.lock, rules: d.rules || S.rules || [], secretPin: d.secretPin || S.secretPin, guideSeen: true };
   S.schema = SCHEMA; xferPending = null; $("#xferBox").hidden = true; applyOpts(); renderAll(); save(); paintSnaps(); toast(`読み込みました（ツイート ${d.posts.length} 件）。前の状態は「自動の控え」に残してあるよ`);
   } catch (err) { S = JSON.parse(before); xferPending = null; $("#xferConfirm").hidden = true; try { applyOpts(); renderAll(); } catch {} save(); toast("読み込みの途中で失敗したから、元のデータに戻したよ"); }
 });
@@ -3841,7 +4030,8 @@ function restoreFromTrash(ids) {
 }
 const TRASH_MAX = 300, LS_SOFT = 3.5e6; // ゴミ箱は300件まで / 本体の置き場（約5MB）が7割を超えたら古い順に消す
 function purgeTrash() {
-  const lim = Date.now() - TRASH_DAYS * 864e5; S.trash.sort((a, b) => a.at - b.at);
+  const lim = Date.now() - TRASH_DAYS * 864e5;
+  if (S.trashTl && S.trashTl.length) { const old = S.trashTl.filter(x => x.at < lim); if (old.length) { old.forEach(x => forgetFiles(x.posts)); S.trashTl = S.trashTl.filter(x => !old.includes(x)); save(); } } S.trash.sort((a, b) => a.at - b.at);
   const drop = S.trash.filter((x, i) => x.at < lim || i < S.trash.length - TRASH_MAX);
   if (drop.length) { forgetFiles(drop.map(x => x.p)); S.trash = S.trash.filter(x => !drop.includes(x)); save(); }
   let size = 0; try { size = (localStorage.getItem(KEY) || "").length * 2; } catch {}
@@ -3860,11 +4050,13 @@ function renderTrash() {
   $("#trBar").hidden = !list.length; $("#trAll").checked = !!all; $("#trAll").indeterminate = trPicked.size > 0 && !all;
   $("#trN").textContent = trPicked.size ? `${trPicked.size}件を選択中` : "全部選ぶ";
   $("#trRestoreSel").disabled = $("#trKillSel").disabled = !trPicked.size; $("#trKillSel").classList.remove("sure"); $("#trKillSel").textContent = "完全に消す";
-  $("#trList").innerHTML = list.length ? list.map(({ p, at }) => { const t = tlById(p.tl); const left = Math.max(0, TRASH_DAYS - Math.floor((Date.now() - at) / 864e5));
+  const tlTrash = (S.trashTl || []).slice().sort((a, b) => b.at - a.at), tlHTML = tlTrash.map(({ t, posts, at }) => { const left = Math.max(0, TRASH_DAYS - Math.floor((Date.now() - at) / 864e5));
+    return `<li class="tr-item tr-tl">${tlAvatar(t, "mini-av")}<div class="tr-body"><div class="tr-meta"><b>タイムライン「${esc(t.name)}」</b></div><div class="tr-text">ツイート ${posts.length} 件ごと · あと${left}日で消えるよ</div></div><div class="tr-acts"><button type="button" class="btn-ghost sm" data-tlrestore="${t.id}">元に戻す</button><button type="button" class="tr-del" data-tlkill="${t.id}">完全に消す</button></div></li>`; }).join("");
+  $("#trList").innerHTML = tlHTML + (list.length ? list.map(({ p, at }) => { const t = tlById(p.tl); const left = Math.max(0, TRASH_DAYS - Math.floor((Date.now() - at) / 864e5));
     const th = thumbOf(p);
     return `<li class="tr-item ${trPicked.has(p.id) ? "picked" : ""}"><label class="tr-check"><input type="checkbox" data-tpick="${p.id}" ${trPicked.has(p.id) ? "checked" : ""} aria-label="選ぶ"></label>${t ? tlAvatar(t, "mini-av") : ""}${th && th.src ? `<img class="tr-th" src="${esc(th.src)}" alt="" loading="lazy">` : ""}<div class="tr-body"><div class="tr-meta">${esc(t ? t.name : "消したタイムライン")} · ${ago(at)}に削除 · あと${left}日</div><div class="tr-text">${esc(p.text || (p.embed ? p.embed.url : p.media ? (p.media.title || "画像・動画") : ""))}</div></div>
       <div class="tr-acts"><button type="button" class="btn-ghost sm" data-restore="${p.id}">元に戻す</button><button type="button" class="tr-del" data-kill="${p.id}">完全に消す</button></div></li>`; }).join("")
-    : `<li class="cm-empty">ゴミ箱は空だよ</li>`;
+    : tlHTML ? "" : `<li class="cm-empty">ゴミ箱は空だよ</li>`);
   const files = S.trash.filter(x => isFilePost(x.p)).length;
   $("#trSize").textContent = `${S.trash.length}件（最大${TRASH_MAX}件）` + (files ? ` · 写真・動画 ${files}件` : "");
   if (files) trashFileSize().then(b => { if (b) $("#trSize").textContent += `（約${b >= 1e9 ? (b / 1e9).toFixed(1) + "GB" : Math.max(1, Math.round(b / 1e6)) + "MB"}）`; });
@@ -3881,6 +4073,9 @@ $("#trKillSel").addEventListener("click", e => {
   const n = trPicked.size, gone = S.trash.filter(x => trPicked.has(x.p.id)); forgetFiles(gone.map(x => x.p)); S.trash = S.trash.filter(x => !trPicked.has(x.p.id)); trPicked.clear(); save(); renderTrash(); toast(`${n}件を完全に消したよ`);
 });
 $("#trList").addEventListener("click", e => {
+  const tr = e.target.closest("[data-tlrestore]"); if (tr) { restoreTls([tr.dataset.tlrestore]); return; }
+  const tk = e.target.closest("[data-tlkill]"); if (tk) { if (!tk.classList.contains("sure")) { tk.classList.add("sure"); tk.textContent = "本当に消す？"; return; }
+    const x = (S.trashTl || []).find(y => y.t.id === tk.dataset.tlkill); if (x) { forgetFiles(x.posts); S.trashTl = S.trashTl.filter(y => y !== x); save(); renderTrash(); toast(`「${x.t.name}」を完全に消したよ`); } return; }
   const r = e.target.closest("[data-restore]"); if (r) { restoreFromTrash([r.dataset.restore]); return; }
   const k = e.target.closest("[data-kill]"); if (!k) return;
   if (!k.classList.contains("sure")) { k.classList.add("sure"); k.textContent = "本当に消す？"; return; }
@@ -3988,7 +4183,7 @@ function openPin(mode) {
   $("#lockTitle").textContent = { unlock: "番号を入れてね", set: "新しい4桁の番号", "verify-change": "いまの番号を入れてね", "verify-off": "いまの番号を入れてね", "secret-set": "シークレット用の4桁の番号", "secret-open": "シークレットの番号", "secret-change": "いまのシークレットの番号", "secret-off": "いまのシークレットの番号" }[mode];
   $("#lockScreen").classList.toggle("secret", pinTarget === "secret");
   $("#lockCancel").hidden = mode === "unlock"; $("#lockForgot").hidden = !(mode === "unlock" || mode === "secret-open");
-  $("#lockForgotBox").firstChild.textContent = pinTarget === "secret" ? "シークレットの番号を忘れたら、シークレットのタイムラインを中身ごと消して番号を外すしかないよ。" : "番号を忘れたら、この端末のデータを全部消して最初からにするしかないよ。書き出した文字があれば、あとで読み込めるよ。";
+  $("#lockForgotBox").firstChild.textContent = pinTarget === "secret" ? "シークレットの番号を忘れたら、シークレットのタイムラインを中身ごと消して番号を外すしかないよ。" : "番号を忘れたら、この端末のデータを全部消して最初からにするしかないよ。共有した文字があれば、あとで読み込めるよ。";
   $("#lockReset").textContent = pinTarget === "secret" ? "シークレットを全部消す" : "全部消して最初から"; $("#lockReset").classList.remove("sure"); $("#lockForgotBox").hidden = true; $("#lockMsg").textContent = ""; paintDots();
 }
 function closePin() { $("#lockScreen").hidden = true; document.body.classList.remove("locked"); }
@@ -4269,37 +4464,43 @@ document.addEventListener("click", e => {
 
 /* フォルダ: まぜて見る・名前を決める・まとめる／出す */
 function openMix(g) {
-  const kids = orderedTLs().filter(t => grpOf(t) === g); if (!kids.length) return;
+  const kids = orderedTLs().filter(t => inGroup(t, g)); if (!kids.length) return;
   if (query) { query = ""; $("#searchBox").value = ""; $("#searchX").hidden = true; }
   rememberPos(); if (!kids.some(t => t.id === S.active)) S.active = kids[0].id; S.mixGrp = g; labelFilter = "";
   applySkin(); renderTabs(); renderFeed(); save(); scrollTo({ top: 0 }); tlMotion(0); updateFocus();
   $("#tabs .tab-grp.on")?.scrollIntoView({ inline: "center", block: "nearest" });
 }
 function renameFolder(a, b) {
-  S.timelines.forEach(t => { if (grpOf(t) === a) { if (b) t.group = b; else delete t.group; } });
+  migGroups(); const gi = gInfo(a), up = gi ? gi.parent || "" : "";
+  /* b があれば名前を変える。b が空なら、グループをやめて中身を1つ外側へ出す */
+  S.timelines.forEach(t => { if (grpOf(t) === a) { if (b) t.group = b; else if (up) t.group = up; else delete t.group; } });
+  S.groups.forEach(g => { if (g.parent === a) g.parent = b || up; });
+  if (b) { if (gi) gi.name = b; else S.groups.push({ name: b, parent: "" }); } else S.groups = S.groups.filter(g => g !== gi);
   if (b) { S.opts.collapsed[b] = S.opts.collapsed[a]; if (S.mixSort?.["mix:" + a]) S.mixSort["mix:" + b] = S.mixSort["mix:" + a]; }
   delete S.opts.collapsed[a]; if (S.mixSort) delete S.mixSort["mix:" + a];
   if (S.mixGrp === a) { if (b) S.mixGrp = b; else delete S.mixGrp; } save(); renderAll();
 }
 function askFolder(g, isNew) {
-  hub.open(isNew ? "フォルダができたよ" : "フォルダ", `<div class="fd-box">
-    <label class="fd-name">フォルダの名前<input type="text" id="fdName" class="sel" maxlength="12" value="${esc(g)}" autocomplete="off"></label>
-    <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn-accent" id="fdOk">決める</button>${isNew ? "" : `<button type="button" class="btn-ghost sm danger" id="fdUndo">フォルダをやめる</button>`}</div>
-    <ul class="fd-tips"><li><b>フォルダのタブを押す</b> → 中のタイムラインを全部まぜて見られるよ</li><li><b>もう一度押す</b> → 中のタブが開いて、1つずつ見られるよ</li><li><b>タブを長押しして、別のタブに重ねる</b> → まとまる</li><li><b>長押しして、タブの外（下）へ引っぱる</b> → フォルダから出すよ</li></ul></div>`,
-    b => { const go = () => { const v = $("#fdName").value.trim().slice(0, 12); if (!v) return toast("名前を入れてね"); if (v !== g && S.timelines.some(t => grpOf(t) === v)) return toast("その名前のフォルダはもうあるよ");
-        if (v !== g) renameFolder(g, v); hub.close(); toast(`フォルダ「${v}」にしたよ`); };
+  hub.open(isNew ? "グループができたよ" : "グループの名前", `<div class="fd-box">
+    <label class="fd-name">グループの名前<input type="text" id="fdName" class="sel" maxlength="12" value="${esc(g)}" autocomplete="off"></label>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn-accent" id="fdOk">決める</button>${isNew ? "" : `<button type="button" class="btn-ghost sm danger" id="fdUndo">グループをやめる（中身は外へ）</button>`}</div>
+    <ul class="fd-tips"><li><b>グループのタブを押す</b> → 中のタイムラインを全部まぜて見られるよ</li><li><b>もう一度押す</b> → 中のタブが開いて、1つずつ見られるよ</li><li><b>タブを長押しして、ほかのタブやグループに重ねる</b> → 入れられるよ（グループごとでもOK）</li><li><b>長押しして、タブの外（下）へ引っぱる</b> → 1つ外側へ出すよ</li></ul></div>`,
+    b => { const go = () => { const v = $("#fdName").value.trim().slice(0, 12); if (!v) return toast("名前を入れてね"); if (v !== g && gInfo(v)) return toast("その名前のグループはもうあるよ");
+        if (v !== g) renameFolder(g, v); hub.close(); toast(`グループ「${v}」にしたよ`); };
       b.querySelector("#fdOk").addEventListener("click", go); b.querySelector("#fdName").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); go(); } });
-      b.querySelector("#fdUndo")?.addEventListener("click", () => { renameFolder(g, ""); hub.close(); toast(`フォルダ「${g}」をやめて、タブをばらばらに戻したよ`); });
+      b.querySelector("#fdUndo")?.addEventListener("click", () => { renameFolder(g, ""); hub.close(); toast(`グループ「${g}」をやめて、中身を外に出したよ`); });
       if (isNew) setTimeout(() => { const i = $("#fdName"); i?.focus(); i?.select(); }, 80); });
 }
 function folderDrop(srcId, d) {
-  const a = tlById(srcId); if (!a) return;
-  if (d.out) { const g = grpOf(a); delete a.group; const left = S.timelines.filter(t => grpOf(t) === g).length; if (left <= 1) renameFolder(g, ""); save(); renderAll(); toast(left <= 1 ? `「${a.name}」を出したよ。1つだけになったから、フォルダ「${g}」はなくしたよ` : `「${a.name}」をフォルダ「${g}」から出したよ`); return; }
+  migGroups(); const isG = srcId.startsWith("g:"), gname = isG ? srcId.slice(2) : "", a = isG ? null : tlById(srcId); if (isG ? !gInfo(gname) : !a) return;
+  const label = isG ? `グループ「${gname}」` : `「${a.name}」`, cur = isG ? gParent(gname) : grpOf(a);
+  const setP = p => { if (isG) gInfo(gname).parent = p; else if (p) a.group = p; else delete a.group; };
+  if (d.out) { if (!cur) return; setP(gParent(cur)); save(); renderAll(); toast(`${label}を「${cur}」の外に出したよ`); return; }
   const g = d.grp || grpOf(tlById(d.tl));
-  if (g) { if (grpOf(a) === g) return; a.group = g; save(); renderAll(); toast(`「${a.name}」をフォルダ「${g}」に入れたよ`); return; }
-  const b = tlById(d.tl); if (!b) return; let n = 1, name; do { name = `フォルダ${n++}`; } while (S.timelines.some(t => grpOf(t) === name));
-  a.group = b.group = name; S.opts.collapsed[name] = true;
-  S.timelines.splice(S.timelines.indexOf(a), 1); S.timelines.splice(S.timelines.indexOf(b) + 1, 0, a);
+  if (g) { if (cur === g || (isG && g === gname)) return; if (isG && gAncestors(g).includes(gname)) { toast("グループを、自分の中には入れられないよ"); return; }
+    setP(g); save(); renderAll(); toast(`${label}を「${g}」に入れたよ`); return; }
+  const b = tlById(d.tl); if (!b) return; const name = newGroupName(); S.groups.push({ name, parent: "" }); b.group = name; setP(name); S.opts.collapsed[name] = true;
+  if (!isG) { S.timelines.splice(S.timelines.indexOf(a), 1); S.timelines.splice(S.timelines.indexOf(b) + 1, 0, a); }
   renderAll(); openMix(name); askFolder(name, true);
 }
 /* N6 タブを長押し: 持ち上がる。ほかのタブに重ねて離すとフォルダ、外へ引っぱると出す。動かさずに離すと、タイムラインのアイコンが丸く並ぶ（タップで移動） */
@@ -4315,27 +4516,39 @@ function folderDrop(srcId, d) {
     if (!reduceMotion()) [...ring.querySelectorAll(".rad-item")].forEach((el, i) => el.animate([{ transform: `translate(${cx - parseFloat(el.style.left)}px,${cy - parseFloat(el.style.top)}px) scale(.2)`, opacity: 0 }, { transform: "translate(0,0) scale(1)", opacity: 1 }], { duration: 260, delay: i * 18, easing: "cubic-bezier(.2,.9,.3,1.2)", fill: "backwards" })); };
   const closeRing = () => { ring.hidden = true; ring.classList.remove("tap"); ring.setAttribute("aria-hidden", "true"); };
   ring.addEventListener("click", e => { const it = e.target.closest("[data-rad]"); closeRing(); if (it && (it.dataset.rad !== S.active || mixOn())) { const TL = orderedTLs(); setActive(it.dataset.rad, TL.findIndex(x => x.id === it.dataset.rad) > TL.findIndex(x => x.id === S.active) ? 1 : -1); } });
-  tabs.addEventListener("pointerdown", e => { if (e.button > 0) return; const tb = e.target.closest(".tab[data-tl], .tab-grp"); if (!tb) return; sx = e.clientX; sy = e.clientY; moved = 0; clearTimeout(t);
+  let auto = 0, autoRaf = 0, lastE = null;
+  const srcName = () => src.startsWith("g:") ? `📁 ${src.slice(2)}` : tlById(src)?.name || "", srcCur = () => src.startsWith("g:") ? gParent(src.slice(2)) : grpOf(tlById(src));
+  const down = e => { if (e.button > 0 || pickState) return; const tb = e.target.closest(".tab[data-tl], .tab-grp, .nav-item[data-tl], .nav-group"); if (!tb) return; sx = e.clientX; sy = e.clientY; moved = 0; clearTimeout(t);
     t = setTimeout(() => { t = 0; block = Date.now(); haptic("tick");
-      if (tb.classList.contains("tab-grp")) { askFolder(tb.dataset.grp); return; }
-      mode = "lift"; src = tb.dataset.tl; srcEl = tb; tb.classList.add("lifting");
-      ghost = document.createElement("div"); ghost.className = "tab-ghost"; ghost.innerHTML = `<b>${esc(tlById(src).name)}</b><small>ほかのタブに重ねてね</small>`; document.body.append(ghost); place(sx, sy); }, 450); });
+      mode = "lift"; src = tb.dataset.tl || "g:" + tb.dataset.grp; srcEl = tb; tb.classList.add("lifting");
+      ghost = document.createElement("div"); ghost.className = "tab-ghost"; ghost.innerHTML = `<b>${esc(srcName())}</b><small>離すとメニュー・ほかのタブに重ねるとグループ</small>`; document.body.append(ghost); place(sx, sy); }, 450); };
+  tabs.addEventListener("pointerdown", down); $("#navList").addEventListener("pointerdown", down);
   const place = (x, y) => { const w = ghost.offsetWidth / 2 + 8; ghost.style.left = Math.max(w, Math.min(innerWidth - w, x)) + "px"; ghost.style.top = Math.max(ghost.offsetHeight * 1.3 + 8, y) + "px"; };
   addEventListener("pointermove", e => {
     if (mode !== "lift") { if (t && Math.hypot(e.clientX - sx, e.clientY - sy) > 10) { clearTimeout(t); t = 0; } return; }
-    if (Math.hypot(e.clientX - sx, e.clientY - sy) > 12) moved = 1; place(e.clientX, e.clientY); clearDrop(); drop = null;
-    const el = document.elementFromPoint(e.clientX, e.clientY)?.closest?.(".tab[data-tl], .tab-grp, .nav-item[data-tl], .nav-group");
-    if (el && el.dataset.tl !== src && !(el.dataset.grp && el.dataset.grp === grpOf(tlById(src)))) { drop = el.dataset.tl ? { tl: el.dataset.tl } : { grp: el.dataset.grp }; el.classList.add("drop-on"); }
-    else if (!el && grpOf(tlById(src)) && e.clientY > tabs.getBoundingClientRect().bottom + 40) drop = { out: 1 };
-    const tgt = drop?.tl && tlById(drop.tl);
-    ghost.querySelector("small").textContent = !drop ? (grpOf(tlById(src)) ? "重ねる・下へ引っぱると出す" : "ほかのタブに重ねてね") : drop.out ? `フォルダ「${grpOf(tlById(src))}」から出す` : drop.grp ? `フォルダ「${drop.grp}」に入れる` : grpOf(tgt) ? `フォルダ「${grpOf(tgt)}」に入れる` : `「${tgt.name}」とフォルダにする`;
-    ghost.classList.toggle("ok", !!drop);
+    if (Math.hypot(e.clientX - sx, e.clientY - sy) > 12) moved = 1; place(e.clientX, e.clientY);
+    /* タブの列のはしに持っていくと、列が流れて先のタブにも届く。流れているあいだも、指の下のタブを見なおす */
+    const tr = tabs.getBoundingClientRect(); auto = e.clientY > tr.top - 30 && e.clientY < tr.bottom + 30 ? (e.clientX < tr.left + 44 ? -1 : e.clientX > tr.right - 44 ? 1 : 0) : 0; lastE = e;
+    if (auto && !autoRaf) { const step = () => { if (!auto || mode !== "lift") { autoRaf = 0; return; } const b4 = tabs.scrollLeft; tabs.scrollLeft += auto * 7; if (tabs.scrollLeft !== b4 && lastE) hit(lastE); autoRaf = requestAnimationFrame(step); }; autoRaf = requestAnimationFrame(step); }
+    hit(e);
   }, true);
-  const end = () => { clearTimeout(t); t = 0; if (mode !== "lift") return; mode = ""; ghost?.remove(); ghost = null; srcEl?.classList.remove("lifting"); clearDrop();
-    const d = drop; drop = null; if (d) { haptic("success"); folderDrop(src, d); } else if (!moved) openRing(); };
+  const hit = e => { clearDrop(); drop = null;
+    const el = document.elementFromPoint(e.clientX, e.clientY)?.closest?.(".tab[data-tl], .tab-grp, .nav-item[data-tl], .nav-group");
+    const self = el && (el.dataset.tl === src || (el.dataset.grp && ("g:" + el.dataset.grp === src || el.dataset.grp === srcCur())));
+    const inNav = el && el.closest("#navList"), outY = srcEl.closest("#navList") ? null : tabs.getBoundingClientRect().bottom + 40;
+    if (el && !self) { drop = el.dataset.tl ? { tl: el.dataset.tl } : { grp: el.dataset.grp }; el.classList.add("drop-on"); }
+    else if (!el && srcCur() && (outY ? e.clientY > outY : !e.target.closest?.("#navList"))) drop = { out: 1 };
+    const tgt = drop?.tl && tlById(drop.tl), into = drop && !drop.out && (drop.grp || grpOf(tgt));
+    if (into && src.startsWith("g:") && gAncestors(into).includes(src.slice(2))) { clearDrop(); drop = null; ghost.querySelector("small").textContent = "自分の中には入れられないよ"; ghost.classList.remove("ok"); return; }
+    ghost.querySelector("small").textContent = !drop ? (srcCur() ? "重ねる・外へ引っぱると出す" : "ほかのタブに重ねてね") : drop.out ? `「${srcCur()}」の外に出す` : drop.grp ? `グループ「${drop.grp}」に入れる` : grpOf(tgt) ? `グループ「${grpOf(tgt)}」に入れる` : `「${tgt.name}」とグループにする`;
+    ghost.classList.toggle("ok", !!drop);
+  };
+  const end = () => { clearTimeout(t); t = 0; auto = 0; if (mode !== "lift") return; mode = ""; ghost?.remove(); ghost = null; srcEl?.classList.remove("lifting"); clearDrop();
+    const d = drop; drop = null; if (d) { haptic("success"); folderDrop(src, d); } else if (!moved) tabMenu(srcEl); };
   addEventListener("pointerup", end, true); addEventListener("pointercancel", end, true);
-  tabs.addEventListener("click", e => { if (Date.now() - block < 900) { e.stopPropagation(); e.preventDefault(); block = 0; } }, true);
-  tabs.addEventListener("contextmenu", e => e.preventDefault());
+  [tabs, $("#navList")].forEach(el => { el.addEventListener("click", e => { if (Date.now() - block < 900) { e.stopPropagation(); e.preventDefault(); block = 0; } }, true);
+    /* PCは右クリックでもメニュー */
+    el.addEventListener("contextmenu", e => { e.preventDefault(); const tb = e.target.closest(".tab[data-tl], .tab-grp, .nav-item[data-tl], .nav-group"); if (tb && !pickState && mode !== "lift") { clearTimeout(t); t = 0; tabMenu(tb); } }); });
   document.addEventListener("touchmove", e => { if (mode === "lift") e.preventDefault(); }, { passive: false });
   document.addEventListener("keydown", e => { if (e.key === "Escape" && !ring.hidden) closeRing(); });
 })();
@@ -4625,6 +4838,8 @@ async function readQRLink(pasted) {
   const h = pasted || location.hash; if (!h.startsWith("#imp=")) return;
   if (!pasted) try { history.replaceState(null, "", location.pathname + location.search); } catch {}
   try { const d = JSON.parse(await zip(unb64u(h.slice(5)), true)); const tid = "qr";
+    if (d.v === 2 && Array.isArray(d.t)) { openReceive({ t: d.t, g: Array.isArray(d.g) ? d.g : [] }); return; }
+    if (Array.isArray(d.p)) { openReceive({ t: [{ n: d.n, c: d.c, i: d.i, p: d.p }], g: [] }); return; }
     const data = { app: "mytl", version: 1, kind: "timeline", timelines: [{ id: tid, name: d.n || "もらったタイムライン", color: d.c || "#1d9bf0", icon: d.i || "" }], posts: (d.p || []).map(([text, url, at]) => { const o = { tl: tid, at: (at || 0) * 1000 || Date.now(), likes: 0, text }; if (url) { const r = parseUrl(url); if (r) o.embed = r; } return o; }) };
     openSide(); startImport(data); toast("QRコードのタイムラインを受け取ったよ。追加するか選んでね");
   } catch { toast("QRコードの中身を読めなかったよ"); }
@@ -4848,14 +5063,14 @@ $("#navWatch").addEventListener("click", openWatch); $("#navNotif").addEventList
 const HELP = [
   ["start", "はじめかた", `<p>右下の ＋（PCは左の「ツイートする」）で、YouTube・X などのURLを貼って「ツイート」。カードになって並ぶよ。上のタブの右の ＋ でタイムラインを増やせるの。</p><p>ホーム画面に追加すると、アプリのように全画面で開けて、データも消えにくくなるよ。</p>`],
   ["screen", "画面の見方", `<ul><li><b>左上のアイコン</b>: アカウント画面（設定・ゴミ箱・データの守り方など）</li><li><b>タブ</b>: タイムラインの切り替え。左右にスワイプでも切り替わるよ</li><li><b>ツイートの右上の ⋯</b>: 並べ替え・編集・文をコピー・移動・あとでまた見る・ゴミ箱</li><li><b>ハートを長押し</b>: 絵文字でリアクション</li><li><b>動画</b>: 真ん中に来たものだけ再生。タップで一時停止、長押しで2倍速</li><li><b>本文を長押し</b>: 文字を選んでコピーできるよ</li><li><b>二本指でつまむ</b>: グリッド表示と切り替え。全画面の画像では拡大（ダブルタップでも）</li><li><b>下のバー</b>: ホーム・さがす・見る・お知らせ・しおり</li></ul>`],
-  ["folder", "フォルダ", `<ul><li><b>作る</b>: タブを長押しして持ち上げて、ほかのタブの上で離す</li><li><b>まぜて見る</b>: フォルダのタブを押すと、中のタイムラインのツイートが新しい順にまざって並ぶよ</li><li><b>中を開く</b>: もう一度フォルダのタブを押すと、中のタブが並ぶの</li><li><b>出す</b>: 中のタブを長押しして、下へ引っぱる</li><li><b>名前を変える・やめる</b>: フォルダのタブを長押し</li><li>タブを長押しして、動かさずに離すと、タイムラインのアイコンが丸く並ぶよ。押すとそこへ移動するの</li></ul>`],
+  ["folder", "グループ", `<ul><li><b>メニュー</b>: タブ（PCは左の一覧も）を長押しして、動かさずに離すと「選んで選択・名前変更・シークレットモード・削除」が出るよ。PCは右クリックでも出るの</li><li><b>まとめる</b>: 長押しして持ち上げて、ほかのタブに重ねて離す。または「選んで選択」でいくつか選んで「グループ化」</li><li><b>グループの中にグループ</b>: グループのタブも長押しで持ち上げて、別のグループに重ねられるよ</li><li><b>まぜて見る</b>: グループのタブを押すと、中のタイムライン（中のグループの分も）が新しい順にまざって並ぶよ</li><li><b>中を開く</b>: もう一度グループのタブを押すと、中のタブが並ぶの</li><li><b>出す</b>: 中のタブを長押しして、外（下）へ引っぱると1つ外側へ出るよ</li><li><b>空のグループ</b>: 管理の「グループを作る」で作れるよ</li><li><b>削除</b>: タイムラインはゴミ箱に入って、30日のあいだは元に戻せるよ</li></ul>`],
   ["sort", "並び順", `<p>タイムラインの上の「並び」で、自分で並べた順・投稿日・更新日・いいね数・視聴回数から選べるよ。横のボタンで昇順と降順が入れ替わるの。並び方はタイムラインごとに覚えてるよ。</p>`],
-  ["data", "データの守り方", `<p>データはこの端末のブラウザの中だけにあるよ。ほかの端末とは同期しないの。</p><ul><li><b>ブラウザのデータを消すと消える</b> → 消す前に「ファイルで保存」</li><li><b>iPhoneでSafariのまま7日ほど開かないと消えることがある</b> → ホーム画面に追加して開く</li><li><b>URLが変わると別の箱になる</b> → 書き出して、新しいURLで読み込む</li><li><b>端末の故障</b> → iCloud Drive などにファイルを置いておく</li></ul><p>保存は 設定 → データと安全 → データ →「ファイルで保存」。戻すときは「ファイルから読み込む」。1日1回の「自動の控え」からも戻せるよ。</p>`],
-  ["secret", "シークレットとロック", `<div class="warn"><p><b>どちらも「目隠し」だよ。</b>データはブラウザの中に普通に保存されているから、詳しい人が調べれば見えるの。本当に守りたいものは、パスワードをかけて書き出したファイルにしてね（本物の暗号化だよ）。</p></div><ul><li><b>シークレット</b>: 選んだタイムラインを、ふつうのホームのタブ・検索・今日の1本のどこにも出さないようにする。合言葉はタイムラインごとに、4桁の番号か好きな文字で決められるよ。合言葉を入れると「シークレットのホーム」に切り替わって、同じ合言葉のタイムラインだけが並ぶの</li><li><b>合言葉を忘れたら</b>: 取り出す方法はないの。シークレットのページの「合言葉を忘れたとき」から、開けないタイムラインを中身ごと消すことだけできるよ</li><li><b>かんたんロック</b>: 開くときに4桁の番号を聞く。忘れると開けなくなるから、先に書き出しておいてね</li></ul>`],
+  ["data", "データの守り方", `<p>データはこの端末のブラウザの中だけにあるよ。ほかの端末とは同期しないの。</p><ul><li><b>ブラウザのデータを消すと消える</b> → 消す前に「ファイルで保存」</li><li><b>iPhoneでSafariのまま7日ほど開かないと消えることがある</b> → ホーム画面に追加して開く</li><li><b>URLが変わると別の箱になる</b> → 共有して、新しいURLで読み込む</li><li><b>端末の故障</b> → iCloud Drive などにファイルを置いておく</li></ul><p>保存は 設定 → データと安全 → データ →「ファイルで保存」。戻すときは「ファイルから読み込む」。1日1回の「自動の控え」からも戻せるよ。</p>`],
+  ["secret", "シークレットとロック", `<div class="warn"><p><b>どちらも「目隠し」だよ。</b>データはブラウザの中に普通に保存されているから、詳しい人が調べれば見えるの。本当に守りたいものは、パスワードをかけて共有したファイルにしてね（本物の暗号化だよ）。</p></div><ul><li><b>シークレット</b>: 選んだタイムラインを、ふつうのホームのタブ・検索・今日の1本のどこにも出さないようにする。合言葉はタイムラインごとに、4桁の番号か好きな文字で決められるよ。合言葉を入れると「シークレットのホーム」に切り替わって、同じ合言葉のタイムラインだけが並ぶの</li><li><b>合言葉を忘れたら</b>: 取り出す方法はないの。シークレットのページの「合言葉を忘れたとき」から、開けないタイムラインを中身ごと消すことだけできるよ</li><li><b>かんたんロック</b>: 開くときに4桁の番号を聞く。忘れると開けなくなるから、先に共有しておいてね</li></ul>`],
   ["net", "外のサービスに送るもの", `<ul><li><b>noembed.com</b>: リンクのタイトルを調べるときに、URLだけを送るよ</li><li><b>Xの投稿</b>: 画像や動画を表示するために、Xの置き場（取れないときは fxtwitter）に投稿のURLだけを送るよ</li><li>ツイートの文やほかのデータは、どこにも送らないよ</li></ul>`],
   ["iphone", "iPhoneで使うとき", `<ul><li>さわったときの軽い振動は、iPhoneのブラウザは対応していないよ（Androidは対応）</li><li>音量はページから変えられないことがあるの。本体のボタンで変えてね</li><li>「振ってシャッフル」は最初はオフ。設定 → 動き で、オンにできるよ</li></ul>`],
   ["stream", "配信サービスのリンク", `<p>Netflix などの配信サービスは、作品の説明を外から取り出せないの。カードの「あらすじ」に自分でメモを書いてね。</p>`],
-  ["files", "手元の写真・動画", `<p>端末から追加した画像・動画は、大きいので書き出しには入らないよ。元の写真は端末に残しておいてね。</p>`],
+  ["files", "手元の写真・動画", `<p>端末から追加した画像・動画は、大きいので共有には入らないよ。元の写真は端末に残しておいてね。</p>`],
 ];
 function openHelp(sec) {
   hub.open("ヘルプ", `<div class="help"><div class="help-toc">${HELP.map(([k, h]) => `<button type="button" data-hk="${k}">${h}</button>`).join("")}</div>${HELP.map(([k, h, b]) => `<section id="help-${k}"><h3>${h}</h3>${b}</section>`).join("")}<p class="note" style="margin-top:14px">マイタイムライン v${APP_VERSION}</p></div>`,
@@ -4863,7 +5078,7 @@ function openHelp(sec) {
   if (sec) setTimeout(() => $("#help-" + sec)?.scrollIntoView({ block: "start" }), 80);
 }
 /* 注意書きの最後に「くわしく ›」 */
-(() => { const RULES = [[/目隠し/, "secret"], [/4桁の数字を聞く/, "secret"], [/iPhone のブラウザは振動/, "iphone"], [/書き出しには入らない|画像・動画は移らない/, "files"]];
+(() => { const RULES = [[/目隠し/, "secret"], [/4桁の数字を聞く/, "secret"], [/iPhone のブラウザは振動/, "iphone"], [/共有には入らない|画像・動画は移らない/, "files"]];
   $$(".note").forEach(n => { const r = RULES.find(([re]) => re.test(n.textContent)); if (r && !n.querySelector(".more-link")) n.insertAdjacentHTML("beforeend", `<button type="button" class="more-link" data-help="${r[1]}">くわしく ›</button>`); }); })();
 document.addEventListener("click", e => { const b = e.target.closest("[data-help]"); if (!b) return; e.preventDefault(); if (innerWidth <= 960) closeSide(); openHelp(b.dataset.help); });
 function openDataHow() { if (innerWidth <= 960) openSide(); openSetPage("data"); const d = $("#dataHow"); d.open = true; setTimeout(() => d.scrollIntoView({ behavior: reduceMotion() ? "auto" : "smooth", block: "start" }), 120); }
@@ -5036,7 +5251,7 @@ function applyPattern() {
   $("#optBounce").value = S.opts.bounce || "soft"; $("#optPopWay").value = S.opts.popWay || "slide"; $("#optPopSpeed").value = S.opts.popSpeed || "normal";
   $("#optSwitchFx").value = S.opts.switchFx || "tint"; $("#optSeasonFx").value = S.opts.seasonFx ?? (S.opts.seasonLight === false ? "off" : "light"); $("#optPat").value = S.opts.pat || ""; $("#optPatCol").value = S.opts.patCol || "season"; $("#optPatA").value = S.opts.patA ?? 10; $("#patRow").hidden = !S.opts.pat;
 })();
-/* A6 パスワード付きの書き出し（AES-256-GCM。パスワードから鍵を作るのは PBKDF2 を25万回） */
+/* A6 パスワード付きの共有（AES-256-GCM。パスワードから鍵を作るのは PBKDF2 を25万回） */
 let encPending = null;
 async function pwKey(pw, salt) { const base = await crypto.subtle.importKey("raw", new TextEncoder().encode(pw), "PBKDF2", false, ["deriveKey"]); return crypto.subtle.deriveKey({ name: "PBKDF2", salt, iterations: 250000, hash: "SHA-256" }, base, { name: "AES-GCM", length: 256 }, false, ["encrypt", "decrypt"]); }
 async function encryptData(text, pw) { const salt = crypto.getRandomValues(new Uint8Array(16)), iv = crypto.getRandomValues(new Uint8Array(12)); const key = await pwKey(pw, salt);
@@ -5288,7 +5503,7 @@ $("#optStealth").addEventListener("change", e => { S.opts.secretStealth = e.targ
 /* K36 使い方ガイド */
 const GUIDE = [
   ["▶", "真ん中の動画だけ動くよ", "スクロールして画面の真ん中に来た動画だけが自動で再生されるの。タップで一時停止、長押しで2倍速、長押しのまま下にずらすと2倍速のまま固定だよ"],
-  ["⇆", "左右でタイムラインを切り替え", "スマホは左右にスワイプ、PCはトラックパッドの横スクロールか ← → キー。タブを長押しして別のタブに重ねるとフォルダにまとまるよ。シークレットで隠したりもできるよ"],
+  ["⇆", "左右でタイムラインを切り替え", "スマホは左右にスワイプ、PCはトラックパッドの横スクロールか ← → キー。タブを長押しして別のタブに重ねるとグループにまとまるよ。シークレットで隠したりもできるよ"],
   ["⋯", "ツイートの整理", "右上の ⋯ ボタンから、固定・編集・あとでまた見る・色ラベル・まとめて選ぶ・画像で保存ができるよ。消したツイートは30日間ゴミ箱に残るの"],
   ["⛨", "データはこの端末の中", "ツイートはこのブラウザだけに保存されるよ。ブラウザのデータを消すと一緒に消えちゃうから、ときどき「ファイルで保存」でバックアップしてね。やり方は、左上のアイコン →「データの守り方」にまとめてあるよ"],
 ];
@@ -5719,7 +5934,7 @@ function boot() {
   if (S.opts.startTl && tlById(S.opts.startTl) && !isHiddenTl(tlById(S.opts.startTl))) S.active = S.opts.startTl;
   wakeSnoozed(true); applyOpts(); renderAll();
   const d = readShareParams(); if (d) openShare(d); else restorePos();
-  setTimeout(seasonOpen, 700); setTimeout(() => { applyPattern(); switchFx(); paintNotifN(); }, 50); buildSettings(); paintSecretMode(); maybeNagBackup(); bootSafety(); purgeTrash(); loadDraft(); netState(); bootLock(); maybeGuide(); paintRings(); readQRLink();
+  setTimeout(seasonOpen, 700); setTimeout(() => { applyPattern(); switchFx(); paintNotifN(); }, 50); buildSettings(); paintSecretMode(); maybeNagBackup(); bootSafety(); purgeTrash(); loadDraft(); netState(); bootLock(); maybeGuide(); paintRings(); readQRLink(); addEventListener("hashchange", () => { if (/^#(imp|tl)=/.test(location.hash)) readQRLink(); });
   setTimeout(updateFocus, 60);
 }
 Promise.race([idb.all(), new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 1500))])

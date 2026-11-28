@@ -1415,7 +1415,7 @@ body.tl-picking .tab.picked,body.tl-picking .tab-grp.picked,body.tl-picking .nav
       <h2>タイムライン管理</h2>
       <p>名前はその場で書き換え。左のつまみをドラッグか ↑↓ で並べ替え。</p>
       <ul class="tl-list" id="tlList"></ul><datalist id="grpList"></datalist>
-      <p class="note" style="margin:0">タブを長押しするとメニュー（選んで選択・名前変更・シークレット・削除）。長押ししたままほかのタブに重ねると「グループ」にまとまるよ。下の欄に同じグループ名を入れてもOK。グループのタブを押すと中をまぜて見られるよ。名前の横の ▾ を押すと、中のタブをしまえる（▸ でまた出せる）の</p>
+      <p class="note" style="margin:0">タブを長押しするとメニュー（選んで選択・名前変更・シークレット・削除）。長押ししたままほかのタブに重ねると「グループ」にまとまるよ。下の欄に同じグループ名を入れてもOK。グループのタブを押すと中をまぜて見られるよ。名前の横の ▸（中が右に並んでいる印）を押すと、中のタブをしまえる（◂ でまた出せる）の。PCの左の一覧は ▾ / ▸ だよ</p>
       <form class="add-row" id="addForm">
         <input id="addName" placeholder="新しいタイムライン名" maxlength="20">
         <button class="btn-accent" id="addBtn">追加</button>
@@ -1729,7 +1729,7 @@ body.tl-picking .tab.picked,body.tl-picking .tab-grp.picked,body.tl-picking .nav
   <div class="share-card acct-card">
     <div id="acBanner" hidden></div>
     <div class="ac-top"><span id="acAv"></span><span class="ac-top-r"><button type="button" class="ac-mini" id="acEdit" aria-label="アイコンとヘッダーを変える" title="アイコンとヘッダーを変える"><svg class="i"><use href="#i-brush"/></svg></button><button type="button" class="ac-mini" id="acClose" aria-label="閉じる"><svg class="i"><use href="#i-x"/></svg></button></span></div>
-    <div class="ac-name"><b id="acTitle">私</b><span>@me ・ <em style="color:#ff7a00;font-style:normal;font-weight:800">テスト版 v1.3 試作11（本番とはデータ別）</em></span></div>
+    <div class="ac-name"><b id="acTitle">私</b><span>@me ・ <em style="color:#ff7a00;font-style:normal;font-weight:800">テスト版 v1.3 試作12（本番とはデータ別）</em></span></div>
     <div class="ac-stats" id="acStats"></div>
     <nav class="ac-big" aria-label="メニュー">
       <button type="button" class="ac-item" id="acRec" aria-expanded="false"><svg class="i"><use href="#i-target"/></svg><b>今日の記録</b><small id="acRecSub"></small></button>
@@ -2741,7 +2741,7 @@ function renderTabs() {
   const mx = mixOn();
   const pk = pickState, pkT = id => pk && pk.tl.has(id) ? " picked" : "", pkG = g => pk && pk.grp.has(g) ? " picked" : "", chk = on => pk ? `<i class="pk-chk${on ? " on" : ""}" aria-hidden="true"></i>` : "";
   const grpHead = (g, d, kind) => { const c = !!S.opts.collapsed[g], n = TL.filter(x => inGroup(x, g)).length, act = tlById(S.active), on = mx === g || (!mx && c && act && inGroup(act, g) && !items.some(x => x.t === act));
-    return kind === "tab" ? `<button class="tab-grp d${Math.min(d, 3)} ${c ? "closed" : ""} ${on ? "on" : ""}${pkG(g)}" data-grp="${esc(g)}" aria-expanded="${!c}" aria-selected="${on}" title="押すとまぜて見る・もう一度押すと中を開く・長押しでメニュー">${chk(pk && pk.grp.has(g))}<svg class="i"><use href="#i-folder"/></svg>${esc(g)}<small>${n}</small><span class="caret" data-fold="${esc(g)}" role="button" aria-label="${c ? "中を出す" : "しまう"}" title="${c ? "中を出す" : "しまう"}">${c ? "▸" : "▾"}</span></button>`
+    return kind === "tab" ? `<button class="tab-grp d${Math.min(d, 3)} ${c ? "closed" : ""} ${on ? "on" : ""}${pkG(g)}" data-grp="${esc(g)}" aria-expanded="${!c}" aria-selected="${on}" title="押すとまぜて見る・もう一度押すと中を開く・長押しでメニュー">${chk(pk && pk.grp.has(g))}<svg class="i"><use href="#i-folder"/></svg>${esc(g)}<small>${n}</small><span class="caret" data-fold="${esc(g)}" role="button" aria-label="${c ? "中を出す" : "しまう"}" title="${c ? "中を出す" : "しまう"}">${c ? "◂" : "▸"}</span></button>`
       : `<button class="nav-group d${Math.min(d, 3)} ${c ? "closed" : ""} ${on ? "on" : ""}${pkG(g)}" data-grp="${esc(g)}" aria-expanded="${!c}" style="--d:${d}">${chk(pk && pk.grp.has(g))}<span class="caret" data-fold="${esc(g)}" role="button" aria-label="${c ? "中を出す" : "しまう"}" title="${c ? "中を出す" : "しまう"}">${c ? "▸" : "▾"}</span><svg class="i"><use href="#i-folder"/></svg><span class="label">${esc(g)}</span><small>${n}</small></button>`; };
   /* 見せる順に並べる: [{ t, d }] か [{ g, d }]。閉じたグループの中は、いま見ているタイムラインだけ出す */
   const shut = g => gAncestors(g).some(x => S.opts.collapsed[x]);

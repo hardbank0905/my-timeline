@@ -1296,7 +1296,7 @@ body.sheet-open{overflow:hidden}
   #feed .media:has(.snd-btn:hover) .vol,#feed .media .vol:hover,#feed .media .vol:has(:focus-visible){opacity:1;visibility:visible;transition:opacity .15s,visibility 0s}
 }
 /* 拡大画面の音ボタン: PCはマウスを乗せると横に音量バー */
-.vc-snd{display:flex;align-items:center}.vs.ab-on .vs-mk{display:none}
+.vc-snd{display:flex;align-items:center}.vs.ab-on .vs-mk{display:none}#vmDelAll.sure{background:#f4212e;color:#fff;border-color:#f4212e}
 .vc-vol{display:none}
 @media (hover:hover) and (pointer:fine){
   .vc-vol{display:flex;align-items:center;width:0;overflow:hidden;transition:width .2s ease .4s}
@@ -1705,7 +1705,7 @@ body.sheet-open{overflow:hidden}
   <div class="share-card acct-card">
     <div id="acBanner" hidden></div>
     <div class="ac-top"><span id="acAv"></span><span class="ac-top-r"><button type="button" class="ac-mini" id="acEdit" aria-label="アイコンとヘッダーを変える" title="アイコンとヘッダーを変える"><svg class="i"><use href="#i-brush"/></svg></button><button type="button" class="ac-mini" id="acClose" aria-label="閉じる"><svg class="i"><use href="#i-x"/></svg></button></span></div>
-    <div class="ac-name"><b id="acTitle">私</b><span>@me ・ <em style="color:#ff7a00;font-style:normal;font-weight:800">テスト版 v1.3 試作5（本番とはデータ別）</em></span></div>
+    <div class="ac-name"><b id="acTitle">私</b><span>@me ・ <em style="color:#ff7a00;font-style:normal;font-weight:800">テスト版 v1.3 試作6（本番とはデータ別）</em></span></div>
     <div class="ac-stats" id="acStats"></div>
     <nav class="ac-big" aria-label="メニュー">
       <button type="button" class="ac-item" id="acRec" aria-expanded="false"><svg class="i"><use href="#i-target"/></svg><b>今日の記録</b><small id="acRecSub"></small></button>
@@ -5515,11 +5515,14 @@ function vcAddMark() { const w = vW(), p = vList[vIdx]; if (!w || !p) return; co
   const i = p.marks.findIndex(m => m.t === t), el = $(`#vSeek .vs-mk[data-vsm="${i}"]`); el?.animate([{ opacity: 0, boxShadow: "0 0 0 10px rgba(255,212,0,.5)" }, { opacity: 1, boxShadow: "0 0 0 2px #000" }], { duration: 300, easing: "cubic-bezier(.3,1.5,.5,1)" }); }
 function vcEditMark(i) { const p = vList[vIdx], m = p && p.marks[i]; if (!m) return; const w = vW(), pl = w && players.get(w);
   hub.open(`印 ${fmt(m.t)}`, `<div class="fd-box"><label class="fd-name">ひとことメモ<input type="text" id="vmMemo" class="sel" maxlength="16" value="${esc(m.note || "")}" placeholder="例: ここが神"></label>
-    <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn-accent" id="vmOk">保存</button><button type="button" class="btn-ghost sm" id="vmGo">ここから再生</button><button type="button" class="btn-ghost sm danger" id="vmDel">印を消す</button></div></div>`, b => {
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn-accent" id="vmOk">保存</button><button type="button" class="btn-ghost sm" id="vmGo">ここから再生</button><button type="button" class="btn-ghost sm danger" id="vmDel">印を消す</button>${p.marks.length > 1 ? `<button type="button" class="btn-ghost sm danger" id="vmDelAll">印を全部消す（${p.marks.length}個）</button>` : ""}</div></div>`, b => {
     b.querySelector("#vmOk").addEventListener("click", () => { const v = b.querySelector("#vmMemo").value.trim(); v ? m.note = v : delete m.note; save(); hub.close(); vcRefresh(); toast("印のメモを保存したよ"); });
     b.querySelector("#vmMemo").addEventListener("keydown", e => { e.stopPropagation(); if (e.key === "Enter") b.querySelector("#vmOk").click(); });
     b.querySelector("#vmGo").addEventListener("click", () => { hub.close(); if (pl) { pl.seek(m.t); if (!pl.playing) pl.play(); } });
-    b.querySelector("#vmDel").addEventListener("click", () => { const k = p.marks.indexOf(m); p.marks.splice(k, 1); save(); hub.close(); vcRefresh(); toast("印を消したよ", () => { p.marks.splice(k, 0, m); save(); vcRefresh(); }); }); });
+    b.querySelector("#vmDel").addEventListener("click", () => { const k = p.marks.indexOf(m); p.marks.splice(k, 1); save(); hub.close(); vcRefresh(); toast("印を消したよ", () => { p.marks.splice(k, 0, m); save(); vcRefresh(); }); });
+    /* 全部消す: 1回目は確かめるだけ。もう一度押すと消す（3秒で元に戻る）。消したあとも「元に戻す」できる */
+    const all = b.querySelector("#vmDelAll"); if (all) all.addEventListener("click", () => { if (!all.dataset.sure) { all.dataset.sure = "1"; all.textContent = `本当に${p.marks.length}個とも消す？ もう一度押してね`; all.classList.add("sure"); clearTimeout(all._t); all._t = setTimeout(() => { delete all.dataset.sure; all.textContent = `印を全部消す（${p.marks.length}個）`; all.classList.remove("sure"); }, 3000); return; }
+      const old = p.marks.slice(); p.marks = []; save(); hub.close(); vcRefresh(); haptic("trash"); toast(`印を${old.length}個とも消したよ`, () => { p.marks = old; save(); vcRefresh(); }); }); });
 }
 function vcMarkList() { const p = vList[vIdx]; if (!p) return; const L = p.marks || [], CL = p.clips || [];
   const clipRows = CL.map((c, i) => `<div class="hub-row" data-vcl="${i}" role="button" tabindex="0"><span class="ic" style="background:var(--accent)">✂</span><span class="tx"><b>${fmt(c.a)}〜${fmt(c.b)}</b><small>くり返し再生</small></span><button type="button" class="btn-ghost sm danger" data-vcd="${i}">消す</button></div>`).join("");
@@ -5549,6 +5552,8 @@ $("#vMarkList").addEventListener("click", () => { $("#vMenu").hidden = true; vcM
     if (d.h) { const v = at(e.clientX), ab = d.pl.ab; if (d.h === "a") ab.a = Math.min(v, ab.b - 2); else ab.b = Math.max(v, ab.a + 2); vcRefresh(); return; }
     clearTimeout(lt); (d.w._seekTo || d.pl.seek.bind(d.pl))(at(e.clientX)); paintVCtl(); });
   const up = () => { if (!d) return; clearTimeout(lt); const o = d; d = null; bar.classList.remove("drag");
+    /* 長押しで開いたシートが、指を離したときの「クリック」で閉じないように、直後の1回を捨てる（iPhoneで起きていた） */
+    if (o.long) { const kill = ev => { ev.stopPropagation(); ev.preventDefault(); document.removeEventListener("click", kill, true); }; document.addEventListener("click", kill, true); setTimeout(() => document.removeEventListener("click", kill, true), 450); }
     if (o.mk != null && !o.moved && !o.long) { const m = vList[vIdx]?.marks?.[o.mk]; if (m) { o.pl.seek(m.t); if (!o.pl.playing) o.pl.play(); toast(`${fmt(m.t)} へ飛んだよ${m.note ? "「" + m.note + "」" : ""}`); } } };
   bar.addEventListener("pointerup", up); bar.addEventListener("pointercancel", up);
   bar.addEventListener("keydown", e => { const w = vW(), pl = w && players.get(w); if (!pl) return; if (e.key === "ArrowRight" || e.key === "ArrowLeft") { e.preventDefault(); e.stopPropagation(); pl.seek(Math.max(0, w._getT() + (e.key === "ArrowRight" ? 5 : -5))); paintVCtl(); } });

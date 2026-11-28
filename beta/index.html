@@ -1174,6 +1174,9 @@ body.sheet-open{overflow:hidden}
 /* 共有で受け取ったときの送り先シート */
 .share{position:fixed;inset:0;z-index:95;background:rgba(0,0,0,.45);display:grid;place-items:end center}
 .share-card{background:var(--bg);color:var(--fg);width:min(560px,100%);border-radius:20px 20px 0 0;padding:18px max(18px,env(safe-area-inset-right,0px)) calc(18px + env(safe-area-inset-bottom,0px)) max(18px,env(safe-area-inset-left,0px));display:flex;flex-direction:column;gap:12px;max-height:90vh;overflow-y:auto}
+/* 大きめ表示（zoom）だと高さも大きくなって、上の×ボタンが画面の外に出ていた。zoom の分を割り戻して、見出しは上に貼りつける */
+.share-card{max-height:calc(88vh / var(--uiz,1.12));max-height:calc(88dvh / var(--uiz,1.12))}
+.hub-card .lk-head{position:sticky;top:-18px;z-index:2;background:var(--bg);margin:-18px 0 0;padding:18px 0 6px}
 @media (min-width:641px){.share{place-items:center}.share-card{border-radius:20px}}
 .share-card h2{margin:0;font-size:20px;font-weight:800}
 .share-card textarea{width:100%;border:1px solid var(--line-strong);border-radius:12px;padding:10px 12px;background:var(--bg);resize:vertical;min-height:72px}
@@ -1726,7 +1729,7 @@ body.tl-picking .tab.picked,body.tl-picking .tab-grp.picked,body.tl-picking .nav
   <div class="share-card acct-card">
     <div id="acBanner" hidden></div>
     <div class="ac-top"><span id="acAv"></span><span class="ac-top-r"><button type="button" class="ac-mini" id="acEdit" aria-label="アイコンとヘッダーを変える" title="アイコンとヘッダーを変える"><svg class="i"><use href="#i-brush"/></svg></button><button type="button" class="ac-mini" id="acClose" aria-label="閉じる"><svg class="i"><use href="#i-x"/></svg></button></span></div>
-    <div class="ac-name"><b id="acTitle">私</b><span>@me ・ <em style="color:#ff7a00;font-style:normal;font-weight:800">テスト版 v1.3 試作10（本番とはデータ別）</em></span></div>
+    <div class="ac-name"><b id="acTitle">私</b><span>@me ・ <em style="color:#ff7a00;font-style:normal;font-weight:800">テスト版 v1.3 試作11（本番とはデータ別）</em></span></div>
     <div class="ac-stats" id="acStats"></div>
     <nav class="ac-big" aria-label="メニュー">
       <button type="button" class="ac-item" id="acRec" aria-expanded="false"><svg class="i"><use href="#i-target"/></svg><b>今日の記録</b><small id="acRecSub"></small></button>

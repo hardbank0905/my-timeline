@@ -1242,7 +1242,7 @@ body.sheet-open{overflow:hidden}
 .viewer.has-ctl .v-reply{display:none}.v-ctl{order:10;display:flex;flex-direction:column;gap:2px}.v-ctl[hidden]{display:none}
 .vs{position:relative;height:26px;display:flex;align-items:center;cursor:pointer;touch-action:none}.vs-tr{position:relative;width:100%;height:4px;border-radius:99px;background:rgba(255,255,255,.25)}.vs.drag .vs-tr,.vs:hover .vs-tr{height:6px}
 .vs-fill{position:absolute;left:0;top:0;bottom:0;border-radius:99px;background:#fff}.vs-fill::after{content:"";position:absolute;right:-7px;top:50%;width:14px;height:14px;margin-top:-7px;border-radius:50%;background:#fff;opacity:0;transition:opacity .15s}.vs.drag .vs-fill::after,.vs:hover .vs-fill::after{opacity:1}
-.vs-mk{position:absolute;top:50%;transform:translate(-50%,-50%);width:10px;height:10px;padding:0;border:2px solid #000;border-radius:50%;background:#ffd400;cursor:pointer;z-index:1;box-sizing:content-box}.vs-mk::before{content:"";position:absolute;inset:-12px -9px;border-radius:50%}
+.vs-mk{position:absolute;top:50%;display:block;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:#ffd400;box-shadow:0 0 0 2px #000;pointer-events:none;z-index:2}
 .vs-ab{position:absolute;top:0;bottom:0;background:rgba(29,155,240,.6)}.vs-h{position:absolute;top:50%;transform:translate(-50%,-50%);width:22px;height:22px;border-radius:50%;background:#1d9bf0;color:#fff;font-size:11px;display:grid;place-items:center;cursor:ew-resize}
 .vc-row{display:flex;align-items:center;gap:2px}.vc-row .grow{flex:1}
 .vc{position:relative;width:42px;height:42px;border:0;border-radius:50%;background:none;color:#fff;display:grid;place-items:center;cursor:pointer;flex:none}.vc:hover{background:rgba(255,255,255,.1)}.vc .i{width:24px;height:24px}
@@ -1287,10 +1287,12 @@ body.sheet-open{overflow:hidden}
 /* タイムラインの動画: ボタンは音だけ。タップで拡大（v1.3 先生の指定） */
 #feed .media:has(.snd-btn) .seek,#feed .media:has(.snd-btn) .play-state,#feed .media:has(.snd-btn) .fs-btn,#feed .media .mk-btn,#feed .media .ab-btn{display:none!important}
 #feed .media:has(.snd-btn){cursor:zoom-in}
-#feed .media:has(.snd-btn) .badge{bottom:12px;left:12px;font-size:13px;padding:2px 7px;background:rgba(0,0,0,.6)}
+#app .post-actions .rt .num,#app .post-actions .like .num,.post-actions .act.rt .num,.post-actions .act.like .num{display:none!important}
+#feed .media:has(.snd-btn) .snd-btn{right:10px!important;bottom:10px!important;top:auto!important;left:auto!important}
+#feed .media:has(.snd-btn) .badge{bottom:10px;left:10px;font-size:13px;padding:2px 7px;background:rgba(0,0,0,.6)}
 #feed .media .vol{display:none}
 @media (hover:hover) and (pointer:fine){
-  #feed .media .vol{display:flex;right:60px;bottom:12px;opacity:0;visibility:hidden;transition:opacity .15s,visibility 0s .5s}
+  #feed .media .vol{display:flex;right:50px;bottom:10px;opacity:0;visibility:hidden;transition:opacity .15s,visibility 0s .5s}
   #feed .media:has(.snd-btn:hover) .vol,#feed .media .vol:hover,#feed .media .vol:has(:focus-visible){opacity:1;visibility:visible;transition:opacity .15s,visibility 0s}
 }
 /* 拡大画面の音ボタン: PCはマウスを乗せると横に音量バー */
@@ -1604,7 +1606,7 @@ body.sheet-open{overflow:hidden}
         <button type="button" class="vc vc-rate" id="vcRate" aria-label="再生の速さ">1x</button>
         <button type="button" class="vc" id="vcMark" aria-label="いまの場面に印を付ける" title="いまの場面に印を付ける（バーの黄色い点。押すとそこへ、長押しでメモ・消す）"><svg class="i"><use href="#i-flag"/></svg><b class="vc-plus">+</b></button>
         <span class="vc-snd"><button type="button" class="vc" id="vcSnd" aria-label="音声"><svg class="i"><use href="#i-vol"/></svg></button><span class="vc-vol" id="vcVol"></span></span>
-        <button type="button" class="vc" id="vcFull" aria-label="ブラウザの全画面"><svg class="i"><use href="#i-expand"/></svg></button>
+        
         <button type="button" class="vc" id="vcLoop" aria-label="見終わったとき"><svg class="i"><use href="#i-repost"/></svg></button>
       </div>
     </div>
@@ -1703,7 +1705,7 @@ body.sheet-open{overflow:hidden}
   <div class="share-card acct-card">
     <div id="acBanner" hidden></div>
     <div class="ac-top"><span id="acAv"></span><span class="ac-top-r"><button type="button" class="ac-mini" id="acEdit" aria-label="アイコンとヘッダーを変える" title="アイコンとヘッダーを変える"><svg class="i"><use href="#i-brush"/></svg></button><button type="button" class="ac-mini" id="acClose" aria-label="閉じる"><svg class="i"><use href="#i-x"/></svg></button></span></div>
-    <div class="ac-name"><b id="acTitle">私</b><span>@me ・ <em style="color:#ff7a00;font-style:normal;font-weight:800">テスト版 v1.3 試作4（本番とはデータ別）</em></span></div>
+    <div class="ac-name"><b id="acTitle">私</b><span>@me ・ <em style="color:#ff7a00;font-style:normal;font-weight:800">テスト版 v1.3 試作5（本番とはデータ別）</em></span></div>
     <div class="ac-stats" id="acStats"></div>
     <nav class="ac-big" aria-label="メニュー">
       <button type="button" class="ac-item" id="acRec" aria-expanded="false"><svg class="i"><use href="#i-target"/></svg><b>今日の記録</b><small id="acRecSub"></small></button>
@@ -2000,7 +2002,8 @@ S.presets ||= [];
 function optDefaults() { S.opts.sound ??= true; S.opts.preview ??= 120; S.opts.auto ??= true; S.opts.wifiOnly ??= true; S.opts.strictNet ??= false; S.opts.lazy ??= true; S.opts.fullEnd ??= "loop"; S.opts.slideAuto ??= true; S.opts.slideSec ??= 10; S.rules ||= []; S.opts.grid ??= false; S.opts.amb ??= true; S.opts.seasonLight ??= true; S.opts.face ??= ""; S.opts.tod ??= true; S.opts.tilt ??= true; S.opts.shakeScope ??= "all"; S.opts.pipCorner ??= "br"; S.hist ||= []; S.opts.autoColor ??= "raw"; S.opts.pip ??= true; S.opts.shake ??= !(/iP(hone|ad|od)/.test(navigator.userAgent)); S.goals ||= { seen: 10, hearts: 5, cms: 2 }; S.opts.sfx ??= false; S.cheer ||= {}; S.opts.collapsed ||= {}; S.opts.calm ??= false; S.opts.startTl ??= ""; S.opts.split ??= false; S.opts.splitTl ??= ""; S.opts.secretStealth ??= false; S.opts.volume ??= 100; S.opts.fontSize ??= "m"; S.opts.oneHand ??= false; S.trash ||= []; S.opts.modeTime ??= false; S.opts.nightFrom ??= 19; S.opts.nightTo ??= 6; S.firstUseAt ??= S.lastExportAt || Date.now(); if (!S.exportReal) delete S.lastExportAt; S.opts.tlMotion ??= "spring"; S.opts.vibe ??= true; S.opts.resume ??= true; S.pos ||= {}; }
 optDefaults();
 const fileUrls = new Map(); // 手元から追加したファイル（IndexedDB から復元）
-function save() { if (bootNewer) return false; try { S.schema = Math.max(+S.schema || 1, SCHEMA); localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch { try { toast("保存しきれなかったよ。アイコンの画像を外すか、小さい画像にしてね"); } catch {} return false; } }
+let otherTabNewer = false;
+function save() { if (bootNewer || otherTabNewer) return false; try { S.schema = Math.max(+S.schema || 1, SCHEMA); localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch { try { toast("保存しきれなかったよ。アイコンの画像を外すか、小さい画像にしてね"); } catch {} return false; } }
 /* 手元ファイルの保存先: IndexedDB（ブラウザ内） */
 const idb = (() => {
   let dbp = null;
@@ -2890,7 +2893,7 @@ function toast(msg, undo) {
 /* 続きから: タイムラインごとにスクロール位置を覚える */
 function rememberPos() { if (S.active) { S.pos[S.active] = Math.round(scrollY); } }
 function restorePos() { const y = S.opts.resume ? (S.pos[S.active] || 0) : 0; window.scrollTo({ top: y }); requestAnimationFrame(() => window.scrollTo({ top: y })); }
-(() => { let t = 0; addEventListener("scroll", () => { clearTimeout(t); t = setTimeout(() => { if (!$("#tt").classList.contains("open") && $("#viewer").hidden) { rememberPos(); save(); } }, 400); }, { passive: true }); })();
+(() => { let t = 0; addEventListener("scroll", () => { clearTimeout(t); t = setTimeout(() => { if (!$("#tt").classList.contains("open") && $("#viewer").hidden && S.active) { const y = Math.round(scrollY); if (Math.abs((S.pos[S.active] || 0) - y) < 40) return; rememberPos(); save(); } }, 600); }, { passive: true }); })();
 /* タイムライン切り替えの動き（設定で3種類から選べる） */
 function tlMotion(dir) {
   const f = $("#feed"); if (!dir || reduceMotion() || !f.animate) return;
@@ -3369,7 +3372,10 @@ async function askPersist(user) { const el = $("#persistState"); try {
   if (navigator.storage.estimate && el) { const q = await navigator.storage.estimate(); if (q.quota) el.textContent += `（使っている量: ${Math.max(1, Math.round(q.usage / 1048576))}MB）`; }
 } catch {} }
 /* 別のタブで変わったら読み直す（古いタブが新しいデータを上書きしないように） */
-addEventListener("storage", e => { if (e.key !== KEY || !e.newValue) return; try { const d = JSON.parse(e.newValue); if (!isData(d)) return; sessionStorage.setItem("mytl-beta-otherTab", "1"); location.reload(); } catch {} });
+/* 別のタブが保存したとき: 裏にいるタブは保存を止めて、表に戻ったときに読み直す。見ている画面はいきなり読み直さない（v1.3 試作5） */
+const reloadForOtherTab = () => { sessionStorage.setItem("mytl-beta-otherTab", "1"); location.reload(); };
+addEventListener("storage", e => { if (e.key !== KEY || !e.newValue) return; try { const d = JSON.parse(e.newValue); if (!isData(d)) return; otherTabNewer = true; if (!document.hidden && !document.hasFocus()) reloadForOtherTab(); else if (!document.hidden) toast("別のタブで内容が変わったよ。このタブは保存を止めたから、開き直すと最新になるよ"); } catch {} });
+document.addEventListener("visibilitychange", () => { if (!document.hidden && otherTabNewer) reloadForOtherTab(); });
 /* iPhone・iPad: Safari のまま使っていたら「ホーム画面に追加」をすすめる（7日ルールで消されないように） */
 function maybeHomeHint() { const ios = /iP(hone|ad|od)/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
   const standalone = navigator.standalone || matchMedia("(display-mode: standalone)").matches;
@@ -5462,7 +5468,7 @@ function paintVBottom(p) {
   const n = galN(p), th = $("#vThumbs"); th.hidden = n < 2;
   if (n > 1) { th.innerHTML = Array.from({ length: n }, (_, i) => `<button type="button" data-vsub="${i}" class="${i === vSub ? "on" : ""}" aria-label="${i + 1}枚目"><img src="${galSrc(p, i)}" alt="" loading="lazy"></button>`).join(""); th.querySelector(".on")?.scrollIntoView({ inline: "center", block: "nearest" }); }
   const cm = (p.comments || []).length, lk = p.likes || 0, cool = heartState(p).cooling, bm = !!((p.marks && p.marks.length) || p.saved);
-  $("#vActs").innerHTML = `<button type="button" data-va="cm" aria-label="コメント（${cm}）"><svg class="i"><use href="#i-comment"/></svg>${cm || ""}</button><button type="button" data-va="rt" class="${p.reposted ? "on" : ""}" aria-label="リツイート（${p.reposts || 0}）" aria-haspopup="menu"><svg class="i"><use href="#i-repost"/></svg>${p.reposts || ""}</button><button type="button" data-va="like" class="${cool ? "on" : ""}" aria-label="ハート（${lk}）"><svg class="i"><use href="#i-heart"/></svg>${lk || ""}</button><button type="button" data-va="bm" class="sq bm ${bm ? "on" : ""}" aria-label="しおり"><svg class="i"><use href="#i-bookmark"/></svg></button><button type="button" data-va="sh" class="sq" aria-label="共有"><svg class="i"><use href="#i-share"/></svg></button>`;
+  $("#vActs").innerHTML = `<button type="button" data-va="cm" aria-label="コメント（${cm}）"><svg class="i"><use href="#i-comment"/></svg>${cm || ""}</button><button type="button" data-va="rt" class="${p.reposted ? "on" : ""}" aria-label="リツイート（${p.reposts || 0}）" aria-haspopup="menu"><svg class="i"><use href="#i-repost"/></svg></button><button type="button" data-va="like" class="${cool ? "on" : ""}" aria-label="ハート（${lk}）"><svg class="i"><use href="#i-heart"/></svg></button><button type="button" data-va="bm" class="sq bm ${bm ? "on" : ""}" aria-label="しおり"><svg class="i"><use href="#i-bookmark"/></svg></button><button type="button" data-va="sh" class="sq" aria-label="共有"><svg class="i"><use href="#i-share"/></svg></button>`;
 }
 $("#vThumbs").addEventListener("click", e => { const b = e.target.closest("[data-vsub]"); if (!b) return; vSub = +b.dataset.vsub; vRender(); });
 $("#vCap").addEventListener("click", e => e.currentTarget.classList.toggle("open"));
@@ -5492,7 +5498,7 @@ function paintVCtl() {
   $("#vcLoop").classList.toggle("on", S.opts.fullEnd !== "next"); $("#vcLoop").setAttribute("aria-label", S.opts.fullEnd === "next" ? "見終わったら次へ（押すとループ）" : "見終わったらループ（押すと次へ）"); $("#vcLoop").title = $("#vcLoop").getAttribute("aria-label");
   $("#vAB").classList.toggle("on", !!pl.ab); $("#vSeek").classList.toggle("ab-on", !!(pl.ab && !pl.ab.clip));
   const sig = JSON.stringify([p.marks || [], pl.ab || 0, Math.round(span)]); if (sig !== vcMarkSig) { vcMarkSig = sig; const tr = $("#vSeek .vs-tr"); tr.querySelectorAll(".vs-mk, .vs-ab, .vs-h").forEach(x => x.remove());
-    (p.marks || []).forEach((m, i) => { if (m.t <= span) tr.insertAdjacentHTML("beforeend", `<button type="button" class="vs-mk${m.note ? " memo" : ""}" data-vsm="${i}" style="left:${m.t / span * 100}%" aria-label="${fmt(m.t)} の印${m.note ? "「" + esc(m.note) + "」" : ""}（長押しでメモ・消す）" title="${fmt(m.t)}${m.note ? " " + esc(m.note) : ""}"></button>`); });
+    (p.marks || []).forEach((m, i) => { if (m.t <= span) tr.insertAdjacentHTML("beforeend", `<i class="vs-mk${m.note ? " memo" : ""}" data-vsm="${i}" style="left:${m.t / span * 100}%" aria-label="${fmt(m.t)} の印${m.note ? "「" + esc(m.note) + "」" : ""}（長押しでメモ・消す）" title="${fmt(m.t)}${m.note ? " " + esc(m.note) : ""}"></i>`); });
     if (pl.ab && !pl.ab.clip) tr.insertAdjacentHTML("beforeend", `<i class="vs-ab" style="left:${pl.ab.a / span * 100}%;width:${(pl.ab.b - pl.ab.a) / span * 100}%"></i><b class="vs-h" data-vsh="a" style="left:${pl.ab.a / span * 100}%">A</b><b class="vs-h" data-vsh="b" style="left:${pl.ab.b / span * 100}%">B</b>`); }
 }
 setInterval(() => { if (!$("#viewer").hidden) paintVCtl(); }, 250);
@@ -5506,7 +5512,7 @@ function vcAddMark() { const w = vW(), p = vList[vIdx]; if (!w || !p) return; co
   if (p.marks.length >= MARK_MAX) return toast(`印は1本に${MARK_MAX}個までだよ。黄色い点を長押しして消してね`);
   if (p.marks.some(m => Math.abs(m.t - t) < 2)) return toast("その場面にはもう印があるよ");
   p.marks.push({ t }); p.marks.sort((x, y) => x.t - y.t); save(); vcRefresh(); haptic("tick"); sfx("pop"); toast(`${fmt(t)} に印を付けたよ（バーの黄色い点）`);
-  const i = p.marks.findIndex(m => m.t === t), el = $(`#vSeek .vs-mk[data-vsm="${i}"]`); el?.animate([{ transform: "translate(-50%,-50%) scale(2.2)", opacity: 0 }, { transform: "translate(-50%,-50%) scale(1)", opacity: 1 }], { duration: 300, easing: "cubic-bezier(.3,1.5,.5,1)" }); }
+  const i = p.marks.findIndex(m => m.t === t), el = $(`#vSeek .vs-mk[data-vsm="${i}"]`); el?.animate([{ opacity: 0, boxShadow: "0 0 0 10px rgba(255,212,0,.5)" }, { opacity: 1, boxShadow: "0 0 0 2px #000" }], { duration: 300, easing: "cubic-bezier(.3,1.5,.5,1)" }); }
 function vcEditMark(i) { const p = vList[vIdx], m = p && p.marks[i]; if (!m) return; const w = vW(), pl = w && players.get(w);
   hub.open(`印 ${fmt(m.t)}`, `<div class="fd-box"><label class="fd-name">ひとことメモ<input type="text" id="vmMemo" class="sel" maxlength="16" value="${esc(m.note || "")}" placeholder="例: ここが神"></label>
     <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn-accent" id="vmOk">保存</button><button type="button" class="btn-ghost sm" id="vmGo">ここから再生</button><button type="button" class="btn-ghost sm danger" id="vmDel">印を消す</button></div></div>`, b => {
@@ -5525,19 +5531,21 @@ $("#vcTime").addEventListener("click", () => { vcRemain = !vcRemain; paintVCtl()
 $("#vcRate").addEventListener("click", () => { const w = vW(), pl = w && players.get(w); if (!pl || !pl.setRate) return; const R = [1, 1.5, 2, .5].filter(r => !pl.maxRate || r <= pl.maxRate), n = R[(R.indexOf(pl.rate || 1) + 1) % R.length]; setRateUI(w, pl, n, n !== 1); paintVCtl(); toast(n === 1 ? "ふつうの速さ" : `${n}倍速`); });
 $("#vcMark").addEventListener("click", vcAddMark);
 $("#vcSnd").addEventListener("click", () => { AudioKit.get(); setSoundAll(!S.opts.sound); paintVCtl(); toast(S.opts.sound ? "音声オン" : "音声オフ"); });
-$("#vcFull").addEventListener("click", () => $("#vFull").click());
+
 $("#vcLoop").addEventListener("click", () => { $("#vEnd").click(); paintVCtl(); toast(S.opts.fullEnd === "next" ? "見終わったら次の動画へ" : "見終わったらループ"); });
 $("#vAB").addEventListener("click", () => { const w = vW(); if (w) { toggleAB(w); vcRefresh(); } });
 $("#vMarkList").addEventListener("click", () => { $("#vMenu").hidden = true; vcMarkList(); });
 /* シークバー: ドラッグで移動、印はタップで飛ぶ・長押しで編集、A・Bはドラッグで動かす */
 (() => { const bar = $("#vSeek"); let d = null, lt = 0;
+  /* 指の位置から18px以内にある一番近い印（区間リピート中は印を隠しているので探さない） */
+  const nearMark = x => { if (bar.classList.contains("ab-on")) return null; let best = null, bd = 18; bar.querySelectorAll(".vs-mk").forEach(m => { const r = m.getBoundingClientRect(), dd = Math.abs(r.left + r.width / 2 - x); if (dd < bd) { bd = dd; best = +m.dataset.vsm; } }); return best; };
   const at = x => { const r = bar.querySelector(".vs-tr").getBoundingClientRect(), w = vW(); return Math.max(0, Math.min(1, (x - r.left) / r.width)) * (w ? w._span() : 0); };
   bar.addEventListener("pointerdown", e => { const w = vW(), pl = w && players.get(w); if (!pl) return; e.preventDefault(); e.stopPropagation(); try { bar.setPointerCapture(e.pointerId); } catch {}
-    const h = e.target.closest("[data-vsh]"), mk = e.target.closest("[data-vsm]");
-    d = { w, pl, h: h && h.dataset.vsh, mk: mk && +mk.dataset.vsm, x: e.clientX, moved: false, long: false }; bar.classList.add("drag");
+    const h = e.target.closest("[data-vsh]"), mk = h ? null : nearMark(e.clientX);
+    d = { w, pl, h: h && h.dataset.vsh, mk, x: e.clientX, moved: false, long: false }; bar.classList.add("drag");
     if (d.mk != null) { lt = setTimeout(() => { if (d && !d.moved) { d.long = true; haptic("tick"); vcEditMark(d.mk); } }, 500); return; }
     if (!d.h) { (w._seekTo || pl.seek.bind(pl))(at(e.clientX)); paintVCtl(); } });
-  bar.addEventListener("pointermove", e => { if (!d) return; if (Math.abs(e.clientX - d.x) > 6) d.moved = true; if (!d.moved) return;
+  bar.addEventListener("pointermove", e => { if (!d) return; if (Math.abs(e.clientX - d.x) > (d.mk != null ? 14 : 6)) d.moved = true; if (!d.moved) return;
     if (d.h) { const v = at(e.clientX), ab = d.pl.ab; if (d.h === "a") ab.a = Math.min(v, ab.b - 2); else ab.b = Math.max(v, ab.a + 2); vcRefresh(); return; }
     clearTimeout(lt); (d.w._seekTo || d.pl.seek.bind(d.pl))(at(e.clientX)); paintVCtl(); });
   const up = () => { if (!d) return; clearTimeout(lt); const o = d; d = null; bar.classList.remove("drag");

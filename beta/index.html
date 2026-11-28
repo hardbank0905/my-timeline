@@ -475,12 +475,12 @@ body.locked > :not(#lockScreen):not(svg){filter:blur(12px)}
 /* フォルダ（v1.2） */
 .tab-grp{position:relative;font-size:14px;gap:6px;padding:0 10px 0 14px;color:var(--fg);font-weight:800;letter-spacing:0;border-radius:0}
 .tab-grp .i{width:18px;height:18px;color:var(--accent)}.tab-grp small,.nav-group small{font-size:11px;font-weight:800;color:var(--muted);background:color-mix(in srgb,var(--fg) 8%,transparent);border-radius:99px;padding:0 6px;line-height:18px}
-.tab-grp .caret{color:var(--muted);font-size:12px}.tab-grp.on{color:var(--accent)}
+.tab-grp .caret,.nav-group .caret{color:var(--muted);font-size:12px;display:inline-grid;place-items:center;min-width:30px;height:34px;margin:-8px -6px -8px 0;border-radius:8px;cursor:pointer}.tab-grp .caret:hover,.nav-group .caret:hover{background:color-mix(in srgb,var(--fg) 8%,transparent)}.nav-group .caret{margin:-8px 0 -8px -8px}.tab-grp.on{color:var(--accent)}
 .tab.in-grp{background:color-mix(in srgb,var(--accent) 6%,transparent);font-size:.95em}
 .nav-group .i{width:16px;height:16px;color:var(--accent)}.nav-group.on{color:var(--accent)}
-.tab.lifting{opacity:.35}.drop-on{outline:3px dashed var(--accent);outline-offset:-6px;border-radius:12px;background:color-mix(in srgb,var(--accent) 14%,transparent)!important}
-.tab-ghost{position:fixed;z-index:200;pointer-events:none;transform:translate(-50%,-130%) rotate(-3deg);background:var(--bg);color:var(--fg);border:2px solid var(--line);border-radius:14px;padding:8px 14px;box-shadow:0 12px 30px rgba(0,0,0,.3);display:flex;flex-direction:column;align-items:center;gap:2px;white-space:nowrap}
-.tab-ghost b{font-size:16px}.tab-ghost small{font-size:12px;color:var(--muted);font-weight:700}.tab-ghost.ok{border-color:var(--accent)}.tab-ghost.ok small{color:var(--accent)}
+.tab.lifting,.tab-grp.lifting,.nav-item.lifting,.nav-group.lifting{opacity:.35}.drop-on{outline:3px dashed var(--accent);outline-offset:-6px;border-radius:999px;background:color-mix(in srgb,var(--accent) 14%,transparent)!important}
+.tab-ghost{position:fixed;z-index:200;pointer-events:none;transform:translate(-50%,-130%);background:var(--bg);color:var(--fg);border:2px solid var(--line);border-radius:999px;padding:8px 20px;box-shadow:0 12px 30px rgba(0,0,0,.3);display:flex;flex-direction:column;align-items:center;gap:2px;white-space:nowrap}
+.tab-ghost b{font-size:16px}.tab-ghost small{font-size:12px;color:var(--muted);font-weight:700}.tab-ghost.ok{border-color:var(--accent)}.tab-ghost::after{content:"";position:absolute;left:50%;bottom:-8px;width:12px;height:12px;background:inherit;border:inherit;border-width:0 2px 2px 0;border-radius:0 0 4px 0;transform:translateX(-50%) rotate(45deg)}.tab-ghost.ok small{color:var(--accent)}
 .tl-radial.tap{pointer-events:auto}.tl-radial button.rad-item{background:none;border:0;padding:0;cursor:pointer;font:inherit}.rad-item.on .mini-av{outline:3px solid #fff}
 .fd-box{display:flex;flex-direction:column;gap:12px}.fd-name{display:flex;flex-direction:column;gap:6px;font-weight:700}.fd-name input{font-size:18px;padding:10px 14px;border-radius:12px}
 .fd-tips{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.6;color:var(--muted)}.fd-tips b{color:var(--fg)}
@@ -1410,7 +1410,7 @@ body.tl-picking .tab.picked,body.tl-picking .tab-grp.picked,body.tl-picking .nav
       <h2>タイムライン管理</h2>
       <p>名前はその場で書き換え。左のつまみをドラッグか ↑↓ で並べ替え。</p>
       <ul class="tl-list" id="tlList"></ul><datalist id="grpList"></datalist>
-      <p class="note" style="margin:0">タブを長押しするとメニュー（選んで選択・名前変更・シークレット・削除）。長押ししたままほかのタブに重ねると「グループ」にまとまるよ。下の欄に同じグループ名を入れてもOK。グループのタブを押すと中をまぜて見られて、もう一度押すと中のタブが開くの</p>
+      <p class="note" style="margin:0">タブを長押しするとメニュー（選んで選択・名前変更・シークレット・削除）。長押ししたままほかのタブに重ねると「グループ」にまとまるよ。下の欄に同じグループ名を入れてもOK。グループのタブを押すと中をまぜて見られるよ。名前の横の ▾ を押すと、中のタブをしまえる（▸ でまた出せる）の</p>
       <form class="add-row" id="addForm">
         <input id="addName" placeholder="新しいタイムライン名" maxlength="20">
         <button class="btn-accent" id="addBtn">追加</button>
@@ -1724,7 +1724,7 @@ body.tl-picking .tab.picked,body.tl-picking .tab-grp.picked,body.tl-picking .nav
   <div class="share-card acct-card">
     <div id="acBanner" hidden></div>
     <div class="ac-top"><span id="acAv"></span><span class="ac-top-r"><button type="button" class="ac-mini" id="acEdit" aria-label="アイコンとヘッダーを変える" title="アイコンとヘッダーを変える"><svg class="i"><use href="#i-brush"/></svg></button><button type="button" class="ac-mini" id="acClose" aria-label="閉じる"><svg class="i"><use href="#i-x"/></svg></button></span></div>
-    <div class="ac-name"><b id="acTitle">私</b><span>@me ・ <em style="color:#ff7a00;font-style:normal;font-weight:800">テスト版 v1.3 試作7（本番とはデータ別）</em></span></div>
+    <div class="ac-name"><b id="acTitle">私</b><span>@me ・ <em style="color:#ff7a00;font-style:normal;font-weight:800">テスト版 v1.3 試作8（本番とはデータ別）</em></span></div>
     <div class="ac-stats" id="acStats"></div>
     <nav class="ac-big" aria-label="メニュー">
       <button type="button" class="ac-item" id="acRec" aria-expanded="false"><svg class="i"><use href="#i-target"/></svg><b>今日の記録</b><small id="acRecSub"></small></button>
@@ -2719,16 +2719,16 @@ function renderTabs() {
   const lockMark = t => t.secret ? `<svg class="i sec-mark" aria-label="シークレット"><use href="#i-hide"/></svg>` : "";
   const mx = mixOn();
   const pk = pickState, pkT = id => pk && pk.tl.has(id) ? " picked" : "", pkG = g => pk && pk.grp.has(g) ? " picked" : "", chk = on => pk ? `<i class="pk-chk${on ? " on" : ""}" aria-hidden="true"></i>` : "";
-  const grpHead = (g, d, kind) => { const c = !!S.opts.collapsed[g], on = mx === g, n = TL.filter(x => inGroup(x, g)).length;
-    return kind === "tab" ? `<button class="tab-grp d${Math.min(d, 3)} ${c ? "closed" : ""} ${on ? "on" : ""}${pkG(g)}" data-grp="${esc(g)}" aria-expanded="${!c}" aria-selected="${on}" title="押すとまぜて見る・もう一度押すと中を開く・長押しでメニュー">${chk(pk && pk.grp.has(g))}<svg class="i"><use href="#i-folder"/></svg>${esc(g)}<small>${n}</small><span class="caret" aria-hidden="true">${c ? "▸" : "▾"}</span></button>`
-      : `<button class="nav-group d${Math.min(d, 3)} ${c ? "closed" : ""} ${on ? "on" : ""}${pkG(g)}" data-grp="${esc(g)}" aria-expanded="${!c}" style="--d:${d}">${chk(pk && pk.grp.has(g))}<span aria-hidden="true">${c ? "▸" : "▾"}</span><svg class="i"><use href="#i-folder"/></svg><span class="label">${esc(g)}</span><small>${n}</small></button>`; };
+  const grpHead = (g, d, kind) => { const c = !!S.opts.collapsed[g], n = TL.filter(x => inGroup(x, g)).length, act = tlById(S.active), on = mx === g || (!mx && c && act && inGroup(act, g) && !items.some(x => x.t === act));
+    return kind === "tab" ? `<button class="tab-grp d${Math.min(d, 3)} ${c ? "closed" : ""} ${on ? "on" : ""}${pkG(g)}" data-grp="${esc(g)}" aria-expanded="${!c}" aria-selected="${on}" title="押すとまぜて見る・もう一度押すと中を開く・長押しでメニュー">${chk(pk && pk.grp.has(g))}<svg class="i"><use href="#i-folder"/></svg>${esc(g)}<small>${n}</small><span class="caret" data-fold="${esc(g)}" role="button" aria-label="${c ? "中を出す" : "しまう"}" title="${c ? "中を出す" : "しまう"}">${c ? "▸" : "▾"}</span></button>`
+      : `<button class="nav-group d${Math.min(d, 3)} ${c ? "closed" : ""} ${on ? "on" : ""}${pkG(g)}" data-grp="${esc(g)}" aria-expanded="${!c}" style="--d:${d}">${chk(pk && pk.grp.has(g))}<span class="caret" data-fold="${esc(g)}" role="button" aria-label="${c ? "中を出す" : "しまう"}" title="${c ? "中を出す" : "しまう"}">${c ? "▸" : "▾"}</span><svg class="i"><use href="#i-folder"/></svg><span class="label">${esc(g)}</span><small>${n}</small></button>`; };
   /* 見せる順に並べる: [{ t, d }] か [{ g, d }]。閉じたグループの中は、いま見ているタイムラインだけ出す */
   const shut = g => gAncestors(g).some(x => S.opts.collapsed[x]);
   const gHidden = g => { const all = S.timelines.filter(t => inGroup(t, g)); return all.length && !all.some(t => !isHiddenTl(t)); };
   const items = [], walked = new Set(), walk = (g, d) => { if (walked.has(g)) return; walked.add(g);
-    TL.filter(t => grpOf(t) === g).forEach(t => { if (!g || !shut(g) || (t.id === S.active && !mx)) items.push({ t, d }); });
+    TL.filter(t => grpOf(t) === g).forEach(t => { if (!g || !shut(g)) items.push({ t, d }); });
     gKids(g).forEach(k => { if (gHidden(k.name) || (g && shut(g))) return; items.push({ g: k.name, d }); walk(k.name, d + 1); }); };
-  walk("", 0); TL.forEach(t => { if (!items.some(x => x.t === t)) items.push({ t, d: 0 }); });
+  walk("", 0); TL.forEach(t => { if (!items.some(x => x.t === t) && !grpOf(t)) items.push({ t, d: 0 }); });
   const isOn = t => t.id === S.active && !mx;
   const un = t => { const n = unseenOf(t.id); return n ? `<span class="unseen" data-un="${t.id}" aria-label="まだ見てない ${n} 件">${n > 99 ? "99+" : n}</span>` : `<span class="unseen" data-un="${t.id}" hidden></span>`; };
   $("#tabs").innerHTML = items.map(({ t, g, d }) => g ? grpHead(g, d, "tab") : `<button class="tab ${isOn(t) ? "on" : ""} ${d ? "in-grp d" + Math.min(d, 3) : ""}${pkT(t.id)}" role="tab" aria-selected="${isOn(t)}" data-tl="${t.id}">${chk(pk && pk.tl.has(t.id))}${esc(t.name)}${lockMark(t)}${un(t)}</button>`).join("") + `<button class="tab tab-add" id="tabAdd" aria-label="タイムラインを追加">＋</button>`;
@@ -2988,7 +2988,9 @@ function stepTimeline(d) {
     acc += e.deltaX; if (Math.abs(acc) > 140) { stepTimeline(acc > 0 ? 1 : -1); acc = 0; lock = Date.now() + 700; }
   }, { passive: true });
 })();
+function foldGrp(k) { S.opts.collapsed[k] = !S.opts.collapsed[k]; save(); renderTabs(); haptic("tick"); }
 document.addEventListener("click", e => {
+  const f = e.target.closest("[data-fold]"); if (f && !pickState) { e.stopPropagation(); return foldGrp(f.dataset.fold); }
   const g = e.target.closest("[data-grp]"); if (g) { const k = g.dataset.grp; if (!orderedTLs().some(t => inGroup(t, k))) { toast(`グループ「${k}」はまだ空っぽだよ。タブを長押しして、このグループに重ねると入るよ`); return; } if (mixOn() !== k) openMix(k); else { S.opts.collapsed[k] = !S.opts.collapsed[k]; save(); renderTabs(); } return; }
   const tab = e.target.closest("[data-tl].tab, .nav-item[data-tl]"); if (tab) return setActive(tab.dataset.tl);
 });
@@ -3195,12 +3197,14 @@ function popMenu(anchor, title, items, done) {
 function tabMenu(el) {
   if (!el) return; const isG = !!el.dataset.grp, id = isG ? el.dataset.grp : el.dataset.tl, t = !isG && tlById(id); if (!isG && !t) return;
   const items = [["pick", "選んで選択", "i-select"], ["rename", "名前変更", "i-edit"]];
+  if (isG) items.push(["fold", S.opts.collapsed[id] ? "中を出す" : "中をしまう", "i-folder"]);
   if (!isG) items.push(["secret", t.secret ? "シークレットをやめる" : "シークレットモード", "i-hide"]);
   items.push(["del", "削除", "i-trash", "danger"]);
   popMenu(el, isG ? `📁 ${esc(id)}` : esc(t.name), items, k => {
     if (k === "pick") return tlPickStart(isG ? { grp: id } : { tl: id });
     if (k === "rename") return isG ? askFolder(id) : renameTl(t);
     if (k === "secret") return secretFromMenu(t);
+    if (k === "fold") return foldGrp(id);
     if (k === "del") return isG ? askDelGroup(id) : askTrashTls([t.id]);
   });
 }

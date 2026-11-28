@@ -17,7 +17,7 @@
 <title>【テスト版】マイタイムライン</title>
 </head>
 <body>
-<div id="betaRibbon" style="position:fixed;left:50%;top:calc(env(safe-area-inset-top,0px) + 2px);transform:translateX(-50%);z-index:9999;background:#ff7a00;color:#fff;font:800 11px/1 system-ui,sans-serif;padding:4px 10px;border-radius:99px;pointer-events:none;box-shadow:0 2px 6px rgba(0,0,0,.3)">テスト版 v1.2.0（本番とはデータ別）</div>
+<div id="betaRibbon" aria-hidden="true" style="position:fixed;left:0;right:0;top:0;height:3px;background:#ff7a00;z-index:9999;pointer-events:none"></div>
 
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -555,6 +555,19 @@ body.locked > :not(#lockScreen):not(svg){filter:blur(12px)}
 .lk-hdr{height:84px;border-radius:12px;background-size:cover;display:grid;place-items:center;font-size:12px;color:#fff;text-shadow:0 1px 3px rgba(0,0,0,.5)}
 .acct-card{padding:0!important;overflow:hidden auto}
 .ac-banner{position:relative;height:130px;background-size:cover;flex:none}
+/* v1.3 メニュー: 上にアイコンと名前、大きいアイコン＋太字の項目、線の下に小さい項目 */
+.ac-top{display:flex;align-items:flex-start;justify-content:space-between;padding:calc(18px + env(safe-area-inset-top,0px)) 20px 0}
+.ac-top .ac-av,.ac-top .tl-av{width:56px!important;height:56px!important;font-size:22px;box-shadow:none}
+.ac-top-r{display:flex;gap:10px}.ac-mini{width:38px;height:38px;border-radius:50%;border:1px solid var(--line);background:none;color:var(--fg);display:grid;place-items:center;cursor:pointer}.ac-mini .i{width:20px;height:20px}
+.acct-card .ac-name{padding:10px 20px 0;gap:2px}.acct-card .ac-name b{font-size:20px;font-weight:800}.acct-card .ac-name span{font-size:15px}
+.ac-stats{padding:8px 20px 6px;font-size:15px;color:var(--muted)}.ac-stats b{color:var(--fg);font-weight:800;margin-right:3px}.ac-stats span+span{margin-left:16px}
+.ac-big{display:flex;flex-direction:column;padding:8px 0 10px}
+.ac-item{display:flex;align-items:center;gap:20px;padding:13px 22px;background:none;border:0;color:var(--fg);font:inherit;text-align:left;cursor:pointer}
+.ac-item .i{width:27px;height:27px;flex:none;stroke-width:1.8}.ac-item b{font-size:21px;font-weight:800;letter-spacing:.01em;white-space:nowrap}.ac-item small{margin-left:auto;color:var(--muted);font-size:12px;text-align:right;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
+.ac-item:hover,.ac-sm:hover{background:var(--bg-hover)}
+.acct-card #acRecBox{padding:0 20px 8px}
+.ac-small{display:flex;flex-direction:column;border-top:1px solid var(--line);margin:4px 20px 0;padding:12px 0 calc(16px + env(safe-area-inset-bottom,0px))}
+.ac-sm{display:flex;align-items:center;gap:18px;padding:11px 2px;background:none;border:0;color:var(--fg);font:inherit;font-size:17px;text-align:left;cursor:pointer}.ac-sm .i{width:22px;height:22px;flex:none}
 .ac-x{position:absolute;right:10px;top:10px;width:32px;height:32px;border-radius:50%;background:rgba(0,0,0,.45);color:#fff;font-size:20px;line-height:1}
 .ac-me{display:flex;align-items:flex-end;gap:12px;padding:0 18px;margin-top:-34px;position:relative}
 .ac-av{width:72px!important;height:72px!important;font-size:28px;box-shadow:0 0 0 4px var(--bg)}
@@ -1190,7 +1203,26 @@ body.sheet-open{overflow:hidden}
 .v-timer{flex:1;max-width:240px;height:3px;background:rgba(255,255,255,.2);border-radius:2px;overflow:hidden;margin:0 12px}
 .v-timer i{display:block;height:100%;width:0;background:#fff}
 @keyframes vtimer{from{width:0}to{width:100%}}
-.v-cap{padding:10px max(16px,env(safe-area-inset-right,0px)) calc(14px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px));font-size:14px;opacity:.9;white-space:pre-wrap;text-align:center}
+.v-cap{padding:6px 4px 0;font-size:14px;opacity:.9;white-space:pre-wrap;text-align:left;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;cursor:pointer}.v-cap.open{-webkit-line-clamp:unset;max-height:30vh;overflow:auto}.v-cap:empty{display:none}
+/* v1.3 全画面: 黒の上に画像。左上←・右上⋯、下にサムネ・丸ボタン・コメント欄 */
+.viewer .v-top{position:absolute;left:0;right:0;top:0;z-index:6;align-items:center;pointer-events:none;background:linear-gradient(rgba(0,0,0,.45),transparent)}.viewer .v-top>*{pointer-events:auto}
+.viewer #vCount{font-size:13px;opacity:.8;flex:1;text-align:center}
+.v-round{width:44px!important;height:44px!important;border-radius:50%!important;background:rgba(40,40,40,.75)!important;display:grid;place-items:center}.v-round .i{width:22px;height:22px}
+.v-more-wrap{position:relative}.v-menu{position:absolute;right:0;top:52px;display:flex;flex-direction:column;gap:6px;background:#202327;border-radius:16px;padding:8px;box-shadow:0 10px 30px rgba(0,0,0,.5);min-width:220px;z-index:9}
+.v-menu .v-chip{width:100%;text-align:left;border-radius:10px;justify-content:flex-start}.v-menu .v-chip[hidden]{display:none}
+.v-bottom{display:flex;flex-direction:column;gap:10px;padding:6px max(14px,env(safe-area-inset-right,0px)) calc(12px + env(safe-area-inset-bottom,0px)) max(14px,env(safe-area-inset-left,0px));z-index:5}
+.v-thumbs{display:flex;gap:6px;overflow-x:auto;justify-content:safe center;padding:2px 0;scrollbar-width:none}.v-thumbs::-webkit-scrollbar{display:none}
+.v-thumbs button{flex:none;width:52px;height:52px;border-radius:6px;overflow:hidden;border:2px solid transparent;padding:0;background:#222;opacity:.6;cursor:pointer}.v-thumbs button.on{border-color:#fff;opacity:1}.v-thumbs img{width:100%;height:100%;object-fit:cover;display:block}
+.v-acts{display:flex;gap:8px}
+@media (min-width:700px){.v-bottom>*{width:100%;max-width:600px;margin-inline:auto}.v-cap{max-width:600px}}
+.viewer.ui-off .v-top,.viewer.ui-off .v-bottom,.viewer.ui-off .v-timer{opacity:0;pointer-events:none;transition:opacity .2s}.viewer .v-top,.viewer .v-bottom{transition:opacity .2s}
+.v-acts button{flex:1 1 0;min-width:0;height:46px;border-radius:99px;border:0;background:#202327;color:#e7e9ea;display:flex;align-items:center;justify-content:center;gap:6px;font:inherit;font-size:15px;font-weight:700;cursor:pointer}
+.v-acts button.sq{flex:0 0 46px}.v-acts .i{width:21px;height:21px}.v-acts button.on{color:#f91880}.v-acts button.bm.on{color:#1d9bf0}
+.v-reply{height:48px;border-radius:99px;border:0;background:#202327;color:#8b98a5;font:inherit;font-size:16px;text-align:left;padding:0 20px;cursor:text}
+.viewer.zoomed .v-bottom,.viewer.zoomed .v-top{opacity:0;pointer-events:none;transition:opacity .2s}
+.viewer.dragging .v-stage .media,.viewer.dragging .v-stage{background:transparent!important}.viewer.dragging .v-bottom,.viewer.dragging .v-top,.viewer.dragging .v-nav{opacity:0;transition:opacity .15s}
+@media (pointer:coarse){.v-nav{display:none}}
+.viewer .v-stage .play-state{display:none}
 @media (prefers-reduced-motion: reduce){*{transition:none!important;animation:none!important}}
 </style>
 
@@ -1457,14 +1489,20 @@ body.sheet-open{overflow:hidden}
 <div class="share hub" id="hubSheet" hidden role="dialog" aria-modal="true" aria-labelledby="hubTitle"><div class="share-card hub-card"><div class="lk-head"><h2 id="hubTitle"></h2><button type="button" class="icon-btn" id="hubClose" aria-label="閉じる" style="color:var(--fg)"><svg class="i"><use href="#i-x"/></svg></button></div><div id="hubBody"></div></div></div>
 
 <div class="viewer" id="viewer" hidden aria-label="全画面表示">
-  <div class="v-top"><span id="vCount"></span><div class="v-timer" id="vTimer" hidden><i></i></div>
-    <div class="grp"><button class="v-chip" id="vSlideBtn" title="画像の自動送り" hidden></button><button class="v-chip" id="vEnd" title="見終わったときの動き"></button><button class="v-btn" id="vFull" aria-label="ブラウザの全画面"><svg class="i"><use href="#i-expand"/></svg></button><button class="v-btn" id="vClose" aria-label="閉じる"><svg class="i"><use href="#i-x"/></svg></button></div></div>
+  <div class="v-top"><button class="v-btn v-round" id="vClose" aria-label="閉じる"><svg class="i"><use href="#i-left"/></svg></button><span id="vCount"></span><div class="v-timer" id="vTimer" hidden><i></i></div>
+    <span class="v-more-wrap"><button class="v-btn v-round" id="vMore" aria-label="そのほか" aria-expanded="false"><svg class="i"><use href="#i-more"/></svg></button>
+      <div class="v-menu" id="vMenu" hidden role="menu"><button class="v-chip" id="vSlideBtn" title="画像の自動送り" hidden role="menuitem"></button><button class="v-chip" id="vEnd" title="見終わったときの動き" role="menuitem"></button><button class="v-chip" id="vFull" role="menuitem">ブラウザの全画面</button><button class="v-chip" id="vGoPost" role="menuitem">タイムラインのこのツイートへ</button></div></span></div>
   <div class="v-stage" id="vStage"></div>
   <button class="v-btn v-nav prev" id="vPrev" aria-label="前へ"><svg class="i"><use href="#i-left"/></svg></button>
   <button class="v-btn v-nav next" id="vNext" aria-label="次へ"><svg class="i"><use href="#i-right"/></svg></button>
   <div class="radio-face" id="radioFace" aria-live="polite"></div>
   <div class="v-marks" id="vMarks"></div>
-  <div class="v-cap" id="vCap"></div>
+  <div class="v-bottom" id="vBottom">
+    <div class="v-cap" id="vCap"></div>
+    <div class="v-thumbs" id="vThumbs" hidden></div>
+    <div class="v-acts" id="vActs"></div>
+    <button type="button" class="v-reply" id="vReply">コメントを書く</button>
+  </div>
 </div>
 
 <div class="share look" id="lookSheet" hidden role="dialog" aria-modal="true" aria-labelledby="lkTitle">
@@ -1557,17 +1595,24 @@ body.sheet-open{overflow:hidden}
 <div class="tl-radial" id="tlRadial" hidden aria-hidden="true"></div>
 <div class="share acct" id="acctSheet" hidden role="dialog" aria-modal="true" aria-labelledby="acTitle">
   <div class="share-card acct-card">
-    <div class="ac-banner" id="acBanner"><button type="button" class="ac-x" id="acClose" aria-label="閉じる">×</button></div>
-    <div class="ac-me"><span id="acAv"></span><div class="ac-name"><b id="acTitle">私</b><span>@me</span></div><button type="button" class="btn-ghost sm" id="acEdit">アイコンとヘッダーを変える</button></div>
-    <div class="ac-sec"><h3>今日の記録</h3><div class="rings-box" id="ringsAcct"></div><div class="week-box" id="weekAcct"></div></div>
-    <div class="ac-links">
-      <button type="button" class="ac-link" id="acSecret"><span>🔒</span><b>シークレット</b><small id="acSecretSub"></small></button>
-      <button type="button" class="ac-link" id="acTrash"><span>🗑</span><b>ゴミ箱</b><small id="acTrashSub"></small></button>
-      <button type="button" class="ac-link" id="acSet"><span>⚙︎</span><b>設定</b><small>見た目・再生・データ</small></button>
-      <button type="button" class="ac-link" id="acNews"><span>✨</span><b>新しくなったこと</b><small id="acVer"></small></button>
-      <button type="button" class="ac-link" id="acData"><span>📖</span><b>データの守り方</b><small>書き出し・読み込み・機種変更</small></button>
-      <button type="button" class="ac-link" id="acPick"><span>🎲</span><b>今日の1本</b><small>迷ったらここ</small></button>
-    </div>
+    <div id="acBanner" hidden></div>
+    <div class="ac-top"><span id="acAv"></span><span class="ac-top-r"><button type="button" class="ac-mini" id="acEdit" aria-label="アイコンとヘッダーを変える" title="アイコンとヘッダーを変える"><svg class="i"><use href="#i-brush"/></svg></button><button type="button" class="ac-mini" id="acClose" aria-label="閉じる"><svg class="i"><use href="#i-x"/></svg></button></span></div>
+    <div class="ac-name"><b id="acTitle">私</b><span>@me ・ <em style="color:#ff7a00;font-style:normal;font-weight:800">テスト版 v1.3 試作1（本番とはデータ別）</em></span></div>
+    <div class="ac-stats" id="acStats"></div>
+    <nav class="ac-big" aria-label="メニュー">
+      <button type="button" class="ac-item" id="acRec" aria-expanded="false"><svg class="i"><use href="#i-target"/></svg><b>今日の記録</b><small id="acRecSub"></small></button>
+      <div class="ac-sec" id="acRecBox" hidden><div class="rings-box" id="ringsAcct"></div><div class="week-box" id="weekAcct"></div></div>
+      <button type="button" class="ac-item" id="acMarks"><svg class="i"><use href="#i-bookmark"/></svg><b>しおり</b></button>
+      <button type="button" class="ac-item" id="acSecret"><svg class="i"><use href="#i-hide"/></svg><b>シークレット</b><small id="acSecretSub"></small></button>
+      <button type="button" class="ac-item" id="acPick"><svg class="i"><use href="#i-dice"/></svg><b>今日の1本</b></button>
+      <button type="button" class="ac-item" id="acTrash"><svg class="i"><use href="#i-trash"/></svg><b>ゴミ箱</b><small id="acTrashSub"></small></button>
+      <button type="button" class="ac-item" id="acNews"><svg class="i"><use href="#i-bell"/></svg><b>新しくなったこと</b><small id="acVer"></small></button>
+    </nav>
+    <nav class="ac-small" aria-label="設定とヘルプ">
+      <button type="button" class="ac-sm" id="acSet"><svg class="i"><use href="#i-sliders"/></svg>設定とデータ</button>
+      <button type="button" class="ac-sm" id="acData"><svg class="i"><use href="#i-folder"/></svg>データの守り方</button>
+      <button type="button" class="ac-sm" id="acHelp"><svg class="i"><use href="#i-help"/></svg>ヘルプ</button>
+    </nav>
   </div>
 </div>
 <div class="share" id="secSheet" hidden role="dialog" aria-modal="true" aria-labelledby="secTitle">
@@ -3178,8 +3223,11 @@ const NEWS = [
   ]],
 ];
 function openNews() { hub.open("新しくなったこと", NEWS.map(([v, d, t, L]) => `<div class="news"><h3>v${v} <small>${d.replace(/-/g, "/")}・${t}</small></h3><ul>${L.map(x => `<li>${esc(x)}</li>`).join("")}</ul></div>`).join("")); S.seenVersion = APP_VERSION; save(); }
-$("#appVer").textContent = "v" + APP_VERSION; $("#acVer").textContent = "いまの版: v" + APP_VERSION;
+$("#appVer").textContent = "v" + APP_VERSION; $("#acVer").textContent = "v" + APP_VERSION;
 $("#newsBtn").addEventListener("click", () => { closeSide(); openNews(); });
+$("#acRec").addEventListener("click", e => { const b = $("#acRecBox"), open = b.hidden; b.hidden = !open; e.currentTarget.setAttribute("aria-expanded", open); if (open) paintRings(); });
+$("#acMarks").addEventListener("click", () => { closeAcct(); setTimeout(openMarks, 60); });
+$("#acHelp").addEventListener("click", () => { closeAcct(); setTimeout(() => openHelp(), 60); });
 $("#acNews").addEventListener("click", () => { closeAcct(); setTimeout(openNews, 60); });
 function maybeNews() { if (!S.guideSeen) { S.seenVersion = APP_VERSION; return; } if (S.seenVersion !== APP_VERSION) setTimeout(openNews, 900); }
 const backupDue = () => S.posts.length >= 3 && Date.now() - (S.lastExportAt || S.firstUseAt || Date.now()) >= WEEK;
@@ -4137,8 +4185,10 @@ function paintAcct() {
   const me = S.me; normLook(me); const b = $("#acBanner");
   b.style.backgroundImage = me.headerImg ? `url(${me.headerImg})` : `linear-gradient(135deg,${me.color},${me.fill2 || "#7856ff"})`; b.style.backgroundPosition = `50% ${me.headerPos ?? 50}%`;
   $("#acAv").innerHTML = tlAvatar(me, "ac-av"); $("#acTitle").textContent = me.name || "私";
+  $("#acStats").innerHTML = `<span><b>${S.posts.filter(visPost).length}</b>ツイート</span><span><b>${orderedTLs().length}</b>タイムライン</span>`;
+  const g = S.goals || {}, d = dayStat(); $("#acRecSub").textContent = `見た ${d.seen || 0}/${g.seen || 10}`;
   const hideSec = S.opts.secretStealth && !secretOn && secretReady(); $("#acSecret").hidden = hideSec;
-  $("#acSecretSub").textContent = secretOn ? "シークレットのホームを表示中" : S.timelines.some(t => t.secret) ? "合言葉で開く" : "タイムラインを隠せるよ";
+  $("#acSecretSub").textContent = secretOn ? "表示中" : "";
   $("#acTrashSub").textContent = S.trash.length ? `${S.trash.length}件` : "空っぽ";
 }
 $("#acClose").addEventListener("click", closeAcct); $("#acctSheet").addEventListener("click", e => { if (e.target.id === "acctSheet") closeAcct(); });
@@ -5055,7 +5105,7 @@ function renderComments() {
 }
 let cmReply = null; const cmOpen = new Set();
 function openComments(id) { if (cmId !== id) { cmReply = null; cmOpen.clear(); } cmId = id; renderComments(); $("#cmSheet").hidden = false; document.body.classList.add("sheet-open"); setTimeout(() => $("#cmText").focus(), 40); }
-function closeComments() { $("#cmSheet").hidden = true; cmId = null; if ($("#lookSheet").hidden) document.body.classList.remove("sheet-open"); }
+function closeComments() { $("#cmSheet").hidden = true; cmId = null; if (!$("#viewer").hidden && vList[vIdx]) paintVBottom(vList[vIdx]); if ($("#lookSheet").hidden) document.body.classList.remove("sheet-open"); }
 $("#cmClose").addEventListener("click", closeComments);
 $("#cmSheet").addEventListener("click", e => { if (e.target.id === "cmSheet") closeComments(); });
 document.addEventListener("keydown", e => { if (e.key === "Escape" && cmId) closeComments(); });
@@ -5101,7 +5151,7 @@ let vSeenT = 0;
 function vRender() {
   const stage = $("#vStage"); stopSlide(); updateVEnd(); clearTimeout(vSeenT);
   [...players.keys()].forEach(k => { if (stage.contains(k)) { players.get(k).pause(); players.delete(k); } });
-  stage.innerHTML = ""; vz.k = 1; vz.x = vz.y = 0; $("#viewer").classList.remove("zoomed");
+  stage.innerHTML = ""; vz.k = 1; vz.x = vz.y = 0; $("#viewer").classList.remove("zoomed"); if (!vImgPost(vList[vIdx])) $("#viewer").classList.remove("ui-off");
   const p = vList[vIdx]; if (!p) return closeViewer();
   const built = p.media ? buildMedia({ ...p, media: { ...p.media } }, "full") : buildEmbed(p, "full");
   const el = built.playEl || built.el;
@@ -5122,10 +5172,34 @@ function vRender() {
     }
   } else if (p.media || (p.embed && p.embed.kind === "image-url")) { startSlide(); const id = p.id; vSeenT = setTimeout(() => markSeen(id), 3000); }
   $("#vCount").textContent = `${vIdx + 1} / ${vList.length}` + (galN(p) > 1 ? `（画像 ${vSub + 1}/${galN(p)}）` : "");
-  $("#vCap").textContent = p.text || ""; renderVMarks(p); if (vRadio) paintRadio(p);
+  $("#vCap").textContent = p.text || ""; $("#vCap").classList.remove("open"); renderVMarks(p); if (vRadio) paintRadio(p); paintVBottom(p);
   $("#vPrev").disabled = vIdx === 0 && vSub === 0; $("#vNext").disabled = vIdx === vList.length - 1 && vSub >= galN(p) - 1;
 }
 let vStartAt = 0;
+/* 下の段: 画像が何枚もあるときはサムネの列、その下にコメント・再投稿・ハート・しおり・共有の丸ボタン */
+function galSrc(p, i) { if (p.media && p.media.kind === "file-gallery") return fileUrls.get(`${fileBase(p)}~${i}`) || ""; const x = xMediaOf(p); return x && x.kind === "url-gallery" ? x.srcs[i] : ""; }
+function paintVBottom(p) {
+  const n = galN(p), th = $("#vThumbs"); th.hidden = n < 2;
+  if (n > 1) { th.innerHTML = Array.from({ length: n }, (_, i) => `<button type="button" data-vsub="${i}" class="${i === vSub ? "on" : ""}" aria-label="${i + 1}枚目"><img src="${galSrc(p, i)}" alt="" loading="lazy"></button>`).join(""); th.querySelector(".on")?.scrollIntoView({ inline: "center", block: "nearest" }); }
+  const cm = (p.comments || []).length, lk = p.likes || 0, cool = heartState(p).cooling, bm = !!((p.marks && p.marks.length) || p.saved);
+  $("#vActs").innerHTML = `<button type="button" data-va="cm" aria-label="コメント（${cm}）"><svg class="i"><use href="#i-comment"/></svg>${cm || ""}</button><button type="button" data-va="rt" aria-label="再投稿して一番上へ（${p.reposts || 0}）"><svg class="i"><use href="#i-repost"/></svg>${p.reposts || ""}</button><button type="button" data-va="like" class="${cool ? "on" : ""}" aria-label="ハート（${lk}）"><svg class="i"><use href="#i-heart"/></svg>${lk || ""}</button><button type="button" data-va="bm" class="sq bm ${bm ? "on" : ""}" aria-label="しおり"><svg class="i"><use href="#i-bookmark"/></svg></button><button type="button" data-va="sh" class="sq" aria-label="共有"><svg class="i"><use href="#i-share"/></svg></button>`;
+}
+$("#vThumbs").addEventListener("click", e => { const b = e.target.closest("[data-vsub]"); if (!b) return; vSub = +b.dataset.vsub; vRender(); });
+$("#vCap").addEventListener("click", e => e.currentTarget.classList.toggle("open"));
+$("#vReply").addEventListener("click", () => { const p = vList[vIdx]; if (p) openComments(p.id); });
+$("#vActs").addEventListener("click", e => {
+  const b = e.target.closest("[data-va]"), p = vList[vIdx]; if (!b || !p) return; const a = b.dataset.va;
+  if (a === "cm") return openComments(p.id);
+  if (a === "rt") { p.reposts = (p.reposts || 0) + 1; toast(reorder(p, "top")); haptic("repost"); sfx("repost"); }
+  if (a === "like") { const r = b.getBoundingClientRect(), res = pressHeart(p); if (res === true) { heartBurst(r, 18); haptic("like"); sfx("like"); } }
+  if (a === "bm") { p.saved = !p.saved; if (!p.saved) delete p.saved; toast(p.saved ? "しおりに入れたよ" : "しおりから外したよ"); haptic("tick"); }
+  if (a === "sh") { const url = p.embed && p.embed.url, text = p.text || ""; if (navigator.share && (url || text)) navigator.share({ url: url || undefined, text: url ? text || undefined : text }).catch(() => {}); else if (url) copyText(url); else if (text) copyText(text); else toast("共有できるURLや文がないよ"); return; }
+  save(); paintVBottom(p);
+});
+/* ⋯ のメニュー: 自動送り・見終わったら・ブラウザの全画面 */
+$("#vMore").addEventListener("click", e => { e.stopPropagation(); const m = $("#vMenu"); m.hidden = !m.hidden; $("#vMore").setAttribute("aria-expanded", !m.hidden); });
+document.addEventListener("click", e => { if (!$("#vMenu").hidden && !e.target.closest(".v-more-wrap")) { $("#vMenu").hidden = true; $("#vMore").setAttribute("aria-expanded", "false"); } });
+$("#vGoPost").addEventListener("click", () => { const p = vList[vIdx]; $("#vMenu").hidden = true; closeViewerNow(p, 0); if (p && vFrom === "feed") { if (p.tl !== S.active && !mixOn()) setActive(p.tl); setTimeout(() => document.querySelector(`#feed .post[data-id="${p.id}"]`)?.scrollIntoView({ block: "center" }), 80); } });
 const srcMedia = id => document.querySelector(`#feed .media[data-pid="${id}"], #ttScroll .media[data-pid="${id}"], #feed [data-pid="${id}"] .media`);
 /* 全画面の出入り: カードの動画の場所からふわっと広がって、閉じると元の場所へ縮んで戻る */
 function vZoom(rect, open) {
@@ -5143,7 +5217,7 @@ function openViewer(id, from = "feed", sub = 0) {
   const src = srcMedia(id); vStartAt = src && src._getT ? src._getT() : 0; const rect = src && src.getBoundingClientRect();
   vFrom = from; vList = (query && from === "feed" ? S.posts.filter(p => visPost(p) && matchPost(p, query)).sort((a, b) => keyOf(b) - keyOf(a)) : curPosts()).filter(hasViewable); vIdx = Math.max(0, vList.findIndex(p => p.id === id)); vSub = Math.min(sub, galN(vList[vIdx]) - 1);
   if (from === "feed") feedAP.reset(); else ttAP?.reset();
-  $("#viewer").hidden = false; document.body.style.overflow = "hidden"; vRender(); $("#vClose").focus(); vZoom(rect, true);
+  $("#viewer").hidden = false; document.body.style.overflow = "hidden"; vRender(); try { $("#vClose").focus({ preventScroll: true, focusVisible: false }); } catch {} vZoom(rect, true);
 }
 let vClosing = false;
 function closeViewer() {
@@ -5153,7 +5227,7 @@ function closeViewer() {
   closeViewerNow(cur, backT);
 }
 function closeViewerNow(cur, backT) {
-  const stage = $("#vStage"); [...players.keys()].forEach(k => { if (stage.contains(k)) { players.get(k).pause(); players.delete(k); } }); stage.innerHTML = "";
+  const stage = $("#vStage"); $("#vMenu").hidden = true; $("#viewer").classList.remove("dragging", "ui-off"); $("#viewer").style.backgroundColor = ""; stage.style.transform = ""; stage.style.transition = ""; [...players.keys()].forEach(k => { if (stage.contains(k)) { players.get(k).pause(); players.delete(k); } }); stage.innerHTML = "";
   stopSlide();
   if (document.fullscreenElement) document.exitFullscreen?.().catch(() => {});
   $("#viewer").hidden = true; vMarathon = false; $("#viewer").classList.remove("marathon", "radio"); if (vRadio) { vRadio = false; if (radioSoundWas === false) setSoundAll(false); }
@@ -5186,6 +5260,7 @@ document.addEventListener("touchmove", e => { if (e.touches.length > 1 && !e.tar
 /* 全画面の画像: 二本指で拡大、拡大中は一本指で動かす、ダブルタップで拡大・元に戻す */
 const vz = { k: 1, x: 0, y: 0, d0: 0, k0: 1, px: 0, py: 0, x0: 0, y0: 0, pinch: false, lastTap: 0 };
 const vImg = () => $("#vStage img");
+const vImgPost = p => !!p && !isVideoPost(p);
 function vzApply(anim) { const img = vImg(); if (!img) return; img.style.transition = anim ? "transform .25s cubic-bezier(.2,.8,.3,1)" : "none"; img.style.transform = vz.k > 1 ? `translate(${vz.x}px,${vz.y}px) scale(${vz.k})` : ""; img.style.touchAction = "none"; $("#viewer").classList.toggle("zoomed", vz.k > 1); }
 function vzReset(anim) { vz.k = 1; vz.x = vz.y = 0; vzApply(anim); }
 function vzClamp() { const img = vImg(); if (!img) return; const r = img.getBoundingClientRect(), w = r.width / vz.k, h = r.height / vz.k, mx = Math.max(0, (w * vz.k - innerWidth) / 2 + 40), my = Math.max(0, (h * vz.k - innerHeight) / 2 + 40); vz.x = Math.max(-mx, Math.min(mx, vz.x)); vz.y = Math.max(-my, Math.min(my, vz.y)); }
@@ -5199,7 +5274,29 @@ $("#vStage").addEventListener("touchmove", e => {
   if (vz.k > 1 && e.touches.length === 1) { e.preventDefault(); const t = e.touches[0]; vz.x = vz.x0 + t.clientX - vz.px; vz.y = vz.y0 + t.clientY - vz.py; vzClamp(); vzApply(false); }
 }, { passive: false });
 $("#vStage").addEventListener("touchend", e => { if (vz.pinch) { if (e.touches.length === 0) { vz.pinch = false; if (vz.k < 1.08) vzReset(true); else { vzClamp(); vzApply(true); } } return; }
-  if (tx == null || vz.k > 1) return; const dx = e.changedTouches[0].clientX - tx; tx = null; if (Math.abs(dx) > 50) vGo(dx < 0 ? 1 : -1); });
+  if (tx == null || vz.k > 1 || $("#viewer").classList.contains("dragging")) return; const dx = e.changedTouches[0].clientX - tx; tx = null; if (Math.abs(dx) > 50) vGo(dx < 0 ? 1 : -1); });
+/* つかんで投げる: 画像を1本指で上か下へ動かすとついてきて、勢いよく離すか遠くまで動かすと飛んでいって閉じる。足りなければ元に戻る */
+(() => { const st = $("#vStage"), v = $("#viewer"); let g = null;
+  const flingable = () => vz.k === 1 && !vz.pinch && (vImg() || !st.querySelector("video, iframe"));
+  const start = (x, y) => { if (!flingable()) return; g = { x, y, dy: 0, t: performance.now(), lastY: y, lastT: performance.now(), vy: 0, on: false }; };
+  const move = (x, y, ev) => { if (!g) return; const dx = x - g.x, dy = y - g.y;
+    if (!g.on) { if (Math.abs(dy) < 10 || Math.abs(dy) < Math.abs(dx) * 1.2) { if (Math.abs(dx) > 14) g = null; return; } g.on = true; tx = null; stopSlide(); v.classList.add("dragging"); }
+    ev?.preventDefault?.(); const now = performance.now(); (g.h ||= []).push([now, y]); while (g.h.length > 2 && now - g.h[1][0] > 100) g.h.shift(); const [t0, y0] = g.h[0]; g.vy = (y - y0) / Math.max(16, now - t0); g.dy = dy;
+    st.style.transition = "none"; st.style.transform = `translate(${dx * .3}px,${dy}px) scale(${1 - Math.min(.15, Math.abs(dy) / 2000)}) rotate(${dx * .02}deg)`;
+    v.style.backgroundColor = `rgba(0,0,0,${Math.max(.15, 1 - Math.abs(dy) / 500)})`; };
+  const end = () => { if (!g) return; const o = g; g = null; if (!o.on) return; if (o.h && performance.now() - o.h[o.h.length - 1][0] > 150) o.vy = 0; /* 止めてから離したら投げてない */
+    if (Math.abs(o.dy) > 130 || (Math.abs(o.vy) > .45 && Math.abs(o.dy) > 30)) { const dir = Math.sign(o.vy && Math.abs(o.vy) > .2 ? o.vy : o.dy) || -1, cur = vList[vIdx];
+      st.style.transition = "transform .24s cubic-bezier(.3,.6,.4,1), opacity .24s"; st.style.transform = `translate(0,${dir * innerHeight}px) rotate(${dir * 6}deg)`; v.style.transition = "background-color .24s"; v.style.backgroundColor = "rgba(0,0,0,0)"; haptic("tick");
+      setTimeout(() => { v.style.transition = ""; closeViewerNow(cur, 0); }, 230); return; }
+    st.style.transition = "transform .3s cubic-bezier(.2,.9,.3,1.2)"; st.style.transform = ""; v.style.transition = "background-color .3s"; v.style.backgroundColor = ""; setTimeout(() => { v.classList.remove("dragging"); v.style.transition = ""; }, 300); };
+  st.addEventListener("touchstart", e => { if (e.touches.length === 1) start(e.touches[0].clientX, e.touches[0].clientY); else g = null; }, { passive: true });
+  st.addEventListener("touchmove", e => { if (e.touches.length !== 1) { g = null; return; } move(e.touches[0].clientX, e.touches[0].clientY, e); }, { passive: false });
+  st.addEventListener("touchend", e => { const o = g; end(); if (o && !o.on && vImg() && vz.k === 1 && e.changedTouches.length === 1 && Math.hypot(e.changedTouches[0].clientX - o.x, e.changedTouches[0].clientY - o.y) < 10 && performance.now() - o.t < 400) { const t0 = vz.lastTap; setTimeout(() => { if (vz.lastTap === t0 && vz.k === 1) v.classList.toggle("ui-off"); }, 320); } }); st.addEventListener("touchcancel", end);
+  /* PC はマウスでつかんで投げる */
+  st.addEventListener("pointerdown", e => { if (e.pointerType !== "mouse" || e.button !== 0 || !vImg()) return; e.preventDefault(); start(e.clientX, e.clientY); });
+  addEventListener("pointermove", e => { if (e.pointerType === "mouse" && g) move(e.clientX, e.clientY, e); });
+  addEventListener("pointerup", e => { if (e.pointerType === "mouse") end(); });
+})();
 /* PC: 全画面の画像はホイール＋Ctrl（トラックパッドのピンチ）で拡大 */
 $("#vStage").addEventListener("wheel", e => { if (!e.ctrlKey || !vImg()) return; e.preventDefault(); vz.k = Math.max(1, Math.min(5, vz.k * (1 - e.deltaY / 200))); if (vz.k === 1) vz.x = vz.y = 0; vzApply(false); }, { passive: false });
 /* 縦スワイプ表示からも全画面ビューアへ */

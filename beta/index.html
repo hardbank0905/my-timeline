@@ -479,6 +479,8 @@ body.locked > :not(#lockScreen):not(svg){filter:blur(12px)}
 .tab.in-grp{background:color-mix(in srgb,var(--accent) 6%,transparent);font-size:.95em}
 .nav-group .i{width:16px;height:16px;color:var(--accent)}.nav-group.on{color:var(--accent)}
 .tab.lifting,.tab-grp.lifting,.nav-item.lifting,.nav-group.lifting{opacity:.35}.drop-on{outline:3px dashed var(--accent);outline-offset:-6px;border-radius:999px;background:color-mix(in srgb,var(--accent) 14%,transparent)!important}
+#tabs,#navList,#tabs *,#navList *,.tab-ghost,.pick-bar,.rt-pop{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}
+body.tl-lifting,body.tl-lifting *{-webkit-user-select:none!important;user-select:none!important;-webkit-touch-callout:none!important}
 .tab-ghost{position:fixed;z-index:200;pointer-events:none;transform:translate(-50%,-130%);background:var(--bg);color:var(--fg);border:2px solid var(--line);border-radius:999px;padding:8px 20px;box-shadow:0 12px 30px rgba(0,0,0,.3);display:flex;flex-direction:column;align-items:center;gap:2px;white-space:nowrap}
 .tab-ghost b{font-size:16px}.tab-ghost small{font-size:12px;color:var(--muted);font-weight:700}.tab-ghost.ok{border-color:var(--accent)}.tab-ghost::after{content:"";position:absolute;left:50%;bottom:-8px;width:12px;height:12px;background:inherit;border:inherit;border-width:0 2px 2px 0;border-radius:0 0 4px 0;transform:translateX(-50%) rotate(45deg)}.tab-ghost.ok small{color:var(--accent)}
 .tl-radial.tap{pointer-events:auto}.tl-radial button.rad-item{background:none;border:0;padding:0;cursor:pointer;font:inherit}.rad-item.on .mini-av{outline:3px solid #fff}
@@ -1724,7 +1726,7 @@ body.tl-picking .tab.picked,body.tl-picking .tab-grp.picked,body.tl-picking .nav
   <div class="share-card acct-card">
     <div id="acBanner" hidden></div>
     <div class="ac-top"><span id="acAv"></span><span class="ac-top-r"><button type="button" class="ac-mini" id="acEdit" aria-label="アイコンとヘッダーを変える" title="アイコンとヘッダーを変える"><svg class="i"><use href="#i-brush"/></svg></button><button type="button" class="ac-mini" id="acClose" aria-label="閉じる"><svg class="i"><use href="#i-x"/></svg></button></span></div>
-    <div class="ac-name"><b id="acTitle">私</b><span>@me ・ <em style="color:#ff7a00;font-style:normal;font-weight:800">テスト版 v1.3 試作9（本番とはデータ別）</em></span></div>
+    <div class="ac-name"><b id="acTitle">私</b><span>@me ・ <em style="color:#ff7a00;font-style:normal;font-weight:800">テスト版 v1.3 試作10（本番とはデータ別）</em></span></div>
     <div class="ac-stats" id="acStats"></div>
     <nav class="ac-big" aria-label="メニュー">
       <button type="button" class="ac-item" id="acRec" aria-expanded="false"><svg class="i"><use href="#i-target"/></svg><b>今日の記録</b><small id="acRecSub"></small></button>
@@ -2101,9 +2103,9 @@ const ago = at => { const s = (Date.now() - at) / 1000; if (s < 60) return "今"
    IntersectionObserver で「画面中央の帯」に入った候補を集め、
    中心に最も近い1つだけ再生する（本番の useCenterAutoplay の原型） */
 /* 自動再生が端末に止められたとき（iPhoneの省電力モードなど）: 次に画面をさわった瞬間に、その動画をもう一度動かす */
-let apRetry = null, apToldAt = 0;
+let apRetry = null, apToldAt = 0, apLastErr = "";
 function apBlocked(w, retry, err) {
-  apRetry = retry;
+  apRetry = retry; apLastErr = (err?.name || "?") + " " + new Date().toLocaleTimeString();
   if (Date.now() - apToldAt > 6e5) { apToldAt = Date.now(); toast(err?.name === "NotAllowedError" ? "この端末が自動再生を止めてるみたい（省電力モードなど）。画面をさわると動くよ" : "動画を読み込めなかったよ。電波を確かめてね"); }
 }
 ["touchend", "click", "keydown"].forEach(ev => addEventListener(ev, () => { const r = apRetry; apRetry = null; if (r) r(); }, { capture: true, passive: true }));
@@ -2122,7 +2124,7 @@ function createAutoplay(root) {
     if (best !== current) { if (current) players.get(current)?.pause(); current = best; if (current) players.get(current)?.play(); }
   }
   (root || window).addEventListener("scroll", schedule, { passive: true });
-  return { observe: el => io.observe(el), reset() { if (current) players.get(current)?.pause(); current = null; candidates.clear(); io.disconnect(); }, refresh: schedule, stop() { this.reset(); } };
+  return { observe: el => io.observe(el), reset() { if (current) players.get(current)?.pause(); current = null; candidates.clear(); io.disconnect(); }, refresh: schedule, stop() { this.reset(); }, dbg: () => ({ n: candidates.size, cur: current ? (players.get(current)?.playing ? "再生中" : "止まってる") : "なし" }) };
 }
 let lastTs = performance.now(), sleeping = false;
 function loop(ts) { const dt = Math.min(.1, (ts - lastTs) / 1000); lastTs = ts; players.forEach(p => p.playing && p.tick?.(dt)); requestAnimationFrame(loop); }
@@ -2713,6 +2715,9 @@ function ttHeart(p) {
 
 /* ================= 描画 ================= */
 const feedAP = createAutoplay(null);
+/* 自動再生の診断（URLの最後に #diag を付けて開くと、画面の上に小さく出る） */
+if (location.hash === "#diag") setTimeout(() => { const d = document.createElement("div"); d.style.cssText = "position:fixed;left:6px;bottom:90px;z-index:9999;background:rgba(0,0,0,.78);color:#fff;font:12px/1.5 monospace;padding:6px 9px;border-radius:10px;pointer-events:none;white-space:pre"; document.body.append(d);
+  setInterval(() => { const a = feedAP.dbg(); d.textContent = `自動再生:${S.opts.auto ? "オン" : "オフ"} 回線制限:${S.opts.wifiOnly ? "あり" : "なし"} 厳しめ:${S.opts.strictNet ? "あり" : "なし"}\n再生してよい:${canAutoplay()} おやすみ:${sleeping} 小窓:${pipHold()}\n候補:${a.n} いま:${a.cur} 音:${S.opts.sound ? "あり" : "なし"}\n止められた:${apLastErr || "なし"}\n${navigator.userAgent.slice(0, 60)}`; }, 700); }, 500);
 let ttAP = null;
 
 /* F1 タブの線: 切り替えるとびよんと伸びて、次のタブでぴたっと縮む */
@@ -4535,11 +4540,14 @@ function folderDrop(srcId, d) {
   ring.addEventListener("click", e => { const it = e.target.closest("[data-rad]"); closeRing(); if (it && (it.dataset.rad !== S.active || mixOn())) { const TL = orderedTLs(); setActive(it.dataset.rad, TL.findIndex(x => x.id === it.dataset.rad) > TL.findIndex(x => x.id === S.active) ? 1 : -1); } });
   let auto = 0, autoRaf = 0, lastE = null;
   const srcName = () => src.startsWith("g:") ? `📁 ${src.slice(2)}` : tlById(src)?.name || "", srcCur = () => src.startsWith("g:") ? gParent(src.slice(2)) : grpOf(tlById(src));
-  const down = e => { if (e.button > 0 || pickState) return; const tb = e.target.closest(".tab[data-tl], .tab-grp, .nav-item[data-tl], .nav-group"); if (!tb) return; sx = e.clientX; sy = e.clientY; moved = 0; clearTimeout(t);
+  const down = e => { if (e.button > 0 || pickState) return; const tb = e.target.closest(".tab[data-tl], .tab-grp, .nav-item[data-tl], .nav-group"); if (!tb) return; sx = e.clientX; sy = e.clientY; moved = 0; clearTimeout(t); document.body.classList.add("tl-lifting");
     t = setTimeout(() => { t = 0; block = Date.now(); haptic("tick");
-      mode = "lift"; src = tb.dataset.tl || "g:" + tb.dataset.grp; srcEl = tb; tb.classList.add("lifting");
+      mode = "lift"; src = tb.dataset.tl || "g:" + tb.dataset.grp; srcEl = tb; tb.classList.add("lifting"); document.body.classList.add("tl-lifting"); try { getSelection()?.removeAllRanges(); } catch {}
+      document.querySelectorAll(".tab-ghost").forEach(x => x.remove());
       ghost = document.createElement("div"); ghost.className = "tab-ghost"; ghost.innerHTML = `<b>${esc(srcName())}</b><small>離すとメニュー・ほかのタブに重ねるとグループ</small>`; document.body.append(ghost); place(sx, sy); }, 450); };
   tabs.addEventListener("pointerdown", down); $("#navList").addEventListener("pointerdown", down);
+  /* iPhone: 長押しで文字選択・コピーのメニューが出ないように */
+  document.addEventListener("selectstart", e => { if (mode === "lift" || t || e.target.closest?.("#tabs, #navList")) e.preventDefault(); });
   const place = (x, y) => { const w = ghost.offsetWidth / 2 + 8; ghost.style.left = Math.max(w, Math.min(innerWidth - w, x)) + "px"; ghost.style.top = Math.max(ghost.offsetHeight * 1.3 + 8, y) + "px"; };
   addEventListener("pointermove", e => {
     if (mode !== "lift") { if (t && Math.hypot(e.clientX - sx, e.clientY - sy) > 10) { clearTimeout(t); t = 0; } return; }
@@ -4560,9 +4568,11 @@ function folderDrop(srcId, d) {
     ghost.querySelector("small").textContent = !drop ? (srcCur() ? "重ねる・外へ引っぱると出す" : "ほかのタブに重ねてね") : drop.out ? `「${srcCur()}」の外に出す` : drop.grp ? `グループ「${drop.grp}」に入れる` : grpOf(tgt) ? `グループ「${grpOf(tgt)}」に入れる` : `「${tgt.name}」とグループにする`;
     ghost.classList.toggle("ok", !!drop);
   };
-  const end = () => { clearTimeout(t); t = 0; auto = 0; if (mode !== "lift") return; mode = ""; ghost?.remove(); ghost = null; srcEl?.classList.remove("lifting"); clearDrop();
+  const end = () => { clearTimeout(t); t = 0; auto = 0; document.body.classList.remove("tl-lifting"); if (mode !== "lift") { document.querySelectorAll(".tab-ghost").forEach(x => x.remove()); return; } mode = ""; ghost?.remove(); ghost = null; srcEl?.classList.remove("lifting"); clearDrop();
     const d = drop; drop = null; if (d) { haptic("success"); folderDrop(src, d); } else if (!moved) tabMenu(srcEl); };
   addEventListener("pointerup", end, true); addEventListener("pointercancel", end, true);
+  /* iPhone で pointerup が来ないときの保険 */
+  addEventListener("touchend", () => setTimeout(() => { if (mode === "lift" || t) end(); }, 0), true); addEventListener("touchcancel", () => { if (mode === "lift" || t) end(); }, true);
   [tabs, $("#navList")].forEach(el => { el.addEventListener("click", e => { if (Date.now() - block < 900) { e.stopPropagation(); e.preventDefault(); block = 0; } }, true);
     /* PCは右クリックでもメニュー */
     el.addEventListener("contextmenu", e => { e.preventDefault(); const tb = e.target.closest(".tab[data-tl], .tab-grp, .nav-item[data-tl], .nav-group"); if (tb && !pickState && mode !== "lift") { clearTimeout(t); t = 0; tabMenu(tb); } }); });

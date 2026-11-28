@@ -471,6 +471,18 @@ body.locked > :not(#lockScreen):not(svg){filter:blur(12px)}
 .sec-mark{width:14px;height:14px;margin-left:4px;vertical-align:-2px;opacity:.7}
 .tab-grp{flex:0 0 auto;display:flex;align-items:center;gap:4px;padding:0 6px 0 14px;height:53px;font-size:12px;font-weight:800;color:var(--muted);letter-spacing:.04em;border-left:1px solid var(--line)}
 .tab-grp:first-child{border-left:0}
+/* フォルダ（v1.2） */
+.tab-grp{position:relative;font-size:14px;gap:6px;padding:0 10px 0 14px;color:var(--fg);font-weight:800;letter-spacing:0;border-radius:0}
+.tab-grp .i{width:18px;height:18px;color:var(--accent)}.tab-grp small,.nav-group small{font-size:11px;font-weight:800;color:var(--muted);background:color-mix(in srgb,var(--fg) 8%,transparent);border-radius:99px;padding:0 6px;line-height:18px}
+.tab-grp .caret{color:var(--muted);font-size:12px}.tab-grp.on{color:var(--accent)}
+.tab.in-grp{background:color-mix(in srgb,var(--accent) 6%,transparent);font-size:.95em}
+.nav-group .i{width:16px;height:16px;color:var(--accent)}.nav-group.on{color:var(--accent)}
+.tab.lifting{opacity:.35}.drop-on{outline:3px dashed var(--accent);outline-offset:-6px;border-radius:12px;background:color-mix(in srgb,var(--accent) 14%,transparent)!important}
+.tab-ghost{position:fixed;z-index:200;pointer-events:none;transform:translate(-50%,-130%) rotate(-3deg);background:var(--bg);color:var(--fg);border:2px solid var(--line);border-radius:14px;padding:8px 14px;box-shadow:0 12px 30px rgba(0,0,0,.3);display:flex;flex-direction:column;align-items:center;gap:2px;white-space:nowrap}
+.tab-ghost b{font-size:16px}.tab-ghost small{font-size:12px;color:var(--muted);font-weight:700}.tab-ghost.ok{border-color:var(--accent)}.tab-ghost.ok small{color:var(--accent)}
+.tl-radial.tap{pointer-events:auto}.tl-radial button.rad-item{background:none;border:0;padding:0;cursor:pointer;font:inherit}.rad-item.on .mini-av{outline:3px solid #fff}
+.fd-box{display:flex;flex-direction:column;gap:12px}.fd-name{display:flex;flex-direction:column;gap:6px;font-weight:700}.fd-name input{font-size:18px;padding:10px 14px;border-radius:12px}
+.fd-tips{margin:0;padding-left:1.2em;display:flex;flex-direction:column;gap:6px;font-size:14px;line-height:1.6;color:var(--muted)}.fd-tips b{color:var(--fg)}
 .nav-group{display:flex;align-items:center;gap:8px;width:100%;padding:10px 12px 4px;font-size:12px;color:var(--muted);font-weight:800;letter-spacing:.06em}
 .tl-sub{display:flex;gap:6px;align-items:center;padding:0 6px 8px 40px;list-style:none}
 .tl-sub input{flex:1;min-width:0;border:1px solid var(--line);border-radius:8px;padding:4px 8px;background:var(--bg);color:var(--fg);font-size:13px}
@@ -765,6 +777,18 @@ body.no-select,body.no-select *{user-select:none!important;-webkit-user-select:n
 /* 設定のまとまり */
 .set-group{border-top:1px solid var(--line);padding-top:4px}
 .set-box{display:flex;flex-direction:column;gap:10px}
+.set-reset{align-self:center;margin:6px 0 2px}.set-reset.danger{color:#f4212e;border-color:#f4212e}
+/* シークレットのホーム */
+.sec-bar{display:flex;flex-wrap:wrap;align-items:center;gap:6px 8px;padding:8px 14px;background:#2b2140;color:#f3ecff;font-weight:700;font-size:15px;border-bottom:1px solid #4a3a6b}.sec-bar .grow{flex:1}.sec-bar>span:first-child{white-space:nowrap}.sec-bar button{white-space:nowrap}.sec-bar .btn-ghost{color:#f3ecff;border-color:#6d5a96}
+body.secret-mode{--bg:#120e1c;--line:#2e2643;--card:#191326;--fg:#ece6f7;--muted:#a79bbd;--accent:#b18cff}
+body.secret-mode .app,body.secret-mode main,body.secret-mode .head{background-color:var(--bg)}
+.sec-now{display:flex;flex-direction:column;gap:6px;background:color-mix(in srgb,var(--accent) 12%,transparent);border-radius:14px;padding:12px}.sec-now span{color:var(--muted);font-size:14px}.sec-now .btn-accent{align-self:flex-start}
+.sec-open{display:flex;gap:6px;align-items:center}.sec-open input{flex:1;min-width:0;font-size:17px;padding:10px 14px;border-radius:12px}
+.sec-msg{margin:0;min-height:1.2em;color:#f4212e;font-size:14px}
+.sec-acts{display:flex;gap:6px;flex-wrap:wrap;margin-left:auto}
+.sec-make{display:flex;flex-direction:column;gap:10px;border:1px solid var(--line);border-radius:14px;padding:12px}.sec-make p{margin:0;font-weight:700}.sec-make input{font-size:18px;padding:10px 14px;border-radius:12px;letter-spacing:.1em}
+button.sec-pick{cursor:pointer;font:inherit;color:var(--fg)}
+.sec-forgot summary{cursor:pointer;color:var(--muted);font-size:14px;margin-top:6px}.btn-ghost.danger{color:#f4212e}
 .set-search{display:flex;align-items:center;gap:8px;border:1px solid var(--line);border-radius:99px;padding:8px 14px;background:var(--bg)}.set-search input{border:0;background:none;font:inherit;font-size:15px;color:var(--fg);flex:1;min-width:0;outline:none}.set-search .i{width:18px;height:18px;color:var(--muted)}
 .set-home{display:flex;flex-direction:column;border:1px solid var(--line);border-radius:16px;overflow:hidden}
 .set-cat{display:flex;align-items:center;gap:12px;width:100%;padding:12px 14px;background:none;border:0;border-top:1px solid var(--line);color:var(--fg);text-align:left;cursor:pointer;font:inherit}.set-home>.set-cat:first-child{border-top:0}
@@ -779,8 +803,11 @@ body.no-select,body.no-select *{user-select:none!important;-webkit-user-select:n
 .set-found{display:flex;flex-direction:column;gap:8px}
 
 /* 表示の大きさ: ポップアップ・メニュー・お知らせ・設定をまとめて大きくする（標準も少し大きめ） */
-:root .share-card,:root .menu:not(.ulink-menu),:root .toast,:root .nag,:root .side .card{zoom:var(--uiz,1.06)}
-:root[data-ui="lg"]{--uiz:1.15}:root[data-ui="xl"]{--uiz:1.3}
+:root .share-card,:root .menu:not(.ulink-menu),:root .ulink-menu,:root .toast,:root .nag,:root .side .card,:root .tab-ghost,:root .cm-sheet .share-card{zoom:var(--uiz,1.12)}
+:root[data-ui="sm"]{--uiz:1}:root[data-ui="lg"]{--uiz:1.22}:root[data-ui="xl"]{--uiz:1.36}
+/* v1.2 表示をぜんぶ大きめに: タブ・並び・ボタンの文字も少し大きく */
+:root:not([data-ui="sm"]) .tab{font-size:16px}:root:not([data-ui="sm"]) .sort-bar{font-size:15px}:root:not([data-ui="sm"]) .toast{font-size:15px;padding:12px 20px}
+:root[data-ui="xl"] .tab,:root[data-ui="lg"] .tab{font-size:17px}:root[data-ui="xl"] .post-text{font-size:18px}
 .more-link{background:none;border:0;padding:0 0 0 4px;color:var(--accent);font:inherit;font-weight:700;cursor:pointer;white-space:nowrap}
 .help h3{margin:14px 0 4px;font-size:17px}.help p,.help li{font-size:15px;line-height:1.7}.help ul,.help ol{margin:4px 0;padding-left:1.3em;display:flex;flex-direction:column;gap:4px}
 .help-toc{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:6px}.help-toc button{border:1px solid var(--line);background:var(--bg);color:var(--fg);border-radius:99px;padding:4px 12px;font:inherit;font-size:13px;cursor:pointer}
@@ -930,6 +957,14 @@ body.searching .tab.on::after{opacity:.25}
 .gallery.g3{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
 .gallery.g3 img:first-child{grid-row:span 2}
 .gallery.g4{grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr}
+.gallery{position:relative}.gallery .g-more{position:absolute!important;inset:auto 0 0 auto!important;width:calc(50% - 1px);height:calc(50% - 1px);display:grid;place-items:center;background:rgba(0,0,0,.5);color:#fff;font-size:30px;font-weight:800;pointer-events:none;border-radius:0;margin:0}
+/* 投稿欄: 選んだ画像（並べ替え・外す） */
+.comp-thumbs{display:flex;gap:8px;overflow-x:auto;padding:4px 0 8px;scroll-snap-type:x proximity}.comp-thumbs[hidden]{display:none}
+.ct{position:relative;flex:none;width:84px;height:84px;border-radius:12px;overflow:hidden;scroll-snap-align:start;border:1px solid var(--line)}.ct img{width:100%;height:100%;object-fit:cover;display:block}
+.ct .n{position:absolute;left:4px;top:4px;background:rgba(0,0,0,.6);color:#fff;font-size:12px;font-weight:800;border-radius:99px;padding:0 7px;line-height:20px}
+.ct button{position:absolute;width:28px;height:28px;border-radius:50%;border:0;background:rgba(0,0,0,.65);color:#fff;font-size:15px;font-weight:800;display:grid;place-items:center;cursor:pointer;padding:0}
+.ct .x{right:4px;top:4px}.ct .l{left:4px;bottom:4px}.ct .r{right:4px;bottom:4px}.ct button:disabled{opacity:.25}
+.ct-add{flex:none;width:84px;height:84px;border-radius:12px;border:2px dashed var(--line);background:none;color:var(--accent);font:inherit;font-weight:800;font-size:13px;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px}.ct-add b{font-size:24px;line-height:1}
 /* ---- バックアップのお知らせ ---- */
 .nag{position:fixed;z-index:60;left:50%;transform:translateX(-50%);bottom:calc(20px + env(safe-area-inset-bottom,0px));width:min(520px,calc(100% - 24px));display:flex;gap:12px;align-items:center;justify-content:space-between;flex-wrap:wrap;
   padding:14px 16px;border-radius:18px;background:var(--bg);color:var(--fg);border:1px solid var(--line-strong);box-shadow:0 18px 40px -12px rgba(0,0,0,.35);font-size:14px}
@@ -968,6 +1003,14 @@ body.searching .tab.on::after{opacity:.25}
 .cm-item{display:flex;gap:10px;align-items:flex-start}
 .cm-body{flex:1;min-width:0}
 .cm-text{white-space:pre-wrap;overflow-wrap:anywhere}
+/* コメントのツリー */
+.cm-kids-li{list-style:none}.cm-kids{list-style:none;margin:0 0 0 17px;padding:2px 0 0 18px;border-left:2px solid var(--line);display:flex;flex-direction:column;gap:12px}.cm-kids.flat{margin-left:0;padding-left:0;border-left:0}
+.cm-acts{display:flex;gap:14px;margin-top:4px}.cm-re{background:none;border:0;padding:2px 0;color:var(--muted);font:inherit;font-size:13px;font-weight:700;cursor:pointer}.cm-re:hover{color:var(--accent)}
+.cm-acts .cm-del{padding:2px 0;font-size:13px;font-weight:700}
+.cm-item.replying>.cm-body{background:color-mix(in srgb,var(--accent) 10%,transparent);border-radius:10px;padding:2px 6px;margin:-2px -6px}
+.cm-fold{background:none;border:0;color:var(--accent);font:inherit;font-weight:700;font-size:14px;cursor:pointer;padding:0}
+.cm-replyto{display:flex;align-items:center;gap:8px;font-size:13px;color:var(--accent);font-weight:700;padding:6px 2px 0}.cm-replyto span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}.cm-replyto button{border:0;background:none;color:var(--muted);font-size:18px;cursor:pointer}
+.cm-peek-row.is-re{padding-left:14px}
 .cm-del{color:var(--muted);font-size:12px;padding:4px 8px;border-radius:999px;flex:none}
 .cm-del:hover{background:var(--bg-hover)}
 .cm-del.sure{color:#fff;background:var(--danger)}
@@ -1073,6 +1116,15 @@ body.sheet-open{overflow:hidden}
 /* 音声ボタン・再生範囲 */
 .snd-btn{position:absolute;right:52px;bottom:12px;z-index:3;width:34px;height:34px;border-radius:8px;background:var(--overlay);color:#fff;display:grid;place-items:center}
 .snd-btn:hover{background:rgba(0,0,0,.8)}
+.vol{position:absolute;right:90px;bottom:12px;z-index:3;height:34px;display:flex;align-items:center;padding:0 10px;border-radius:8px;background:var(--overlay);border:1px solid rgba(255,255,255,.22);box-shadow:0 2px 8px rgba(0,0,0,.25);cursor:pointer}
+.vol .sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.vol input{-webkit-appearance:none;appearance:none;width:76px;height:6px;border-radius:99px;margin:0;background:linear-gradient(90deg,#fff var(--v,100%),rgba(255,255,255,.3) var(--v,100%));cursor:pointer;touch-action:none}
+.vol input::-webkit-slider-thumb{-webkit-appearance:none;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 1px 4px rgba(0,0,0,.4)}
+.vol input::-moz-range-thumb{width:18px;height:18px;border:0;border-radius:50%;background:#fff}
+.vol.off{opacity:.55}
+.media .vol{bottom:24px}.v-stage .vol{right:calc(max(16px,env(safe-area-inset-right,0px)) + 40px);bottom:16px}.v-stage .media .vol{bottom:24px}
+.tt-item .vol{right:auto;left:calc(max(16px,env(safe-area-inset-left,0px)) + 40px);top:calc(64px + env(safe-area-inset-top,0px));bottom:auto}
+.media.pip .vol{display:none}
 .progress{overflow:visible}
 .progress .lim{position:absolute;top:-3px;bottom:-3px;width:2px;background:#fff;opacity:.9}
 .yt-frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
@@ -1174,6 +1226,7 @@ body.sheet-open{overflow:hidden}
       <div class="composer-body">
         <textarea id="compText" rows="2" placeholder="URLを貼る、またはひとこと（例: https://youtu.be/...）"></textarea>
         <div class="detect" id="detect"></div>
+        <div class="comp-thumbs" id="compThumbs" hidden></div>
         <div class="draft-row" id="draftRow" hidden></div>
         <div class="sched-row" id="schedRow" hidden>
           <label>⏰ この日時に出す <input type="datetime-local" id="compSched"></label><button type="button" class="mini" id="schedClear" aria-label="予約をやめる">×</button>
@@ -1212,7 +1265,7 @@ body.sheet-open{overflow:hidden}
       <h2>タイムライン管理</h2>
       <p>名前はその場で書き換え。左のつまみをドラッグか ↑↓ で並べ替え。</p>
       <ul class="tl-list" id="tlList"></ul><datalist id="grpList"></datalist>
-      <p class="note" style="margin:0">「グループ」に同じ名前を入れたタイムラインはまとまって並ぶよ。グループ名を押すとたためるの</p>
+      <p class="note" style="margin:0">タブを長押しして、ほかのタブの上で離すと「フォルダ」にまとまるよ。下の欄に同じフォルダ名を入れてもOK。フォルダのタブを押すと中をまぜて見られて、もう一度押すと中のタブが開くの</p>
       <form class="add-row" id="addForm">
         <input id="addName" placeholder="新しいタイムライン名" maxlength="20">
         <button class="btn-accent" id="addBtn">追加</button>
@@ -1230,7 +1283,7 @@ body.sheet-open{overflow:hidden}
       <label class="toggle">音声を出す <span class="switch"><input type="checkbox" id="optSound" checked><span></span></span></label>
       <div class="toggle"><label for="optVol">音量</label><span style="display:flex;align-items:center;gap:8px;flex:1;max-width:190px"><input type="range" id="optVol" min="0" max="100" step="5" style="flex:1;accent-color:var(--accent)"><output id="optVolOut" style="width:38px;text-align:right;font-variant-numeric:tabular-nums"></output></span></div>
       <label class="toggle" for="optUiSize">表示の大きさ
-        <select id="optUiSize" class="sel"><option value="std">標準</option><option value="lg">大きめ</option><option value="xl">とても大きい</option></select></label>
+        <select id="optUiSize" class="sel"><option value="sm">小さめ（前の版の大きさ）</option><option value="std">標準</option><option value="lg">大きめ</option><option value="xl">とても大きい</option></select></label>
       <p class="note" style="margin:-4px 0 0">ボタン・ポップアップ・設定の大きさだよ。ツイートの文字は下の「文字の大きさ」で変えてね</p>
       <label class="toggle" for="optFont">文字の大きさ
         <select id="optFont" class="sel"><option value="s">小さめ</option><option value="m">ふつう</option><option value="l">大きめ</option></select></label>
@@ -1578,6 +1631,7 @@ body.sheet-open{overflow:hidden}
     <div class="lk-head"><h2 id="cmTitle">コメント</h2><button type="button" class="icon-btn" id="cmClose" aria-label="閉じる" style="color:var(--fg)"><svg class="i"><use href="#i-x"/></svg></button></div>
     <div class="cm-target" id="cmTarget"></div>
     <ul class="cm-list" id="cmList"></ul>
+    <div class="cm-replyto" id="cmReplyTo" hidden></div>
     <form class="cm-form" id="cmForm" autocomplete="off">
       <div class="avatar" id="cmMe">私</div>
       <textarea id="cmText" rows="2" maxlength="1000" placeholder="コメントを書く（この端末に保存されるよ）" aria-label="コメント"></textarea>
@@ -1629,6 +1683,7 @@ body.sheet-open{overflow:hidden}
   <symbol id="i-snooze" viewBox="0 0 24 24"><circle cx="12" cy="13" r="7.5"/><path d="M12 9v4l2.5 2M5 4 3 6M19 4l2 2"/></symbol>
   <symbol id="i-label" viewBox="0 0 24 24"><path d="M3.5 12.5V5a1.5 1.5 0 0 1 1.5-1.5h7.5l8 8-9 9z"/><circle cx="8" cy="8" r="1.5"/></symbol>
   <symbol id="i-photo" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><circle cx="9" cy="10" r="2"/><path d="M21 16l-5-5-9 9"/></symbol>
+  <symbol id="i-folder" viewBox="0 0 24 24"><path d="M3 6.5A1.5 1.5 0 0 1 4.5 5H9l2 2h8.5A1.5 1.5 0 0 1 21 8.5v9a1.5 1.5 0 0 1-1.5 1.5h-15A1.5 1.5 0 0 1 3 17.5z"/></symbol>
   <symbol id="i-hide" viewBox="0 0 24 24"><path d="M3 3l18 18M10.6 5.1A10 10 0 0 1 12 5c5 0 9 4.5 10 7-.4 1-1.3 2.4-2.6 3.7M6.6 6.6C4.6 7.9 3.1 9.8 2 12c1 2.5 5 7 10 7 1.9 0 3.6-.6 5-1.5M9.9 9.9a3 3 0 0 0 4.2 4.2"/></symbol>
   <symbol id="i-split" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="3"/><path d="M12 4v16"/></symbol>
   <symbol id="i-help" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.5 9.5a2.5 2.5 0 1 1 3.5 2.3c-.6.3-1 .8-1 1.5V14M12 17h0" stroke-width="2.2"/></symbol>
@@ -1785,7 +1840,8 @@ if (!S || !Array.isArray(S.timelines) || !S.timelines.length) { S = seed(); S.sc
 S.opts ||= { center: false, auto: true };
 S.me ||= { id: "me", name: "私", color: "#1d9bf0" }; S.me.id = "me";
 S.presets ||= [];
-S.opts.sound ??= true; S.opts.preview ??= 120; S.opts.auto ??= true; S.opts.wifiOnly ??= true; S.opts.strictNet ??= false; S.opts.lazy ??= true; S.opts.fullEnd ??= "loop"; S.opts.slideAuto ??= true; S.opts.slideSec ??= 10; S.rules ||= []; S.opts.grid ??= false; S.opts.amb ??= true; S.opts.seasonLight ??= true; S.opts.face ??= ""; S.opts.tod ??= true; S.opts.tilt ??= true; S.opts.shakeScope ??= "all"; S.opts.pipCorner ??= "br"; S.hist ||= []; S.opts.autoColor ??= "raw"; S.opts.pip ??= true; S.opts.shake ??= !(/iP(hone|ad|od)/.test(navigator.userAgent)); S.goals ||= { seen: 10, hearts: 5, cms: 2 }; S.opts.sfx ??= false; S.cheer ||= {}; S.opts.collapsed ||= {}; S.opts.calm ??= false; S.opts.startTl ??= ""; S.opts.split ??= false; S.opts.splitTl ??= ""; S.opts.secretStealth ??= false; S.opts.volume ??= 100; S.opts.fontSize ??= "m"; S.opts.oneHand ??= false; S.trash ||= []; S.opts.modeTime ??= false; S.opts.nightFrom ??= 19; S.opts.nightTo ??= 6; S.firstUseAt ??= S.lastExportAt || Date.now(); if (!S.exportReal) delete S.lastExportAt; S.opts.tlMotion ??= "spring"; S.opts.vibe ??= true; S.opts.resume ??= true; S.pos ||= {};
+function optDefaults() { S.opts.sound ??= true; S.opts.preview ??= 120; S.opts.auto ??= true; S.opts.wifiOnly ??= true; S.opts.strictNet ??= false; S.opts.lazy ??= true; S.opts.fullEnd ??= "loop"; S.opts.slideAuto ??= true; S.opts.slideSec ??= 10; S.rules ||= []; S.opts.grid ??= false; S.opts.amb ??= true; S.opts.seasonLight ??= true; S.opts.face ??= ""; S.opts.tod ??= true; S.opts.tilt ??= true; S.opts.shakeScope ??= "all"; S.opts.pipCorner ??= "br"; S.hist ||= []; S.opts.autoColor ??= "raw"; S.opts.pip ??= true; S.opts.shake ??= !(/iP(hone|ad|od)/.test(navigator.userAgent)); S.goals ||= { seen: 10, hearts: 5, cms: 2 }; S.opts.sfx ??= false; S.cheer ||= {}; S.opts.collapsed ||= {}; S.opts.calm ??= false; S.opts.startTl ??= ""; S.opts.split ??= false; S.opts.splitTl ??= ""; S.opts.secretStealth ??= false; S.opts.volume ??= 100; S.opts.fontSize ??= "m"; S.opts.oneHand ??= false; S.trash ||= []; S.opts.modeTime ??= false; S.opts.nightFrom ??= 19; S.opts.nightTo ??= 6; S.firstUseAt ??= S.lastExportAt || Date.now(); if (!S.exportReal) delete S.lastExportAt; S.opts.tlMotion ??= "spring"; S.opts.vibe ??= true; S.opts.resume ??= true; S.pos ||= {}; }
+optDefaults();
 const fileUrls = new Map(); // 手元から追加したファイル（IndexedDB から復元）
 function save() { if (bootNewer) return false; try { S.schema = Math.max(+S.schema || 1, SCHEMA); localStorage.setItem(KEY, JSON.stringify(S)); return true; } catch { try { toast("保存しきれなかったよ。アイコンの画像を外すか、小さい画像にしてね"); } catch {} return false; } }
 /* 手元ファイルの保存先: IndexedDB（ブラウザ内） */
@@ -1809,11 +1865,16 @@ const forgetFiles = posts => { const gone = new Set(posts.map(p => p.id)), keep 
   posts.filter(isFilePost).forEach(p => fileKeys(p).filter(k => !keep.has(k)).forEach(k => { idb.del(k); const u = fileUrls.get(k); if (u) URL.revokeObjectURL(u); fileUrls.delete(k); })); };
 const tlById = id => S.timelines.find(t => t.id === id);
 /* シークレット: 印を付けたタイムラインは、番号を入れて開いたときだけ見える */
-let secretOn = false; try { secretOn = sessionStorage.getItem("mytl-secret") === "1"; } catch {}
-const isHiddenTl = t => !!(t && t.secret && !secretOn);
+/* v1.2: 開いたシークレットだけの「シークレットのホーム」。ふつうのホームにはシークレットを出さない */
+let secretOpen = new Set(); try { const v = JSON.parse(sessionStorage.getItem("mytl-secret") || "[]"); if (Array.isArray(v)) secretOpen = new Set(v); } catch {}
+let secretOn = secretOpen.size > 0, showAllTl = false;
+const isHiddenTl = t => !!t && !showAllTl && (secretOn ? !(t.secret && secretOpen.has(t.id)) : !!t.secret);
+/* 前の版の「全体で1つの番号」を、シークレットのタイムラインそれぞれの合言葉に引っ越す（同じ番号で開けるよ） */
+function migSecret() { if (!S.secretPin) return; S.timelines.forEach(t => { if (t.secret && !t.pass) t.pass = { kind: "pin", salt: S.secretPin.salt, hash: S.secretPin.hash }; }); delete S.secretPin; delete S.opts.secretNoPin; }
 const visPost = p => !isHiddenTl(tlById(p.tl));
 /* グループ: グループなし → グループ（最初に出てきた順）の順に並べる */
 function orderedTLs() {
+  if (secretOn) { secretOpen.forEach(id => { if (!tlById(id)?.secret) secretOpen.delete(id); }); if (!secretOpen.size) secretOn = false; }
   const vis = S.timelines.filter(t => !isHiddenTl(t)); const groups = [];
   vis.forEach(t => { const g = (t.group || "").trim(); if (g && !groups.includes(g)) groups.push(g); });
   return [...vis.filter(t => !(t.group || "").trim()), ...groups.flatMap(g => vis.filter(t => (t.group || "").trim() === g))];
@@ -1825,13 +1886,21 @@ const keyOf = p => p.sortAt ?? p.at;
 const SORTS = { own: "自分で並べた順", at: "投稿日", upd: "更新日", likes: "いいね数", views: "視聴回数" };
 const updOf = p => Math.max(p.at || 0, p.editedAt || 0, p.sortAt || 0, ...(p.comments || []).map(c => c.at || 0));
 const SORT_KEY = { own: keyOf, at: p => p.at || 0, upd: updOf, likes: p => (+p.likes || 0) + (p.liked ? 1 : 0), views: p => +p.views || (p.seenAt ? 1 : 0) };
-const sortOf = id => { const t = tlById(id); const o = (t && t.sort) || {}; return { k: SORTS[o.k] ? o.k : "own", asc: !!o.asc }; };
+const sortOf = id => { const t = tlById(id), mix = !t; const o = (t ? t.sort : (S.mixSort || {})[id]) || {}; return { k: SORTS[o.k] && !(mix && o.k === "own") ? o.k : mix ? "at" : "own", asc: !!o.asc }; };
+const setSort = o => { const t = mixOn() ? null : tlById(S.active); if (t) t.sort = o; else (S.mixSort ||= {})[curKey()] = o; save(); renderFeed(); scrollTo(0, 0); };
+/* フォルダ（v1.2）: タブをまとめたもの。フォルダのタブを押すと、中のタイムラインをまぜて見る（ミックス）。もう一度押すと中のタブが開く */
+const grpOf = t => (t?.group || "").trim();
+const mixOn = () => { const g = S.mixGrp; return g && orderedTLs().some(t => grpOf(t) === g) ? g : ""; };
+const curKey = () => mixOn() ? "mix:" + mixOn() : S.active;
+function curPosts() { const g = mixOn(); if (!g) return postsOf(S.active);
+  const ids = new Set(orderedTLs().filter(t => grpOf(t) === g).map(t => t.id)), { k, asc } = sortOf("mix:" + g), f = SORT_KEY[k];
+  return S.posts.filter(p => ids.has(p.tl) && !(p.snoozeUntil > Date.now())).sort((a, b) => (asc ? f(a) - f(b) : f(b) - f(a)) || keyOf(b) - keyOf(a)); }
 const postsOf = id => { const { k, asc } = sortOf(id), f = SORT_KEY[k]; return S.posts.filter(p => p.tl === id && !(p.snoozeUntil > Date.now())).sort((a, b) => (!!b.pinned - !!a.pinned) || (asc ? f(a) - f(b) : f(b) - f(a)) || keyOf(b) - keyOf(a)); };
-function sortBar() { const { k, asc } = sortOf(S.active); const isNum = k === "likes" || k === "views";
-  return `<div class="sort-bar"><label for="sortSel">並び</label><select id="sortSel" class="sel sm">${Object.entries(SORTS).map(([v, n]) => `<option value="${v}" ${v === k ? "selected" : ""}>${n}</option>`).join("")}</select>
+function sortBar() { const { k, asc } = sortOf(curKey()); const isNum = k === "likes" || k === "views";
+  return `<div class="sort-bar"><label for="sortSel">並び</label><select id="sortSel" class="sel sm">${Object.entries(SORTS).filter(([v]) => !(mixOn() && v === "own")).map(([v, n]) => `<option value="${v}" ${v === k ? "selected" : ""}>${n}</option>`).join("")}</select>
     <button type="button" class="sort-dir" id="sortDir" aria-label="${asc ? "昇順" : "降順"}（押すと入れ替え）" title="押すと昇順・降順を入れ替え">${asc ? "↑" : "↓"} ${isNum ? (asc ? "少ない順" : "多い順") : k === "own" ? (asc ? "下から" : "上から") : (asc ? "古い順" : "新しい順")}</button></div>`; }
-document.addEventListener("change", e => { if (e.target.id !== "sortSel") return; const t = tlById(S.active); if (!t) return; t.sort = { k: e.target.value, asc: false }; save(); renderFeed(); scrollTo(0, 0); toast(`「${SORTS[e.target.value]}」で並べたよ`); });
-document.addEventListener("click", e => { if (!e.target.closest("#sortDir")) return; const t = tlById(S.active); if (!t) return; const o = sortOf(t.id); t.sort = { k: o.k, asc: !o.asc }; save(); renderFeed(); scrollTo(0, 0); });
+document.addEventListener("change", e => { if (e.target.id !== "sortSel") return; setSort({ k: e.target.value, asc: false }); toast(`「${SORTS[e.target.value]}」で並べたよ`); });
+document.addEventListener("click", e => { if (!e.target.closest("#sortDir")) return; const o = sortOf(curKey()); setSort({ k: o.k, asc: !o.asc }); });
 const hasViewable = p => !!(p.media || xMediaOf(p) || (p.embed && (["youtube", "tiktok"].includes(p.embed.kind) || (HOSTED && ["image-url", "video-url"].includes(p.embed.kind)))));
 const ago = at => { const s = (Date.now() - at) / 1000; if (s < 60) return "今"; if (s < 3600) return `${Math.floor(s / 60)}分`; if (s < 86400) return `${Math.floor(s / 3600)}時間`; return new Date(at).toLocaleDateString("ja-JP", { month: "short", day: "numeric" }); };
 
@@ -1868,9 +1937,18 @@ const AudioKit = { ctx: null, get() { if (!this.ctx) { try { this.ctx = new (win
 let soundHintShown = false;
 function soundHint() { if (soundHintShown) return; soundHintShown = true; toast("音が出ないときはスピーカーボタンを1回押してね"); }
 const sndIcon = () => S.opts.sound ? "#i-vol" : "#i-mute";
-function sndBtn() { return `<button class="snd-btn" data-snd aria-label="${S.opts.sound ? "音声をオフ" : "音声をオン"}" title="${S.opts.sound ? "音声をオフ" : "音声をオン"}"><svg class="i"><use href="${sndIcon()}"/></svg></button>`; }
+/* 音量のつまみ（v1.2）: 再生中の動画の上で直接動かせる。全部の動画で同じ音量。iPhone はページから音量を変えられないから出さない */
+const VOL_OK = (() => { try { const v = document.createElement("video"); v.volume = .5; return v.volume === .5 && !/iP(hone|ad|od)/.test(navigator.userAgent) && !(navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1); } catch { return false; } })();
+const volBar = () => VOL_OK ? `<label class="vol ${S.opts.sound ? "" : "off"}" title="音量"><span class="sr">音量</span><input type="range" min="0" max="100" step="5" value="${S.opts.volume ?? 100}" data-vol aria-label="音量" style="--v:${S.opts.volume ?? 100}%"></label>` : "";
+function setVolAll(v) { S.opts.volume = v; const o = $("#optVol"); if (o) { o.value = v; o.dispatchEvent(new Event("input")); }
+  document.querySelectorAll("[data-vol]").forEach(r => { if (+r.value !== v) r.value = v; r.style.setProperty("--v", v + "%"); }); }
+document.addEventListener("input", e => { const r = e.target.closest?.("[data-vol]"); if (!r) return; if (!S.opts.sound && +r.value > 0) setSoundAll(true); setVolAll(+r.value); }, true);
+document.addEventListener("change", e => { if (e.target.closest?.("[data-vol]")) save(); }, true);
+["click", "pointerdown", "touchstart", "dblclick"].forEach(ev => document.addEventListener(ev, e => { if (e.target.closest?.(".vol")) e.stopPropagation(); }, { capture: true, passive: true }));
+function sndBtn() { return volBar() + `<button class="snd-btn" data-snd aria-label="${S.opts.sound ? "音声をオフ" : "音声をオン"}" title="${S.opts.sound ? "音声をオフ" : "音声をオン"}"><svg class="i"><use href="${sndIcon()}"/></svg></button>`; }
 function setSoundAll(on) {
   S.opts.sound = on; save();
+  document.querySelectorAll(".vol").forEach(v => v.classList.toggle("off", !on));
   document.querySelectorAll(".snd-btn").forEach(b => { b.querySelector("use").setAttribute("href", sndIcon()); b.setAttribute("aria-label", on ? "音声をオフ" : "音声をオン"); b.title = b.getAttribute("aria-label"); });
   players.forEach(p => p.setSound?.(on));
   const o = $("#optSound"); if (o) o.checked = on;
@@ -1934,7 +2012,7 @@ const LONG_MS = 450, LOCK_DY = 60;
 let press = null;
 document.addEventListener("pointerdown", e => {
   const w = e.target.closest && e.target.closest(".media"); if (!w) { hideMarks(); return; }
-  if (e.target.closest("button, a, .seek, [data-snd], [data-act]")) return;
+  if (e.target.closest("button, a, .vol, .seek, [data-snd], [data-act]")) return;
   hideMarks(w);
   const pl = players.get(w); if (!pl || !pl.setRate) return;
   press = { w, pl, x: e.clientX, y: e.clientY, long: false, id: e.pointerId }; gaugeStart(w, e);
@@ -1987,7 +2065,7 @@ document.addEventListener("contextmenu", e => { if (e.target.closest && e.target
 /* 動画をタップ → 再生/一時停止（埋め込みの画面には触らせないので、別タブも開かない） */
 document.addEventListener("click", e => {
   const m = e.target.closest && e.target.closest(".media"); if (!m) return;
-  if (e.target.closest("button, a, .seek, [data-snd], [data-act]")) return;
+  if (e.target.closest("button, a, .vol, .seek, [data-snd], [data-act]")) return;
   if (m._suppressClick && Date.now() - m._suppressClick < 400) return;
   const pl = players.get(m); if (!pl) return;
   /* M1 左右のはしをダブルタップで10秒とばす（続けてタップすると20秒、30秒…） */
@@ -2027,14 +2105,14 @@ function buildMedia(p, mode = "feed") {
     if (mode === "full") { const w = document.createElement("div"); w.className = "media"; const img = new Image(); img.alt = p.text || "画像"; img.src = m.srcs[Math.min(vSub, m.srcs.length - 1)]; w.append(img); return { el: w, playable: false }; }
     const w = document.createElement("div"); w.className = `media gallery g${Math.min(4, m.srcs.length)}`;
     m.srcs.slice(0, 4).forEach((src, i) => { const img = new Image(); img.alt = `${i + 1}枚目`; img.loading = "lazy"; img.src = src; img.dataset.gi = i; w.append(img); });
-    return { el: w, playable: false };
+    if (m.srcs.length > 4) w.insertAdjacentHTML("beforeend", `<span class="g-more" aria-label="ほかに${m.srcs.length - 4}枚">+${m.srcs.length - 4}</span>`); return { el: w, playable: false };
   }
   if (m.kind === "file-gallery") {
     // 全画面では1枚ずつ（vSub 番目）、タイムラインではXと同じ並べ方
     if (mode === "full") { const w = document.createElement("div"); w.className = "media"; const img = new Image(); img.alt = p.text || "画像"; img.src = fileUrls.get(`${p.id}~${vSub}`) || ""; w.append(img); return { el: w, playable: false }; }
     const w = document.createElement("div"); w.className = `media gallery g${Math.min(4, m.n)}`;
     for (let i = 0; i < Math.min(4, m.n); i++) { const img = new Image(); img.alt = `${i + 1}枚目`; img.loading = "lazy"; img.src = fileUrls.get(`${fileBase(p)}~${i}`) || ""; img.dataset.gi = i; w.append(img); }
-    return { el: w, playable: false };
+    if (m.n > 4) w.insertAdjacentHTML("beforeend", `<span class="g-more" aria-label="ほかに${m.n - 4}枚">+${m.n - 4}</span>`); return { el: w, playable: false };
   }
   if (m.kind === "sample-image" || m.kind === "file-image" || m.kind === "url-image") {
     const w = document.createElement("div"); w.className = "media" + (m.vertical ? " vertical" : "");
@@ -2418,7 +2496,7 @@ let ttAP = null;
 /* F1 タブの線: 切り替えるとびよんと伸びて、次のタブでぴたっと縮む */
 function inkPos(tab) { const box = $("#tabs"); const r = tab.getBoundingClientRect(), o = box.getBoundingClientRect(); return { l: r.left - o.left + box.scrollLeft + r.width / 2 - 28, w: 56 }; }
 function placeInk(from) {
-  const box = $("#tabs"), on = box.querySelector(".tab.on"); let ink = box.querySelector(".tab-ink");
+  const box = $("#tabs"), on = box.querySelector(".tab.on, .tab-grp.on"); let ink = box.querySelector(".tab-ink");
   if (!on) { ink?.remove(); return; } if (!ink) { ink = document.createElement("i"); ink.className = "tab-ink"; ink.setAttribute("aria-hidden", "true"); box.append(ink); }
   const z = inkPos(on); ink.style.left = z.l + "px"; ink.style.width = z.w + "px"; box.classList.add("has-ink");
   if (!from || reduceMotion() || Math.abs(from.l - z.l) < 2) return;
@@ -2430,14 +2508,17 @@ function renderTabs() {
   ensureVisibleActive();
   const TL = orderedTLs(); let lastG = "";
   const lockMark = t => t.secret ? `<svg class="i sec-mark" aria-label="シークレット"><use href="#i-hide"/></svg>` : "";
+  const mx = mixOn();
   const grpHead = (t, kind) => { const g = (t.group || "").trim(); if (g === lastG) return ""; lastG = g; if (!g) return "";
-    const c = !!S.opts.collapsed[g]; return kind === "tab" ? `<button class="tab-grp ${c ? "closed" : ""}" data-grp="${esc(g)}" aria-expanded="${!c}">${esc(g)}<span aria-hidden="true">${c ? "▸" : "▾"}</span></button>`
-      : `<button class="nav-group ${c ? "closed" : ""}" data-grp="${esc(g)}" aria-expanded="${!c}"><span aria-hidden="true">${c ? "▸" : "▾"}</span><span class="label">${esc(g)}</span></button>`; };
-  const folded = t => { const g = (t.group || "").trim(); return g && S.opts.collapsed[g] && t.id !== S.active; };
+    const c = !!S.opts.collapsed[g], on = mx === g, n = TL.filter(x => grpOf(x) === g).length;
+    return kind === "tab" ? `<button class="tab-grp ${c ? "closed" : ""} ${on ? "on" : ""}" data-grp="${esc(g)}" aria-expanded="${!c}" aria-selected="${on}" title="押すとまぜて見る・もう一度押すと中を開く"><svg class="i"><use href="#i-folder"/></svg>${esc(g)}<small>${n}</small><span class="caret" aria-hidden="true">${c ? "▸" : "▾"}</span></button>`
+      : `<button class="nav-group ${c ? "closed" : ""} ${on ? "on" : ""}" data-grp="${esc(g)}" aria-expanded="${!c}"><span aria-hidden="true">${c ? "▸" : "▾"}</span><svg class="i"><use href="#i-folder"/></svg><span class="label">${esc(g)}</span><small>${n}</small></button>`; };
+  const folded = t => { const g = (t.group || "").trim(); return g && S.opts.collapsed[g] && (mx === g || t.id !== S.active); };
+  const isOn = t => t.id === S.active && !mx;
   const un = t => { const n = unseenOf(t.id); return n ? `<span class="unseen" data-un="${t.id}" aria-label="まだ見てない ${n} 件">${n > 99 ? "99+" : n}</span>` : `<span class="unseen" data-un="${t.id}" hidden></span>`; };
-  $("#tabs").innerHTML = TL.map(t => grpHead(t, "tab") + (folded(t) ? "" : `<button class="tab ${t.id === S.active ? "on" : ""}" role="tab" aria-selected="${t.id === S.active}" data-tl="${t.id}">${esc(t.name)}${lockMark(t)}${un(t)}</button>`)).join("") + `<button class="tab tab-add" id="tabAdd" aria-label="タイムラインを追加">＋</button>`;
+  $("#tabs").innerHTML = TL.map(t => grpHead(t, "tab") + (folded(t) ? "" : `<button class="tab ${isOn(t) ? "on" : ""} ${grpOf(t) ? "in-grp" : ""}" role="tab" aria-selected="${isOn(t)}" data-tl="${t.id}">${esc(t.name)}${lockMark(t)}${un(t)}</button>`)).join("") + `<button class="tab tab-add" id="tabAdd" aria-label="タイムラインを追加">＋</button>`;
   lastG = "";
-  $("#navList").innerHTML = TL.map(t => grpHead(t, "nav") + (folded(t) ? "" : `<button class="nav-item ${t.id === S.active ? "on" : ""}" data-tl="${t.id}" title="${esc(t.name)}">${tlAvatar(t, "mini-av")}<span class="label">${esc(t.name)}${lockMark(t)}</span>${un(t)}<span class="count">${postsOf(t.id).length}</span></button>`)).join("");
+  $("#navList").innerHTML = TL.map(t => grpHead(t, "nav") + (folded(t) ? "" : `<button class="nav-item ${isOn(t) ? "on" : ""} ${grpOf(t) ? "in-grp" : ""}" data-tl="${t.id}" title="${esc(t.name)}">${tlAvatar(t, "mini-av")}<span class="label">${esc(t.name)}${lockMark(t)}</span>${un(t)}<span class="count">${postsOf(t.id).length}</span></button>`)).join("");
   $("#compTl").innerHTML = TL.map(t => `<option value="${t.id}" ${t.id === S.active ? "selected" : ""}>送り先: ${esc(t.name)}</option>`).join("");
   paintMe(); applyTlTheme(); renderStats(); renderScope(); requestAnimationFrame(() => placeInk(from));
 }
@@ -2569,7 +2650,7 @@ function renderFeed() {
   const feed = $("#feed"); feed.innerHTML = "";
   const sq = !!query || qf.size > 0; paintQChips();
   document.body.classList.toggle("searching", sq);
-  const all = sq ? S.posts.filter(p => visPost(p) && (!query || matchPost(p, query)) && qfOk(p)).sort((a, b) => keyOf(b) - keyOf(a)) : postsOf(S.active);
+  const all = sq ? S.posts.filter(p => visPost(p) && (!query || matchPost(p, query)) && qfOk(p)).sort((a, b) => keyOf(b) - keyOf(a)) : curPosts();
   const list = labelFilter ? all.filter(p => p.label === labelFilter) : all;
   if (!sq && all.length) feed.insertAdjacentHTML("beforeend", feedTools(all) + sortBar());
   if (!sq && !labelFilter) { memoryCard(feed); recapCard(feed); }
@@ -2606,14 +2687,13 @@ function renderManage() {
       <button class="mini danger" data-act="askdel" ${S.timelines.length <= 1 ? "disabled" : ""} aria-label="削除"><svg class="i"><use href="#i-trash"/></svg></button>
     </li>
     <li class="tl-sub" data-sub="${t.id}">
-      <input type="text" list="grpList" value="${esc(t.group || "")}" maxlength="12" data-act="group" placeholder="グループ" aria-label="「${esc(t.name)}」のグループ">
-      ${secretReady() && secretOn ? `<button class="sub-chip ${t.secret ? "on" : ""}" data-act="secret" aria-pressed="${!!t.secret}"><svg class="i"><use href="#i-hide"/></svg>シークレット</button>` : ""}
+      <input type="text" list="grpList" value="${esc(t.group || "")}" maxlength="12" data-act="group" placeholder="フォルダ" aria-label="「${esc(t.name)}」のフォルダ">
     </li>
     <li class="confirm" data-confirm="${t.id}" hidden>ツイート ${S.posts.filter(p => p.tl === t.id).length} 件ごと消す？
       <button class="yes" data-act="del" data-tl="${t.id}">削除</button><button class="no" data-act="nodel" data-tl="${t.id}">やめる</button></li>`).join("");
 }
 
-function renderAll() { renderTabs(); renderFeed(); renderManage(); save(); }
+function renderAll() { migSecret(); renderTabs(); renderFeed(); renderManage(); save(); }
 
 /* ================= 操作 ================= */
 let tt = null;
@@ -2648,7 +2728,7 @@ function tlMotion(dir) {
 function setActive(id, dir = 0) {
   if (query) { query = ""; $("#searchBox").value = ""; $("#searchX").hidden = true; }
   const sk0 = document.documentElement.dataset.skin || "";
-  rememberPos(); S.active = id; labelFilter = ""; applySkin(); renderTabs(); renderFeed(); save(); restorePos();
+  rememberPos(); S.active = id; delete S.mixGrp; labelFilter = ""; applySkin(); renderTabs(); renderFeed(); save(); restorePos();
   if ((document.documentElement.dataset.skin || "") !== sk0 && !reduceMotion()) document.body.animate?.([{ opacity: .55 }, { opacity: 1 }], { duration: 380, easing: "ease-out" });
   document.querySelector(".tab.on")?.scrollIntoView({ inline: "center", block: "nearest" });
   tlMotion(dir); updateFocus(); switchFx();
@@ -2677,7 +2757,7 @@ function stepTimeline(d) {
   let sx = 0, sy = 0, t0 = 0, ok = false;
   const main = $("#main");
   main.addEventListener("touchstart", e => {
-    const t = e.touches[0]; ok = e.touches.length === 1 && !e.target.closest(".seek, .tabs, .composer, input, textarea, select");
+    const t = e.touches[0]; ok = e.touches.length === 1 && !e.target.closest(".vol, .seek, .tabs, .composer, input, textarea, select");
     sx = t.clientX; sy = t.clientY; t0 = Date.now();
   }, { passive: true });
   main.addEventListener("touchend", e => {
@@ -2694,7 +2774,7 @@ function stepTimeline(d) {
   }, { passive: true });
 })();
 document.addEventListener("click", e => {
-  const g = e.target.closest("[data-grp]"); if (g) { const k = g.dataset.grp; S.opts.collapsed[k] = !S.opts.collapsed[k]; save(); renderTabs(); return; }
+  const g = e.target.closest("[data-grp]"); if (g) { const k = g.dataset.grp; if (mixOn() !== k) openMix(k); else { S.opts.collapsed[k] = !S.opts.collapsed[k]; save(); renderTabs(); } return; }
   const tab = e.target.closest("[data-tl].tab, .nav-item[data-tl]"); if (tab) return setActive(tab.dataset.tl);
 });
 $("#tabs").addEventListener("click", e => { if (e.target.closest("#tabAdd")) { openSide(); setTimeout(() => $("#addName").focus(), 260); } });
@@ -2703,7 +2783,8 @@ $("#tabs").addEventListener("click", e => { if (e.target.closest("#tabAdd")) { o
 const compText = $("#compText");
 function updateDetect() {
   const v = compText.value.trim(); const url = findUrl(v); const r = url && parseUrl(url);
-  $("#detect").innerHTML = r ? `<span class="chip">${KIND_LABEL[r.kind]}</span> として表示されます` : pendingFiles.length > 1 ? `<span class="chip">画像 ${pendingFiles.length} 枚</span> 1つのツイートにまとめるよ` : (pendingFile ? `<span class="chip">${pendingFile.type.startsWith("video") ? "動画ファイル" : "画像ファイル"}</span> ${esc(pendingFile.name)}` : "");
+  paintThumbs();
+  $("#detect").innerHTML = r ? `<span class="chip">${KIND_LABEL[r.kind]}</span> として表示されます` : pendingFiles.length > 1 ? `<span class="chip">画像 ${pendingFiles.length} / ${MAX_IMG} 枚</span> 1つのツイートにまとめるよ。矢印で並べ替え、× で外せるよ` : (pendingFile ? `<span class="chip">${pendingFile.type.startsWith("video") ? "動画ファイル" : "画像ファイル"}</span> ${esc(pendingFile.name)}` : "");
   $("#compPost").disabled = !v && !pendingFile;
   const dup = r && findDup(r); if (dup) $("#detect").insertAdjacentHTML("beforeend", dupHTML(dup, "comp"));
   const urls = v.match(/https?:\/\/[^\s]+/g) || []; if (urls.length > 1 && !pendingFile) $("#detect").innerHTML = `<span class="chip">URL ${urls.length}個</span> 1つずつのツイートにして、まとめて追加するよ`;
@@ -2713,6 +2794,19 @@ function updateDetect() {
 let compTlTouched = false;
 $("#compTl").addEventListener("change", () => { compTlTouched = true; });
 let pendingFile = null, pendingFiles = [];
+const MAX_IMG = 20; let thumbUrls = [];
+function paintThumbs() {
+  const box = $("#compThumbs"); if (!box) return; thumbUrls.forEach(u => URL.revokeObjectURL(u)); thumbUrls = [];
+  const L = pendingFiles.length > 1 ? pendingFiles : pendingFile && pendingFile.type.startsWith("image") ? [pendingFile] : [];
+  box.hidden = !L.length; if (!L.length) { box.innerHTML = ""; return; }
+  box.innerHTML = L.map((f, i) => { const u = URL.createObjectURL(f); thumbUrls.push(u); return `<div class="ct"><img src="${u}" alt="${i + 1}枚目"><span class="n">${i + 1}</span><button type="button" class="x" data-ct="x" data-i="${i}" aria-label="${i + 1}枚目を外す">×</button>${L.length > 1 ? `<button type="button" class="l" data-ct="l" data-i="${i}" aria-label="${i + 1}枚目を前へ" ${i ? "" : "disabled"}>‹</button><button type="button" class="r" data-ct="r" data-i="${i}" aria-label="${i + 1}枚目を後ろへ" ${i < L.length - 1 ? "" : "disabled"}>›</button>` : ""}</div>`; }).join("")
+    + (L.length < MAX_IMG ? `<button type="button" class="ct-add" data-ct="add"><b>＋</b>画像を足す<small>あと${MAX_IMG - L.length}枚</small></button>` : "");
+}
+document.addEventListener("click", e => { const b = e.target.closest("#compThumbs [data-ct]"); if (!b) return; e.preventDefault();
+  const k = b.dataset.ct, i = +b.dataset.i; if (k === "add") { $("#compFile").click(); return; }
+  let L = pendingFiles.length > 1 ? pendingFiles.slice() : [pendingFile];
+  if (k === "x") L.splice(i, 1); else { const j = k === "l" ? i - 1 : i + 1; [L[i], L[j]] = [L[j], L[i]]; }
+  pendingFiles = L.length > 1 ? L : []; pendingFile = L[0] || null; updateDetect(); });
 compText.addEventListener("input", () => { compText.style.height = "auto"; compText.style.height = compText.scrollHeight + "px"; updateDetect(); saveDraft(); maybeTitle(); });
 /* K14 下書き: 書きかけの文を覚えておく */
 /* U7 下書きは3つまで。投稿欄の下のチップで切り替え */
@@ -2732,8 +2826,11 @@ document.addEventListener("click", e => { const b = e.target.closest("[data-draf
   if (!b.dataset.draft) { curDraft = null; compText.value = ""; } else { const x = getDrafts().find(y => y.id === b.dataset.draft); if (!x) return; curDraft = x.id; compText.value = x.text; }
   compText.style.height = "auto"; compText.style.height = compText.scrollHeight + "px"; updateDetect(); paintDrafts(); compText.focus(); });
 $("#compFile").addEventListener("change", e => {
-  const fs = [...e.target.files]; const imgs = fs.filter(f => f.type.startsWith("image"));
-  if (fs.length > 1 && imgs.length === fs.length) { pendingFiles = imgs.slice(0, 4); pendingFile = pendingFiles[0]; if (imgs.length > 4) toast("画像は1つのツイートに4枚までだよ。先頭の4枚にしたよ"); }
+  const fs = [...e.target.files]; const imgs = fs.filter(f => f.type.startsWith("image")); e.target.value = "";
+  if (!fs.length) return;
+  /* 画像だけなら、前に選んだ画像に足していく（1ツイート 20 枚まで） */
+  const had = pendingFiles.length ? pendingFiles : pendingFile && pendingFile.type.startsWith("image") ? [pendingFile] : [];
+  if (imgs.length === fs.length && had.length + imgs.length > 1) { const all = had.concat(imgs); pendingFiles = all.slice(0, MAX_IMG); pendingFile = pendingFiles[0]; if (all.length > MAX_IMG) toast(`画像は1つのツイートに${MAX_IMG}枚までだよ。先頭の${MAX_IMG}枚にしたよ`); }
   else { pendingFiles = []; pendingFile = fs[0] || null; if (fs.length > 1) toast("動画が入っているときは1つずつ投稿してね。最初の1つにしたよ"); }
   updateDetect();
 });
@@ -2906,7 +3003,8 @@ $("#addForm").addEventListener("submit", e => {
   e.preventDefault(); const name = $("#addName").value.trim(); if (!name) return $("#addName").focus();
   const colors = ["#1d9bf0", "#7856ff", "#f91880", "#00ba7c", "#ff7a00", "#ffd400"];
   const t = { id: "tl-" + uid(), name, color: colors[S.timelines.length % colors.length] };
-  S.timelines.push(t); S.active = t.id; $("#addName").value = ""; toast(`「${name}」を作りました`); renderAll();
+  if (secretOn) { const mate = tlById([...secretOpen][0]); t.secret = true; if (mate?.pass) t.pass = { ...mate.pass }; secretOpen.add(t.id); try { sessionStorage.setItem("mytl-secret", JSON.stringify([...secretOpen])); } catch {} }
+  S.timelines.push(t); S.active = t.id; $("#addName").value = ""; toast(secretOn ? `「${name}」をシークレットで作ったよ（合言葉は今開いているのと同じ）` : `「${name}」を作りました`); renderAll();
 });
 
 /* 設定 */
@@ -3000,6 +3098,7 @@ async function bootSafety() {
   if (bootNewer) toast("このデータは新しい版のアプリで保存されたものだよ。壊さないように、この画面では保存しないでおくね。ページを再読み込みして更新してね");
   if (bootBroken) { await snaps.take("broken", bootBroken); const a = (await snaps.list()).filter(x => x.why !== "broken"); toast(a.length ? "保存データが読めなかったよ。設定 → データ →「自動の控え」から戻せるよ" : "保存データが読めなかったよ。中身は別の場所に残してあるから、書き出したファイルがあれば読み込んでね"); }
   if (bootMigrated) await snaps.take("migrate", rawBoot);
+  try { const m = sessionStorage.getItem("mytl-toast"), pg = sessionStorage.getItem("mytl-setpage"); sessionStorage.removeItem("mytl-toast"); sessionStorage.removeItem("mytl-setpage"); if (m) setTimeout(() => toast(m), 300); if (pg) setTimeout(() => { openSetPage(pg); if (innerWidth <= 960) openSide(); }, 200); } catch {}
   try { const rs = sessionStorage.getItem("mytl-restored"); if (rs) { sessionStorage.removeItem("mytl-restored"); toast(`${whenTxt(+rs)} の状態に戻したよ（戻す前の状態も控えに残してあるよ）`); }
     if (sessionStorage.getItem("mytl-otherTab")) { sessionStorage.removeItem("mytl-otherTab"); toast("別のタブで変えた内容を読み直したよ"); } } catch {}
   const last = (await snaps.list()).find(x => x.why === "daily"); if (!last || Date.now() - last.at > 20 * 3600e3) await snaps.take("daily");
@@ -3044,8 +3143,17 @@ function maybeHomeHint() { const ios = /iP(hone|ad|od)/.test(navigator.userAgent
 /* K6 自動バックアップのお知らせ: 書き出してから7日たったら声をかける */
 const WEEK = 7 * 864e5;
 /* 版番号と「新しくなったこと」 */
-const APP_VERSION = "1.1.0";
+const APP_VERSION = "1.2.0";
 const NEWS = [
+  ["1.2.0", "2026-11-28", "シークレット・フォルダ・画像20枚", [
+    "シークレットの合言葉を、タイムラインごとに決められるように。4桁の番号か好きな文字（なしも選べるよ）。前の版の番号は、そのまま使えるよ",
+    "シークレットにしたタイムラインは、ふつうのホームには出なくなったよ。合言葉を入れると、暗い色の「シークレットのホーム」に切り替わるの",
+    "フォルダ: タブを長押しして、ほかのタブに重ねるとまとまるよ。フォルダのタブを押すと中をまぜて見られて、もう一度押すと中のタブが開くの",
+    "1つのツイートに画像を20枚まで。投稿欄で並べ替え・外すができて、タイムラインでは「＋何枚」と出るよ",
+    "コメントに返信できるように。ツリーで並んで、多いときは「続きを見る」",
+    "動画の上に音量のつまみを付けたよ（iPhone は本体のボタンで変えてね）",
+    "設定の分類ごとに「最初の設定に戻す」を追加。表示をぜんぶ少し大きくしたよ（前の大きさは「小さめ」）",
+  ]],
   ["1.1.0", "2026-11-28", "直しと見やすさ", [
     "設定を作り直したよ。見た目・再生と音・動き・タイムライン・データと安全の5つに分けて、上の欄で項目をさがせるの",
     "「表示の大きさ」を追加。ボタンやポップアップ、設定をまとめて大きくできるよ（標準も少し大きくしたよ）",
@@ -3209,7 +3317,7 @@ function renderTT() {
 }
 /* F11 縦スワイプ: マウスでも指に吸いつくようにドラッグ。半分を超えたら次へ、手前で離すとゴムみたいに戻る（指はもともとスクロールの吸いつき） */
 (() => { const sc = $("#ttScroll"); let sy = null, st = 0, dy = 0;
-  sc.addEventListener("pointerdown", e => { if (e.pointerType !== "mouse" || e.button !== 0 || e.target.closest("button, a, .seek, .tt-rail")) return; sy = e.clientY; st = sc.scrollTop; dy = 0; });
+  sc.addEventListener("pointerdown", e => { if (e.pointerType !== "mouse" || e.button !== 0 || e.target.closest("button, a, .vol, .seek, .tt-rail")) return; sy = e.clientY; st = sc.scrollTop; dy = 0; });
   let sx = 0, dx = 0;
   sc.addEventListener("pointerdown", e => { if (e.pointerType === "mouse") { sx = e.clientX; dx = 0; } });
   addEventListener("pointermove", e => { if (sy == null) return; dy = e.clientY - sy; dx = e.clientX - sx; if (Math.abs(dx) > Math.abs(dy)) return; if (Math.abs(dy) > 6) { sc.style.scrollSnapType = "none"; sc.scrollTop = st - dy; } });
@@ -3238,7 +3346,7 @@ function ttSwitch(d) {
   sc.animate([{ transform: "none", opacity: 1 }, { transform: `translateX(${-dir * 90}px)`, opacity: 0 }], { duration: 170, easing: "cubic-bezier(.5,0,1,1)", fill: "forwards" }).onfinish = go;
 }
 (() => { const sc = $("#ttScroll"); let t0 = null;
-  sc.addEventListener("touchstart", e => { if (e.touches.length !== 1 || e.target.closest(".seek, .tt-rail")) { t0 = null; return; } t0 = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() }; }, { passive: true });
+  sc.addEventListener("touchstart", e => { if (e.touches.length !== 1 || e.target.closest(".vol, .seek, .tt-rail")) { t0 = null; return; } t0 = { x: e.touches[0].clientX, y: e.touches[0].clientY, t: Date.now() }; }, { passive: true });
   sc.addEventListener("touchend", e => { if (!t0) return; const dx = e.changedTouches[0].clientX - t0.x, dy = e.changedTouches[0].clientY - t0.y, dt = Date.now() - t0.t; t0 = null;
     if (Math.abs(dx) > 60 && Math.abs(dx) > Math.abs(dy) * 1.6 && dt < 700) ttSwitch(dx < 0 ? 1 : -1); }, { passive: true });
   document.addEventListener("keydown", e => { if (!$("#tt").classList.contains("open") || e.target.closest("input,textarea,select")) return; if (e.key === "ArrowRight") ttSwitch(1); if (e.key === "ArrowLeft") ttSwitch(-1); });
@@ -3427,6 +3535,7 @@ $("#optVol").addEventListener("input", e => {
   document.querySelectorAll("video").forEach(v => v.volume = S.opts.volume / 100); volHooks.forEach(f => f());
 });
 $("#optVol").addEventListener("change", () => save());
+$("#optVol").addEventListener("input", e => document.querySelectorAll("[data-vol]").forEach(r => { r.value = e.target.value; r.style.setProperty("--v", e.target.value + "%"); }));
 $("#optFont").addEventListener("change", e => { S.opts.fontSize = e.target.value; save(); applyOpts(); });
 $("#optOneHand").addEventListener("change", e => { S.opts.oneHand = e.target.checked; save(); applyOpts(); toast(S.opts.oneHand ? "よく使うボタンを下に寄せたよ" : "片手モードをやめたよ"); });
 
@@ -3862,25 +3971,79 @@ document.addEventListener("click", e => {
   c.classList.toggle("flip");
 });
 
-/* N6 タブを長押しすると、タイムラインのアイコンが丸く並ぶ。指をすべらせて離したところへ */
-(() => { const tabs = $("#tabs"), ring = $("#tlRadial"); let t = 0, open = false, sx = 0, sy = 0, sel = null, block = 0;
-  tabs.addEventListener("pointerdown", e => { if (e.target.closest(".tab-add, .tab-grp")) return; sx = e.clientX; sy = e.clientY; clearTimeout(t);
-    t = setTimeout(() => { const TL = orderedTLs(); if (TL.length < 2) return; open = true; block = Date.now(); haptic("tick");
-      const n = TL.length, R = Math.max(80, Math.min(130, 24 + n * 14)), up = sy > innerHeight * .55;
-      const span = Math.min(Math.PI * 1.6, n * .62), base = up ? -Math.PI / 2 : Math.PI / 2;
-      const cx = Math.max(R + 30, Math.min(innerWidth - R - 30, sx)), cy = sy;
-      ring.innerHTML = TL.map((tl, i) => { const a = base + (n === 1 ? 0 : (i / (n - 1) - .5) * span), x = cx + Math.cos(a) * R, y = cy + Math.sin(a) * R;
-        return `<span class="rad-item" data-rad="${tl.id}" style="left:${x}px;top:${y}px">${tlAvatar(tl, "mini-av")}<em>${esc(tl.name)}</em></span>`; }).join("") + `<span class="rad-center" style="left:${cx}px;top:${cy}px"></span>`;
-      ring.hidden = false; if (!reduceMotion()) [...ring.querySelectorAll(".rad-item")].forEach((el, i) => el.animate([{ transform: `translate(${cx - parseFloat(el.style.left)}px,${cy - parseFloat(el.style.top)}px) scale(.2)`, opacity: 0 }, { transform: "translate(0,0) scale(1)", opacity: 1 }], { duration: 260, delay: i * 18, easing: "cubic-bezier(.3,1.4,.5,1)", fill: "backwards" }));
-    }, 450); });
-  addEventListener("pointermove", e => { if (!open) { if (t && Math.hypot(e.clientX - sx, e.clientY - sy) > 10) { clearTimeout(t); t = 0; } return; }
-    sel = null; ring.querySelectorAll(".rad-item").forEach(el => { const r = el.getBoundingClientRect(), on = Math.hypot(r.left + r.width / 2 - e.clientX, r.top + r.height / 2 - e.clientY) < 34; el.classList.toggle("on", on); if (on) sel = el.dataset.rad; }); }, true);
-  const end = () => { clearTimeout(t); t = 0; if (!open) return; open = false; ring.hidden = true; if (sel && sel !== S.active) { const TL = orderedTLs(); setActive(sel, TL.findIndex(x => x.id === sel) > TL.findIndex(x => x.id === S.active) ? 1 : -1); } sel = null; };
+/* フォルダ: まぜて見る・名前を決める・まとめる／出す */
+function openMix(g) {
+  const kids = orderedTLs().filter(t => grpOf(t) === g); if (!kids.length) return;
+  if (query) { query = ""; $("#searchBox").value = ""; $("#searchX").hidden = true; }
+  rememberPos(); if (!kids.some(t => t.id === S.active)) S.active = kids[0].id; S.mixGrp = g; labelFilter = "";
+  applySkin(); renderTabs(); renderFeed(); save(); scrollTo({ top: 0 }); tlMotion(0); updateFocus();
+  $("#tabs .tab-grp.on")?.scrollIntoView({ inline: "center", block: "nearest" });
+}
+function renameFolder(a, b) {
+  S.timelines.forEach(t => { if (grpOf(t) === a) { if (b) t.group = b; else delete t.group; } });
+  if (b) { S.opts.collapsed[b] = S.opts.collapsed[a]; if (S.mixSort?.["mix:" + a]) S.mixSort["mix:" + b] = S.mixSort["mix:" + a]; }
+  delete S.opts.collapsed[a]; if (S.mixSort) delete S.mixSort["mix:" + a];
+  if (S.mixGrp === a) { if (b) S.mixGrp = b; else delete S.mixGrp; } save(); renderAll();
+}
+function askFolder(g, isNew) {
+  hub.open(isNew ? "フォルダができたよ" : "フォルダ", `<div class="fd-box">
+    <label class="fd-name">フォルダの名前<input type="text" id="fdName" class="sel" maxlength="12" value="${esc(g)}" autocomplete="off"></label>
+    <div style="display:flex;gap:8px;flex-wrap:wrap"><button type="button" class="btn-accent" id="fdOk">決める</button>${isNew ? "" : `<button type="button" class="btn-ghost sm danger" id="fdUndo">フォルダをやめる</button>`}</div>
+    <ul class="fd-tips"><li><b>フォルダのタブを押す</b> → 中のタイムラインを全部まぜて見られるよ</li><li><b>もう一度押す</b> → 中のタブが開いて、1つずつ見られるよ</li><li><b>タブを長押しして、別のタブに重ねる</b> → まとまる</li><li><b>長押しして、タブの外（下）へ引っぱる</b> → フォルダから出すよ</li></ul></div>`,
+    b => { const go = () => { const v = $("#fdName").value.trim().slice(0, 12); if (!v) return toast("名前を入れてね"); if (v !== g && S.timelines.some(t => grpOf(t) === v)) return toast("その名前のフォルダはもうあるよ");
+        if (v !== g) renameFolder(g, v); hub.close(); toast(`フォルダ「${v}」にしたよ`); };
+      b.querySelector("#fdOk").addEventListener("click", go); b.querySelector("#fdName").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); go(); } });
+      b.querySelector("#fdUndo")?.addEventListener("click", () => { renameFolder(g, ""); hub.close(); toast(`フォルダ「${g}」をやめて、タブをばらばらに戻したよ`); });
+      if (isNew) setTimeout(() => { const i = $("#fdName"); i?.focus(); i?.select(); }, 80); });
+}
+function folderDrop(srcId, d) {
+  const a = tlById(srcId); if (!a) return;
+  if (d.out) { const g = grpOf(a); delete a.group; const left = S.timelines.filter(t => grpOf(t) === g).length; if (left <= 1) renameFolder(g, ""); save(); renderAll(); toast(left <= 1 ? `「${a.name}」を出したよ。1つだけになったから、フォルダ「${g}」はなくしたよ` : `「${a.name}」をフォルダ「${g}」から出したよ`); return; }
+  const g = d.grp || grpOf(tlById(d.tl));
+  if (g) { if (grpOf(a) === g) return; a.group = g; save(); renderAll(); toast(`「${a.name}」をフォルダ「${g}」に入れたよ`); return; }
+  const b = tlById(d.tl); if (!b) return; let n = 1, name; do { name = `フォルダ${n++}`; } while (S.timelines.some(t => grpOf(t) === name));
+  a.group = b.group = name; S.opts.collapsed[name] = true;
+  S.timelines.splice(S.timelines.indexOf(a), 1); S.timelines.splice(S.timelines.indexOf(b) + 1, 0, a);
+  renderAll(); openMix(name); askFolder(name, true);
+}
+/* N6 タブを長押し: 持ち上がる。ほかのタブに重ねて離すとフォルダ、外へ引っぱると出す。動かさずに離すと、タイムラインのアイコンが丸く並ぶ（タップで移動） */
+(() => { const tabs = $("#tabs"), ring = $("#tlRadial"); let t = 0, mode = "", sx = 0, sy = 0, src = null, srcEl = null, ghost = null, drop = null, block = 0, moved = 0;
+  const clearDrop = () => document.querySelectorAll(".drop-on").forEach(x => x.classList.remove("drop-on"));
+  const openRing = () => { const TL = orderedTLs(); if (TL.length < 2) return;
+    const n = TL.length, R = Math.max(80, Math.min(130, 24 + n * 14)), up = sy > innerHeight * .55;
+    const span = Math.min(Math.PI * 1.6, n * .62), base = up ? -Math.PI / 2 : Math.PI / 2;
+    const cx = Math.max(R + 30, Math.min(innerWidth - R - 30, sx)), cy = Math.max(R + 40, sy);
+    ring.innerHTML = TL.map((tl, i) => { const a = base + (n === 1 ? 0 : (i / (n - 1) - .5) * span), x = cx + Math.cos(a) * R, y = cy + Math.sin(a) * R;
+      return `<button type="button" class="rad-item ${tl.id === S.active && !mixOn() ? "on" : ""}" data-rad="${tl.id}" style="left:${x}px;top:${y}px">${tlAvatar(tl, "mini-av")}<em>${esc(tl.name)}</em></button>`; }).join("") + `<span class="rad-center" style="left:${cx}px;top:${cy}px"></span>`;
+    ring.hidden = false; ring.classList.add("tap"); ring.setAttribute("aria-hidden", "false");
+    if (!reduceMotion()) [...ring.querySelectorAll(".rad-item")].forEach((el, i) => el.animate([{ transform: `translate(${cx - parseFloat(el.style.left)}px,${cy - parseFloat(el.style.top)}px) scale(.2)`, opacity: 0 }, { transform: "translate(0,0) scale(1)", opacity: 1 }], { duration: 260, delay: i * 18, easing: "cubic-bezier(.2,.9,.3,1.2)", fill: "backwards" })); };
+  const closeRing = () => { ring.hidden = true; ring.classList.remove("tap"); ring.setAttribute("aria-hidden", "true"); };
+  ring.addEventListener("click", e => { const it = e.target.closest("[data-rad]"); closeRing(); if (it && (it.dataset.rad !== S.active || mixOn())) { const TL = orderedTLs(); setActive(it.dataset.rad, TL.findIndex(x => x.id === it.dataset.rad) > TL.findIndex(x => x.id === S.active) ? 1 : -1); } });
+  tabs.addEventListener("pointerdown", e => { if (e.button > 0) return; const tb = e.target.closest(".tab[data-tl], .tab-grp"); if (!tb) return; sx = e.clientX; sy = e.clientY; moved = 0; clearTimeout(t);
+    t = setTimeout(() => { t = 0; block = Date.now(); haptic("tick");
+      if (tb.classList.contains("tab-grp")) { askFolder(tb.dataset.grp); return; }
+      mode = "lift"; src = tb.dataset.tl; srcEl = tb; tb.classList.add("lifting");
+      ghost = document.createElement("div"); ghost.className = "tab-ghost"; ghost.innerHTML = `<b>${esc(tlById(src).name)}</b><small>ほかのタブに重ねてね</small>`; document.body.append(ghost); place(sx, sy); }, 450); });
+  const place = (x, y) => { const w = ghost.offsetWidth / 2 + 8; ghost.style.left = Math.max(w, Math.min(innerWidth - w, x)) + "px"; ghost.style.top = Math.max(ghost.offsetHeight * 1.3 + 8, y) + "px"; };
+  addEventListener("pointermove", e => {
+    if (mode !== "lift") { if (t && Math.hypot(e.clientX - sx, e.clientY - sy) > 10) { clearTimeout(t); t = 0; } return; }
+    if (Math.hypot(e.clientX - sx, e.clientY - sy) > 12) moved = 1; place(e.clientX, e.clientY); clearDrop(); drop = null;
+    const el = document.elementFromPoint(e.clientX, e.clientY)?.closest?.(".tab[data-tl], .tab-grp, .nav-item[data-tl], .nav-group");
+    if (el && el.dataset.tl !== src && !(el.dataset.grp && el.dataset.grp === grpOf(tlById(src)))) { drop = el.dataset.tl ? { tl: el.dataset.tl } : { grp: el.dataset.grp }; el.classList.add("drop-on"); }
+    else if (!el && grpOf(tlById(src)) && e.clientY > tabs.getBoundingClientRect().bottom + 40) drop = { out: 1 };
+    const tgt = drop?.tl && tlById(drop.tl);
+    ghost.querySelector("small").textContent = !drop ? (grpOf(tlById(src)) ? "重ねる・下へ引っぱると出す" : "ほかのタブに重ねてね") : drop.out ? `フォルダ「${grpOf(tlById(src))}」から出す` : drop.grp ? `フォルダ「${drop.grp}」に入れる` : grpOf(tgt) ? `フォルダ「${grpOf(tgt)}」に入れる` : `「${tgt.name}」とフォルダにする`;
+    ghost.classList.toggle("ok", !!drop);
+  }, true);
+  const end = () => { clearTimeout(t); t = 0; if (mode !== "lift") return; mode = ""; ghost?.remove(); ghost = null; srcEl?.classList.remove("lifting"); clearDrop();
+    const d = drop; drop = null; if (d) { haptic("success"); folderDrop(src, d); } else if (!moved) openRing(); };
   addEventListener("pointerup", end, true); addEventListener("pointercancel", end, true);
   tabs.addEventListener("click", e => { if (Date.now() - block < 900) { e.stopPropagation(); e.preventDefault(); block = 0; } }, true);
   tabs.addEventListener("contextmenu", e => e.preventDefault());
-  document.addEventListener("touchmove", e => { if (open) e.preventDefault(); }, { passive: false });
+  document.addEventListener("touchmove", e => { if (mode === "lift") e.preventDefault(); }, { passive: false });
+  document.addEventListener("keydown", e => { if (e.key === "Escape" && !ring.hidden) closeRing(); });
 })();
+
 
 /* N7 小窓: 自分で再生した動画は、画面の外に出ても右下の小窓で続く。小窓があるあいだは真ん中の動画は自動再生しない */
 let stick = null, pip = null;
@@ -3905,11 +4068,11 @@ function closePip(keepPlaying) {
 }); }, { passive: true }); })();
 document.addEventListener("click", e => {
   if (e.target.closest("[data-pipx]")) { e.stopPropagation(); e.preventDefault(); closePip(false); toast("小窓を閉じたよ"); return; }
-  const w = e.target.closest(".media.pip"); if (w && !e.target.closest(".seek, [data-snd], [data-mark], .mk")) { e.stopPropagation(); e.preventDefault(); }
+  const w = e.target.closest(".media.pip"); if (w && !e.target.closest(".vol, .seek, [data-snd], [data-mark], .mk")) { e.stopPropagation(); e.preventDefault(); }
 }, true);
 /* U3 小窓: ドラッグで動かして、離すと一番近い角へピタッ。ダブルタップで大きさを切り替え。下の外へ投げると閉じる。1回タップで元の場所へ */
 (() => { let d = null, lastTap = 0, tapT = 0;
-  document.addEventListener("pointerdown", e => { const w = e.target.closest?.(".media.pip"); if (!w || e.target.closest(".seek, [data-pipx], [data-snd]")) return; d = { x0: e.clientX, y0: e.clientY, dx: 0, dy: 0 }; w.classList.add("pip-drag"); }, true);
+  document.addEventListener("pointerdown", e => { const w = e.target.closest?.(".media.pip"); if (!w || e.target.closest(".vol, .seek, [data-pipx], [data-snd]")) return; d = { x0: e.clientX, y0: e.clientY, dx: 0, dy: 0 }; w.classList.add("pip-drag"); }, true);
   document.addEventListener("pointermove", e => { if (!d || !pip) return; d.dx = e.clientX - d.x0; d.dy = e.clientY - d.y0; pip.w.style.translate = `${d.dx}px ${d.dy}px`; }, true);
   document.addEventListener("pointerup", () => { if (!d || !pip) { d = null; return; } const w = pip.w, moved = Math.hypot(d.dx, d.dy) > 8; d = null; w.classList.remove("pip-drag");
     if (!moved) { w.style.translate = ""; const now = Date.now(); if (now - lastTap < 300) { clearTimeout(tapT); w.classList.toggle("big"); lastTap = 0; return; } lastTap = now;
@@ -3974,7 +4137,7 @@ function paintAcct() {
   b.style.backgroundImage = me.headerImg ? `url(${me.headerImg})` : `linear-gradient(135deg,${me.color},${me.fill2 || "#7856ff"})`; b.style.backgroundPosition = `50% ${me.headerPos ?? 50}%`;
   $("#acAv").innerHTML = tlAvatar(me, "ac-av"); $("#acTitle").textContent = me.name || "私";
   const hideSec = S.opts.secretStealth && !secretOn && secretReady(); $("#acSecret").hidden = hideSec;
-  $("#acSecretSub").textContent = !secretReady() ? "まだ使ってないよ" : secretOn ? "いま表示中" : `${S.timelines.filter(t => t.secret).length}個を隠し中`;
+  $("#acSecretSub").textContent = secretOn ? "シークレットのホームを表示中" : S.timelines.some(t => t.secret) ? "合言葉で開く" : "タイムラインを隠せるよ";
   $("#acTrashSub").textContent = S.trash.length ? `${S.trash.length}件` : "空っぽ";
 }
 $("#acClose").addEventListener("click", closeAcct); $("#acctSheet").addEventListener("click", e => { if (e.target.id === "acctSheet") closeAcct(); });
@@ -3982,40 +4145,66 @@ $("#acEdit").addEventListener("click", () => { closeAcct(); openLook("me"); });
 $("#acSecret").addEventListener("click", () => { closeAcct(); openSecret(); });
 $("#acTrash").addEventListener("click", () => { closeAcct(); openTrash(); });
 
-/* M8 シークレット: アカウントのメニューからシークレットのページを開く。合言葉（4桁の番号）は あり/なし を選べて、あとで変えられる */
-const secretReady = () => !!(S.secretPin || S.opts.secretNoPin);
-function openSecret() {
-  if (!secretReady() || secretOn) return openSecPage();
-  if (S.secretPin) return openPin("secret-open");
-  setSecretOn(true, true); openSecPage();
-}
-function openSecPage() { renderSecPage(); $("#secSheet").hidden = false; document.body.classList.add("sheet-open"); }
+/* シークレット（v1.2）: タイムラインごとに合言葉（4桁の番号か好きな文字、またはなし）。
+   合言葉を入れると「シークレットのホーム」に切り替わって、その合言葉のタイムラインだけが並ぶ。ふつうのホームには一切出さない */
+const secretReady = () => true;
+function secretUnlock(ids) { ids.forEach(id => secretOpen.add(id)); setSecretOn(true, true); const first = orderedTLs()[0]; if (first) setActive(first.id); }
+function openSecret() { renderSecPage(); $("#secSheet").hidden = false; document.body.classList.add("sheet-open"); setTimeout(() => $("#secPass")?.focus(), 60); }
+const openSecPage = openSecret;
 const closeSecPage = () => { $("#secSheet").hidden = true; document.body.classList.remove("sheet-open"); };
+let secMake = null; /* 新しくシークレットにするときの入力中の状態 { id, kind, step, first } */
 function renderSecPage() {
-  const box = $("#secBody");
-  if (!secretReady()) { box.innerHTML = `<p class="lk-hint" style="margin:0">選んだタイムラインを、タブや検索から隠せるよ。開くときに合言葉（4桁の番号）を聞くかどうか決めてね。あとで変えられるよ</p>
-    <div class="sec-choice"><button type="button" class="sec-opt" data-sp="pin"><b>合言葉あり</b><span>開くたびに4桁の番号を聞く</span></button><button type="button" class="sec-opt" data-sp="nopin"><b>合言葉なし</b><span>このメニューからすぐ開ける</span></button></div>
-    <p class="note" style="margin:0">どちらも「目隠し」だよ。ブラウザの中に保存しているから、詳しい人が調べれば見えるの</p>`; return; }
-  const sec = S.timelines.filter(t => t.secret);
-  box.innerHTML = `<div class="sec-list">${sec.length ? sec.map(t => `<button type="button" class="sec-tl" data-sgo="${t.id}">${tlAvatar(t, "mini-av")}<b>${esc(t.name)}</b><span>${S.posts.filter(p => p.tl === t.id).length}件</span></button>`).join("") : `<p class="lk-hint" style="margin:0">まだシークレットのタイムラインはないよ。下で選んでね</p>`}</div>
-    <h3 class="sec-h">シークレットにするタイムライン</h3>
-    <div class="sec-picks">${orderedTLsAll().map(t => `<label class="sec-pick"><input type="checkbox" data-spk="${t.id}" ${t.secret ? "checked" : ""}>${tlAvatar(t, "mini-av")}${esc(t.name)}</label>`).join("")}</div>
-    <h3 class="sec-h">合言葉</h3>
-    <div class="sec-row"><span>${S.secretPin ? "あり（4桁の番号）" : "なし"}</span>${S.secretPin ? `<button type="button" class="btn-ghost sm" data-sp="change">変える</button><button type="button" class="btn-ghost sm" data-sp="off">なしにする</button>` : `<button type="button" class="btn-ghost sm" data-sp="pin">合言葉を付ける</button>`}</div>
-    <div class="share-actions"><button type="button" class="btn-accent" data-sp="hide">隠して閉じる</button></div>`;
+  const box = $("#secBody"), all = S.timelines.filter(t => t.secret), free = all.filter(t => !t.pass), opened = all.filter(t => secretOpen.has(t.id));
+  const normal = orderedTLsAll().filter(t => !t.secret);
+  box.innerHTML = `
+    ${secretOn ? `<div class="sec-now"><b>シークレットのホームを表示中</b><span>${opened.map(t => esc(t.name)).join("・")}</span><button type="button" class="btn-accent" data-sp="leave">ふつうのホームに戻る</button></div>` : ""}
+    <h3 class="sec-h">合言葉で開く</h3>
+    <form class="sec-open" id="secOpenForm" autocomplete="off"><input type="password" id="secPass" class="sel" placeholder="合言葉（4桁の番号か文字）" aria-label="合言葉" autocomplete="off"><button type="button" class="icon-btn sm" id="secEye" aria-label="合言葉を見せる">👁</button><button type="submit" class="btn-accent">開く</button></form>
+    <p class="sec-msg" id="secMsg" role="status"></p>
+    ${free.length ? `<h3 class="sec-h">合言葉なしのシークレット</h3><div class="sec-list">${free.map(t => `<button type="button" class="sec-tl" data-sgo="${t.id}">${tlAvatar(t, "mini-av")}<b>${esc(t.name)}</b><span>開く ›</span></button>`).join("")}</div>` : ""}
+    ${opened.length ? `<h3 class="sec-h">開いているシークレット</h3><div class="sec-list">${opened.map(t => `<div class="sec-tl"><span style="display:contents">${tlAvatar(t, "mini-av")}<b>${esc(t.name)}</b></span><span class="sec-acts"><button type="button" class="btn-ghost sm" data-schg="${t.id}">合言葉を変える</button><button type="button" class="btn-ghost sm" data-sback="${t.id}">ふつうに戻す</button></span></div>`).join("")}</div>` : ""}
+    <h3 class="sec-h">タイムラインをシークレットにする</h3>
+    ${secMake ? secMakeHTML() : `<div class="sec-picks">${normal.length > 1 ? normal.map(t => `<button type="button" class="sec-pick" data-smk="${t.id}">${tlAvatar(t, "mini-av")}${esc(t.name)}</button>`).join("") : `<p class="lk-hint" style="margin:0">ふつうのタイムラインを1つは残してね。タイムラインを増やすとシークレットにできるよ</p>`}</div>`}
+    <p class="note" style="margin:6px 0 0">シークレットにしたタイムラインは、ふつうのホームのタブ・検索・お知らせ・今日の1本のどこにも出ないよ。どれも「目隠し」だよ。ブラウザの中に保存しているから、詳しい人が調べれば見えるの<button type="button" class="more-link" data-help="secret">くわしく ›</button></p>
+    <details class="sec-forgot"><summary>合言葉を忘れたとき</summary><p class="note">合言葉は取り出せないの。開けないシークレットのタイムラインは、中身ごと消すことだけできるよ（自動の控えには残るよ）。</p><button type="button" class="btn-ghost sm danger" data-sp="forget">開けないシークレットを全部消す</button></details>`;
 }
-const orderedTLsAll = () => { const was = secretOn; secretOn = true; const r = orderedTLs(); secretOn = was; return r; };
+function secMakeHTML() { const t = tlById(secMake.id); if (!t) return "";
+  if (!secMake.kind) return `<div class="sec-make"><p>「${esc(t.name)}」の合言葉をえらんでね</p><div class="sec-choice"><button type="button" class="sec-opt" data-sk="pin"><b>4桁の番号</b><span>数字4つ。すばやく開ける</span></button><button type="button" class="sec-opt" data-sk="text"><b>好きな文字</b><span>4文字以上。言葉でもOK</span></button><button type="button" class="sec-opt" data-sk="none"><b>合言葉なし</b><span>このページからすぐ開ける</span></button></div><button type="button" class="btn-ghost sm" data-sp="cancel">やめる</button></div>`;
+  return `<form class="sec-make" id="secMakeForm" autocomplete="off"><p>「${esc(t.name)}」の${secMake.kind === "pin" ? "4桁の番号" : "合言葉"}を${secMake.step === 2 ? "もう一度" : ""}入れてね</p>
+    <input type="password" id="secNew" class="sel" ${secMake.kind === "pin" ? 'inputmode="numeric" maxlength="4" pattern="[0-9]*"' : 'maxlength="40"'} placeholder="${secMake.kind === "pin" ? "0000" : "4文字以上"}" aria-label="新しい合言葉" autocomplete="new-password">
+    <div style="display:flex;gap:8px"><button type="submit" class="btn-accent">${secMake.step === 2 ? "決める" : "次へ"}</button><button type="button" class="btn-ghost sm" data-sp="cancel">やめる</button></div></form>`; }
+async function secTry(pass) {
+  if (!pass) return []; const hit = [];
+  for (const t of S.timelines.filter(x => x.secret && x.pass)) { if ((await pinHash(pass, t.pass.salt)) === t.pass.hash) hit.push(t.id); }
+  return hit;
+}
+const orderedTLsAll = () => { const was = showAllTl; showAllTl = true; const r = orderedTLs(); showAllTl = was; return r; };
 $("#secClose").addEventListener("click", closeSecPage); $("#secSheet").addEventListener("click", e => { if (e.target.id === "secSheet") closeSecPage(); });
-$("#secBody").addEventListener("click", e => {
-  const go = e.target.closest("[data-sgo]"); if (go) { closeSecPage(); setActive(go.dataset.sgo); return; }
-  const sp = e.target.closest("[data-sp]")?.dataset.sp; if (!sp) return;
-  if (sp === "pin") { closeSecPage(); openPin("secret-set"); }
-  if (sp === "nopin") { S.opts.secretNoPin = true; save(); setSecretOn(true, true); renderSecPage(); toast("合言葉なしで使うよ。隠したいタイムラインを選んでね"); }
-  if (sp === "change") { closeSecPage(); openPin("secret-change"); }
-  if (sp === "off") { closeSecPage(); openPin("secret-off"); }
-  if (sp === "hide") { closeSecPage(); setSecretOn(false); }
+$("#secBody").addEventListener("submit", async e => {
+  e.preventDefault();
+  if (e.target.id === "secOpenForm") { const v = $("#secPass").value; const ids = await secTry(v); if (!ids.length) { $("#secMsg").textContent = "合うタイムラインがなかったよ。もう一度入れてみてね"; $("#secPass").select(); buzz(30); return; }
+    closeSecPage(); secretUnlock(ids); toast(`シークレットのホームを開いたよ（${ids.length}個）`); return; }
+  if (e.target.id === "secMakeForm") { const v = $("#secNew").value, k = secMake.kind;
+    if (k === "pin" && !/^\d{4}$/.test(v)) return toast("数字4つにしてね"); if (k === "text" && v.length < 4) return toast("4文字以上にしてね");
+    if (secMake.step !== 2) { secMake.first = v; secMake.step = 2; renderSecPage(); setTimeout(() => $("#secNew")?.focus(), 30); return; }
+    if (v !== secMake.first) { secMake.step = 1; secMake.first = ""; renderSecPage(); return toast("1回目とちがったよ。最初から入れてね"); }
+    const t = tlById(secMake.id), salt = Math.random().toString(36).slice(2, 10); t.pass = { kind: k, salt, hash: await pinHash(v, salt) }; secretMake(t); }
 });
-$("#secBody").addEventListener("change", e => { const c = e.target.closest("[data-spk]"); if (!c) return; const t = tlById(c.dataset.spk); t.secret = c.checked; save(); renderAll(); renderSecPage(); toast(c.checked ? `「${t.name}」をシークレットにしたよ` : `「${t.name}」をふつうに戻したよ`); });
+function secretMake(t) { const was = S.active === t.id; t.secret = true; secMake = null; save(); if (secretOn) secretOpen.add(t.id); else if (was) ensureVisibleActive(); renderAll(); renderSecretUI(); renderSecPage();
+  toast(`「${t.name}」をシークレットにしたよ。${t.pass ? "合言葉で開いてね" : "このページから開けるよ"}`); }
+$("#secBody").addEventListener("click", e => {
+  if (e.target.closest("#secEye")) { const i = $("#secPass"); i.type = i.type === "password" ? "text" : "password"; return; }
+  const go = e.target.closest("[data-sgo]"); if (go) { closeSecPage(); secretUnlock([go.dataset.sgo]); return; }
+  const mk = e.target.closest("[data-smk]"); if (mk) { secMake = { id: mk.dataset.smk }; renderSecPage(); return; }
+  const sk = e.target.closest("[data-sk]"); if (sk) { if (sk.dataset.sk === "none") { const t = tlById(secMake.id); delete t.pass; secretMake(t); return; } secMake.kind = sk.dataset.sk; secMake.step = 1; renderSecPage(); setTimeout(() => $("#secNew")?.focus(), 30); return; }
+  const chg = e.target.closest("[data-schg]"); if (chg) { secMake = { id: chg.dataset.schg }; renderSecPage(); return; }
+  const back = e.target.closest("[data-sback]"); if (back) { const t = tlById(back.dataset.sback); delete t.secret; delete t.pass; secretOpen.delete(t.id); save(); if (!secretOpen.size) setSecretOn(false, true); else { renderAll(); } renderSecPage(); toast(`「${t.name}」をふつうのタイムラインに戻したよ`); return; }
+  const sp = e.target.closest("[data-sp]")?.dataset.sp; if (!sp) return;
+  if (sp === "cancel") { secMake = null; renderSecPage(); }
+  if (sp === "leave") { closeSecPage(); setSecretOn(false); }
+  if (sp === "forget") { const b = e.target.closest("[data-sp]"); if (b.dataset.sure !== "1") { b.dataset.sure = "1"; b.textContent = "本当に消す？（元に戻せないよ）"; return; }
+    snaps.take("reset"); const ids = new Set(S.timelines.filter(t => t.secret && t.pass && !secretOpen.has(t.id)).map(t => t.id)); S.posts = S.posts.filter(p => !ids.has(p.tl)); S.timelines = S.timelines.filter(t => !ids.has(t.id)); save(); renderAll(); renderSecPage(); toast(`開けないシークレットを ${ids.size} 個消したよ`); }
+});
 
 /* ゴミ箱のページ（専用のボタンから） */
 function openTrash() { renderTrash(); $("#trashSheet").hidden = false; document.body.classList.add("sheet-open"); }
@@ -4153,7 +4342,7 @@ function toLater(p, quiet) {
 }
 (() => { let st = null;
   const clean = () => { if (!st) return; const c = st.card; c.classList.remove("sw-armed", "sw-l", "sw-r"); c.style.removeProperty("--sx"); c.querySelectorAll(".sw-hint").forEach(h => h.remove()); clearTimeout(st.t); document.body.classList.remove("no-select"); st = null; setTimeout(() => { swipeArmed = false; }, 60); };
-  document.addEventListener("pointerdown", e => { if (e.button > 0) return; const card = e.target.closest?.("#feed .post"); if (!card || document.body.classList.contains("picking") || e.target.closest(".media, button, a, select, input, textarea, label, .seek, .tag, .tl-av, .stcard, .linkcard, .post-text, .xtext")) return; /* 本文は長押しで文字を選べるように */
+  document.addEventListener("pointerdown", e => { if (e.button > 0) return; const card = e.target.closest?.("#feed .post"); if (!card || document.body.classList.contains("picking") || e.target.closest(".media, button, a, select, input, textarea, label, .vol, .seek, .tag, .tl-av, .stcard, .linkcard, .post-text, .xtext")) return; /* 本文は長押しで文字を選べるように */
     st = { card, x0: e.clientX, y0: e.clientY, armed: false, dx: 0 };
     st.t = setTimeout(() => { if (!st) return; st.armed = true; swipeArmed = true; document.body.classList.add("no-select"); try { getSelection().removeAllRanges(); } catch {} const p = S.posts.find(x => x.id === card.dataset.id), inLater = p && p.tl === findLater().id;
       card.classList.add("sw-armed"); card.insertAdjacentHTML("afterbegin", `<div class="sw-hint l"><span>${inLater ? "" : "⏰ あとで見る"}</span></div><div class="sw-hint r"><span>🗑 ゴミ箱</span></div>`); haptic("tick"); }, 280); }, true);
@@ -4173,7 +4362,7 @@ function toLater(p, quiet) {
 /* A5 ラジオモード: 画面を暗くして、動画の音だけを順番に流す。PCではページを離れたら必ず止める */
 let vRadio = false, radioSoundWas = null;
 function radio() {
-  const vids = postsOf(S.active).filter(isVideoPost); if (!vids.length) return toast("このタイムラインには動画がないよ");
+  const vids = curPosts().filter(isVideoPost); if (!vids.length) return toast("このタイムラインには動画がないよ");
   radioSoundWas = S.opts.sound; if (!S.opts.sound) { AudioKit.get(); setSoundAll(true); }
   vRadio = true; vMarathon = true; openViewer(vids[0].id); vList = vids; vIdx = 0; vSub = 0; $("#viewer").classList.add("marathon", "radio"); vRender();
   toast(isPC() ? `${vids.length}本を音だけで流すね。このページを離れると止まるよ` : `${vids.length}本を音だけで流すね`);
@@ -4279,7 +4468,7 @@ function colorSort(g) { const tiles = [...g.children];
 }
 
 /* A1 YouTubeだけまとめて、YouTubeで続けて流す（YouTubeの非公式な仕組み。使えなくなることもある） */
-function ytPlaylist() { const ids = postsOf(S.active).filter(p => p.embed && p.embed.kind === "youtube" && /^[\w-]{6,}$/.test(p.embed.id)).map(p => p.embed.id).slice(0, 50);
+function ytPlaylist() { const ids = curPosts().filter(p => p.embed && p.embed.kind === "youtube" && /^[\w-]{6,}$/.test(p.embed.id)).map(p => p.embed.id).slice(0, 50);
   if (!ids.length) return toast("このタイムラインにYouTubeがないよ"); window.open(`https://www.youtube.com/watch_videos?video_ids=${ids.join(",")}`, "_blank", "noopener"); toast(`${ids.length}本をYouTubeで続けて開くよ`); }
 
 /* A2 キーボードの一覧 */
@@ -4361,9 +4550,10 @@ $("#navWatch").addEventListener("click", openWatch); $("#navNotif").addEventList
 const HELP = [
   ["start", "はじめかた", `<p>右下の ＋（PCは左の「ツイートする」）で、YouTube・X などのURLを貼って「ツイート」。カードになって並ぶよ。上のタブの右の ＋ でタイムラインを増やせるの。</p><p>ホーム画面に追加すると、アプリのように全画面で開けて、データも消えにくくなるよ。</p>`],
   ["screen", "画面の見方", `<ul><li><b>左上のアイコン</b>: アカウント画面（設定・ゴミ箱・データの守り方など）</li><li><b>タブ</b>: タイムラインの切り替え。左右にスワイプでも切り替わるよ</li><li><b>ツイートの右上の ⋯</b>: 並べ替え・編集・文をコピー・移動・あとでまた見る・ゴミ箱</li><li><b>ハートを長押し</b>: 絵文字でリアクション</li><li><b>動画</b>: 真ん中に来たものだけ再生。タップで一時停止、長押しで2倍速</li><li><b>本文を長押し</b>: 文字を選んでコピーできるよ</li><li><b>二本指でつまむ</b>: グリッド表示と切り替え。全画面の画像では拡大（ダブルタップでも）</li><li><b>下のバー</b>: ホーム・さがす・見る・お知らせ・しおり</li></ul>`],
+  ["folder", "フォルダ", `<ul><li><b>作る</b>: タブを長押しして持ち上げて、ほかのタブの上で離す</li><li><b>まぜて見る</b>: フォルダのタブを押すと、中のタイムラインのツイートが新しい順にまざって並ぶよ</li><li><b>中を開く</b>: もう一度フォルダのタブを押すと、中のタブが並ぶの</li><li><b>出す</b>: 中のタブを長押しして、下へ引っぱる</li><li><b>名前を変える・やめる</b>: フォルダのタブを長押し</li><li>タブを長押しして、動かさずに離すと、タイムラインのアイコンが丸く並ぶよ。押すとそこへ移動するの</li></ul>`],
   ["sort", "並び順", `<p>タイムラインの上の「並び」で、自分で並べた順・投稿日・更新日・いいね数・視聴回数から選べるよ。横のボタンで昇順と降順が入れ替わるの。並び方はタイムラインごとに覚えてるよ。</p>`],
   ["data", "データの守り方", `<p>データはこの端末のブラウザの中だけにあるよ。ほかの端末とは同期しないの。</p><ul><li><b>ブラウザのデータを消すと消える</b> → 消す前に「ファイルで保存」</li><li><b>iPhoneでSafariのまま7日ほど開かないと消えることがある</b> → ホーム画面に追加して開く</li><li><b>URLが変わると別の箱になる</b> → 書き出して、新しいURLで読み込む</li><li><b>端末の故障</b> → iCloud Drive などにファイルを置いておく</li></ul><p>保存は 設定 → データと安全 → データ →「ファイルで保存」。戻すときは「ファイルから読み込む」。1日1回の「自動の控え」からも戻せるよ。</p>`],
-  ["secret", "シークレットとロック", `<div class="warn"><p><b>どちらも「目隠し」だよ。</b>データはブラウザの中に普通に保存されているから、詳しい人が調べれば見えるの。本当に守りたいものは、パスワードをかけて書き出したファイルにしてね（本物の暗号化だよ）。</p></div><ul><li><b>シークレット</b>: 選んだタイムラインを、タブ・検索・今日の1本・ゴミ箱のどこにも出さないようにする</li><li><b>かんたんロック</b>: 開くときに4桁の番号を聞く。忘れると開けなくなるから、先に書き出しておいてね</li></ul>`],
+  ["secret", "シークレットとロック", `<div class="warn"><p><b>どちらも「目隠し」だよ。</b>データはブラウザの中に普通に保存されているから、詳しい人が調べれば見えるの。本当に守りたいものは、パスワードをかけて書き出したファイルにしてね（本物の暗号化だよ）。</p></div><ul><li><b>シークレット</b>: 選んだタイムラインを、ふつうのホームのタブ・検索・今日の1本のどこにも出さないようにする。合言葉はタイムラインごとに、4桁の番号か好きな文字で決められるよ。合言葉を入れると「シークレットのホーム」に切り替わって、同じ合言葉のタイムラインだけが並ぶの</li><li><b>合言葉を忘れたら</b>: 取り出す方法はないの。シークレットのページの「合言葉を忘れたとき」から、開けないタイムラインを中身ごと消すことだけできるよ</li><li><b>かんたんロック</b>: 開くときに4桁の番号を聞く。忘れると開けなくなるから、先に書き出しておいてね</li></ul>`],
   ["net", "外のサービスに送るもの", `<ul><li><b>noembed.com</b>: リンクのタイトルを調べるときに、URLだけを送るよ</li><li><b>Xの投稿</b>: 画像や動画を表示するために、Xの置き場（取れないときは fxtwitter）に投稿のURLだけを送るよ</li><li>ツイートの文やほかのデータは、どこにも送らないよ</li></ul>`],
   ["iphone", "iPhoneで使うとき", `<ul><li>さわったときの軽い振動は、iPhoneのブラウザは対応していないよ（Androidは対応）</li><li>音量はページから変えられないことがあるの。本体のボタンで変えてね</li><li>「振ってシャッフル」は最初はオフ。設定 → 動き で、オンにできるよ</li></ul>`],
   ["stream", "配信サービスのリンク", `<p>Netflix などの配信サービスは、作品の説明を外から取り出せないの。カードの「あらすじ」に自分でメモを書いてね。</p>`],
@@ -4387,6 +4577,13 @@ setInterval(paintNotifN, 60e3);
 (() => { let ly = scrollY; addEventListener("scroll", () => { const y = scrollY; if (innerWidth > 640) return;
   if (y > ly + 6 && y > 140) document.body.classList.add("hd-hide"); else if (y < ly - 6 || y < 60) document.body.classList.remove("hd-hide"); if (Math.abs(y - ly) > 6) ly = y; }, { passive: true }); })();
 /* 設定: iPhone の設定アプリのように「大分類の一覧 → 中に入ると中分類ごとに並ぶ」。上の欄で項目をさがせる */
+/* 分類ごとの「最初の設定に戻す」で消す項目（消すと最初の値に戻る） */
+const SET_RESET = {
+  look: ["skin", "skinNight", "dark", "modeTime", "nightFrom", "nightTo", "uiSize", "fontSize", "face", "autoColor", "pat", "patA", "patCol", "switchFx", "seasonFx", "seasonLight"],
+  play: ["auto", "wifiOnly", "strictNet", "lazy", "preview", "previewCustom", "slideAuto", "slideSec", "fullEnd", "resume", "pip", "sound", "volume"],
+  move: ["tlMotion", "bounce", "calm", "popWay", "popSpeed", "vibe", "sfx", "oneHand", "shake", "shakeScope", "tilt", "amb", "tod"],
+  tl: ["startTl", "center", "split", "splitTl"],
+};
 const SET_CATS = [
   ["look", "🎨", "見た目", [["テーマ", ["optSkin", "optSkinNight", "optMode", "nightRow"]], ["大きさと文字", ["optUiSize", "optFont", "optFace"]], ["色と背景", ["optAutoColor", "optPat", "patRow"]], ["演出", ["optSwitchFx", "optSeasonFx"]]]],
   ["play", "▶", "再生と音", [["自動再生", ["optAuto", "wifiRow", "strictRow", "netNote", "optLazy", "optPreview", "previewCustomRow"]], ["画像", ["optSlide", "slideSecRow"]], ["全画面と小窓", ["optFullEnd", "optResume", "optPip"]], ["音", ["optSound", "optVol"]]]],
@@ -4421,6 +4618,7 @@ function buildSettings() {
       });
       if (inn.children.length) pg.append(sec);
     });
+    if (SET_RESET[k]) pg.insertAdjacentHTML("beforeend", `<button type="button" class="btn-ghost sm set-reset" data-reset="${k}">「${name}」を最初の設定に戻す</button>`);
     box.append(pg);
   });
   $("#optSeason")?.closest(".toggle")?.setAttribute("hidden", "");
@@ -4431,6 +4629,8 @@ function buildSettings() {
   box.addEventListener("click", e => {
     const c = e.target.closest(".set-cat[data-cat]"); if (c) { openSetPage(c.dataset.cat); return; }
     if (e.target.closest(".set-back")) { openSetPage(""); return; }
+    const rb = e.target.closest("[data-reset]"); if (rb) { if (rb.dataset.sure !== "1") { rb.dataset.sure = "1"; rb.textContent = "本当に戻す？（この分類の設定だけ）"; rb.classList.add("danger"); return; }
+      SET_RESET[rb.dataset.reset].forEach(k => delete S.opts[k]); optDefaults(); save(); try { sessionStorage.setItem("mytl-toast", `「${SET_CATS.find(c => c[0] === rb.dataset.reset)[2]}」を最初の設定に戻したよ`); sessionStorage.setItem("mytl-setpage", rb.dataset.reset); } catch {} location.reload(); return; }
     if (e.target.closest("#setHelp")) { openHelp(); return; }
     const g = e.target.closest("[data-gocat]"); if (g) { find.value = ""; restore(); box.querySelector(".set-found").hidden = true; openSetPage(g.dataset.gocat, g.dataset.gosub); }
   });
@@ -4534,7 +4734,7 @@ function applyPattern() {
     <label class="toggle" for="optPat">背景の模様
       <select id="optPat" class="sel"><option value="">なし</option><optgroup label="和">${["seigaiha", "asanoha", "shippo", "yagasuri"].map(k => `<option value="${k}">${PATS[k][0]}</option>`).join("")}</optgroup><optgroup label="洋">${["damask", "argyle", "herring", "gothic"].map(k => `<option value="${k}">${PATS[k][0]}</option>`).join("")}</optgroup><optgroup label="中">${["raimon", "kaiji", "kumo", "zeni"].map(k => `<option value="${k}">${PATS[k][0]}</option>`).join("")}</optgroup><optgroup label="そのほか">${["islam", "nordic", "deco", "morocco"].map(k => `<option value="${k}">${PATS[k][0]}</option>`).join("")}</optgroup></select></label>
     <div class="toggle" id="patRow" hidden><span>模様の色と濃さ</span><span style="display:flex;align-items:center;gap:8px"><select id="optPatCol" class="sel"><option value="season">季節の色</option><option value="ink">墨色</option></select><input type="range" id="optPatA" min="4" max="30" value="10" aria-label="模様の濃さ" style="width:90px"></span></div>`);
-  $("#optUiSize").value = S.opts.uiSize || "std"; if (S.opts.uiSize && S.opts.uiSize !== "std") document.documentElement.dataset.ui = S.opts.uiSize; else delete document.documentElement.dataset.ui;
+  applyUiSize();
   $("#optBounce").value = S.opts.bounce || "soft"; $("#optPopWay").value = S.opts.popWay || "slide"; $("#optPopSpeed").value = S.opts.popSpeed || "normal";
   $("#optSwitchFx").value = S.opts.switchFx || "tint"; $("#optSeasonFx").value = S.opts.seasonFx ?? (S.opts.seasonLight === false ? "off" : "light"); $("#optPat").value = S.opts.pat || ""; $("#optPatCol").value = S.opts.patCol || "season"; $("#optPatA").value = S.opts.patA ?? 10; $("#patRow").hidden = !S.opts.pat;
 })();
@@ -4576,7 +4776,8 @@ function seasonLight() {
 }
 $("#optSeason").addEventListener("change", e => { S.opts.seasonLight = e.target.checked; save(); if (S.opts.seasonLight) seasonLight(); });
 $("#optSwitchFx").addEventListener("change", e => { S.opts.switchFx = e.target.value; save(); switchFx(); });
-$("#optUiSize").addEventListener("change", e => { S.opts.uiSize = e.target.value; save(); applyOpts(); toast(`表示の大きさを「${e.target.selectedOptions[0].textContent}」にしたよ`); });
+function applyUiSize() { $("#optUiSize").value = S.opts.uiSize || "std"; if (S.opts.uiSize && S.opts.uiSize !== "std") document.documentElement.dataset.ui = S.opts.uiSize; else delete document.documentElement.dataset.ui; }
+$("#optUiSize").addEventListener("change", e => { S.opts.uiSize = e.target.value; save(); applyUiSize(); toast(`表示の大きさを「${e.target.selectedOptions[0].textContent}」にしたよ`); });
 $("#optBounce").addEventListener("change", e => { S.opts.bounce = e.target.value; save(); const b = $(".fab"); b && b.animate([{ transform: "scale(.7)" }, { transform: "none" }], { duration: 520, easing: "cubic-bezier(.3,1.6,.5,1)" }); toast(`ぽよんの強さを「${e.target.selectedOptions[0].textContent}」にしたよ`); });
 $("#optPopWay").addEventListener("change", e => { S.opts.popWay = e.target.value; save(); });
 $("#optPopSpeed").addEventListener("change", e => { S.opts.popSpeed = e.target.value; save(); });
@@ -4642,7 +4843,7 @@ document.addEventListener("change", e => { if (e.target.id === "ftDate") jumpToD
 
 /* K29 連続再生: このタイムラインの動画を上から順に全画面で */
 function marathon() {
-  const vids = postsOf(S.active).filter(isVideoPost); if (!vids.length) return toast("このタイムラインには動画がないよ");
+  const vids = curPosts().filter(isVideoPost); if (!vids.length) return toast("このタイムラインには動画がないよ");
   vMarathon = true; openViewer(vids[0].id); vList = vids; vIdx = 0; vSub = 0; $("#viewer").classList.add("marathon"); vRender();
   toast(`${vids.length}本を順番に流すね`);
 }
@@ -4757,22 +4958,31 @@ async function saveShot(p) {
 }
 /* シークレット */
 function setSecretOn(on, quiet) {
-  secretOn = on; try { on ? sessionStorage.setItem("mytl-secret", "1") : sessionStorage.removeItem("mytl-secret"); } catch {}
-  if (!on) { query = ""; labelFilter = ""; } renderAll(); renderSecretUI(); renderRules(); renderStartSel(); if (!on && !quiet) { scrollTo({ top: 0 }); toast("シークレットを隠したよ"); }
+  if (!on) secretOpen.clear(); secretOn = on && secretOpen.size > 0; try { secretOn ? sessionStorage.setItem("mytl-secret", JSON.stringify([...secretOpen])) : sessionStorage.removeItem("mytl-secret"); } catch {}
+  ensureVisibleActive(); paintSecretMode();
+  if (!on) { query = ""; labelFilter = ""; } renderAll(); renderSecretUI(); renderRules(); renderStartSel(); if (!on && !quiet) { scrollTo({ top: 0 }); toast("ふつうのホームに戻ったよ"); }
+}
+/* シークレットのホーム中は、色を暗くして上に帯を出す（いまどっちにいるか迷わないように） */
+function paintSecretMode() {
+  document.body.classList.toggle("secret-mode", secretOn); let bar = $("#secBar");
+  if (!bar) { bar = document.createElement("div"); bar.id = "secBar"; bar.className = "sec-bar"; bar.setAttribute("role", "status"); $("#feed").before(bar);
+    bar.addEventListener("click", e => { if (e.target.closest("[data-sbar=leave]")) setSecretOn(false); if (e.target.closest("[data-sbar=page]")) openSecret(); }); }
+  bar.hidden = !secretOn;
+  if (secretOn) bar.innerHTML = `<span>🔒 シークレットのホーム</span><span class="grow"></span><button type="button" class="btn-ghost sm" data-sbar="page">管理</button><button type="button" class="btn-accent sm" data-sbar="leave">ふつうのホームに戻る</button>`;
 }
 function renderSecretUI() {
   const n = S.timelines.filter(t => t.secret).length, card = $("#secretCard");
   card.hidden = !!(S.opts.secretStealth && !secretOn && secretReady());
-  $("#secretLead").textContent = !secretReady() ? "選んだタイムラインを隠せるよ。左上の自分のアイコンからも開けるよ" : secretOn ? `いまは表示中（${n}個）` : `${n}個のタイムラインを隠しているよ（合言葉${S.secretPin ? "あり" : "なし"}）`;
-  $("#secretBtns").innerHTML = `<button class="btn-ghost sm" data-sc="page">シークレットのページ</button>` + (secretOn ? `<button class="btn-accent" data-sc="hide">隠す</button>` : "");
-  $("#stealthRow").hidden = !secretReady(); $("#optStealth").checked = !!S.opts.secretStealth;
+  $("#secretLead").textContent = secretOn ? `シークレットのホームを表示中（${secretOpen.size}個）` : n ? `${n}個のタイムラインを隠しているよ。合言葉はタイムラインごとに決められるの` : "選んだタイムラインを、ふつうのホームから隠せるよ。合言葉はタイムラインごとに、4桁の番号か好きな文字で決められるの";
+  $("#secretBtns").innerHTML = `<button class="btn-ghost sm" data-sc="page">シークレットのページ</button>` + (secretOn ? `<button class="btn-accent" data-sc="hide">ふつうのホームに戻る</button>` : "");
+  $("#stealthRow").hidden = !n; $("#optStealth").checked = !!S.opts.secretStealth;
 }
 $("#secretBtns").addEventListener("click", e => { const k = e.target.closest("[data-sc]")?.dataset.sc; if (!k) return;
   if (k === "page") { if (innerWidth <= 960) closeSide(); openSecret(); } if (k === "hide") setSecretOn(false); });
 $("#optStealth").addEventListener("change", e => { S.opts.secretStealth = e.target.checked; save(); toast(S.opts.secretStealth ? "設定とメニューから消したよ。左上のロゴを長押しすると開けるよ" : "設定に出すようにしたよ"); });
 // ロゴ（PCは左上の自分のアイコン、スマホは真ん中のTL）を長押しでシークレットを開く／隠す
 (() => { let t = 0, fired = false;
-  const start = () => { fired = false; clearTimeout(t); t = setTimeout(() => { if (!secretReady()) return; fired = true; buzz(15); secretOn ? setSecretOn(false) : openSecret(); }, 900); };
+  const start = () => { fired = false; clearTimeout(t); t = setTimeout(() => { fired = true; buzz(15); secretOn ? setSecretOn(false) : openSecret(); }, 900); };
   const stop = () => clearTimeout(t);
   [".brand-mark", "#brandMe"].forEach(sel => { const el = $(sel); el.addEventListener("pointerdown", start); ["pointerup", "pointerleave", "pointercancel"].forEach(ev => el.addEventListener(ev, stop));
     el.addEventListener("click", e => { if (fired) { e.stopImmediatePropagation(); e.preventDefault(); fired = false; } }, true); el.addEventListener("contextmenu", e => e.preventDefault()); });
@@ -4780,7 +4990,7 @@ $("#optStealth").addEventListener("change", e => { S.opts.secretStealth = e.targ
 /* K36 使い方ガイド */
 const GUIDE = [
   ["▶", "真ん中の動画だけ動くよ", "スクロールして画面の真ん中に来た動画だけが自動で再生されるの。タップで一時停止、長押しで2倍速、長押しのまま下にずらすと2倍速のまま固定だよ"],
-  ["⇆", "左右でタイムラインを切り替え", "スマホは左右にスワイプ、PCはトラックパッドの横スクロールか ← → キー。グループでまとめたり、シークレットで隠したりもできるよ"],
+  ["⇆", "左右でタイムラインを切り替え", "スマホは左右にスワイプ、PCはトラックパッドの横スクロールか ← → キー。タブを長押しして別のタブに重ねるとフォルダにまとまるよ。シークレットで隠したりもできるよ"],
   ["⋯", "ツイートの整理", "右上の ⋯ ボタンから、固定・編集・あとでまた見る・色ラベル・まとめて選ぶ・画像で保存ができるよ。消したツイートは30日間ゴミ箱に残るの"],
   ["⛨", "データはこの端末の中", "ツイートはこのブラウザだけに保存されるよ。ブラウザのデータを消すと一緒に消えちゃうから、ときどき「ファイルで保存」でバックアップしてね。やり方は、左上のアイコン →「データの守り方」にまとめてあるよ"],
 ];
@@ -4817,7 +5027,7 @@ document.addEventListener("click", e => {
 function cmPeek(p) {
   const list = p.comments || []; if (!list.length) return "";
   const last = list.slice(-2);
-  return last.map(c => `<div class="cm-peek-row"><b>私</b><span>${cmText(c.text, p.id)}</span></div>`).join("") + (list.length > 2 ? `<div class="cm-more">コメントをすべて見る（${list.length}件）</div>` : "");
+  return last.map(c => `<div class="cm-peek-row ${c.re ? "is-re" : ""}"><b>${c.re ? "↳ " : ""}私</b><span>${cmText(c.text, p.id)}</span></div>`).join("") + (list.length > 2 ? `<div class="cm-more">コメントをすべて見る（${list.length}件）</div>` : "");
 }
 function refreshPostComments(p) {
   const card = document.querySelector(`#feed .post[data-id="${p.id}"]`);
@@ -4828,12 +5038,22 @@ function renderComments() {
   const p = S.posts.find(x => x.id === cmId); if (!p) return closeComments();
   const t = tlById(p.tl) || S.timelines[0];
   $("#cmTarget").innerHTML = `${tlAvatar(t, "mini-av")}<div><b>${esc(t.name)}</b> <span class="cm-time">${ago(p.at)}</span><div class="cm-tt">${esc(p.text || (p.embed ? p.embed.url : "（画像・動画）"))}</div></div>`;
-  const list = p.comments || [];
-  $("#cmList").innerHTML = list.length ? list.map(c => `<li class="cm-item" data-c="${c.id}">${tlAvatar(S.me, "mini-av")}<div class="cm-body"><div class="cm-meta"><b>${esc(S.me.name)}</b><span class="cm-time">${ago(c.at)}</span></div><div class="cm-text">${cmText(c.text, p.id)}</div></div><button type="button" class="cm-del" data-del="${c.id}" aria-label="このコメントを消す">消す</button></li>`).join("")
+  const list = p.comments || [], ids = new Set(list.map(c => c.id));
+  /* ツリー: 返信（re）は親の下に線でつないで並べる。返信が多いときは最初の2件だけ見せて「続きを見る」 */
+  const kids = id => list.filter(c => (ids.has(c.re) ? c.re : "") === id);
+  const one = (c, d) => { const k = kids(c.id), open = cmOpen.has(c.id), show = open || k.length <= 2 ? k : k.slice(0, 2);
+    return `<li class="cm-item ${cmReply === c.id ? "replying" : ""}" data-c="${c.id}">${tlAvatar(S.me, "mini-av")}<div class="cm-body"><div class="cm-meta"><b>${esc(S.me.name)}</b><span class="cm-time">${ago(c.at)}</span></div><div class="cm-text">${cmText(c.text, p.id)}</div>
+      <div class="cm-acts"><button type="button" class="cm-re" data-re="${c.id}">返信</button><button type="button" class="cm-del" data-del="${c.id}" aria-label="このコメントを消す">消す</button></div></div></li>`
+      + (k.length ? `<li class="cm-kids-li"><ul class="cm-kids ${d >= 3 ? "flat" : ""}">${show.map(x => one(x, d + 1)).join("")}${show.length < k.length ? `<li><button type="button" class="cm-fold" data-open="${c.id}">続きを見る（あと${k.length - show.length}件）</button></li>` : ""}</ul></li>` : ""); };
+  $("#cmList").innerHTML = list.length ? kids("").map(c => one(c, 0)).join("")
     : `<li class="cm-empty">まだコメントはないよ。思ったことをメモしておけるよ</li>`;
+  const rc = cmReply && list.find(c => c.id === cmReply); if (cmReply && !rc) cmReply = null;
+  $("#cmReplyTo").hidden = !rc; if (rc) $("#cmReplyTo").innerHTML = `<span>↳ 「${esc(rc.text.slice(0, 24))}${rc.text.length > 24 ? "…" : ""}」に返信</span><button type="button" data-re="" aria-label="返信をやめる">×</button>`;
+  $("#cmText").placeholder = rc ? "返信を書く" : "コメントを書く（この端末に保存されるよ）";
   paintAvatar($("#cmMe"), S.me, "avatar");
 }
-function openComments(id) { cmId = id; renderComments(); $("#cmSheet").hidden = false; document.body.classList.add("sheet-open"); setTimeout(() => $("#cmText").focus(), 40); }
+let cmReply = null; const cmOpen = new Set();
+function openComments(id) { if (cmId !== id) { cmReply = null; cmOpen.clear(); } cmId = id; renderComments(); $("#cmSheet").hidden = false; document.body.classList.add("sheet-open"); setTimeout(() => $("#cmText").focus(), 40); }
 function closeComments() { $("#cmSheet").hidden = true; cmId = null; if ($("#lookSheet").hidden) document.body.classList.remove("sheet-open"); }
 $("#cmClose").addEventListener("click", closeComments);
 $("#cmSheet").addEventListener("click", e => { if (e.target.id === "cmSheet") closeComments(); });
@@ -4842,13 +5062,16 @@ $("#cmText").addEventListener("input", e => { $("#cmSend").disabled = !e.target.
 $("#cmText").addEventListener("keydown", e => { if (e.key === "Enter" && (e.metaKey || e.ctrlKey)) { e.preventDefault(); $("#cmForm").requestSubmit(); } });
 $("#cmForm").addEventListener("submit", e => {
   e.preventDefault(); const text = $("#cmText").value.trim(); const p = S.posts.find(x => x.id === cmId); if (!text || !p) return;
-  (p.comments ||= []).push({ id: uid(), text, at: Date.now() }); dayAdd("cms"); save();
+  const c = { id: uid(), text, at: Date.now() }; if (cmReply) { c.re = cmReply; cmOpen.add(cmReply); } (p.comments ||= []).push(c); dayAdd("cms"); save(); cmReply = null;
   $("#cmText").value = ""; $("#cmSend").disabled = true; renderComments(); refreshPostComments(p); rollNum(document.querySelector(`#feed .post[data-id="${p.id}"] .act.cm`), 1); sfx("pop");
-  $("#cmList").lastElementChild?.scrollIntoView({ block: "nearest" });
+  $(`#cmList [data-c="${c.id}"]`)?.scrollIntoView({ block: "nearest" });
 });
+document.addEventListener("click", e => { const r = e.target.closest("#cmSheet [data-re]"); if (r) { cmReply = r.dataset.re || null; renderComments(); $("#cmText").focus(); return; }
+  const o = e.target.closest("#cmSheet [data-open]"); if (o) { cmOpen.add(o.dataset.open); renderComments(); } });
 $("#cmList").addEventListener("click", e => {
   const b = e.target.closest("[data-del]"); if (!b) return; const p = S.posts.find(x => x.id === cmId);
   if (!b.classList.contains("sure")) { b.classList.add("sure"); b.textContent = "本当に消す？"; setTimeout(() => { if (b.isConnected) { b.classList.remove("sure"); b.textContent = "消す"; } }, 2500); return; }
+  const gone = p.comments.find(c => c.id === b.dataset.del); p.comments.forEach(c => { if (c.re === gone.id) { if (gone.re) c.re = gone.re; else delete c.re; } }); /* 返信は1つ上につなぎ直す */
   p.comments = p.comments.filter(c => c.id !== b.dataset.del); save(); renderComments(); refreshPostComments(p); toast("コメントを消したよ");
 });
 
@@ -4917,7 +5140,7 @@ function vZoom(rect, open) {
 }
 function openViewer(id, from = "feed", sub = 0) {
   const src = srcMedia(id); vStartAt = src && src._getT ? src._getT() : 0; const rect = src && src.getBoundingClientRect();
-  vFrom = from; vList = (query && from === "feed" ? S.posts.filter(p => visPost(p) && matchPost(p, query)).sort((a, b) => keyOf(b) - keyOf(a)) : postsOf(S.active)).filter(hasViewable); vIdx = Math.max(0, vList.findIndex(p => p.id === id)); vSub = Math.min(sub, galN(vList[vIdx]) - 1);
+  vFrom = from; vList = (query && from === "feed" ? S.posts.filter(p => visPost(p) && matchPost(p, query)).sort((a, b) => keyOf(b) - keyOf(a)) : curPosts()).filter(hasViewable); vIdx = Math.max(0, vList.findIndex(p => p.id === id)); vSub = Math.min(sub, galN(vList[vIdx]) - 1);
   if (from === "feed") feedAP.reset(); else ttAP?.reset();
   $("#viewer").hidden = false; document.body.style.overflow = "hidden"; vRender(); $("#vClose").focus(); vZoom(rect, true);
 }
@@ -5036,7 +5259,7 @@ function boot() {
   if (S.opts.startTl && tlById(S.opts.startTl) && !isHiddenTl(tlById(S.opts.startTl))) S.active = S.opts.startTl;
   wakeSnoozed(true); applyOpts(); renderAll();
   const d = readShareParams(); if (d) openShare(d); else restorePos();
-  setTimeout(seasonOpen, 700); setTimeout(() => { applyPattern(); switchFx(); paintNotifN(); }, 50); buildSettings(); maybeNagBackup(); bootSafety(); purgeTrash(); loadDraft(); netState(); bootLock(); maybeGuide(); paintRings(); readQRLink();
+  setTimeout(seasonOpen, 700); setTimeout(() => { applyPattern(); switchFx(); paintNotifN(); }, 50); buildSettings(); paintSecretMode(); maybeNagBackup(); bootSafety(); purgeTrash(); loadDraft(); netState(); bootLock(); maybeGuide(); paintRings(); readQRLink();
   setTimeout(updateFocus, 60);
 }
 Promise.race([idb.all(), new Promise((_, rej) => setTimeout(() => rej(new Error("timeout")), 1500))])
